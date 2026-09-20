@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: erp
+      POSTGRES_PASSWORD: erp
+      POSTGRES_DB: erp
+      TZ: Africa/Tunis
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U erp -d erp"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://erp:erp@db:5432/erp
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.tn}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe-12345}
+      ADMIN_NAME: ${ADMIN_NAME:-Administrateur}
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

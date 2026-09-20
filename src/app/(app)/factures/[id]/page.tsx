@@ -1,0 +1,238 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { z } from "zod";
+import { db } from "@/db";
+import { can } from "@/lib/auth/permissions";
+import { requirePermission } from "@/lib/auth/session";
+import { getInvoice, verifyInvoiceIntegrity } from "@/lib/invoicing/invoices";
+import { formatAmount, formatPercent, formatTnd } from "@/lib/money";
+import { Flash } from "@/components/ui";
+import {
+  createCreditNoteAction, deleteDraftAction, saveInvoiceAction, validateInvoiceAction,
+} from "../actions";
+import { loadEditorData } from "../editor-data";
+import { InvoiceEditor } from "../invoice-editor";
+
+export const dynamic = "force-dynamic";
+
+const dateFmt = new Intl.DateTimeFormat("fr-TN", { dateStyle: "long", timeZone: "UTC" });
+const fmtDate = (d: string | null) => (d ? dateFmt.format(new Date(`${d}T00:00:00Z`)) : "—");
+
+export default async function InvoicePage({
+  params, searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ ok?: string; error?: string }>;
+}) {
+  const user = await requirePermission("invoices:read");
+  const { id } = await params;
+  if (!z.string().uuid().safeParse(id).success) notFound();
+  const details = await getInvoice(db, id);
+  if (!details) notFound();
+  const { invoice: inv, lines, taxes, customer, credits, original } = details;
+  const { ok, error } = await searchParams;
+  const isCredit = inv.kind === "credit_note";
+  const title = `${isCredit ? "Avoir" : "Facture"} ${inv.number ?? "(brouillon)"}`;
+
+  const header = (
+    <div className="flex items-center gap-3 flex-wrap">
+      <h1 className="text-2xl font-semibold">{title}</h1>
+      <span className="text-xs rounded-full px-2 py-0.5 border" style={{ borderColor: "var(--border)" }}>
+        {inv.status === "draft" ? "Brouillon" : "Validé"}
+      </span>
+    </div>
+  );
+
+  // ---- Brouillon : éditeur + validation -----------------------------------------------------
+  if (inv.status === "draft") {
+    const canWrite = can(user.role, "invoices:write");
+    const canValidate = can(user.role, "invoices:validate");
+    const data = await loadEditorData({ includeCustomerId: inv.customerId });
+    const tva0 = data.allTvaRates.find((t) => t.code === "TVA0") ?? data.allTvaRates[0];
+    const rateIdOf = (code: string) => data.allTvaRates.find((t) => t.code === code)?.id ?? tva0?.id ?? "";
+
+    return (
+      <div className="space-y-4 max-w-6xl">
+        {header}
+        {isCredit && original && (
+          <p className="text-sm">
+            Avoir sur la facture <Link className="underline" href={`/factures/${original.id}`}>{original.number}</Link>
+            {" "}— motif : {inv.creditReason}. Le timbre n&apos;est pas remboursé ; la retenue de la facture d&apos;origine est reprise.
+          </p>
+        )}
+        <Flash ok={ok} error={error} />
+        {canWrite ? (
+          <InvoiceEditor
+            action={saveInvoiceAction}
+            kind={inv.kind}
+            invoiceId={inv.id}
+            version={inv.version}
+            customers={data.customers}
+            products={data.products}
+            tvaRates={data.tvaRates}
+            paymentTerms={data.paymentTerms}
+            fodecRate={data.fodecRate}
+            company={data.company}
+            creditWithholdingRate={inv.withholdingRate}
+            initial={{
+              customerId: inv.customerId, issueDate: inv.issueDate, dueDate: inv.dueDate ?? "",
+              paymentTermId: inv.paymentTermId ?? "", reference: inv.reference ?? "", notes: inv.notes ?? "",
+              lines: lines.map((l) => ({
+                productId: l.productId ?? "", description: l.description, quantity: l.quantity, unit: l.unit,
+                unitPrice: l.unitPrice, discountPercent: l.discountPercent, tvaRateId: rateIdOf(l.tvaCode),
+                fodecApplicable: Number(l.fodecRate) > 0,
+              })),
+            }}
+          />
+        ) : (
+          <DocumentBody inv={inv} lines={lines} taxes={taxes} customerName={customer?.name ?? ""} />
+        )}
+
+        <div className="flex gap-3 flex-wrap items-start">
+          {canValidate && (
+            <form action={validateInvoiceAction} className="space-y-1">
+              <input type="hidden" name="id" value={inv.id} />
+              <button className="btn">Valider et numéroter</button>
+              <p className="text-xs max-w-md" style={{ color: "var(--muted)" }}>
+                La validation attribue le numéro définitif et verrouille le document. Enregistrez d&apos;abord vos modifications.
+                Après validation, seule la création d&apos;un avoir permet de corriger.
+              </p>
+            </form>
+          )}
+          {canWrite && (
+            <form action={deleteDraftAction}>
+              <input type="hidden" name="id" value={inv.id} />
+              <button className="btn btn-ghost" style={{ color: "var(--danger)" }}>Supprimer le brouillon</button>
+            </form>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ---- Document validé : lecture seule ---------------------------------------------------------
+  const intact = await verifyInvoiceIntegrity(db, inv.id);
+  const canWrite = can(user.role, "invoices:write");
+  const remaining = details.remainingCreditable;
+
+  return (
+    <div className="space-y-4 max-w-4xl">
+      {header}
+      <Flash ok={ok} error={error} />
+      {!intact && (
+        <p role="alert" className="card p-3 text-sm" style={{ color: "var(--danger)" }}>
+          Attention : l&apos;empreinte de ce document ne correspond plus à son contenu. Contactez un administrateur.
+        </p>
+      )}
+      {isCredit && original && (
+        <p className="text-sm">
+          Avoir sur la facture <Link className="underline" href={`/factures/${original.id}`}>{original.number}</Link> — motif : {inv.creditReason}
+        </p>
+      )}
+      <DocumentBody inv={inv} lines={lines} taxes={taxes} customerName={customer?.name ?? ""} />
+
+      <p className="text-xs" style={{ color: "var(--muted)" }}>
+        Validé le {inv.validatedAt ? new Intl.DateTimeFormat("fr-TN", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Tunis" }).format(inv.validatedAt) : "—"}
+        {" "}· empreinte {inv.contentHash?.slice(0, 12)}… {intact ? "(intègre)" : "(ALTÉRÉE)"}
+      </p>
+
+      {!isCredit && (
+        <section className="card p-4 space-y-3">
+          <h2 className="font-medium">Avoirs</h2>
+          {credits.length === 0 && <p className="text-sm" style={{ color: "var(--muted)" }}>Aucun avoir.</p>}
+          <ul className="text-sm space-y-1">
+            {credits.map((c) => (
+              <li key={c.id}>
+                <Link className="underline" href={`/factures/${c.id}`}>{c.number ?? "Brouillon"}</Link>
+                {" "}· {formatTnd(c.totalTtc)} TTC · {c.status === "draft" ? "brouillon" : "validé"}
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm">Déjà crédité (validé) : {formatTnd(details.creditedTtc)} · reste à créditer : {formatTnd(remaining ?? "0.000")} TTC</p>
+          {canWrite && remaining !== null && Number(remaining) > 0 && (
+            <form action={createCreditNoteAction} className="flex gap-2 flex-wrap items-end">
+              <input type="hidden" name="id" value={inv.id} />
+              <label className="block space-y-1 flex-1 min-w-64">
+                <span className="text-sm">Motif de l&apos;avoir *</span>
+                <input className="input" name="reason" required minLength={3} maxLength={500} placeholder="Retour de marchandise, erreur de prix…" />
+              </label>
+              <button className="btn btn-ghost">Créer un avoir</button>
+            </form>
+          )}
+        </section>
+      )}
+    </div>
+  );
+}
+
+function DocumentBody({
+  inv, lines, taxes, customerName,
+}: {
+  inv: NonNullable<Awaited<ReturnType<typeof getInvoice>>>["invoice"];
+  lines: NonNullable<Awaited<ReturnType<typeof getInvoice>>>["lines"];
+  taxes: NonNullable<Awaited<ReturnType<typeof getInvoice>>>["taxes"];
+  customerName: string;
+}) {
+  const snapshot = inv.customerSnapshot as { name?: string; matriculeFiscal?: string | null; address?: string | null; city?: string | null } | null;
+  const name = snapshot?.name ?? customerName;
+  return (
+    <div className="card p-4 space-y-4">
+      <div className="grid gap-2 sm:grid-cols-2 text-sm">
+        <div>
+          <p className="font-medium">{name}</p>
+          {snapshot?.matriculeFiscal && <p>MF : {snapshot.matriculeFiscal}</p>}
+          {(snapshot?.address || snapshot?.city) && <p>{[snapshot.address, snapshot.city].filter(Boolean).join(", ")}</p>}
+        </div>
+        <div className="sm:text-right">
+          <p>Émission : {fmtDate(inv.issueDate)}</p>
+          {inv.dueDate && <p>Échéance : {fmtDate(inv.dueDate)}</p>}
+          {inv.reference && <p>Réf. : {inv.reference}</p>}
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[640px]">
+          <thead>
+            <tr className="text-left" style={{ color: "var(--muted)" }}>
+              <th className="p-2">Désignation</th><th className="p-2 text-right">Qté</th><th className="p-2 text-right">Prix HT</th>
+              <th className="p-2 text-right">Remise</th><th className="p-2 text-right">TVA</th><th className="p-2 text-right">Total HT</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lines.map((l) => (
+              <tr key={l.id} className="border-t" style={{ borderColor: "var(--border)" }}>
+                <td className="p-2">{l.description}{Number(l.fodecRate) > 0 && <span className="ml-2 text-xs" style={{ color: "var(--muted)" }}>FODEC</span>}</td>
+                <td className="p-2 text-right whitespace-nowrap">{formatAmount(l.quantity)} {l.unit}</td>
+                <td className="p-2 text-right whitespace-nowrap">{formatAmount(l.unitPrice)}</td>
+                <td className="p-2 text-right">{Number(l.discountPercent) > 0 ? formatPercent(l.discountPercent) : "—"}</td>
+                <td className="p-2 text-right">{l.tvaCode === "EXO" ? "Exo." : formatPercent(l.tvaRate)}</td>
+                <td className="p-2 text-right whitespace-nowrap">{formatAmount(l.lineNetHt)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="ml-auto max-w-sm space-y-1 text-sm">
+        <Row label="Total HT" value={inv.totalHt} />
+        {Number(inv.totalFodec) > 0 && <Row label="FODEC" value={inv.totalFodec} />}
+        {taxes.filter((t) => t.kind === "tva").map((t) => (
+          <Row key={t.rate} label={`TVA ${formatPercent(t.rate)} sur ${formatAmount(t.base)}`} value={t.amount} muted />
+        ))}
+        <Row label="Total TTC" value={inv.totalTtc} strong />
+        {Number(inv.stampDuty) > 0 && <Row label="Timbre fiscal" value={inv.stampDuty} />}
+        {Number(inv.withholdingAmount) > 0 && <Row label={`Retenue à la source (${formatPercent(inv.withholdingRate ?? "0")})`} value={`-${inv.withholdingAmount}`} />}
+        <Row label="Net à payer" value={inv.netToPay} strong />
+      </div>
+      {inv.notes && <p className="text-sm whitespace-pre-wrap border-t pt-3" style={{ borderColor: "var(--border)" }}>{inv.notes}</p>}
+    </div>
+  );
+}
+
+function Row({ label, value, strong, muted }: { label: string; value: string; strong?: boolean; muted?: boolean }) {
+  return (
+    <div className={`flex justify-between gap-4 ${strong ? "font-semibold border-t pt-2" : ""}`} style={strong ? { borderColor: "var(--border)" } : muted ? { color: "var(--muted)" } : undefined}>
+      <span>{label}</span><span className="whitespace-nowrap">{formatTnd(value)}</span>
+    </div>
+  );
+}
