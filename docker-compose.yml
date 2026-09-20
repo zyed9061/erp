@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: erp
+      POSTGRES_PASSWORD: erp
+      POSTGRES_DB: erp_facturation
+    ports:
+      - "5433:5432"
+    volumes:
+      - erp_db_data:/var/lib/postgresql/data
+
+volumes:
+  erp_db_data:

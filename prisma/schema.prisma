@@ -1,0 +1,352 @@
+// Schema du systeme de facturation
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Utilisateurs & authentification
+// ---------------------------------------------------------------------------
+
+enum Role {
+  ADMIN
+  COMPTABLE
+  COMMERCIAL
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(COMMERCIAL)
+  actif        Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  devisCreated   Devis[]   @relation("DevisCreatedBy")
+  facturesCreees Facture[] @relation("FactureCreatedBy")
+  avoirsCreees   Avoir[]   @relation("AvoirCreatedBy")
+  paiementsSaisis Paiement[] @relation("PaiementCreatedBy")
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Profil de l'entreprise (singleton) — utilise pour l'en-tete des documents
+// ---------------------------------------------------------------------------
+
+model CompanyProfile {
+  id               String  @id @default(cuid())
+  nom              String
+  matriculeFiscal  String?
+  registreCommerce String?
+  adresse          String?
+  ville            String?
+  codePostal       String?
+  pays             String  @default("Tunisie")
+  telephone        String?
+  email            String?
+  siteWeb          String?
+  iban             String?
+  banque           String?
+  logoUrl          String?
+  devise           String  @default("TND")
+  tauxTimbreFiscal Decimal @default(1.000) @db.Decimal(10, 3)
+  conditionsDefaut String?
+  updatedAt        DateTime @updatedAt
+
+  @@map("company_profile")
+}
+
+// ---------------------------------------------------------------------------
+// Numerotation legale sequentielle (sans trou), par type de document et annee
+// ---------------------------------------------------------------------------
+
+enum DocumentType {
+  DEVIS
+  FACTURE
+  AVOIR
+}
+
+model NumberingSequence {
+  id           String       @id @default(cuid())
+  type         DocumentType
+  annee        Int
+  dernierNumero Int         @default(0)
+
+  @@unique([type, annee])
+  @@map("numbering_sequences")
+}
+
+// ---------------------------------------------------------------------------
+// Clients
+// ---------------------------------------------------------------------------
+
+enum ClientType {
+  PARTICULIER
+  ENTREPRISE
+}
+
+model Client {
+  id              String     @id @default(cuid())
+  type            ClientType @default(ENTREPRISE)
+  nom             String
+  matriculeFiscal String?
+  email           String?
+  telephone       String?
+  adresse         String?
+  ville           String?
+  codePostal      String?
+  pays            String     @default("Tunisie")
+  notes           String?
+  actif           Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  devis    Devis[]
+  factures Facture[]
+  avoirs   Avoir[]
+
+  @@map("clients")
+}
+
+// ---------------------------------------------------------------------------
+// Catalogue produits / services
+// ---------------------------------------------------------------------------
+
+enum ProduitType {
+  PRODUIT
+  SERVICE
+}
+
+model Produit {
+  id             String      @id @default(cuid())
+  reference      String?     @unique
+  designation    String
+  description    String?
+  type           ProduitType @default(SERVICE)
+  prixUnitaireHT Decimal     @db.Decimal(12, 3)
+  uniteMesure    String      @default("unite")
+  tauxTva        Decimal     @default(19) @db.Decimal(5, 2)
+  actif          Boolean     @default(true)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  lignesDevis   LigneDevis[]
+  lignesFacture LigneFacture[]
+  lignesAvoir   LigneAvoir[]
+
+  @@map("produits")
+}
+
+// ---------------------------------------------------------------------------
+// Devis
+// ---------------------------------------------------------------------------
+
+enum DevisStatus {
+  BROUILLON
+  ENVOYE
+  ACCEPTE
+  REFUSE
+  EXPIRE
+  CONVERTI
+}
+
+model Devis {
+  id            String      @id @default(cuid())
+  numero        String      @unique
+  annee         Int
+  dateEmission  DateTime    @default(now())
+  dateValidite  DateTime?
+  statut        DevisStatus @default(BROUILLON)
+  notes         String?
+  conditions    String?
+  sousTotalHT   Decimal     @default(0) @db.Decimal(14, 3)
+  totalTva      Decimal     @default(0) @db.Decimal(14, 3)
+  totalTTC      Decimal     @default(0) @db.Decimal(14, 3)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)
+
+  createdById String
+  createdBy   User   @relation("DevisCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  lignes  LigneDevis[]
+  facture Facture?
+
+  @@map("devis")
+}
+
+model LigneDevis {
+  id           String  @id @default(cuid())
+  ordre        Int     @default(0)
+  designation  String
+  description  String?
+  quantite     Decimal @db.Decimal(12, 3)
+  prixUnitaireHT Decimal @db.Decimal(12, 3)
+  remisePct    Decimal @default(0) @db.Decimal(5, 2)
+  tauxTva      Decimal @db.Decimal(5, 2)
+  totalHT      Decimal @db.Decimal(14, 3)
+
+  devisId String
+  devis   Devis @relation(fields: [devisId], references: [id], onDelete: Cascade)
+
+  produitId String?
+  produit   Produit? @relation(fields: [produitId], references: [id], onDelete: SetNull)
+
+  @@map("lignes_devis")
+}
+
+// ---------------------------------------------------------------------------
+// Factures
+// ---------------------------------------------------------------------------
+
+enum FactureStatus {
+  BROUILLON
+  ENVOYEE
+  PARTIELLEMENT_PAYEE
+  PAYEE
+  EN_RETARD
+  ANNULEE
+}
+
+model Facture {
+  id              String        @id @default(cuid())
+  numero          String        @unique
+  annee           Int
+  dateEmission    DateTime      @default(now())
+  dateEcheance    DateTime?
+  statut          FactureStatus @default(BROUILLON)
+  notes           String?
+  conditionsPaiement String?
+  sousTotalHT     Decimal       @default(0) @db.Decimal(14, 3)
+  totalTva        Decimal       @default(0) @db.Decimal(14, 3)
+  timbreFiscal    Decimal       @default(0) @db.Decimal(10, 3)
+  totalTTC        Decimal       @default(0) @db.Decimal(14, 3)
+  montantPaye     Decimal       @default(0) @db.Decimal(14, 3)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)
+
+  devisOrigineId String? @unique
+  devisOrigine   Devis?  @relation(fields: [devisOrigineId], references: [id], onDelete: SetNull)
+
+  createdById String
+  createdBy   User   @relation("FactureCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  lignes    LigneFacture[]
+  paiements Paiement[]
+  avoirs    Avoir[]
+
+  @@map("factures")
+}
+
+model LigneFacture {
+  id             String  @id @default(cuid())
+  ordre          Int     @default(0)
+  designation    String
+  description    String?
+  quantite       Decimal @db.Decimal(12, 3)
+  prixUnitaireHT Decimal @db.Decimal(12, 3)
+  remisePct      Decimal @default(0) @db.Decimal(5, 2)
+  tauxTva        Decimal @db.Decimal(5, 2)
+  totalHT        Decimal @db.Decimal(14, 3)
+
+  factureId String
+  facture   Facture @relation(fields: [factureId], references: [id], onDelete: Cascade)
+
+  produitId String?
+  produit   Produit? @relation(fields: [produitId], references: [id], onDelete: SetNull)
+
+  @@map("lignes_facture")
+}
+
+// ---------------------------------------------------------------------------
+// Avoirs (notes de credit)
+// ---------------------------------------------------------------------------
+
+model Avoir {
+  id           String   @id @default(cuid())
+  numero       String   @unique
+  annee        Int
+  dateEmission DateTime @default(now())
+  motif        String?
+  sousTotalHT  Decimal  @default(0) @db.Decimal(14, 3)
+  totalTva     Decimal  @default(0) @db.Decimal(14, 3)
+  totalTTC     Decimal  @default(0) @db.Decimal(14, 3)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)
+
+  factureOrigineId String
+  factureOrigine   Facture @relation(fields: [factureOrigineId], references: [id], onDelete: Restrict)
+
+  createdById String
+  createdBy   User   @relation("AvoirCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  lignes LigneAvoir[]
+
+  @@map("avoirs")
+}
+
+model LigneAvoir {
+  id             String  @id @default(cuid())
+  ordre          Int     @default(0)
+  designation    String
+  description    String?
+  quantite       Decimal @db.Decimal(12, 3)
+  prixUnitaireHT Decimal @db.Decimal(12, 3)
+  tauxTva        Decimal @db.Decimal(5, 2)
+  totalHT        Decimal @db.Decimal(14, 3)
+
+  avoirId String
+  avoir   Avoir @relation(fields: [avoirId], references: [id], onDelete: Cascade)
+
+  produitId String?
+  produit   Produit? @relation(fields: [produitId], references: [id], onDelete: SetNull)
+
+  @@map("lignes_avoir")
+}
+
+// ---------------------------------------------------------------------------
+// Paiements
+// ---------------------------------------------------------------------------
+
+enum ModePaiement {
+  VIREMENT
+  CHEQUE
+  ESPECES
+  CARTE
+  AUTRE
+}
+
+model Paiement {
+  id            String       @id @default(cuid())
+  datePaiement  DateTime     @default(now())
+  montant       Decimal      @db.Decimal(14, 3)
+  modePaiement  ModePaiement
+  reference     String?
+  notes         String?
+  createdAt     DateTime     @default(now())
+
+  factureId String
+  facture   Facture @relation(fields: [factureId], references: [id], onDelete: Cascade)
+
+  createdById String
+  createdBy   User   @relation("PaiementCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@map("paiements")
+}
