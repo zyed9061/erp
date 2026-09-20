@@ -6,6 +6,7 @@ import {
   companySettings,
   customers,
   invoiceLines,
+  invoiceBalances,
   invoices,
   invoiceTaxLines,
   paymentTerms,
@@ -25,9 +26,10 @@ import { nextDocumentNumber } from "../numbering";
 import { computeDueDate } from "../payment-terms";
 import { percentSchema } from "../taxes";
 import { optText, optUuid } from "../validation";
+import { todayTunis } from "../dates";
 import { calculateInvoice, type CalcResult } from "./calc";
 
-type Tx = Pick<Db, "select" | "insert" | "update" | "delete">;
+export type Tx = Pick<Db, "select" | "insert" | "update" | "delete">;
 
 // Plafond de NUMERIC(15,3) : 999 999 999 999,999 DT
 const MAX_MILLI = 999_999_999_999_999n;
@@ -37,7 +39,7 @@ const PLACEHOLDER_NAME = "À renseigner";
 // Saisie
 // ---------------------------------------------------------------------------
 
-const dateString = z
+export const dateString = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, "Date invalide")
   .refine((v) => new Date(`${v}T00:00:00Z`).toISOString().startsWith(v), "Date invalide");
@@ -69,7 +71,7 @@ export type InvoiceInput = z.input<typeof invoiceInputSchema>;
 // Construction d'un document (brouillon)
 // ---------------------------------------------------------------------------
 
-type ResolvedLine = {
+export type ResolvedLine = {
   productId: string | null;
   description: string;
   quantity: string;
@@ -83,7 +85,7 @@ type ResolvedLine = {
 
 type Context = { customer: Customer; company: CompanySettings; vatExempt: boolean };
 
-async function loadContext(tx: Tx, customerId: string): Promise<Context> {
+export async function loadContext(tx: Tx, customerId: string): Promise<Context> {
   const [customer] = await tx.select().from(customers).where(eq(customers.id, customerId));
   if (!customer) throw new ServiceError("Client introuvable");
   const [company] = await tx.select().from(companySettings).where(eq(companySettings.id, 1));
@@ -94,7 +96,7 @@ async function loadContext(tx: Tx, customerId: string): Promise<Context> {
   return { customer, company, vatExempt };
 }
 
-async function resolveLines(
+export async function resolveLines(
   tx: Tx,
   lines: z.output<typeof invoiceLineSchema>[],
   vatExempt: boolean,
@@ -178,6 +180,9 @@ async function computeDocument(
   });
   if (toMilli(calc.totals.netToPay) > MAX_MILLI || toMilli(calc.totals.gross) > MAX_MILLI) {
     throw new ServiceError("Montant total trop élevé");
+  }
+  if (toMilli(calc.totals.ttc) < 0n) {
+    throw new ServiceError("Le total TTC ne peut pas être négatif (déductions supérieures au montant ?)");
   }
 
   let dueDate = p.dueDate;
@@ -359,6 +364,54 @@ export async function deleteDraft(db: Db, actor: Actor, id: string) {
   });
 }
 
+/**
+ * Crée un brouillon à partir de lignes déjà résolues (taux copiés) : facture finale ou facture
+ * d'acompte issue d'un devis. À appeler dans la transaction de l'appelant.
+ */
+export async function createDraftFromResolved(
+  tx: Tx,
+  actor: Actor,
+  p: {
+    kind: InvoiceKind;
+    customerId: string;
+    lines: ResolvedLine[];
+    issueDate: string;
+    reference?: string | null;
+    notes?: string | null;
+    quoteId?: string | null;
+    depositPercent?: string | null;
+  },
+): Promise<Invoice> {
+  const ctx = await loadContext(tx, p.customerId);
+  if (!ctx.customer.isActive) throw new ServiceError("Ce client est désactivé");
+  const doc = await computeDocument(tx, ctx, {
+    kind: p.kind, lines: p.lines, issueDate: p.issueDate, dueDate: null, paymentTermId: null, original: null,
+  });
+  const [created] = await tx
+    .insert(invoices)
+    .values({
+      kind: p.kind,
+      customerId: p.customerId,
+      issueDate: p.issueDate,
+      dueDate: doc.dueDate,
+      reference: p.reference ?? null,
+      notes: p.notes ?? null,
+      quoteId: p.quoteId ?? null,
+      depositPercent: p.depositPercent ?? null,
+      createdBy: actor.id,
+      ...headerValues(doc.calc, doc),
+    })
+    .returning();
+  if (!created) throw new Error("Insertion du brouillon échouée");
+  await writeChildren(tx, created.id, p.lines, doc.calc);
+  await audit(tx, {
+    userId: actor.id, userEmail: actor.email, ip: actor.ip,
+    action: `${p.kind}.create`, entity: "invoice", entityId: created.id,
+    after: { ...created, lineCount: p.lines.length },
+  });
+  return created;
+}
+
 // ---------------------------------------------------------------------------
 // Avoirs
 // ---------------------------------------------------------------------------
@@ -404,7 +457,7 @@ export async function createCreditNoteDraft(
     }));
 
     const ctx = await loadContext(tx, original.customerId);
-    const issueDate = data.issueDate ?? new Date().toISOString().slice(0, 10);
+    const issueDate = data.issueDate ?? todayTunis();
     const doc = await computeDocument(tx, ctx, {
       kind: "credit_note", lines, issueDate, dueDate: null, paymentTermId: null, original,
     });
@@ -617,6 +670,8 @@ export async function listInvoices(
   db: Db,
   opts: {
     q?: string; status?: InvoiceStatus; kind?: InvoiceKind; customerId?: string;
+    /** open = reste dû > 0 ; overdue = open et échéance dépassée ; paid = soldé. */
+    payment?: "open" | "overdue" | "paid";
     page?: number; pageSize?: number;
   } = {},
 ) {
@@ -629,12 +684,24 @@ export async function listInvoices(
     opts.kind ? eq(invoices.kind, opts.kind) : undefined,
     opts.customerId ? eq(invoices.customerId, opts.customerId) : undefined,
     like ? or(ilike(invoices.number, like), ilike(customers.name, like), ilike(invoices.reference, like)) : undefined,
+    opts.payment
+      ? opts.payment === "paid"
+        ? sql`(${invoiceBalances.netToPay} - ${invoiceBalances.credited} - ${invoiceBalances.paid}) <= 0`
+        : and(
+            sql`(${invoiceBalances.netToPay} - ${invoiceBalances.credited} - ${invoiceBalances.paid}) > 0`,
+            opts.payment === "overdue" ? sql`${invoices.dueDate} < ${todayTunis()}` : undefined,
+          )
+      : undefined,
   );
   const [rows, [count]] = await Promise.all([
     db
-      .select({ invoice: invoices, customerName: customers.name, customerCode: customers.code })
+      .select({
+        invoice: invoices, customerName: customers.name, customerCode: customers.code,
+        credited: invoiceBalances.credited, paid: invoiceBalances.paid,
+      })
       .from(invoices)
       .innerJoin(customers, eq(customers.id, invoices.customerId))
+      .leftJoin(invoiceBalances, eq(invoiceBalances.invoiceId, invoices.id))
       .where(where)
       .orderBy(desc(invoices.issueDate), desc(invoices.createdAt))
       .limit(pageSize)
@@ -643,6 +710,7 @@ export async function listInvoices(
       .select({ n: sql<number>`count(*)::int` })
       .from(invoices)
       .innerJoin(customers, eq(customers.id, invoices.customerId))
+      .leftJoin(invoiceBalances, eq(invoiceBalances.invoiceId, invoices.id))
       .where(where),
   ]);
   return { rows, total: count?.n ?? 0, page, pageSize };

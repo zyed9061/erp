@@ -1,30 +1,29 @@
 import { requirePermission } from "@/lib/auth/session";
 import { todayTunis } from "@/lib/dates";
 import { Flash, PageHeader } from "@/components/ui";
-import { saveInvoiceAction } from "../actions";
-import { loadEditorData } from "../editor-data";
-import { InvoiceEditor } from "../invoice-editor";
+import { loadEditorData } from "../../factures/editor-data";
+import { InvoiceEditor } from "../../factures/invoice-editor";
+import { saveQuoteAction } from "../actions";
 
 export const dynamic = "force-dynamic";
 
-export default async function NewInvoicePage({
+export default async function NewQuotePage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; client?: string }>;
+  searchParams: Promise<{ error?: string }>;
 }) {
-  await requirePermission("invoices:write");
-  const { error, client } = await searchParams;
+  await requirePermission("quotes:write");
+  const { error } = await searchParams;
   const data = await loadEditorData();
-  const today = todayTunis();
   const tva19 = data.tvaRates.find((t) => t.code === "TVA19") ?? data.tvaRates[0];
 
   return (
     <div className="space-y-4 max-w-6xl">
-      <PageHeader title="Nouvelle facture" />
+      <PageHeader title="Nouveau devis" />
       <Flash error={error} />
       <InvoiceEditor
-        action={saveInvoiceAction}
-        kind="invoice"
+        action={saveQuoteAction}
+        kind="quote"
         customers={data.customers}
         products={data.products}
         tvaRates={data.tvaRates}
@@ -32,8 +31,7 @@ export default async function NewInvoicePage({
         fodecRate={data.fodecRate}
         company={data.company}
         initial={{
-          customerId: data.customers.some((c) => c.id === client) ? (client ?? "") : "",
-          issueDate: today, dueDate: "", paymentTermId: "", reference: "", notes: "",
+          customerId: "", issueDate: todayTunis(), dueDate: "", paymentTermId: "", reference: "", notes: "",
           lines: [{
             productId: "", description: "", quantity: "1", unit: "unité", unitPrice: "0",
             discountPercent: "0", tvaRateId: tva19?.id ?? "", fodecApplicable: false,

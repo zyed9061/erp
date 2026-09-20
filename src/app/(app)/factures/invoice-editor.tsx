@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { calculateInvoice } from "@/lib/invoicing/calc";
-import { formatAmount, formatPercent, parseAmount } from "@/lib/money";
+import { formatAmount, formatPercent, parseAmount, parseSignedAmount } from "@/lib/money";
 
 export type EditorCustomer = {
   id: string; code: string; name: string; taxStatus: string;
@@ -23,7 +23,7 @@ export type EditorInitial = {
 
 type Props = {
   action: (formData: FormData) => Promise<void>;
-  kind: "invoice" | "credit_note" | "deposit_invoice";
+  kind: "invoice" | "credit_note" | "deposit_invoice" | "quote";
   invoiceId?: string;
   version?: number;
   customers: EditorCustomer[];
@@ -61,14 +61,14 @@ export function InvoiceEditor(props: Props) {
       if (rows.length === 0) return null;
       const lines = rows.map((r) => ({
         quantity: parseAmount(r.quantity),
-        unitPrice: parseAmount(r.unitPrice),
+        unitPrice: parseSignedAmount(r.unitPrice), // négatif autorisé (déduction d'acompte)
         discountPercent: parseAmount(r.discountPercent || "0"),
         tvaRate: vatExempt ? "0.000" : (tvaRates.find((t) => t.id === r.tvaRateId)?.rate ?? "0.000"),
         fodecRate: r.fodecApplicable && fodecRate ? fodecRate : "0.000",
       }));
       return calculateInvoice(lines, {
         stampDuty: kind === "invoice" && company.stampDutyEnabled && customer && !customer.stampExempt ? company.stampDutyAmount : "0.000",
-        withholdingRate: kind === "credit_note" ? (props.creditWithholdingRate ?? null) : (customer?.withholdingRate ?? null),
+        withholdingRate: kind === "quote" ? null : kind === "credit_note" ? (props.creditWithholdingRate ?? null) : (customer?.withholdingRate ?? null),
         withholdingBase: company.withholdingBase,
         withholdingThreshold: company.withholdingThreshold,
       });
@@ -124,7 +124,13 @@ export function InvoiceEditor(props: Props) {
           <span className="text-sm">Date d&apos;émission *</span>
           <input className="input" type="date" value={issueDate} onChange={(e) => { setIssueDate(e.target.value); setDueDate(""); }} required />
         </label>
-        {kind !== "credit_note" && (
+        {kind === "quote" && (
+          <label className="block space-y-1 sm:col-span-2">
+            <span className="text-sm">Valable jusqu&apos;au</span>
+            <input className="input" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+          </label>
+        )}
+        {kind !== "credit_note" && kind !== "quote" && (
           <>
             <label className="block space-y-1">
               <span className="text-sm">Condition de paiement</span>

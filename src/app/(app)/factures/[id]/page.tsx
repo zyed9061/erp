@@ -4,9 +4,17 @@ import { z } from "zod";
 import { db } from "@/db";
 import { can } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
+import { eq } from "drizzle-orm";
+import { PAYMENT_METHODS, quotes } from "@/db/schema";
+import { todayTunis } from "@/lib/dates";
 import { getInvoice, verifyInvoiceIntegrity } from "@/lib/invoicing/invoices";
+import {
+  PAYMENT_STATUS_LABELS, getInvoiceBalance, listWithholdingCertificates, paymentStateOf, paymentsOfInvoice,
+} from "@/lib/invoicing/payments";
+import { addCertificateAction, recordPaymentAction } from "../../paiements/actions";
+import { METHOD_LABELS } from "../../paiements/labels";
 import { formatAmount, formatPercent, formatTnd } from "@/lib/money";
-import { Flash } from "@/components/ui";
+import { Field, Flash } from "@/components/ui";
 import {
   createCreditNoteAction, deleteDraftAction, saveInvoiceAction, validateInvoiceAction,
 } from "../actions";
@@ -32,7 +40,15 @@ export default async function InvoicePage({
   const { invoice: inv, lines, taxes, customer, credits, original } = details;
   const { ok, error } = await searchParams;
   const isCredit = inv.kind === "credit_note";
-  const title = `${isCredit ? "Avoir" : "Facture"} ${inv.number ?? "(brouillon)"}`;
+  const KIND_TITLES = { invoice: "Facture", credit_note: "Avoir", deposit_invoice: "Facture d'acompte" } as const;
+  const title = `${KIND_TITLES[inv.kind]} ${inv.number ?? "(brouillon)"}`;
+  const [linkedQuote] = inv.quoteId ? await db.select().from(quotes).where(eq(quotes.id, inv.quoteId)) : [];
+  const quoteLink = linkedQuote ? (
+    <p className="text-sm">
+      Issue du devis <Link className="underline" href={`/devis/${linkedQuote.id}`}>{linkedQuote.number}</Link>
+      {inv.kind === "deposit_invoice" ? ` (acompte de ${formatPercent(inv.depositPercent ?? "0")})` : ""}.
+    </p>
+  ) : null;
 
   const header = (
     <div className="flex items-center gap-3 flex-wrap">
@@ -60,6 +76,7 @@ export default async function InvoicePage({
             {" "}— motif : {inv.creditReason}. Le timbre n&apos;est pas remboursé ; la retenue de la facture d&apos;origine est reprise.
           </p>
         )}
+        {quoteLink}
         <Flash ok={ok} error={error} />
         {canWrite ? (
           <InvoiceEditor
@@ -114,10 +131,24 @@ export default async function InvoicePage({
   const intact = await verifyInvoiceIntegrity(db, inv.id);
   const canWrite = can(user.role, "invoices:write");
   const remaining = details.remainingCreditable;
+  const canPay = can(user.role, "payments:write");
+  const balance = !isCredit ? await getInvoiceBalance(db, inv.id) : null;
+  const pay = balance ? paymentStateOf(balance, inv.dueDate) : null;
+  const paymentRows = !isCredit ? await paymentsOfInvoice(db, inv.id) : [];
+  const hasWithholding = !isCredit && Number(inv.withholdingAmount) > 0;
+  const certificates = hasWithholding ? await listWithholdingCertificates(db, inv.id) : [];
+  const certified = certificates.reduce((sum, c) => sum + Number(c.amount), 0);
 
   return (
     <div className="space-y-4 max-w-4xl">
       {header}
+      {pay && (
+        <p className="text-sm">
+          <strong>{PAYMENT_STATUS_LABELS[pay.status]}</strong>
+          {pay.overdue && <span className="ml-2" style={{ color: "var(--danger)" }}>· en retard (échéance {inv.dueDate})</span>}
+        </p>
+      )}
+      {quoteLink}
       <Flash ok={ok} error={error} />
       {!intact && (
         <p role="alert" className="card p-3 text-sm" style={{ color: "var(--danger)" }}>
@@ -135,6 +166,65 @@ export default async function InvoicePage({
         Validé le {inv.validatedAt ? new Intl.DateTimeFormat("fr-TN", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Tunis" }).format(inv.validatedAt) : "—"}
         {" "}· empreinte {inv.contentHash?.slice(0, 12)}… {intact ? "(intègre)" : "(ALTÉRÉE)"}
       </p>
+
+      {pay && (
+        <section className="card p-4 space-y-3">
+          <h2 className="font-medium">Paiements</h2>
+          <div className="grid gap-1 text-sm sm:grid-cols-2">
+            <p>Net à payer : {formatTnd(pay.netToPay)}</p>
+            <p>Avoirs validés : {formatTnd(pay.credited)}</p>
+            <p>Payé : {formatTnd(pay.paid)}</p>
+            <p><strong>Reste dû : {formatTnd(pay.due)}</strong>{pay.status === "overpaid" ? " (à rembourser)" : ""}</p>
+          </div>
+          {paymentRows.length > 0 && (
+            <ul className="text-sm space-y-1 border-t pt-2" style={{ borderColor: "var(--border)" }}>
+              {paymentRows.map(({ payment: p, amount }) => (
+                <li key={p.id} style={{ opacity: p.voidedAt ? 0.55 : 1 }}>
+                  <Link className="underline" href={`/paiements/${p.id}`}>{p.paymentDate}</Link>
+                  {" "}· {METHOD_LABELS[p.method]}{p.reference ? ` ${p.reference}` : ""} · {formatTnd(amount)}
+                  {p.voidedAt ? " · annulé" : ""}
+                </li>
+              ))}
+            </ul>
+          )}
+          {canPay && Number(pay.due) > 0 && (
+            <form action={recordPaymentAction} className="grid gap-3 sm:grid-cols-4 items-end border-t pt-3" style={{ borderColor: "var(--border)" }}>
+              <input type="hidden" name="customerId" value={inv.customerId} />
+              <input type="hidden" name="next" value={`/factures/${inv.id}`} />
+              <Field label="Montant encaissé (DT)"><input className="input" name={`alloc_${inv.id}`} inputMode="decimal" defaultValue={pay.due} required /></Field>
+              <Field label="Date"><input className="input" type="date" name="paymentDate" defaultValue={todayTunis()} required /></Field>
+              <Field label="Mode">
+                <select className="input" name="method" defaultValue="virement">
+                  {PAYMENT_METHODS.map((m) => <option key={m} value={m}>{METHOD_LABELS[m]}</option>)}
+                </select>
+              </Field>
+              <Field label="Référence"><input className="input" name="reference" maxLength={100} /></Field>
+              <div className="sm:col-span-4"><button className="btn">Enregistrer l&apos;encaissement</button></div>
+            </form>
+          )}
+        </section>
+      )}
+
+      {hasWithholding && (
+        <section className="card p-4 space-y-3">
+          <h2 className="font-medium">Retenue à la source</h2>
+          <p className="text-sm">
+            Retenue de cette facture : {formatTnd(inv.withholdingAmount)} · certificats reçus : {formatTnd(certified.toFixed(3))}
+          </p>
+          <ul className="text-sm space-y-1">
+            {certificates.map((c) => <li key={c.id}>{c.number} · {c.certificateDate} · {formatTnd(c.amount)}</li>)}
+          </ul>
+          {canPay && (
+            <form action={addCertificateAction} className="grid gap-3 sm:grid-cols-4 items-end border-t pt-3" style={{ borderColor: "var(--border)" }}>
+              <input type="hidden" name="invoiceId" value={inv.id} />
+              <Field label="N° du certificat"><input className="input" name="number" required maxLength={60} /></Field>
+              <Field label="Date"><input className="input" type="date" name="certificateDate" defaultValue={todayTunis()} required /></Field>
+              <Field label="Montant (DT)"><input className="input" name="amount" inputMode="decimal" required /></Field>
+              <button className="btn btn-ghost">Ajouter le certificat</button>
+            </form>
+          )}
+        </section>
+      )}
 
       {!isCredit && (
         <section className="card p-4 space-y-3">

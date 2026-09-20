@@ -15,7 +15,10 @@ export const PERMISSIONS = {
   "invoices:read": ["admin", "comptable", "commercial", "lecture_seule"],
   "invoices:write": ["admin", "comptable"],
   "invoices:validate": ["admin", "comptable"],
+  "payments:read": ["admin", "comptable", "commercial", "lecture_seule"],
   "payments:write": ["admin", "comptable"],
+  "quotes:read": ["admin", "comptable", "commercial", "lecture_seule"],
+  "quotes:write": ["admin", "comptable", "commercial"],
   "settings:manage": ["admin"],
 } as const satisfies Record<string, readonly Role[]>;
 

@@ -5,7 +5,9 @@ import { logoutAction } from "./actions";
 
 const NAV: { href: string; label: string; permission?: Permission }[] = [
   { href: "/", label: "Tableau de bord" },
+  { href: "/devis", label: "Devis", permission: "quotes:read" },
   { href: "/factures", label: "Factures", permission: "invoices:read" },
+  { href: "/paiements", label: "Paiements", permission: "payments:read" },
   { href: "/clients", label: "Clients", permission: "customers:read" },
   { href: "/produits", label: "Produits et services", permission: "products:read" },
   { href: "/parametres", label: "Paramètres", permission: "settings:read" },

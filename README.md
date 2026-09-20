@@ -94,15 +94,28 @@ npm run dev
 Points à faire valider par un expert-comptable : base et seuil de la retenue, absence de timbre sur les avoirs,
 exemptions de timbre, obligation de chronologie des numéros.
 
-## Phase 4 : devis, acomptes, paiements (en cours)
+## Phase 4 : devis, acomptes, paiements (terminée)
 
-Déjà présent dans cette branche :
-- montants signés dans le moteur de calcul (lignes de déduction d'acompte), arrondi symétrique ;
-- schéma et migrations `0006` / `0007` : devis (`quotes`, `quote_lines`), type `deposit_invoice`, paiements,
-  imputations, certificats de retenue, vue `invoice_balances`, et leurs triggers d'immutabilité.
+- **Devis** (`/devis`) : brouillon modifiable, puis « Envoyer » qui attribue le numéro `DEV-…` sans trou et verrouille
+  le contenu (trigger). Décision accepté / refusé ; un devis expiré ne peut plus être accepté. Pas de timbre ni de
+  retenue sur un devis : ils n'apparaissent qu'à la facture.
+- **Acomptes** : depuis un devis accepté, une facture d'acompte de p % (une ligne par taux de TVA, base HT + FODEC),
+  série `ACO-…`, sans timbre. Le total des acomptes est plafonné à 100 %.
+- **Facture finale** : reprend les lignes du devis et **déduit chaque acompte validé** par une ligne négative au même
+  taux de TVA, si bien que la TVA n'est jamais comptée deux fois. Une seule facture finale par devis (index unique) ;
+  les acomptes en brouillon doivent être validés ou supprimés avant.
+- **Paiements** (`/paiements`) : encaissement avec imputation sur une ou plusieurs factures, avance client imputable
+  plus tard, plafonds vérifiés sous verrou (reste dû de la facture, montant du paiement). Un paiement ne se modifie ni
+  ne se supprime : on l'**annule** avec un motif (triggers) ; ses imputations cessent alors de compter.
+- **Statut de paiement** dérivé (jamais stocké) via la vue `invoice_balances` : non payée, partielle, soldée, à
+  rembourser, plus un indicateur de retard. Le net à payer déduit déjà la retenue à la source : on n'enregistre que
+  l'argent réellement reçu. Les avoirs validés réduisent le reste dû ; le timbre n'étant pas remboursé, il reste dû
+  après un avoir total.
+- **Certificats de retenue à la source** : suivi par facture, plafonné au montant retenu.
+- Montants signés dans le calcul, arrondi symétrique (moitié en s'éloignant de zéro).
 
-**Pas encore implémenté** : services et pages pour les devis, la facture d'acompte, l'enregistrement des paiements
-et le statut payé/en retard. Ces tables ne sont donc pas utilisées par l'application pour l'instant.
+Hypothèses à faire valider par un expert-comptable : pas de timbre sur les acomptes (appliqué une fois, à la facture
+finale), FODEC intégré dans la base des acomptes puis déduit avec elle, timbre non remboursé par un avoir.
 
 ## Landing page
 
