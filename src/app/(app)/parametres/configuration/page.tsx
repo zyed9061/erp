@@ -1,16 +1,16 @@
 import { db } from "@/db";
 import { requirePermission } from "@/lib/auth/session";
 import { checkData, checkEnvironment, type CheckStatus } from "@/lib/config-check";
-import { Flash } from "@/components/ui";
+import { Badge, Flash, type Tone } from "@/components/ui";
 import { sendTestEmailAction } from "../actions";
 
 export const dynamic = "force-dynamic";
 
-const BADGE: Record<CheckStatus, { label: string; color: string }> = {
-  ok: { label: "Prêt", color: "inherit" },
-  info: { label: "Info", color: "var(--muted)" },
-  warn: { label: "À faire", color: "var(--danger)" },
-  error: { label: "Erreur", color: "var(--danger)" },
+const BADGE: Record<CheckStatus, { label: string; tone: Tone }> = {
+  ok: { label: "Prêt", tone: "ok" },
+  info: { label: "Info", tone: "info" },
+  warn: { label: "À faire", tone: "warn" },
+  error: { label: "Erreur", tone: "bad" },
 };
 
 export default async function ConfigurationPage({ searchParams }: { searchParams: Promise<{ ok?: string; error?: string }> }) {
@@ -30,7 +30,7 @@ export default async function ConfigurationPage({ searchParams }: { searchParams
           <div key={c.id} className="p-4 space-y-1" style={{ borderColor: "var(--border)" }}>
             <p className="flex items-center gap-2 flex-wrap">
               <span className="font-medium">{c.label}</span>
-              <span className="text-xs rounded-full px-2 py-0.5 border" style={{ borderColor: "var(--border)", color: BADGE[c.status].color }}>{BADGE[c.status].label}</span>
+              <Badge tone={BADGE[c.status].tone}>{BADGE[c.status].label}</Badge>
             </p>
             <p className="text-sm">{c.detail}</p>
             {c.fix && <p className="text-sm" style={{ color: "var(--muted)" }}>À faire : {c.fix}</p>}

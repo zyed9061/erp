@@ -41,7 +41,7 @@ export default async function DashboardPage() {
     <div className="space-y-6 max-w-6xl">
       {header}
 
-      <section aria-label="Indicateurs" className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <section aria-label="Indicateurs" className="grid gap-3 grid-cols-2 lg:grid-cols-4">
         <Kpi label="CA HT du mois" value={formatTnd(s.revenueMonthHt)} href="/rapports?tab=ca" />
         <Kpi label="CA HT de l'année" value={formatTnd(s.revenueYearHt)} href="/rapports?tab=ca" />
         <Kpi label="Encaissé ce mois" value={formatTnd(s.collectedMonth)} href="/rapports?tab=encaissements" />

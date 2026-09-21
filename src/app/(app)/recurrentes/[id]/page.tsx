@@ -11,7 +11,7 @@ import { loadEditorData } from "../../factures/editor-data";
 import { InvoiceEditor } from "../../factures/invoice-editor";
 import { deleteRecurringAction, runRecurringAction, saveRecurringAction, setRecurringStatusAction } from "../actions";
 import { RecurringExtraFields } from "../extra-fields";
-import { RECURRING_STATUS_LABELS } from "../labels";
+import { RecurringBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +38,7 @@ export default async function RecurringTemplatePage({
     <div className="space-y-6 max-w-6xl">
       <div className="flex items-center gap-3 flex-wrap">
         <h1 className="text-2xl font-semibold">{t.name}</h1>
-        <span className="text-xs rounded-full px-2 py-0.5 border" style={{ borderColor: "var(--border)" }}>{RECURRING_STATUS_LABELS[t.status]}</span>
+        <RecurringBadge status={t.status} />
         <span className="text-sm" style={{ color: "var(--muted)" }}>{customer?.name} · {FREQUENCY_LABELS[t.frequency]}</span>
       </div>
       <Flash ok={ok} error={error} />

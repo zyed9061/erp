@@ -8,7 +8,9 @@ import { createTaxRate, listTaxRates } from "../taxes";
 import { createUser } from "../users";
 import { todayTunis } from "../dates";
 import { createCreditNoteDraft, createDraftInvoice, validateDocument, type InvoiceLineInput } from "../invoicing/invoices";
-import { recordPayment } from "../invoicing/payments";
+import { getInvoiceBalance, recordPayment } from "../invoicing/payments";
+import { toMilli, fromMilli } from "../money";
+import { addStockMovement } from "../stock";
 import { createDraftQuote, sendQuote } from "../invoicing/quotes";
 import { submitToTtn } from "../einvoice/submission";
 import { DEMO_ACCOUNTS } from "./accounts";
@@ -66,27 +68,50 @@ export async function seedDemoData(db: Db): Promise<{ seeded: boolean }> {
     productId: p.id, description: p.name, quantity, unit: p.unit, unitPrice: p.unitPrice, discountPercent: "0", tvaRateId: tva19, fodecApplicable: false,
   });
 
-  // --- Documents (dates échelonnées, du plus ancien au plus récent : la numérotation est chronologique) ----------------------
+  // --- Documents : 8 mois d'activité, du plus ancien au plus récent (la numérotation est chronologique) ----------------------
   const today = todayTunis();
   const validated = async (customerId: string, daysAgo: number, lines: InvoiceLineInput[], reference: string) =>
     validateDocument(db, actor, (await createDraftInvoice(db, actor, {
-      customerId, issueDate: addDays(today, -daysAgo), reference, notes: "Document de démonstration (données fictives).", lines,
+      customerId, issueDate: addDays(today, -daysAgo), dueDate: addDays(today, 30 - daysAgo), reference,
+      notes: "Document de démonstration (données fictives).", lines,
     })).id);
+  /** Encaisse la totalité (ou une fraction) du reste dû d'une facture. */
+  const pay = async (invoiceId: string, customerId: string, daysAgo: number, method: "virement" | "cheque" | "especes", ref: string, share = 1) => {
+    const b = (await getInvoiceBalance(db, invoiceId))!;
+    const due = toMilli(b.netToPay) - toMilli(b.credited) - toMilli(b.paid);
+    const amount = fromMilli(share === 1 ? due : due / 2n);
+    await recordPayment(db, actor, { customerId, paymentDate: addDays(today, -daysAgo), amount, method, reference: ref, allocations: [{ invoiceId, amount }] });
+  };
 
+  await addStockMovement(db, actor, { productId: materiel.id, type: "entry", quantity: "12", occurredOn: addDays(today, -210), reference: "RECEPTION-DEMO", notes: "Stock initial de démonstration" });
+
+  // Historique payé (graphique du chiffre d'affaires sur plusieurs mois)
+  const h1 = await validated(alpha, 200, [line(conseil, "30")], "DEMO-H1");
+  await pay(h1.id, alpha, 170, "virement", "VIR-DEMO-H1");
+  const h2 = await validated(beta, 170, [line(licence, "1"), line(materiel, "2")], "DEMO-H2");
+  await pay(h2.id, beta, 140, "cheque", "CHQ-DEMO-H2");
+  const h3 = await validated(alpha, 140, [line(licence, "2")], "DEMO-H3");
+  await pay(h3.id, alpha, 118, "virement", "VIR-DEMO-H3");
+  const h4 = await validated(beta, 110, [line(conseil, "25")], "DEMO-H4");
+  await pay(h4.id, beta, 80, "virement", "VIR-DEMO-H4");
+  const h5 = await validated(alpha, 80, [line(materiel, "4"), line(conseil, "6")], "DEMO-H5");
+  await pay(h5.id, alpha, 52, "especes", "ESP-DEMO-H5");
+
+  // Documents récents : un en retard partiellement payé, un ouvert, un client au rejet de démonstration
   const inv1 = await validated(alpha, 40, [line(conseil, "10")], "DEMO-BC-001");
+  await pay(inv1.id, alpha, 30, "virement", "VIR-DEMO-1", 0.5);
   const inv2 = await validated(beta, 20, [line(licence, "1"), line(materiel, "2")], "DEMO-BC-002");
+  await pay(inv2.id, beta, 3, "virement", "VIR-DEMO-2", 0.5);
   const inv3 = await validated(reject, 8, [line(conseil, "4")], "DEMO-BC-003");
   await createDraftInvoice(db, actor, { customerId: alpha, issueDate: today, reference: "DEMO-BROUILLON", lines: [line(conseil, "2")] });
-
-  await recordPayment(db, actor, { customerId: alpha, paymentDate: addDays(today, -30), amount: "500", method: "virement", reference: "VIR-DEMO-1", allocations: [{ invoiceId: inv1.id, amount: "500" }] });
   await validateDocument(db, actor, (await createCreditNoteDraft(db, actor, inv3.id, { reason: "Avoir de démonstration", issueDate: addDays(today, -2) })).id);
 
   const quote = await createDraftQuote(db, actor, { customerId: beta, issueDate: today, validUntil: addDays(today, 30), reference: "DEMO-DEVIS", lines: [line(conseil, "20")] });
   await sendQuote(db, actor, quote.id);
 
-  // Une facture déjà « envoyée » à la TTN simulée (QR code de démonstration sur son PDF) et une refusée.
+  // Deux factures « envoyées » à la TTN simulée (QR code de démonstration sur leur PDF) et une refusée.
+  await submitToTtn(db, actor, h5.id);
   await submitToTtn(db, actor, inv1.id);
   await submitToTtn(db, actor, inv3.id);
-  void inv2;
   return { seeded: true };
 }

@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr">
       <body>
         {isDemoMode() && (
-          <p role="note" className="text-center text-xs font-medium px-3 py-1.5" style={{ background: "var(--danger)", color: "#fff" }}>
+          <p role="note" className="text-center text-xs font-medium px-3 py-1.5" style={{ background: "#b42318", color: "#fff" }}>
             {DEMO_BANNER}
           </p>
         )}

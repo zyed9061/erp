@@ -53,3 +53,10 @@ export function StatusBadge({ active }: { active: boolean }) {
     </span>
   );
 }
+
+export type Tone = "ok" | "warn" | "bad" | "info" | "violet" | "neutral";
+
+/** Pastille d'état colorée (jamais la couleur seule : le libellé est toujours écrit). */
+export function Badge({ tone = "neutral", children }: { tone?: Tone; children: React.ReactNode }) {
+  return <span className={`pill pill-${tone}`}>{children}</span>;
+}

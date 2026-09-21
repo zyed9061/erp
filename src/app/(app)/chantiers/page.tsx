@@ -7,6 +7,7 @@ import { formatTnd } from "@/lib/money";
 import { listProjects } from "@/lib/projects";
 import { Flash, PageHeader, Pagination } from "@/components/ui";
 import { PROJECT_LABELS } from "./labels";
+import { ProjectBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +53,7 @@ export default async function ProjectsPage({
                 <td className="p-3">{customerName}</td>
                 <td className="p-3 text-right whitespace-nowrap">{formatTnd(contractHt)}</td>
                 <td className="p-3 text-right">{situations}</td>
-                <td className="p-3">{PROJECT_LABELS[p.status]}</td>
+                <td className="p-3"><ProjectBadge status={p.status} /></td>
               </tr>
             ))}
             {rows.length === 0 && <tr><td className="p-3" colSpan={5} style={{ color: "var(--muted)" }}>Aucun chantier.</td></tr>}

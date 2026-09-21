@@ -9,7 +9,7 @@ import { PAYMENT_METHODS, quotes } from "@/db/schema";
 import { todayTunis } from "@/lib/dates";
 import { getInvoice, verifyInvoiceIntegrity } from "@/lib/invoicing/invoices";
 import {
-  PAYMENT_STATUS_LABELS, getInvoiceBalance, listWithholdingCertificates, paymentStateOf, paymentsOfInvoice,
+  getInvoiceBalance, listWithholdingCertificates, paymentStateOf, paymentsOfInvoice,
 } from "@/lib/invoicing/payments";
 import { addCertificateAction, recordPaymentAction } from "../../paiements/actions";
 import { SendPanel } from "@/components/send-panel";
@@ -26,6 +26,7 @@ import {
 } from "../actions";
 import { loadEditorData } from "../editor-data";
 import { InvoiceEditor } from "../invoice-editor";
+import { InvoiceStatusBadge, PaymentBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -62,9 +63,7 @@ export default async function InvoicePage({
   const header = (
     <div className="flex items-center gap-3 flex-wrap">
       <h1 className="text-2xl font-semibold">{title}</h1>
-      <span className="text-xs rounded-full px-2 py-0.5 border" style={{ borderColor: "var(--border)" }}>
-        {inv.status === "draft" ? "Brouillon" : "Validé"}
-      </span>
+      <InvoiceStatusBadge status={inv.status} kind={inv.kind} />
     </div>
   );
 
@@ -163,9 +162,9 @@ export default async function InvoicePage({
     <div className="space-y-4 max-w-4xl">
       {header}
       {pay && (
-        <p className="text-sm">
-          <strong>{PAYMENT_STATUS_LABELS[pay.status]}</strong>
-          {pay.overdue && <span className="ml-2" style={{ color: "var(--danger)" }}>· en retard (échéance {inv.dueDate})</span>}
+        <p className="text-sm flex items-center gap-2 flex-wrap">
+          <PaymentBadge status={pay.status} overdue={pay.overdue} />
+          {pay.overdue && <span style={{ color: "var(--muted)" }}>échéance dépassée : {inv.dueDate}</span>}
         </p>
       )}
       {quoteLink}

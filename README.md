@@ -54,7 +54,7 @@ npm run dev:local     # démarre tout, données de démonstration comprises (DEM
 npm run e2e:demo      # après npm run build : parcours complet de démonstration contre un vrai serveur
 ```
 
-Comptes : `admin@demo.test` / `Demo-Admin-2026` (autres rôles sur la page de connexion). **Ne jamais utiliser ce mode avec de
+Comptes : `admin@demo.test` / `Demo-Admin-2026` ; sur la page de connexion, un clic sur un rôle remplit le formulaire. Les données couvrent 8 mois (graphique, factures soldées, en retard, partiellement payées, avoir, devis, stock). **Ne jamais utiliser ce mode avec de
 vraies données** (le diagnostic de configuration l'avertit en production).
 
 ## Démarrer

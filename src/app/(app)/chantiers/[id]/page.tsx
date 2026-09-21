@@ -12,8 +12,8 @@ import {
   createSituationAction, releaseHoldbackAction, saveProjectAction, setProjectStatusAction, updateProjectMetaAction,
 } from "../actions";
 import { loadProjectEditorData } from "../editor-data";
-import { PROJECT_LABELS } from "../labels";
 import { ProjectEditor } from "../project-editor";
+import { ProjectBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +41,7 @@ export default async function ProjectPage({
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center gap-3 flex-wrap">
         <h1 className="text-2xl font-semibold">{p.name}</h1>
-        <span className="text-xs rounded-full px-2 py-0.5 border" style={{ borderColor: "var(--border)" }}>{PROJECT_LABELS[p.status]}</span>
+        <ProjectBadge status={p.status} />
         <span className="text-sm" style={{ color: "var(--muted)" }}>{customer?.name}</span>
       </div>
       <Flash ok={ok} error={error} />

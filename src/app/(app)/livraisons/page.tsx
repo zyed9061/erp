@@ -7,6 +7,7 @@ import { listDeliveryNotes } from "@/lib/delivery";
 import { Flash, PageHeader, Pagination } from "@/components/ui";
 import { invoiceDeliveriesAction } from "./actions";
 import { DELIVERY_LABELS } from "./labels";
+import { DeliveryBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -65,11 +66,11 @@ export default async function DeliveryNotesPage({
                     {canInvoice && (
                       <td className="p-3">{invoiceable && <input type="checkbox" name="noteId" value={n.id} aria-label={`Facturer ${n.number}`} />}</td>
                     )}
-                    <td className="p-3 font-mono"><Link className="underline" href={`/livraisons/${n.id}`}>{n.number ?? "Brouillon"}</Link></td>
+                    <td className="p-3 font-mono whitespace-nowrap"><Link className="underline" href={`/livraisons/${n.id}`}>{n.number ?? "Brouillon"}</Link></td>
                     <td className="p-3">{customerName}</td>
                     <td className="p-3 whitespace-nowrap">{dateFmt.format(new Date(`${n.issueDate}T00:00:00Z`))}</td>
                     <td className="p-3">{n.reference ?? "—"}</td>
-                    <td className="p-3">{DELIVERY_LABELS[n.status]}</td>
+                    <td className="p-3"><DeliveryBadge status={n.status} /></td>
                     <td className="p-3">
                       {n.invoiceId ? <Link className="underline" href={`/factures/${n.invoiceId}`}>Facturé</Link> : invoiceable ? "À facturer" : "—"}
                     </td>

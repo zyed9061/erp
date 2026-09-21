@@ -8,6 +8,7 @@ import { FREQUENCY_LABELS, listRecurringTemplates } from "@/lib/invoicing/recurr
 import { Flash, PageHeader } from "@/components/ui";
 import { runRecurringAction } from "./actions";
 import { RECURRING_STATUS_LABELS } from "./labels";
+import { RecurringBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -71,7 +72,7 @@ export default async function RecurringPage({
                   {t.status === "ended" ? "—" : t.nextRunDate}
                 </td>
                 <td className="p-3">{t.autoValidate ? (t.autoSend ? "Validée + e-mail" : "Validée") : "Brouillon"}</td>
-                <td className="p-3">{RECURRING_STATUS_LABELS[t.status]}</td>
+                <td className="p-3"><RecurringBadge status={t.status} /></td>
               </tr>
             ))}
             {rows.length === 0 && <tr><td className="p-3" colSpan={6} style={{ color: "var(--muted)" }}>Aucun modèle.</td></tr>}

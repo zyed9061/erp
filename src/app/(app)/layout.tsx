@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { can, ROLE_LABELS, type Permission } from "@/lib/auth/permissions";
 import { requireUser } from "@/lib/auth/session";
+import { NavLinks } from "@/components/nav-links";
 import { logoutAction } from "./actions";
 
 const NAV: { href: string; label: string; permission?: Permission }[] = [
@@ -27,15 +27,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen md:flex">
-      <aside className="md:w-56 md:min-h-screen p-4 border-b md:border-b-0 md:border-r" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
-        <p className="text-lg font-semibold mb-4">Facturation</p>
-        <nav className="flex md:flex-col gap-1 flex-wrap">
-          {links.map((l) => (
-            <Link key={l.href} href={l.href} className="rounded-md px-3 py-2 text-sm hover:bg-[var(--bg)]">
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+      <aside className="md:w-60 md:min-h-screen p-4 no-print border-b md:border-b-0 md:border-r" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+        <div className="flex items-center gap-2 mb-5 no-print">
+          <span className="brand-mark" aria-hidden="true">F</span>
+          <p className="text-lg font-semibold">Facturation</p>
+        </div>
+        <NavLinks links={links.map(({ href, label }) => ({ href, label }))} />
         <div className="mt-6 text-sm space-y-2">
           <p className="font-medium">{user.name}</p>
           <p style={{ color: "var(--muted)" }}>{ROLE_LABELS[user.role]}</p>

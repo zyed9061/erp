@@ -10,7 +10,7 @@ import { Flash } from "@/components/ui";
 import { cancelDeliveryAction, deleteDeliveryAction, saveDeliveryAction, validateDeliveryAction } from "../actions";
 import { DeliveryEditor } from "../delivery-editor";
 import { loadDeliveryEditorData } from "../editor-data";
-import { DELIVERY_LABELS } from "../labels";
+import { DeliveryBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +35,7 @@ export default async function DeliveryNotePage({
   const header = (
     <div className="flex items-center gap-3 flex-wrap">
       <h1 className="text-2xl font-semibold">Bon de livraison {n.number ?? "(brouillon)"}</h1>
-      <span className="text-xs rounded-full px-2 py-0.5 border" style={{ borderColor: "var(--border)" }}>{DELIVERY_LABELS[n.status]}</span>
+      <DeliveryBadge status={n.status} />
     </div>
   );
   const pdfLink = (

@@ -150,7 +150,7 @@ describe("données de démonstration et parcours complet", () => {
 
   it("produit des documents cohérents : factures validées, avoir rattaché, brouillon, aucune erreur d'export", async () => {
     const all = await db.select().from(invoices);
-    expect(all.filter((i) => i.status === "validated" && i.kind === "invoice")).toHaveLength(3);
+    expect(all.filter((i) => i.status === "validated" && i.kind === "invoice")).toHaveLength(8);
     expect(all.filter((i) => i.kind === "credit_note")).toHaveLength(1);
     expect(all.filter((i) => i.status === "draft")).toHaveLength(1);
     for (const i of all.filter((x) => x.status === "validated")) {

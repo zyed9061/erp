@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { can } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
+import { TabLinks } from "@/components/tab-links";
 
 const TABS = [
-  { href: "/parametres", label: "Société" },
+  { href: "/parametres", label: "Société", root: true },
   { href: "/parametres/taxes", label: "Taxes" },
   { href: "/parametres/conditions", label: "Conditions de paiement" },
   { href: "/parametres/numerotation", label: "Numérotation" },
@@ -17,13 +17,7 @@ export default async function SettingsLayout({ children }: { children: React.Rea
   return (
     <div className="space-y-4 max-w-5xl">
       <h1 className="text-2xl font-semibold">Paramètres</h1>
-      <nav className="flex gap-1 flex-wrap border-b" style={{ borderColor: "var(--border)" }}>
-        {TABS.filter((t) => !("admin" in t) || isAdmin).map((t) => (
-          <Link key={t.href} href={t.href} className="px-3 py-2 text-sm rounded-t-md hover:bg-[var(--surface)]">
-            {t.label}
-          </Link>
-        ))}
-      </nav>
+      <TabLinks label="Paramètres" tabs={TABS.filter((t) => !("admin" in t) || isAdmin).map(({ href, label, root }) => ({ href, label, root }))} />
       {children}
     </div>
   );

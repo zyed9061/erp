@@ -7,11 +7,14 @@ export default function LoginPage() {
   const [state, action, pending] = useActionState<LoginState, FormData>(loginAction, {});
 
   return (
-    <main className="min-h-screen grid place-items-center px-4">
-      <form action={action} className="card w-full max-w-sm p-6 space-y-4">
-        <div>
-          <h1 className="text-xl font-semibold">Facturation</h1>
-          <p className="text-sm" style={{ color: "var(--muted)" }}>Connectez-vous pour continuer.</p>
+    <main className="grid place-items-center px-4 pt-16 pb-6">
+      <form action={action} className="card w-full max-w-sm p-7 space-y-5">
+        <div className="flex items-center gap-3">
+          <span className="brand-mark" style={{ width: "2.6rem", height: "2.6rem", fontSize: "1.2rem" }} aria-hidden="true">F</span>
+          <div>
+            <h1 className="text-xl font-semibold leading-tight">Facturation</h1>
+            <p className="text-sm" style={{ color: "var(--muted)" }}>Connectez-vous pour continuer.</p>
+          </div>
         </div>
 
         <label className="block space-y-1">
@@ -24,7 +27,7 @@ export default function LoginPage() {
         </label>
 
         {state.error && (
-          <p role="alert" className="text-sm" style={{ color: "var(--danger)" }}>{state.error}</p>
+          <p role="alert" className="text-sm rounded-md px-3 py-2" style={{ color: "var(--danger)", background: "var(--bad-bg)" }}>{state.error}</p>
         )}
 
         <button className="btn w-full" disabled={pending}>

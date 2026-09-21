@@ -4,9 +4,10 @@ import { db } from "@/db";
 import { can } from "@/lib/auth/permissions";
 import { requirePermission } from "@/lib/auth/session";
 import { listInvoices } from "@/lib/invoicing/invoices";
-import { PAYMENT_STATUS_LABELS, paymentStateOf } from "@/lib/invoicing/payments";
+import { paymentStateOf } from "@/lib/invoicing/payments";
 import { formatTnd } from "@/lib/money";
 import { Flash, PageHeader, Pagination } from "@/components/ui";
+import { InvoiceStatusBadge, PaymentBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -76,7 +77,7 @@ export default async function InvoicesPage({
                 : null;
               return (
               <tr key={i.id} className="border-t" style={{ borderColor: "var(--border)" }}>
-                <td className="p-3 font-mono">
+                <td className="p-3 font-mono whitespace-nowrap">
                   <Link className="underline" href={`/factures/${i.id}`}>{i.number ?? "Brouillon"}</Link>
                 </td>
                 <td className="p-3">{KIND_LABELS[i.kind]}</td>
@@ -85,10 +86,9 @@ export default async function InvoicesPage({
                 <td className="p-3 whitespace-nowrap">{i.dueDate ? dateFmt.format(new Date(`${i.dueDate}T00:00:00Z`)) : "—"}</td>
                 <td className="p-3 text-right whitespace-nowrap">{formatTnd(i.totalTtc)}</td>
                 <td className="p-3 text-right whitespace-nowrap">{formatTnd(i.netToPay)}</td>
-                <td className="p-3">{STATUS_LABELS[i.status]}</td>
+                <td className="p-3"><InvoiceStatusBadge status={i.status} kind={i.kind} /></td>
                 <td className="p-3 whitespace-nowrap">
-                  {pay ? PAYMENT_STATUS_LABELS[pay.status] : "—"}
-                  {pay?.overdue && <span className="ml-1 text-xs" style={{ color: "var(--danger)" }}>retard</span>}
+                  {pay ? <PaymentBadge status={pay.status} overdue={pay.overdue} /> : "—"}
                 </td>
               </tr>
               );

@@ -40,7 +40,7 @@ export function RevenueChart({ data }: { data: Point[] }) {
 
   return (
     <figure className="space-y-2">
-      <div className="relative">
+      <div className="relative overflow-x-auto"><div className="relative min-w-[520px]">
         <svg
           viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img"
           aria-label="Chiffre d'affaires hors taxes par mois sur les 12 derniers mois"
@@ -90,7 +90,7 @@ export function RevenueChart({ data }: { data: Point[] }) {
             <strong className="tabular-nums">{fmt.format(values[tip.i]!)} DT</strong>
           </div>
         )}
-      </div>
+      </div></div>
       <figcaption className="text-xs" style={{ color: "var(--muted)" }}>Chiffre d&apos;affaires HT facturé par mois, en dinars (avoirs déduits).</figcaption>
       <details className="text-sm">
         <summary className="cursor-pointer" style={{ color: "var(--muted)" }}>Voir le tableau</summary>

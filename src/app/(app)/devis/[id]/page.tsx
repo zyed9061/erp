@@ -15,7 +15,7 @@ import {
   createDepositAction, createFinalInvoiceAction, decideQuoteAction, deleteQuoteAction, saveQuoteAction,
   sendQuoteAction, sendQuoteEmailAction,
 } from "../actions";
-import { QUOTE_LABELS } from "../labels";
+import { QuoteBadge } from "@/components/status-badges";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +43,7 @@ export default async function QuotePage({
   const header = (
     <div className="flex items-center gap-3 flex-wrap">
       <h1 className="text-2xl font-semibold">Devis {q.number ?? "(brouillon)"}</h1>
-      <span className="text-xs rounded-full px-2 py-0.5 border" style={{ borderColor: "var(--border)" }}>{QUOTE_LABELS[q.status]}</span>
+      <QuoteBadge status={q.status} />
       {expired && <span className="text-xs" style={{ color: "var(--danger)" }}>expiré le {fmtDate(q.validUntil)}</span>}
     </div>
   );
