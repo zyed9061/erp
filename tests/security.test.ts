@@ -89,6 +89,12 @@ describe("diagnostic de configuration", () => {
     expect(byId(checkEnvironment(env({ ...good, CRON_SECRET: "court" })), "cron").status).toBe("warn");
   });
 
+  it("signale le mode démonstration, avec un avertissement en production", () => {
+    expect(byId(checkEnvironment(env({ DEMO_MODE: "true", NODE_ENV: "development" })), "demo")).toMatchObject({ status: "info" });
+    expect(byId(checkEnvironment(env({ DEMO_MODE: "true", NODE_ENV: "production" })), "demo")).toMatchObject({ status: "warn" });
+    expect(byId(checkEnvironment(env({})), "demo").detail).toContain("Inactif");
+  });
+
   it("reconnaît les mots de passe publics ou trop courts", () => {
     expect(["ChangeMe-12345", "Password-12345", "admin", "court"].every(isWeakAdminPassword)).toBe(true);
     expect(isWeakAdminPassword("un-bon-mot-de-passe-long")).toBe(false);

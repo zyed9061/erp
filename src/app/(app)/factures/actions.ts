@@ -6,7 +6,9 @@ import { getClientIp, requirePermission } from "@/lib/auth/session";
 import { flash, messageOf, str } from "@/lib/action-utils";
 import { ServiceError } from "@/lib/errors";
 import { prepareEinvoice } from "@/lib/einvoice/service";
+import { submitToTtn } from "@/lib/einvoice/submission";
 import { sendInvoiceEmail } from "@/lib/mail/documents";
+import { isSimulatedMail } from "@/lib/mail/transport";
 import {
   createCreditNoteDraft, createDraftInvoice, deleteDraft, updateDraftInvoice, validateDocument,
   type InvoiceInput,
@@ -89,7 +91,7 @@ export async function sendInvoiceEmailAction(formData: FormData) {
       to: str(formData.get("to")) || undefined,
       message: str(formData.get("message")),
     });
-    flash(`/factures/${id}`, "ok", `E-mail envoyé à ${log.toEmail}`);
+    flash(`/factures/${id}`, "ok", isSimulatedMail() ? `Mode TEST : e-mail à ${log.toEmail} simulé (rien n'est parti, SMTP non configuré)` : `E-mail envoyé à ${log.toEmail}`);
   } catch (e) {
     flash(`/factures/${id}`, "error", messageOf(e));
   }
@@ -102,6 +104,20 @@ export async function prepareEinvoiceAction(formData: FormData) {
   try {
     const { created } = await prepareEinvoice(db, actor, id);
     flash(`/factures/${id}`, "ok", created ? "Fichier TEIF préparé (non signé, non transmis)" : "Fichier TEIF déjà préparé");
+  } catch (e) {
+    flash(`/factures/${id}`, "error", messageOf(e));
+  }
+}
+
+/** DÉMONSTRATION : signe (simulé) et envoie à la TTN simulée. Sans effet légal. */
+export async function submitTtnAction(formData: FormData) {
+  const actor = await actorOf("invoices:validate");
+  const id = uuid.parse(formData.get("id"));
+  try {
+    const { submission, created } = await submitToTtn(db, actor, id);
+    const msg = !created ? "Déjà accepté par la TTN simulée"
+      : submission.status === "accepted" ? `Accepté par la TTN SIMULÉE (référence ${submission.ttnReference})` : submission.message ?? "Rejeté par la TTN simulée";
+    flash(`/factures/${id}`, submission.status === "accepted" ? "ok" : "error", msg);
   } catch (e) {
     flash(`/factures/${id}`, "error", messageOf(e));
   }

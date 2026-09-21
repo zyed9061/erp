@@ -41,3 +41,15 @@ Avant toute préparation, l'application vérifie (`src/lib/einvoice/validate.ts`
 l'émission, pays (2 lettres), matricules fiscaux, adresses, devise TND, lignes (description, unité, quantité, remise),
 montants à 3 décimales, **recalcul complet** des lignes, du récapitulatif de taxes et des totaux par le moteur de facturation,
 identité du net à payer (TTC + timbre − retenues), retenue sans taux, avoir sans facture d'origine.
+
+## Simulations de démonstration (à remplacer, pas à supprimer)
+
+| Simulation | Fichier | Remplaçant réel |
+|---|---|---|
+| Signature (`MockSigner`) | `src/lib/einvoice/signature.ts` | un `Signer` XAdES avec le certificat (interface `Signer`, `getSigner`) |
+| Client TTN (`MockTtnClient`) | `src/lib/einvoice/ttn.ts` | un `TtnClient` réel (interface `TtnClient`, `getTtnClient`) |
+| QR code de démonstration | `src/lib/einvoice/qr.ts` + `src/lib/pdf/render.ts` | le cachet visible officiel |
+| Données fictives | `src/lib/demo/` | — (jamais en production) |
+
+Le reste du circuit (préparation, historique en ajout seul, PDF, interface, tests) est déjà écrit pour fonctionner avec les
+vrais composants : il suffira d'ajouter les implémentations réelles derrière ces interfaces.

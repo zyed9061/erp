@@ -21,3 +21,5 @@ jobs:
       - run: npm run build
       # Parcours complets contre un vrai serveur, avec une base embarquée neuve (aucun secret requis)
       - run: npm run e2e
+      # Parcours de démonstration (données fictives, TTN / signature / QR simulés)
+      - run: npm run e2e:demo

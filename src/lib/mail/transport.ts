@@ -93,3 +93,6 @@ let cached: MailTransport | undefined;
 export function getMailTransport(): MailTransport {
   return (cached ??= createTransportFromEnv());
 }
+
+/** Vrai quand aucun e-mail réel ne part (SMTP non configuré) : l'interface doit alors le dire au lieu d'annoncer un envoi. */
+export const isSimulatedMail = (env: NodeJS.ProcessEnv = process.env): boolean => !env.SMTP_HOST?.trim();

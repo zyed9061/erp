@@ -50,7 +50,7 @@ check("PDF : non connecté -> redirigé", (await fetch(BASE + `${invPath}/pdf`, 
 g = await admin.get(invPath);
 check("panneau PDF et envoi, destinataire par défaut", g.html.includes("PDF et envoi par e-mail") && g.html.includes("Par défaut : karim@alpha.tn"));
 r = await admin.submit(invPath, "message", { id: id(invPath), to: "", message: "Merci de votre confiance" });
-check("e-mail envoyé au destinataire par défaut", dec(r.location).includes("E-mail envoyé à karim@alpha.tn"), r.location ?? "");
+check("e-mail (simulé en mode test) au destinataire par défaut", /e-mail (envoyé )?à karim@alpha\.tn/i.test(dec(r.location)), r.location ?? "");
 g = await admin.get(invPath);
 check("historique : envoi journalisé", g.html.includes("Envoi à karim@alpha.tn") && g.html.includes("envoyé"));
 r = await admin.submit(invPath, "message", { id: id(invPath), to: "", message: "" });
@@ -58,7 +58,7 @@ check("second envoi immédiat refusé", dec(r.location).includes("vient d'être 
 r = await admin.submit(invPath, "message", { id: id(invPath), to: "pas-un-mail", message: "" });
 check("adresse invalide refusée", dec(r.location).includes("Adresse e-mail invalide"), r.location ?? "");
 r = await admin.submit(invPath, "message", { id: id(invPath), to: "autre@alpha.tn", message: "" });
-check("autre destinataire accepté", dec(r.location).includes("E-mail envoyé à autre@alpha.tn"), r.location ?? "");
+check("autre destinataire accepté", /e-mail (envoyé )?à autre@alpha\.tn/i.test(dec(r.location)), r.location ?? "");
 
 g = await admin.get(draftPath);
 check("brouillon : aperçu PDF, pas d'envoi possible", g.html.includes("Aperçu PDF (brouillon)") && !g.html.includes("Envoyer par e-mail avec le PDF"));
@@ -74,7 +74,7 @@ check("devis numéroté", !!quoteNumber, r.location ?? "");
 pdf = await raw(admin, `${quotePath}/pdf`);
 check("PDF du devis nommé d'après son numéro", pdf.disp === `inline; filename="${quoteNumber}.pdf"`, pdf.disp ?? "");
 r = await admin.submit(quotePath, "message", { id: id(quotePath), to: "", message: "" });
-check("devis envoyé par e-mail", dec(r.location).includes("E-mail envoyé à karim@alpha.tn"), r.location ?? "");
+check("devis envoyé par e-mail", /e-mail (envoyé )?à karim@alpha\.tn/i.test(dec(r.location)), r.location ?? "");
 
 // --- Relances -----------------------------------------------------------------------------------------------
 g = await admin.get("/relances");

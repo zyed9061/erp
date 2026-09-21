@@ -30,6 +30,33 @@ appliquées par le code mais non garanties).
 | Sauvegardes de la base | conservation légale 10 ans | avant l'usage réel |
 | Informations de la société (Paramètres) | matricule fiscal, adresse : **figés dans chaque facture à sa validation** | avant la 1re facture |
 
+## Mode démonstration (projet d'exercice)
+
+`DEMO_MODE=true` (activé automatiquement par `npm run dev:local`) fait fonctionner le circuit complet **sans aucun document
+officiel** : tout ce qui vient de TTN est **simulé et clairement étiqueté**, rien n'a de valeur légale ou fiscale.
+
+| Élément | En démonstration | Réel (plus tard) |
+|---|---|---|
+| Données | société, clients, produits, factures **fictifs** (`npm run db:seed:demo`), comptes publics affichés sur la page de connexion | vos données |
+| TTN | **client simulé** (`src/lib/einvoice/ttn.ts`) : accepte un fichier correctement signé avec une référence `MOCK-TTN-…`, rejette le client dont le nom contient `REJET-DEMO` | À FOURNIR PAR TTN |
+| Signature | **signature simulée** (`<DemoSignature mode="SIMULATION" official="false">`, empreinte + clé publique de démonstration) ; détecte toute modification du fichier ; **ce n'est pas une signature XAdES** | certificat À FOURNIR |
+| QR code | **QR de démonstration** sur le PDF d'une facture « acceptée », légendé « sans valeur officielle » | format du cachet À FOURNIR PAR TTN |
+| E-mail | mode TEST : l'interface annonce « e-mail simulé, rien n'est parti » ; le résumé est dans la console | SMTP réel |
+| Bandeau | « MODE DÉMONSTRATION » sur toutes les pages | — |
+
+Le circuit : facture validée → préparation du TEIF → signature simulée → envoi à la TTN simulée → référence + QR sur le PDF
+(bouton « Préparer, signer et envoyer (SIMULATION) » sur la fiche facture). Chaque tentative est conservée en ajout seul
+(`einvoice_submissions`) et consignée dans l'historique de la facture. Hors démonstration, l'envoi et la signature sont
+**refusés** avec le message « À FOURNIR PAR TTN » : aucune simulation n'est active par erreur.
+
+```bash
+npm run dev:local     # démarre tout, données de démonstration comprises (DEMO_MODE=false pour une base vide)
+npm run e2e:demo      # après npm run build : parcours complet de démonstration contre un vrai serveur
+```
+
+Comptes : `admin@demo.test` / `Demo-Admin-2026` (autres rôles sur la page de connexion). **Ne jamais utiliser ce mode avec de
+vraies données** (le diagnostic de configuration l'avertit en production).
+
 ## Démarrer
 
 ### Le plus simple : sans Docker (essais et développement)
@@ -71,11 +98,11 @@ npm run dev
 ## Lancer les tests
 
 ```bash
-npm test            # ~300 tests (PostgreSQL en mémoire : aucun Docker, aucune configuration)
+npm test            # ~330 tests (PostgreSQL en mémoire : aucun Docker, aucune configuration)
 npm run typecheck   # vérification TypeScript
 npm run lint        # analyse du code
 npm run build       # compilation de production
-npm run e2e         # après le build : 8 parcours complets contre un vrai serveur (formulaires réels, rôles, exports, sécurité)
+npm run e2e         # après le build : 8 parcours complets (+ npm run e2e:demo pour la démonstration) contre un vrai serveur (formulaires réels, rôles, exports, sécurité)
 ```
 
 Ces cinq contrôles tournent aussi automatiquement sur GitHub à chaque envoi de code (`.github/workflows/ci.yml`).

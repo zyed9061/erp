@@ -57,6 +57,7 @@ const ACTION_LABELS: Record<string, string> = {
   "deposit_invoice.delete": "Brouillon d'acompte supprimé", "deposit_invoice.validate": "Facture d'acompte validée et numérotée",
   "email.sent": "Envoyée par e-mail", "email.failed": "Échec d'envoi par e-mail",
   "einvoice.prepare": "Fichier TEIF préparé (non signé, non transmis)",
+  "einvoice.submit": "Envoi à la TTN (SIMULATION) : signé et envoyé",
 };
 
 /** Libellé lisible d'une action d'audit ; le code brut est conservé pour les actions inconnues. */

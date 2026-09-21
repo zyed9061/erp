@@ -1,5 +1,8 @@
 # Ce que vous devez fournir (liste précise)
 
+> **Projet d'exercice / démonstration : rien de ce qui suit n'est nécessaire.** Le mode démonstration (`DEMO_MODE=true`, voir le README)
+> simule TTN, la signature, le QR code et l'e-mail avec des données fictives. Cette liste ne concerne qu'un usage réel futur.
+
 Rien de ce qui suit ne peut être deviné par le logiciel. Pour chaque élément : **à quoi il sert**, **où l'obtenir**, **dans quel
 format**, **comment me le donner**, et **ce que je fais ensuite**. Vous n'avez aucun code à modifier.
 

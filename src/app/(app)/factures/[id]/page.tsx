@@ -14,13 +14,15 @@ import {
 import { addCertificateAction, recordPaymentAction } from "../../paiements/actions";
 import { SendPanel } from "@/components/send-panel";
 import { actionLabel, entityHistory } from "@/lib/audit";
+import { isDemoMode } from "@/lib/demo/mode";
 import { getEinvoiceStatus } from "@/lib/einvoice/service";
+import { listSubmissions } from "@/lib/einvoice/submission";
 import { defaultRecipient, emailHistory } from "@/lib/mail/documents";
 import { METHOD_LABELS } from "../../paiements/labels";
 import { formatAmount, formatPercent, formatTnd } from "@/lib/money";
 import { Field, Flash } from "@/components/ui";
 import {
-  createCreditNoteAction, deleteDraftAction, prepareEinvoiceAction, saveInvoiceAction, sendInvoiceEmailAction, validateInvoiceAction,
+  createCreditNoteAction, deleteDraftAction, prepareEinvoiceAction, saveInvoiceAction, submitTtnAction, sendInvoiceEmailAction, validateInvoiceAction,
 } from "../actions";
 import { loadEditorData } from "../editor-data";
 import { InvoiceEditor } from "../invoice-editor";
@@ -152,6 +154,9 @@ export default async function InvoicePage({
   const mails = await emailHistory(db, { invoiceId: inv.id });
   const teif = await getEinvoiceStatus(db, inv.id);
   const canPrepareTeif = can(user.role, "invoices:validate");
+  const demo = isDemoMode();
+  const submissions = demo && teif.readiness ? await listSubmissions(db, inv.id) : [];
+  const accepted = submissions.find((x) => x.status === "accepted") ?? null;
   const history = can(user.role, "audit:read") ? await entityHistory(db, "invoice", inv.id) : null;
 
   return (
@@ -227,6 +232,42 @@ export default async function InvoicePage({
               </span>
             )}
           </div>
+        </section>
+      )}
+
+      {demo && teif.readiness && (
+        <section className="card p-4 space-y-3" style={{ borderColor: "var(--danger)" }}>
+          <h2 className="font-medium">Envoi à la TTN — SIMULATION (démonstration)</h2>
+          <p className="text-sm" style={{ color: "var(--muted)" }}>
+            La signature, la TTN et le QR code sont simulés : rien n&apos;est transmis, rien n&apos;a de valeur légale. Le circuit :
+            préparer le fichier, le signer (signature de démonstration), l&apos;envoyer à la TTN simulée, recevoir une référence.
+          </p>
+          {accepted ? (
+            <div className="space-y-1 text-sm">
+              <p><strong>Accepté par la TTN simulée</strong> · référence <span className="font-mono">{accepted.ttnReference}</span></p>
+              <p style={{ color: "var(--muted)" }}>Le PDF de la facture porte maintenant un QR code de démonstration.</p>
+              <p><a className="underline" href={`/factures/${inv.id}/teif?signed=1`}>Télécharger le XML signé (démonstration)</a></p>
+            </div>
+          ) : canPrepareTeif && teif.readiness.errors.length === 0 ? (
+            <form action={submitTtnAction}>
+              <input type="hidden" name="id" value={inv.id} />
+              <button className="btn btn-ghost">Préparer, signer et envoyer (SIMULATION)</button>
+            </form>
+          ) : (
+            <p className="text-sm" style={{ color: "var(--muted)" }}>
+              {teif.readiness.errors.length > 0 ? "Corrigez d'abord les points de la carte TEIF ci-dessus." : "Seuls l'administrateur et le comptable peuvent envoyer."}
+            </p>
+          )}
+          {submissions.length > 0 && (
+            <ul className="text-sm space-y-1 border-t pt-2" style={{ borderColor: "var(--border)" }}>
+              {submissions.map((x) => (
+                <li key={x.id}>
+                  {new Intl.DateTimeFormat("fr-TN", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Tunis" }).format(x.createdAt)}
+                  {" "}· {x.status === "accepted" ? "Accepté" : "Rejeté"} · {x.message}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       )}
 

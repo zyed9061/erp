@@ -4,6 +4,7 @@ import { users } from "@/db/schema";
 import { verifyPassword } from "./auth/password";
 import { getCompany } from "./company";
 import { pendingLabels } from "./einvoice/teif-codes";
+import { isDemoMode } from "./demo/mode";
 import { smtpConfigFromEnv } from "./mail/transport";
 
 /**
@@ -41,6 +42,13 @@ export function checkEnvironment(env: NodeJS.ProcessEnv = process.env): ConfigCh
   } else {
     out.push({ id: "cookie", label: "Cookie de session", status: "ok", detail: production ? "Cookie « Secure » actif (HTTPS requis)." : "Le cookie sera « Secure » en production." });
   }
+
+  out.push(isDemoMode(env)
+    ? { id: "demo", label: "Mode démonstration", status: production ? "warn" : "info",
+        detail: "Actif : TTN, signature électronique et QR code sont SIMULÉS, les données sont fictives, aucune valeur légale.",
+        fix: production ? "Ne jamais utiliser ce mode avec de vraies données : retirer DEMO_MODE." : undefined }
+    : { id: "demo", label: "Mode démonstration", status: "info",
+        detail: "Inactif : l'envoi à TTN et la signature sont indisponibles tant que les éléments officiels ne sont pas fournis (docs/a-fournir.md)." });
 
   const secret = env.CRON_SECRET ?? "";
   if (!secret) {

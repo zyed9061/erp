@@ -1,5 +1,7 @@
 import type { Db } from "@/db/types";
 import { getCompany } from "../company";
+import { DEMO_QR_CAPTION, demoQrPayload } from "../einvoice/qr";
+import { latestSubmission } from "../einvoice/submission";
 import { getInvoice } from "../invoicing/invoices";
 import { getQuote } from "../invoicing/quotes";
 import { formatPercent } from "../money";
@@ -71,7 +73,16 @@ export async function loadInvoicePdf(db: Db, id: string): Promise<{ data: PdfDat
     wordsIntro: KIND_WORDS[inv.kind],
     notes: inv.notes,
     fingerprint: inv.contentHash ? inv.contentHash.slice(0, 12) : null,
+    demoQr: null,
   };
+  // QR code de démonstration : seulement si la TTN simulée a accepté la facture.
+  const sub = validated ? await latestSubmission(db, inv.id) : null;
+  if (sub?.status === "accepted" && sub.ttnReference && inv.number) {
+    data.demoQr = {
+      payload: demoQrPayload({ number: inv.number, xmlSha256: sub.signedXmlSha256, reference: sub.ttnReference }),
+      caption: DEMO_QR_CAPTION, reference: sub.ttnReference,
+    };
+  }
   return { data, filename: safeFilename(inv.number ?? `brouillon-${inv.id.slice(0, 8)}`) };
 }
 

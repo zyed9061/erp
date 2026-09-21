@@ -1071,6 +1071,36 @@ export const einvoiceExports = pgTable(
 
 export type EinvoiceExport = typeof einvoiceExports.$inferSelect;
 
+/**
+ * Tentatives de transmission à TTN. En DÉMONSTRATION : signature et réponse SIMULÉES (mode « mock »), sans valeur légale.
+ * En ajout seul (trigger, migration 0016) : chaque tentative est conservée, la plus récente donne l'état courant.
+ */
+export const einvoiceSubmissions = pgTable(
+  "einvoice_submissions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    invoiceId: uuid("invoice_id").notNull().references(() => invoices.id, { onDelete: "restrict" }),
+    exportId: uuid("export_id").notNull().references(() => einvoiceExports.id, { onDelete: "restrict" }),
+    mode: text("mode").notNull(),
+    status: text("status").notNull(),
+    ttnReference: text("ttn_reference"),
+    signatureAlgorithm: text("signature_algorithm").notNull(),
+    signedXml: text("signed_xml").notNull(),
+    signedXmlSha256: text("signed_xml_sha256").notNull(),
+    message: text("message"),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("einvoice_submissions_invoice_idx").on(t.invoiceId, t.createdAt),
+    check("einvoice_submissions_status", sql`${t.status} IN ('accepted', 'rejected')`),
+    check("einvoice_submissions_mode", sql`${t.mode} IN ('mock')`),
+    check("einvoice_submissions_accepted_ref", sql`${t.status} <> 'accepted' OR ${t.ttnReference} IS NOT NULL`),
+  ],
+);
+
+export type EinvoiceSubmission = typeof einvoiceSubmissions.$inferSelect;
+
 export type EmailLogEntry = typeof emailLog.$inferSelect;
 export type ReminderRule = typeof reminderRules.$inferSelect;
 export type Reminder = typeof reminders.$inferSelect;

@@ -6,6 +6,7 @@ import { getClientIp, requirePermission } from "@/lib/auth/session";
 import { flash, messageOf, str } from "@/lib/action-utils";
 import { ServiceError } from "@/lib/errors";
 import { sendQuoteEmail } from "@/lib/mail/documents";
+import { isSimulatedMail } from "@/lib/mail/transport";
 import {
   createDepositInvoiceDraft, createDraftQuote, createInvoiceFromQuote, decideQuote, deleteDraftQuote,
   sendQuote, updateDraftQuote, type QuoteInput,
@@ -114,7 +115,7 @@ export async function sendQuoteEmailAction(formData: FormData) {
       to: str(formData.get("to")) || undefined,
       message: str(formData.get("message")),
     });
-    flash(`/devis/${id}`, "ok", `E-mail envoyé à ${log.toEmail}`);
+    flash(`/devis/${id}`, "ok", isSimulatedMail() ? `Mode TEST : e-mail à ${log.toEmail} simulé (rien n'est parti, SMTP non configuré)` : `E-mail envoyé à ${log.toEmail}`);
   } catch (e) {
     flash(`/devis/${id}`, "error", messageOf(e));
   }

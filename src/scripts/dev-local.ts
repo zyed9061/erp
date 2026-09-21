@@ -21,17 +21,24 @@ async function main() {
     ...process.env,
     DATABASE_URL: `postgres://postgres:postgres@127.0.0.1:${PORT}/postgres?sslmode=disable`,
     DATABASE_POOL_MAX: "1", // la base embarquée n'accepte qu'une connexion à la fois
+    // Démonstration par défaut (données fictives, TTN/signature/QR simulés) ; DEMO_MODE=false pour une base vide.
+    DEMO_MODE: process.env.DEMO_MODE ?? "true",
     ADMIN_EMAIL: process.env.ADMIN_EMAIL ?? "admin@example.tn",
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD ?? "ChangeMe-12345",
     COOKIE_SECURE: "false",
   };
 
   // Asynchrone obligatoire : la base tourne dans CE processus, un appel bloquant l'empêcherait de répondre.
-  for (const script of ["src/db/migrate.ts", "src/db/seed.ts"]) {
+  const demo = env.DEMO_MODE === "true";
+  for (const script of ["src/db/migrate.ts", demo ? "src/scripts/seed-demo.ts" : "src/db/seed.ts"]) {
     const code = await new Promise<number | null>((resolve) => spawn("npx", ["tsx", script], { env, stdio: "inherit", shell: true }).on("exit", resolve));
     if (code !== 0) throw new Error(`${script} a échoué`);
   }
-  console.log(`\nBase locale prête (${DATA_DIR}). Connexion : ${env.ADMIN_EMAIL} / ${env.ADMIN_PASSWORD}\n`);
+  console.log(
+    demo
+      ? `DÉMONSTRATION prête (${DATA_DIR}) : données fictives, TTN / signature / QR code simulés. Comptes ci-dessus et sur la page de connexion.`
+      : `Base locale prête (${DATA_DIR}). Connexion : ${env.ADMIN_EMAIL} / ${env.ADMIN_PASSWORD}`,
+  );
 
   const next = spawn("npx", ["next", "dev"], { env, stdio: "inherit", shell: true });
   const stop = async () => {

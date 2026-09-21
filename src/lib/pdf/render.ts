@@ -1,3 +1,4 @@
+import { qrMatrix } from "../einvoice/qr";
 import { PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import { formatAmount, formatPercent } from "../money";
 import { amountInWords } from "./words";
@@ -38,6 +39,8 @@ export type PdfData = {
   notes: string | null;
   /** Empreinte du document validé (affichée en pied de page). */
   fingerprint: string | null;
+  /** QR code de DÉMONSTRATION (facture « envoyée » à la TTN simulée) : jamais un vrai cachet visible. */
+  demoQr?: { payload: string; caption: string; reference: string } | null;
 };
 
 const A4 = { w: 595.28, h: 841.89 };
@@ -248,6 +251,26 @@ export async function renderDocumentPdf(data: PdfData): Promise<Uint8Array> {
     ensure(30);
     text("Coordonnées bancaires", M, 8, bold, MUTED); y -= 12;
     text([c.bankName, c.rib ? `RIB : ${c.rib}` : null].filter(Boolean).join(" — "), M, 8.5, font, MUTED);
+  }
+
+  // ---- QR code de démonstration (TTN simulée) ------------------------------------------------------
+  if (data.demoQr) {
+    const matrix = qrMatrix(data.demoQr.payload);
+    const cell = 2.4;
+    const quiet = 2;
+    const side = (matrix.length + 2 * quiet) * cell;
+    ensure(side + 24);
+    y -= 14;
+    const boxTop = y;
+    page.drawRectangle({ x: M, y: boxTop - side, width: side, height: side, color: rgb(1, 1, 1), borderColor: LINE, borderWidth: 0.6 });
+    matrix.forEach((row, r) => row.forEach((dark, col) => {
+      if (dark) page.drawRectangle({ x: M + (col + quiet) * cell, y: boxTop - (r + quiet + 1) * cell, width: cell, height: cell, color: INK });
+    }));
+    const tx = M + side + 12;
+    page.drawText(clean(data.demoQr.caption), { x: tx, y: boxTop - 14, size: 9, font: bold, color: rgb(0.85, 0.15, 0.15) });
+    page.drawText(clean(`Référence simulée : ${data.demoQr.reference}`), { x: tx, y: boxTop - 28, size: 8.5, font, color: MUTED });
+    page.drawText(clean("Transmission à TTN simulée : aucune valeur légale ou fiscale."), { x: tx, y: boxTop - 41, size: 8, font, color: MUTED });
+    y = boxTop - side - 6;
   }
 
   // ---- Pieds de page, numéros de page et filigrane (sur toutes les pages) -----------------------

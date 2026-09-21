@@ -10,10 +10,11 @@ if (!existsSync(".next/BUILD_ID")) {
   process.exit(1);
 }
 
+const demo = process.argv.includes("--demo");
 const env = {
   ...process.env,
   DATABASE_URL: "postgres://postgres:postgres@127.0.0.1:5544/postgres?sslmode=disable",
-  DATABASE_POOL_MAX: "1", ADMIN_EMAIL: "admin@example.tn", ADMIN_PASSWORD: "ChangeMe-12345", COOKIE_SECURE: "false", CRON_SECRET: "secret-e2e",
+  DATABASE_POOL_MAX: "1", ADMIN_EMAIL: "admin@example.tn", ADMIN_PASSWORD: "ChangeMe-12345", COOKIE_SECURE: "false", CRON_SECRET: "secret-e2e", ...(demo ? { DEMO_MODE: "true" } : {}),
 };
 const run = (cmd, args) => new Promise((resolve) => spawn(cmd, args, { env, stdio: "inherit", shell: true }).on("exit", resolve));
 
@@ -23,12 +24,13 @@ await dbServer.start();
 let app;
 let failed = 0;
 try {
-  if ((await run("npx", ["tsx", "src/db/migrate.ts"])) !== 0 || (await run("npx", ["tsx", "src/db/seed.ts"])) !== 0) throw new Error("Préparation de la base impossible");
+  if ((await run("npx", ["tsx", "src/db/migrate.ts"])) !== 0 || (await run("npx", ["tsx", demo ? "src/scripts/seed-demo.ts" : "src/db/seed.ts"])) !== 0) throw new Error("Préparation de la base impossible");
   app = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", "3100"], { env, stdio: "ignore" });
   await new Promise((r) => setTimeout(r, 9000));
-  for (const file of readdirSync("e2e").filter((f) => /^\d\d-.*\.mjs$/.test(f)).sort()) {
-    console.log(`\n=== ${file} ===`);
-    if ((await run("node", [`e2e/${file}`])) !== 0) { failed++; break; } // les scénarios se suivent : inutile de continuer après un échec
+  const dir = demo ? "demo" : "e2e";
+  for (const file of readdirSync(dir).filter((f) => /^\d\d-.*\.mjs$/.test(f)).sort()) {
+    console.log(`\n=== ${dir}/${file} ===`);
+    if ((await run("node", [`${dir}/${file}`])) !== 0) { failed++; break; } // les scénarios se suivent : inutile de continuer après un échec
   }
 } finally {
   app?.kill();
