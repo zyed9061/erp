@@ -6,7 +6,12 @@ const globalForDb = globalThis as unknown as { pool?: Pool };
 
 function createPool() {
   const url = process.env.DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL n'est pas défini");
+  if (!url) {
+    // La compilation (`next build`, y compris en intégration continue) importe ce module sans base : un pool
+    // jamais utilisé suffit, il ne se connecte qu'à la première requête. À l'exécution, l'absence d'URL reste une erreur franche.
+    if (process.env.NEXT_PHASE === "phase-production-build") return new Pool({ connectionString: "postgres://build:build@127.0.0.1:1/build" });
+    throw new Error("DATABASE_URL n'est pas défini");
+  }
   return new Pool({ connectionString: url, max: Number(process.env.DATABASE_POOL_MAX) || 10 });
 }
 
