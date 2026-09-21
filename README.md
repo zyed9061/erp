@@ -3,25 +3,58 @@
 Application de facturation en TypeScript : Next.js (App Router) + Drizzle ORM + PostgreSQL.
 Cahier des charges et recherche : [`docs/recherche-facturation.md`](docs/recherche-facturation.md).
 
-## Démarrage rapide
+## État du projet
 
-### Avec Docker (application + PostgreSQL)
+**Terminé et testé** (8 phases) : société, clients, produits, taxes tunisiennes (TVA, FODEC, timbre, retenue à la source) ;
+devis, acomptes, factures, avoirs (numérotation sans trou, validation irréversible, protégée jusque dans la base) ; paiements
+et certificats de retenue ; PDF et e-mails ; relances ; stock, bons de livraison, chantiers BTP ; factures récurrentes ;
+rapports (CA, balance âgée, TVA, retenues, encaissements) avec export CSV ; tableau de bord ; rôles et journal d'audit ;
+préparation du fichier TEIF avec contrôles internes.
+
+**En attente de TTN** (rien n'a été deviné) : voir [`docs/ttn-a-fournir.md`](docs/ttn-a-fournir.md). Sans le XSD, l'annexe des
+codes et le guide officiels, le fichier TEIF est un *brouillon de préparation* : non validé, non signé, non transmissible.
+
+**En attente d'un comptable** : voir [`docs/points-a-valider-comptable.md`](docs/points-a-valider-comptable.md) (17 règles fiscales
+appliquées par le code mais non garanties).
+
+**En attente de votre configuration** (rien de technique à choisir maintenant) :
+
+| Sujet | Pourquoi | Quand |
+|---|---|---|
+| Fournisseur d'e-mail (SMTP) | sans lui, les e-mails s'affichent seulement dans la console, rien ne part | avant l'usage réel |
+| Mot de passe administrateur (`ADMIN_PASSWORD`) | celui de l'exemple est public | avant l'usage réel |
+| `CRON_SECRET` + planificateur quotidien | relances et factures récurrentes automatiques | avant l'usage réel |
+| Docker ou PostgreSQL installé | base de données de production (l'embarquée sert aux essais) | avant l'usage réel |
+| Sauvegardes de la base | conservation légale 10 ans | avant l'usage réel |
+| Informations de la société (Paramètres) | matricule fiscal, adresse : **figés dans chaque facture à sa validation** | avant la 1re facture |
+
+## Démarrer
+
+### Le plus simple : sans Docker (essais et développement)
+
+```bash
+npm install
+npm run dev:local
+```
+
+Une base PostgreSQL embarquée (stockée dans `.data/`), les migrations et le compte administrateur sont créés automatiquement.
+Ouvrir http://localhost:3000 ; connexion `admin@example.tn` / `ChangeMe-12345` (modifiable par `ADMIN_EMAIL` / `ADMIN_PASSWORD`).
+Aucun e-mail réel n'est envoyé : un résumé apparaît dans la console. **Ne pas utiliser ce mode en production.**
+
+### Avec Docker (application + PostgreSQL) : pour plus tard
+
+Docker n'est nécessaire que pour la mise en production ou pour travailler avec un vrai PostgreSQL. Il exige la virtualisation
+activée sur l'ordinateur (option du BIOS, à ne faire qu'à ce moment-là).
 
 ```bash
 docker compose up --build
-```
-
-L'application est sur http://localhost:3000. Au premier lancement, créer l'administrateur :
-
-```bash
 docker compose exec app npm run db:seed
 ```
 
-(identifiants pris dans `ADMIN_EMAIL` / `ADMIN_PASSWORD`, voir `.env.example`).
-Le cookie de session est `Secure` en production : pour un accès HTTP hors `localhost`,
-définir `COOKIE_SECURE=false` dans l'environnement du service `app`.
+L'application est sur http://localhost:3000 (identifiants : `ADMIN_EMAIL` / `ADMIN_PASSWORD`, voir `.env.example`).
+Le cookie de session est `Secure` en production : pour un accès HTTP hors `localhost`, définir `COOKIE_SECURE=false`.
 
-### En développement (PostgreSQL seul dans Docker)
+### Développement avec un PostgreSQL dans Docker
 
 ```bash
 cp .env.example .env
@@ -32,14 +65,43 @@ npm run db:seed
 npm run dev
 ```
 
+## Lancer les tests
+
+```bash
+npm test            # ~300 tests (PostgreSQL en mémoire : aucun Docker, aucune configuration)
+npm run typecheck   # vérification TypeScript
+npm run lint        # analyse du code
+npm run build       # compilation de production
+npm run e2e         # après le build : 8 parcours complets contre un vrai serveur (formulaires réels, rôles, exports, sécurité)
+```
+
+`npm run e2e` démarre sa propre base embarquée neuve : aucune donnée existante n'est touchée. Les scénarios sont dans `e2e/`.
+
+## E-mail (SMTP)
+
+Configuré par variables d'environnement (`SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM`).
+**Sans `SMTP_HOST`, aucun e-mail réel n'est envoyé** (mode journal). Le fournisseur n'est pas choisi ; l'abstraction est dans
+`src/lib/mail/transport.ts`.
+
+## Sécurité (résumé)
+
+Mots de passe hachés (scrypt), sessions par jeton haché en base, cookie `HttpOnly` + `SameSite=Lax`, verrouillage du compte après
+5 échecs, permissions par rôle vérifiées côté serveur pour chaque action et chaque page, validation de toutes les saisies côté
+serveur, exports CSV protégés contre l'injection de formule, XML et PDF échappés, en-têtes de sécurité (anti-clickjacking,
+`nosniff`, politique de référent), routes automatiques protégées par `CRON_SECRET`. Il n'y a aucun envoi de fichier par les
+utilisateurs. Limites connues : pas de limitation de débit par adresse IP sur la connexion (seulement par compte), pas de
+politique de sécurité de contenu stricte sur les scripts (demande des « nonces »), pas de double authentification.
+
 ## Scripts
 
 | Commande | Rôle |
 |---|---|
-| `npm run dev` | serveur de développement |
+| `npm run dev:local` | démarrage complet sans Docker (base embarquée, essais uniquement) |
+| `npm run dev` | serveur de développement (base indiquée par `DATABASE_URL`) |
 | `npm run build` / `npm start` | build et démarrage en production |
-| `npm run typecheck` | vérification TypeScript |
+| `npm run typecheck` / `npm run lint` | contrôles de qualité |
 | `npm test` | tests (PostgreSQL en mémoire via PGlite, aucun Docker requis) |
+| `npm run e2e` | parcours complets contre un vrai serveur (après `npm run build`) |
 | `npm run db:generate` | génère une migration après modification de `src/db/schema.ts` |
 | `npm run db:migrate` | applique les migrations |
 | `npm run reminders` | envoie les relances dues (à planifier chaque jour) |
@@ -195,28 +257,20 @@ et les rapports ne couvrent pas la déclaration TVA sur les encaissements (base 
 ## Phase 8 : préparation de la facture électronique TEIF (terminée, « préparer seulement »)
 
 Sur une facture ou un avoir **validé**, le bouton « Préparer le fichier TEIF » génère un fichier XML à partir des données
-**figées à la validation** (société, client, lignes, taxes, totaux), le conserve et le rend téléchargeable
-(`/factures/<id>/teif`).
+**figées à la validation**, le conserve et le rend téléchargeable (`/factures/<id>/teif`).
 
-- **Diagnostic avant préparation** : matricule fiscal de la société et du client entreprise, adresses, devise TND, avoir
-  rattaché à sa facture d'origine. Une donnée manquante bloque la préparation, avec le motif affiché.
+- **Contrôles internes** (sans XSD) : identifiants, adresses, dates, devise, recalcul complet des montants, identité du net à
+  payer, cohérence avoir/facture. Une incohérence bloque la préparation, avec le motif affiché.
+- **Architecture prête pour TTN** : les codes vivent dans `src/lib/einvoice/spec.json` (un code sans source est refusé), la
+  validation XSD derrière l'interface `XsdValidator`, le mapping dans `teif.ts`. Voir [`docs/ttn-a-fournir.md`](docs/ttn-a-fournir.md).
 - **Conservation en ajout seul** : table `einvoice_exports` (une ligne par facture et version du générateur), trigger qui
-  interdit UPDATE/DELETE, refuse toute facture non validée et vérifie que l'empreinte de la facture correspond. Le fichier est
-  déterministe (aucune date de génération) et son empreinte SHA-256 est enregistrée. Redemander la préparation ne crée rien.
+  interdit UPDATE/DELETE, refuse toute facture non validée et vérifie l'empreinte de la facture. Fichier déterministe,
+  empreinte SHA-256 enregistrée, opération consignée dans l'historique de la facture.
 - **Données figées** : une facture validée avant que l'adresse de la société ne soit renseignée reste bloquée (avoir + nouvelle
-  facture) ; c'est voulu, le fichier doit refléter exactement le document validé.
+  facture) ; le fichier doit refléter exactement le document validé.
 
-**Ce qui n'est PAS fait, et qui empêche toute transmission en l'état :**
-
-1. La spécification officielle de TTN (XSD, annexe A des codes, guide d'implémentation) n'a pas pu être consultée. La structure
-   (`TEIF > InvoiceHeader / InvoiceBody`, sections Bgm, Dtm, PartnerSection, LinSection, InvoiceMoa, InvoiceTax) provient de
-   sources secondaires. Les codes sont isolés dans `src/lib/einvoice/teif-codes.ts` : ceux qui sont inconnus (FODEC, timbre,
-   types de montants, facture d'acompte, référence à la facture d'origine) valent `A-CONFIRMER` dans le XML, pour qu'il ne
-   puisse pas passer pour valide. **À faire : obtenir le XSD et l'annexe A, corriger `teif-codes.ts`/`teif.ts`, valider.**
-2. Pas de signature électronique (XAdES, certificat qualifié), pas de cachet visible (QR code), pas de moyens ni conditions de
-   paiement, pas d'appel à l'API de TTN, pas de suivi de statut (`einvoice_submissions` n'est pas créé).
-
-Chaque évolution du mapping doit incrémenter `GENERATOR_VERSION` : les fichiers déjà conservés restent intacts.
+**Non fait** : codes et structure officiels (À FOURNIR PAR TTN), validation XSD, signature électronique, QR code, moyens de
+paiement, transmission à TTN, suivi de statut.
 
 ## Landing page
 

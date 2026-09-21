@@ -106,26 +106,31 @@ const Empty = ({ cols }: { cols: number }) => (
   <tr><td className="p-3" colSpan={cols} style={{ color: "var(--muted)" }}>Aucune donnée sur cette période.</td></tr>
 );
 
-async function Revenue({ period }: { period: { from: string; to: string } }) {
-  const r = await revenueReport(db, period);
-  const head = [{ label: "" }, { label: "Documents", right: true }, { label: "Total HT", right: true }, { label: "FODEC", right: true }, { label: "TVA", right: true }, { label: "Total TTC", right: true }];
-  const Row = ({ label, x, bold }: { label: string; x: { count: number; ht: string; fodec: string; tva: string; ttc: string }; bold?: boolean }) => (
+type RevenueValues = { count: number; ht: string; fodec: string; tva: string; ttc: string };
+
+function RevenueRow({ label, x, bold }: { label: string; x: RevenueValues; bold?: boolean }) {
+  return (
     <tr className={`border-t ${bold ? "font-semibold" : ""}`} style={rowStyle}>
       <td className="p-3">{label}</td><td className={num}>{x.count}</td><td className={num}>{formatAmount(x.ht)}</td>
       <td className={num}>{formatAmount(x.fodec)}</td><td className={num}>{formatAmount(x.tva)}</td><td className={num}>{formatAmount(x.ttc)}</td>
     </tr>
   );
+}
+
+async function Revenue({ period }: { period: { from: string; to: string } }) {
+  const r = await revenueReport(db, period);
+  const head = [{ label: "" }, { label: "Documents", right: true }, { label: "Total HT", right: true }, { label: "FODEC", right: true }, { label: "TVA", right: true }, { label: "Total TTC", right: true }];
   return (
     <>
       <p className="text-sm" style={{ color: "var(--muted)" }}>
         Documents validés (factures, acomptes) ; les avoirs sont déduits. Les brouillons sont exclus. Montants en dinars (DT).
       </p>
       <Table head={[{ ...head[0]!, label: "Mois" }, ...head.slice(1)]} caption="Par mois">
-        {r.byMonth.map((m) => <Row key={m.key} label={monthLabel(m.key)} x={m} />)}
-        {r.byMonth.length === 0 ? <Empty cols={6} /> : <Row label="Total" x={r.totals} bold />}
+        {r.byMonth.map((m) => <RevenueRow key={m.key} label={monthLabel(m.key)} x={m} />)}
+        {r.byMonth.length === 0 ? <Empty cols={6} /> : <RevenueRow label="Total" x={r.totals} bold />}
       </Table>
       <Table head={[{ ...head[0]!, label: "Client" }, ...head.slice(1)]} caption="Par client">
-        {r.byCustomer.map((c) => <Row key={c.key} label={c.label} x={c} />)}
+        {r.byCustomer.map((c) => <RevenueRow key={c.key} label={c.label} x={c} />)}
         {r.byCustomer.length === 0 && <Empty cols={6} />}
       </Table>
     </>

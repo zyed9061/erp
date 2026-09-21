@@ -1,0 +1,166 @@
+{
+  "_lisez-moi": "Fichier à compléter avec les documents officiels de TTN (XSD, annexe A des codes, guide d'implémentation). Règle : un code renseigné DOIT avoir une source ; sinon le chargement échoue (voir tests/einvoice-spec.test.ts). Ne jamais renseigner un code de mémoire. Laisser null = « À FOURNIR PAR TTN ».",
+  "teifVersion": {
+    "value": "1.8.8",
+    "official": false,
+    "source": "Sources secondaires (noqta.tn, recherche du projet) : version à confirmer par TTN"
+  },
+  "dateFormat": {
+    "value": null,
+    "source": null,
+    "official": false,
+    "label": "Format de date (attribut format de DateText)"
+  },
+  "codes": {
+    "docInvoice": {
+      "label": "Facture",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "docCreditNote": {
+      "label": "Facture d'avoir",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "docDeposit": {
+      "label": "Facture d'acompte",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "dateIssue": {
+      "label": "Fonction de date : date de la facture",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "dateDue": {
+      "label": "Fonction de date : date limite de paiement",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "partySupplier": {
+      "label": "Fonction de partie : fournisseur",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "partyBuyer": {
+      "label": "Fonction de partie : client",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "idTaxNumber": {
+      "label": "Type d'identifiant : matricule fiscal",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "taxVat": {
+      "label": "Taxe : TVA",
+      "code": "I-1602",
+      "source": "Validateur tiers ayoubgaouet/tn-einvoice-validator (packagist) : source NON officielle, à confirmer avec l'annexe A de TTN",
+      "official": false
+    },
+    "taxWithholding": {
+      "label": "Taxe : retenue à la source",
+      "code": "I-1604",
+      "source": "Validateur tiers ayoubgaouet/tn-einvoice-validator (packagist) : source NON officielle, à confirmer avec l'annexe A de TTN",
+      "official": false
+    },
+    "taxFodec": {
+      "label": "Taxe : FODEC",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "taxStamp": {
+      "label": "Taxe : droit de timbre",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountTotalHt": {
+      "label": "Montant : total HT",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountFodec": {
+      "label": "Montant : FODEC",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountTaxBase": {
+      "label": "Montant : base imposable TVA",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountTotalVat": {
+      "label": "Montant : total TVA",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountStamp": {
+      "label": "Montant : droit de timbre",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountTotalTtc": {
+      "label": "Montant : total TTC",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountWithholding": {
+      "label": "Montant : retenue à la source",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountNetToPay": {
+      "label": "Montant : net à payer",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountLineNet": {
+      "label": "Montant : HT de la ligne",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountTaxLine": {
+      "label": "Montant : taxe",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "amountTaxableBase": {
+      "label": "Montant : base de la taxe",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "refOriginalInvoice": {
+      "label": "Référence : facture d'origine (avoir)",
+      "code": null,
+      "source": null,
+      "official": false
+    },
+    "refCustomerReference": {
+      "label": "Référence : référence du client / bon de commande",
+      "code": null,
+      "source": null,
+      "official": false
+    }
+  }
+}

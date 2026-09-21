@@ -454,3 +454,18 @@ describe("chantiers : situations de travaux et retenue de garantie", () => {
     void invoices;
   });
 });
+
+describe("cohérence TEIF des documents produits par ce module", () => {
+  it("chaque document validé passe les contrôles internes de l'export (recalcul des montants compris)", async () => {
+    const { invoices: invTable } = await import("@/db/schema");
+    const { loadEinvoiceData } = await import("@/lib/einvoice/service");
+    const { validateEinvoiceData } = await import("@/lib/einvoice/validate");
+    const rows = await db.select({ id: invTable.id, number: invTable.number, kind: invTable.kind }).from(invTable).where(eq(invTable.status, "validated"));
+    expect(rows.length).toBeGreaterThan(0);
+    for (const r of rows) {
+      const loaded = await loadEinvoiceData(db, r.id);
+      expect(loaded, r.number ?? r.id).not.toBeNull();
+      expect(validateEinvoiceData(loaded!.data).errors, `${r.kind} ${r.number}`).toEqual([]);
+    }
+  });
+});

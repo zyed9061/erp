@@ -1,5 +1,5 @@
 import type { InvoiceKind } from "@/db/schema";
-import { TEIF_VERSION, PENDING_CODE, codeOf, unitCode, type TeifCodeKey } from "./teif-codes";
+import { TEIF_VERSION, codeOf, dateFormat, type TeifCodeKey } from "./teif-codes";
 import { el, render, type XmlNode } from "./xml";
 
 /** Données d'une facture validée, indépendantes de tout format de sortie (instantanés figés à la validation). */
@@ -25,11 +25,9 @@ export type EinvoiceData = {
   taxes: { kind: "tva" | "fodec"; rate: string; base: string; amount: string }[];
   totals: {
     ht: string; fodec: string; tvaBase: string; tva: string; ttc: string; stampDuty: string;
-    withholdingRate: string | null; withholdingAmount: string; netToPay: string;
+    withholdingRate: string | null; withholdingAmount: string; guaranteeHoldback: string; netToPay: string;
   };
 };
-
-const ddMMyy = (iso: string) => `${iso.slice(8, 10)}${iso.slice(5, 7)}${iso.slice(2, 4)}`;
 
 /** "19.000" -> "19", "1.500" -> "1.5" : le taux reste lisible sans zéros inutiles. */
 const rate = (r: string) => (r.includes(".") ? r.replace(/\.?0+$/, "") : r) || "0";
@@ -61,19 +59,19 @@ const docType = (kind: InvoiceKind): TeifCodeKey => (kind === "credit_note" ? "d
 const TYPE_LABELS: Record<InvoiceKind, string> = { invoice: "Facture", credit_note: "Facture d'avoir", deposit_invoice: "Facture d'acompte" };
 
 /**
- * Construit un fichier TEIF NON SIGNÉ. Voir `teif-codes.ts` : la structure suit la spécification telle qu'elle est connue,
- * mais elle n'a pas été validée contre le XSD officiel. Le résultat est déterministe (aucune date de génération).
+ * Construit un fichier TEIF NON SIGNÉ. Les noms d'éléments viennent de sources secondaires et les codes de `spec.json` (vides
+ * tant que TTN n'a pas fourni ses documents). Rien n'a été validé contre le XSD officiel. Déterministe (aucune date de génération).
  */
 export function buildTeifXml(data: EinvoiceData): string {
   const dates = [
-    el("DateText", { format: "ddMMyy", functionCode: codeOf("dateIssue") }, ddMMyy(data.issueDate)),
-    data.dueDate && el("DateText", { format: "ddMMyy", functionCode: codeOf("dateDue") }, ddMMyy(data.dueDate)),
+    el("DateText", { format: dateFormat(), functionCode: codeOf("dateIssue") }, data.issueDate),
+    data.dueDate && el("DateText", { format: dateFormat(), functionCode: codeOf("dateDue") }, data.dueDate),
   ];
 
   const lines = data.lines.map((l) => el("Lin", {},
     el("ItemIdentifier", {}, String(l.position)),
     el("LinImd", { lang: "fr" }, el("ImdDescription", {}, l.description)),
-    el("LinQty", {}, el("Quantity", { measurementUnit: unitCode(l.unit) }, l.quantity)),
+    el("LinQty", {}, el("Quantity", { measurementUnit: l.unit }, l.quantity)),
     el("LinPrice", {}, el("PriceDetails", {}, el("Price", { currencyIdentifier: data.currency }, l.unitPrice))),
     Number(l.discountPercent) > 0 && el("LinAlc", {}, el("AllowanceRate", {}, rate(l.discountPercent))),
     el("LinTax", {},
@@ -120,7 +118,7 @@ export function buildTeifXml(data: EinvoiceData): string {
       el("PartnerSection", {}, party("partySupplier", data.company), party("partyBuyer", data.customer)),
       (data.originalNumber || data.reference) && el("RffSection", {},
         data.originalNumber && el("Rff", {}, el("RefIdentifier", { refID: codeOf("refOriginalInvoice") }, data.originalNumber)),
-        data.reference && el("Rff", {}, el("RefIdentifier", { refID: PENDING_CODE }, data.reference)),
+        data.reference && el("Rff", {}, el("RefIdentifier", { refID: codeOf("refCustomerReference") }, data.reference)),
       ),
       el("LinSection", {}, ...lines),
       el("InvoiceMoa", {},

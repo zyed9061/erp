@@ -13,6 +13,7 @@ import {
 } from "@/lib/invoicing/payments";
 import { addCertificateAction, recordPaymentAction } from "../../paiements/actions";
 import { SendPanel } from "@/components/send-panel";
+import { actionLabel, entityHistory } from "@/lib/audit";
 import { getEinvoiceStatus } from "@/lib/einvoice/service";
 import { defaultRecipient, emailHistory } from "@/lib/mail/documents";
 import { METHOD_LABELS } from "../../paiements/labels";
@@ -151,6 +152,7 @@ export default async function InvoicePage({
   const mails = await emailHistory(db, { invoiceId: inv.id });
   const teif = await getEinvoiceStatus(db, inv.id);
   const canPrepareTeif = can(user.role, "invoices:validate");
+  const history = can(user.role, "audit:read") ? await entityHistory(db, "invoice", inv.id) : null;
 
   return (
     <div className="space-y-4 max-w-4xl">
@@ -310,6 +312,22 @@ export default async function InvoicePage({
               <button className="btn btn-ghost">Créer un avoir</button>
             </form>
           )}
+        </section>
+      )}
+
+      {history && history.length > 0 && (
+        <section className="card p-4 space-y-2">
+          <h2 className="font-medium">Historique des opérations</h2>
+          <ol className="text-sm space-y-1">
+            {history.map((h) => (
+              <li key={h.id}>
+                <span className="tabular-nums" style={{ color: "var(--muted)" }}>
+                  {new Intl.DateTimeFormat("fr-TN", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Tunis" }).format(h.at)}
+                </span>
+                {" "}· {actionLabel(h.action)}{h.userEmail ? ` · ${h.userEmail}` : ""}
+              </li>
+            ))}
+          </ol>
         </section>
       )}
     </div>

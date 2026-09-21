@@ -43,7 +43,7 @@ export async function loadEinvoiceData(db: Db, invoiceId: string): Promise<{ dat
     totals: {
       ht: inv.totalHt ?? "0.000", fodec: inv.totalFodec ?? "0.000", tvaBase: inv.totalTvaBase ?? "0.000", tva: inv.totalTva ?? "0.000",
       ttc: inv.totalTtc ?? "0.000", stampDuty: inv.stampDuty ?? "0.000", withholdingRate: inv.withholdingRate,
-      withholdingAmount: inv.withholdingAmount ?? "0.000", netToPay: inv.netToPay ?? "0.000",
+      withholdingAmount: inv.withholdingAmount ?? "0.000", guaranteeHoldback: inv.guaranteeHoldback ?? "0.000", netToPay: inv.netToPay ?? "0.000",
     },
   };
   return { data, contentHash: inv.contentHash };

@@ -1,70 +1,63 @@
+import { z } from "zod";
+import raw from "./spec.json";
+
 /**
- * Codes du TEIF (Tunisian Electronic Invoice Format).
+ * Données de la spécification TEIF de TTN, chargées depuis `spec.json`.
  *
- * ATTENTION : la spécification officielle (XSD et annexe A de TTN) n'a pas pu être consultée lors du développement.
- * Les valeurs ci-dessous viennent de sources secondaires ou de mémoire ; aucune n'est validée. Elles sont isolées ICI,
- * et nulle part ailleurs, pour être corrigées en un seul endroit dès que la spécification officielle est disponible :
- *  - `recalled`  : code probable, à confirmer ;
- *  - `unknown`   : code inconnu, remplacé dans le XML par `PENDING_CODE` afin que le fichier ne puisse pas passer pour valide.
+ * ÉTAT : les documents officiels (XSD, annexe A des codes, guide d'implémentation) sont « À FOURNIR PAR TTN ».
+ * Aucun code n'est deviné : une valeur absente reste `null` et apparaît dans le XML sous la forme `PENDING_CODE`, pour que
+ * le fichier ne puisse pas passer pour valide. Quand TTN fournit ses documents, on complète `spec.json` (chaque code avec sa
+ * source) sans toucher au code. Le chargement refuse un code renseigné sans source.
  */
 
-export const TEIF_VERSION = "1.8.8";
-/** Version du générateur : change à chaque évolution du mapping. Un export est propre à une (facture, version). */
-export const GENERATOR_VERSION = "prep-1";
+export const GENERATOR_VERSION = "prep-2";
+export const PENDING_CODE = "A-FOURNIR-PAR-TTN";
 
-export const PENDING_CODE = "A-CONFIRMER";
+const codeSchema = z.object({
+  label: z.string().min(1),
+  code: z.string().min(1).nullable(),
+  source: z.string().min(1).nullable(),
+  official: z.boolean(),
+}).superRefine((c, ctx) => {
+  if (c.code !== null && c.source === null) ctx.addIssue({ code: "custom", message: `Code « ${c.code} » (${c.label}) renseigné sans source` });
+  if (c.official && c.source === null) ctx.addIssue({ code: "custom", message: `Code officiel sans source (${c.label})` });
+});
 
-export type TeifCode = { code: string | null; status: "recalled" | "unknown"; label: string };
+const specSchema = z.object({
+  teifVersion: z.object({ value: z.string().nullable(), official: z.boolean(), source: z.string().nullable() }),
+  dateFormat: z.object({ value: z.string().nullable(), official: z.boolean(), source: z.string().nullable(), label: z.string() }),
+  codes: z.record(z.string(), codeSchema),
+});
 
-const recalled = (code: string, label: string): TeifCode => ({ code, status: "recalled", label });
-const unknown = (label: string): TeifCode => ({ code: null, status: "unknown", label });
+export type TeifSpec = z.infer<typeof specSchema>;
 
-export const TEIF_CODES = {
-  // Type de document
-  docInvoice: recalled("I-11", "Facture"),
-  docCreditNote: recalled("I-12", "Facture d'avoir"),
-  docDeposit: unknown("Facture d'acompte"),
-  // Fonction d'une date
-  dateIssue: recalled("I-31", "Date de la facture"),
-  dateDue: recalled("I-32", "Date limite de paiement"),
-  // Fonction d'une partie
-  partySupplier: recalled("I-62", "Fournisseur"),
-  partyBuyer: recalled("I-64", "Client"),
-  // Type d'identifiant
-  idTaxNumber: recalled("I-01", "Matricule fiscal"),
-  // Taxes (I-1602 et I-1604 confirmés par un validateur tiers ; le reste inconnu)
-  taxVat: recalled("I-1602", "TVA"),
-  taxWithholding: recalled("I-1604", "Retenue à la source"),
-  taxFodec: unknown("FODEC"),
-  taxStamp: unknown("Droit de timbre"),
-  // Montants
-  amountTotalHt: unknown("Total HT"),
-  amountFodec: unknown("Montant FODEC"),
-  amountTaxBase: unknown("Base imposable TVA"),
-  amountTotalVat: unknown("Total TVA"),
-  amountStamp: unknown("Droit de timbre"),
-  amountTotalTtc: unknown("Total TTC"),
-  amountWithholding: unknown("Retenue à la source"),
-  amountNetToPay: unknown("Net à payer"),
-  amountLineNet: unknown("Montant HT de la ligne"),
-  amountTaxLine: unknown("Montant de taxe"),
-  amountTaxableBase: unknown("Base de la taxe"),
-  // Référence à un autre document (avoir -> facture d'origine)
-  refOriginalInvoice: unknown("Facture d'origine"),
-} as const satisfies Record<string, TeifCode>;
+/** Valide et retourne une spécification (exporté pour les tests et pour un futur chargement d'un autre fichier). */
+export const parseSpec = (input: unknown): TeifSpec => specSchema.parse(input);
 
-export type TeifCodeKey = keyof typeof TEIF_CODES;
+export const SPEC = parseSpec(raw);
 
-export const codeOf = (key: TeifCodeKey): string => TEIF_CODES[key].code ?? PENDING_CODE;
+export type TeifCodeKey = keyof (typeof raw)["codes"];
 
-/** Codes encore à confirmer, pour l'affichage de l'avertissement. */
-export const unconfirmedCodes = () =>
-  (Object.entries(TEIF_CODES) as [TeifCodeKey, TeifCode][]).filter(([, c]) => c.status === "unknown").map(([, c]) => c.label);
+export const TEIF_VERSION = SPEC.teifVersion.value ?? PENDING_CODE;
 
-/** Unités usuelles vers le code UN/ECE Recommandation 20 ; toute autre unité retombe sur « unité » (C62). */
-const UNIT_CODES: Record<string, string> = {
-  "unité": "C62", u: "C62", pce: "C62", pièce: "C62", piece: "C62", h: "HUR", heure: "HUR", j: "DAY", jour: "DAY",
-  mois: "MON", kg: "KGM", g: "GRM", t: "TNE", m: "MTR", ml: "MTR", "m²": "MTK", m2: "MTK", "m³": "MTQ", m3: "MTQ", l: "LTR",
-  forfait: "C62", sac: "C62",
-};
-export const unitCode = (unit: string) => UNIT_CODES[unit.trim().toLowerCase()] ?? "C62";
+export const codeOf = (key: TeifCodeKey, spec: TeifSpec = SPEC): string => spec.codes[key]?.code ?? PENDING_CODE;
+
+export const dateFormat = (spec: TeifSpec = SPEC): string => spec.dateFormat.value ?? PENDING_CODE;
+
+export type SpecItem = { key: string; label: string; state: "official" | "secondary" | "pending" };
+
+/** État de chaque élément de la spécification : officiel, issu d'une source non officielle, ou à fournir par TTN. */
+export function specReport(spec: TeifSpec = SPEC): { items: SpecItem[]; official: number; secondary: number; pending: number } {
+  const items: SpecItem[] = Object.entries(spec.codes).map(([key, c]) => ({
+    key, label: c.label, state: c.code === null ? "pending" : c.official ? "official" : "secondary",
+  }));
+  items.push({
+    key: "dateFormat", label: spec.dateFormat.label,
+    state: spec.dateFormat.value === null ? "pending" : spec.dateFormat.official ? "official" : "secondary",
+  });
+  const n = (s: SpecItem["state"]) => items.filter((i) => i.state === s).length;
+  return { items, official: n("official"), secondary: n("secondary"), pending: n("pending") };
+}
+
+/** Libellés des éléments encore à fournir par TTN. */
+export const pendingLabels = (spec: TeifSpec = SPEC) => specReport(spec).items.filter((i) => i.state === "pending").map((i) => i.label);

@@ -1,5 +1,6 @@
-import { unconfirmedCodes } from "./teif-codes";
+import { pendingLabels } from "./teif-codes";
 import type { EinvoiceData } from "./teif";
+import { validateEinvoiceData } from "./validate";
 
 export type Readiness = {
   /** Données manquantes ou incohérentes : la préparation est refusée. */
@@ -11,6 +12,7 @@ export type Readiness = {
 /**
  * Matricule fiscal : 7 chiffres au minimum ; la forme complète ajoute la clé, le code TVA, la catégorie et le n° d'établissement
  * (ex. 1234567A/A/M/000). L'application ne contrôle pas le format à la saisie : on ne bloque que l'évidence.
+ * À AFFINER quand TTN fournira la règle officielle du matricule fiscal.
  */
 const compact = (v: string) => v.replace(/\s+/g, "").toUpperCase();
 export const MF_MIN = /^\d{7}/;
@@ -38,12 +40,18 @@ export function checkReadiness(data: EinvoiceData): Readiness {
   if (data.currency !== "TND") errors.push(`Devise ${data.currency} : le TEIF de cette application ne gère que le dinar (TND).`);
   if (data.lines.length === 0) errors.push("Aucune ligne.");
   if (data.kind === "credit_note" && !data.originalNumber) errors.push("Avoir sans facture d'origine.");
-  if (data.kind === "deposit_invoice") warnings.push("Le code TEIF d'une facture d'acompte n'est pas connu : le type de document reste à confirmer.");
 
-  warnings.push(
-    "Le format n'a pas été validé contre la spécification officielle de TTN. Codes encore inconnus (marqués « A-CONFIRMER » dans le fichier) : "
-    + `${unconfirmedCodes().join(", ")}.`,
-  );
+  const internal = validateEinvoiceData(data);
+  errors.push(...internal.errors);
+  warnings.push(...internal.warnings);
+
+  const pending = pendingLabels();
+  if (pending.length > 0) {
+    warnings.push(
+      "À FOURNIR PAR TTN : XSD, annexe A des codes et guide d'implémentation. Le format n'est pas validé ; "
+      + `${pending.length} élément(s) de la spécification restent inconnus et sont marqués « A-FOURNIR-PAR-TTN » dans le fichier.`,
+    );
+  }
   warnings.push("Non couvert : signature électronique, cachet visible (QR code), conditions et moyens de paiement, transmission à TTN.");
   return { errors, warnings };
 }

@@ -9,7 +9,7 @@ import { createCustomer, updateCustomer } from "@/lib/customers";
 import { checkReadiness } from "@/lib/einvoice/readiness";
 import { getEinvoiceExport, getEinvoiceStatus, loadEinvoiceData, prepareEinvoice } from "@/lib/einvoice/service";
 import { buildTeifXml, type EinvoiceData } from "@/lib/einvoice/teif";
-import { PENDING_CODE, unitCode } from "@/lib/einvoice/teif-codes";
+import { PENDING_CODE } from "@/lib/einvoice/teif-codes";
 import { escapeXml } from "@/lib/einvoice/xml";
 import { createCreditNoteDraft, createDraftInvoice, validateDocument, type InvoiceLineInput } from "@/lib/invoicing/invoices";
 import { createTaxRate, listTaxRates } from "@/lib/taxes";
@@ -70,9 +70,6 @@ describe("échappement XML", () => {
     expect(escapeXml("a\u0000b\u0008c\u000Bd￾e")).toBe("abcde");
     expect(escapeXml("tab\tlf\ncr\r")).toBe("tab\tlf\ncr\r");
   });
-  it("associe les unités usuelles à un code UN/ECE, C62 par défaut", () => {
-    expect([unitCode("h"), unitCode("m²"), unitCode("Jour"), unitCode("inconnue")]).toEqual(["HUR", "MTK", "DAY", "C62"]);
-  });
 });
 
 describe("préparation", () => {
@@ -93,7 +90,7 @@ describe("préparation", () => {
   it("le diagnostic signale les avertissements sans bloquer", async () => {
     const st = await getEinvoiceStatus(db, invoiceId);
     expect(st.readiness!.errors).toEqual([]);
-    expect(st.readiness!.warnings.join(" ")).toContain("validé contre la spécification officielle");
+    expect(st.readiness!.warnings.join(" ")).toContain("À FOURNIR PAR TTN");
     expect(st.readiness!.warnings.join(" ")).toContain("signature électronique");
     expect(st.latest).toBeNull();
   });
@@ -136,7 +133,7 @@ describe("fichier TEIF", () => {
     expect(text("DocumentIdentifier")).toEqual([expect.stringMatching(/2026|FA|\d/)]);
     expect(text("MessageSenderIdentifier")).toEqual(["7654321B/A/M/000"]);
     expect(text("MessageRecieverIdentifier")).toEqual(["1111111/A/M/000"]);
-    expect(text("DateText")).toEqual(["100326", "100426"]); // émission 2026-03-10, échéance 2026-04-10, format ddMMyy
+    expect(text("DateText")).toEqual(["2026-03-10", "2026-04-10"]); // émission et échéance, en ISO 8601 (le format TEIF officiel est à fournir par TTN)
     expect(text("PartnerName")).toEqual(["ACME & Fils SARL", "Alpha SARL"]);
   });
 
@@ -160,8 +157,8 @@ describe("fichier TEIF", () => {
     expect(names).toContain("Droit de timbre");
     expect(names).toContain("Retenue à la source");
     expect(names.filter((n) => n === "TVA").length).toBeGreaterThanOrEqual(3); // 2 lignes + le récapitulatif
-    expect(xml).toContain('code="I-1604"'); // retenue à la source
-    expect(xml).toContain('code="I-1602"'); // TVA
+    expect(xml).toContain('code="I-1604"'); // retenue à la source (source non officielle, voir spec.json)
+    expect(xml).toContain('code="I-1602"'); // TVA (idem)
   });
 
   it("marque explicitement les codes inconnus et le caractère non validé du fichier", () => {
@@ -230,7 +227,7 @@ describe("avoir", () => {
     const { doc, errors } = parse(exp.xml);
     expect(errors).toEqual([]);
     expect(doc.getElementsByTagName("DocumentType").item(0)!.textContent).toBe("Facture d'avoir");
-    expect(doc.getElementsByTagName("DocumentType").item(0)!.getAttribute("code")).toBe("I-12");
+    expect(doc.getElementsByTagName("DocumentType").item(0)!.getAttribute("code")).toBe(PENDING_CODE); // code officiel à fournir par TTN
     const refs = doc.getElementsByTagName("RefIdentifier");
     expect(Array.from({ length: refs.length }, (_, i) => refs.item(i)!.textContent)).toContain(original.number);
   });

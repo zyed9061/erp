@@ -12,7 +12,10 @@
     "db:migrate": "tsx src/db/migrate.ts",
     "db:seed": "tsx src/db/seed.ts",
     "reminders": "tsx src/scripts/reminders.ts",
-    "recurring": "tsx src/scripts/recurring.ts"
+    "recurring": "tsx src/scripts/recurring.ts",
+    "lint": "eslint .",
+    "dev:local": "tsx src/scripts/dev-local.ts",
+    "e2e": "node e2e/run.mjs"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.2",
@@ -37,11 +40,13 @@
     "@xmldom/xmldom": "^0.9.12",
     "dotenv": "^18.0.1",
     "drizzle-kit": "^0.31.10",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.5",
     "pdfjs-dist": "^6.3.289",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vitest": "^5.0.1"
   }
 }
