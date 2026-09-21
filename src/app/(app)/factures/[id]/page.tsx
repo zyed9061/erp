@@ -13,12 +13,13 @@ import {
 } from "@/lib/invoicing/payments";
 import { addCertificateAction, recordPaymentAction } from "../../paiements/actions";
 import { SendPanel } from "@/components/send-panel";
+import { getEinvoiceStatus } from "@/lib/einvoice/service";
 import { defaultRecipient, emailHistory } from "@/lib/mail/documents";
 import { METHOD_LABELS } from "../../paiements/labels";
 import { formatAmount, formatPercent, formatTnd } from "@/lib/money";
 import { Field, Flash } from "@/components/ui";
 import {
-  createCreditNoteAction, deleteDraftAction, saveInvoiceAction, sendInvoiceEmailAction, validateInvoiceAction,
+  createCreditNoteAction, deleteDraftAction, prepareEinvoiceAction, saveInvoiceAction, sendInvoiceEmailAction, validateInvoiceAction,
 } from "../actions";
 import { loadEditorData } from "../editor-data";
 import { InvoiceEditor } from "../invoice-editor";
@@ -148,6 +149,8 @@ export default async function InvoicePage({
   const certified = certificates.reduce((sum, c) => sum + Number(c.amount), 0);
   const mailTo = await defaultRecipient(db, inv.customerId);
   const mails = await emailHistory(db, { invoiceId: inv.id });
+  const teif = await getEinvoiceStatus(db, inv.id);
+  const canPrepareTeif = can(user.role, "invoices:validate");
 
   return (
     <div className="space-y-4 max-w-4xl">
@@ -182,6 +185,48 @@ export default async function InvoicePage({
         Validé le {inv.validatedAt ? new Intl.DateTimeFormat("fr-TN", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Tunis" }).format(inv.validatedAt) : "—"}
         {" "}· empreinte {inv.contentHash?.slice(0, 12)}… {intact ? "(intègre)" : "(ALTÉRÉE)"}
       </p>
+
+
+      {teif.readiness && (
+        <section className="card p-4 space-y-3">
+          <h2 className="font-medium">Facture électronique (TEIF) — préparation</h2>
+          <p className="text-sm" style={{ color: "var(--muted)" }}>
+            Fichier XML préparé à partir des données figées de la facture. Il n&apos;est ni signé ni transmis à TTN, et son format
+            n&apos;a pas été validé contre la spécification officielle : ne pas l&apos;utiliser en l&apos;état.
+          </p>
+          {teif.readiness.errors.length > 0 && (
+            <ul role="alert" className="text-sm list-disc pl-5 space-y-1" style={{ color: "var(--danger)" }}>
+              {teif.readiness.errors.map((e) => <li key={e}>{e}</li>)}
+            </ul>
+          )}
+          <details className="text-sm">
+            <summary className="cursor-pointer">Points d&apos;attention ({teif.readiness.warnings.length})</summary>
+            <ul className="list-disc pl-5 space-y-1 mt-2" style={{ color: "var(--muted)" }}>
+              {teif.readiness.warnings.map((w) => <li key={w}>{w}</li>)}
+            </ul>
+          </details>
+          <div className="flex gap-3 items-center flex-wrap">
+            {teif.latest ? (
+              <>
+                <a className="btn btn-ghost" href={`/factures/${inv.id}/teif`}>Télécharger le XML</a>
+                <span className="text-xs" style={{ color: "var(--muted)" }}>
+                  Préparé le {new Intl.DateTimeFormat("fr-TN", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Tunis" }).format(teif.latest.createdAt)}
+                  {" "}· empreinte {teif.latest.xmlSha256.slice(0, 12)}…
+                </span>
+              </>
+            ) : canPrepareTeif && teif.readiness.errors.length === 0 ? (
+              <form action={prepareEinvoiceAction}>
+                <input type="hidden" name="id" value={inv.id} />
+                <button className="btn btn-ghost">Préparer le fichier TEIF</button>
+              </form>
+            ) : (
+              <span className="text-sm" style={{ color: "var(--muted)" }}>
+                {teif.readiness.errors.length > 0 ? "Corrigez les points ci-dessus pour préparer le fichier." : "Aucun fichier préparé."}
+              </span>
+            )}
+          </div>
+        </section>
+      )}
 
       {pay && (
         <section className="card p-4 space-y-3">

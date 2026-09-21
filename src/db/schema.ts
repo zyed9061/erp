@@ -1044,6 +1044,33 @@ export type RecurringTemplate = typeof recurringTemplates.$inferSelect;
 export type RecurringTemplateLine = typeof recurringTemplateLines.$inferSelect;
 export type RecurringRun = typeof recurringRuns.$inferSelect;
 
+// ---------------------------------------------------------------------------
+// Phase 8 : préparation TEIF (facture électronique, sans transmission à TTN)
+// ---------------------------------------------------------------------------
+
+/**
+ * Fichier TEIF préparé pour une facture validée : NON signé, non transmis. En ajout seul (trigger, migration 0014).
+ * Le contenu est déterministe : une (facture, version du générateur) donne toujours le même fichier, donc une seule ligne.
+ */
+export const einvoiceExports = pgTable(
+  "einvoice_exports",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    invoiceId: uuid("invoice_id").notNull().references(() => invoices.id, { onDelete: "restrict" }),
+    generatorVersion: text("generator_version").notNull(),
+    xml: text("xml").notNull(),
+    xmlSha256: text("xml_sha256").notNull(),
+    // Empreinte de la facture au moment de la préparation : prouve à quel contenu le fichier correspond.
+    invoiceContentHash: text("invoice_content_hash").notNull(),
+    warnings: jsonb("warnings").notNull().default(sql`'[]'::jsonb`),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("einvoice_exports_invoice_version_uq").on(t.invoiceId, t.generatorVersion)],
+);
+
+export type EinvoiceExport = typeof einvoiceExports.$inferSelect;
+
 export type EmailLogEntry = typeof emailLog.$inferSelect;
 export type ReminderRule = typeof reminderRules.$inferSelect;
 export type Reminder = typeof reminders.$inferSelect;

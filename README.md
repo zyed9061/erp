@@ -192,6 +192,32 @@ fait pas reculer l'avancement du chantier, et l'encaissement d'une libération d
 Limites connues : pas de prorata ni d'indexation des prix entre deux périodes, les modèles ne se dupliquent pas,
 et les rapports ne couvrent pas la déclaration TVA sur les encaissements (base facturation uniquement).
 
+## Phase 8 : préparation de la facture électronique TEIF (terminée, « préparer seulement »)
+
+Sur une facture ou un avoir **validé**, le bouton « Préparer le fichier TEIF » génère un fichier XML à partir des données
+**figées à la validation** (société, client, lignes, taxes, totaux), le conserve et le rend téléchargeable
+(`/factures/<id>/teif`).
+
+- **Diagnostic avant préparation** : matricule fiscal de la société et du client entreprise, adresses, devise TND, avoir
+  rattaché à sa facture d'origine. Une donnée manquante bloque la préparation, avec le motif affiché.
+- **Conservation en ajout seul** : table `einvoice_exports` (une ligne par facture et version du générateur), trigger qui
+  interdit UPDATE/DELETE, refuse toute facture non validée et vérifie que l'empreinte de la facture correspond. Le fichier est
+  déterministe (aucune date de génération) et son empreinte SHA-256 est enregistrée. Redemander la préparation ne crée rien.
+- **Données figées** : une facture validée avant que l'adresse de la société ne soit renseignée reste bloquée (avoir + nouvelle
+  facture) ; c'est voulu, le fichier doit refléter exactement le document validé.
+
+**Ce qui n'est PAS fait, et qui empêche toute transmission en l'état :**
+
+1. La spécification officielle de TTN (XSD, annexe A des codes, guide d'implémentation) n'a pas pu être consultée. La structure
+   (`TEIF > InvoiceHeader / InvoiceBody`, sections Bgm, Dtm, PartnerSection, LinSection, InvoiceMoa, InvoiceTax) provient de
+   sources secondaires. Les codes sont isolés dans `src/lib/einvoice/teif-codes.ts` : ceux qui sont inconnus (FODEC, timbre,
+   types de montants, facture d'acompte, référence à la facture d'origine) valent `A-CONFIRMER` dans le XML, pour qu'il ne
+   puisse pas passer pour valide. **À faire : obtenir le XSD et l'annexe A, corriger `teif-codes.ts`/`teif.ts`, valider.**
+2. Pas de signature électronique (XAdES, certificat qualifié), pas de cachet visible (QR code), pas de moyens ni conditions de
+   paiement, pas d'appel à l'API de TTN, pas de suivi de statut (`einvoice_submissions` n'est pas créé).
+
+Chaque évolution du mapping doit incrémenter `GENERATOR_VERSION` : les fichiers déjà conservés restent intacts.
+
 ## Landing page
 
 `landing/index.html` : page d'accueil statique autonome (HTML/CSS/JS sans dépendance). L'adresse de l'application

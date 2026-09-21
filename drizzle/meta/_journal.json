@@ -92,6 +92,20 @@
       "when": 1789978636488,
       "tag": "0012_recurrentes",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1789980497249,
+      "tag": "0013_einvoice",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1789980502299,
+      "tag": "0014_einvoice_regles",
+      "breakpoints": true
     }
   ]
 }

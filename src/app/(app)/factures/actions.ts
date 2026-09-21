@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { getClientIp, requirePermission } from "@/lib/auth/session";
 import { flash, messageOf, str } from "@/lib/action-utils";
 import { ServiceError } from "@/lib/errors";
+import { prepareEinvoice } from "@/lib/einvoice/service";
 import { sendInvoiceEmail } from "@/lib/mail/documents";
 import {
   createCreditNoteDraft, createDraftInvoice, deleteDraft, updateDraftInvoice, validateDocument,
@@ -89,6 +90,18 @@ export async function sendInvoiceEmailAction(formData: FormData) {
       message: str(formData.get("message")),
     });
     flash(`/factures/${id}`, "ok", `E-mail envoyé à ${log.toEmail}`);
+  } catch (e) {
+    flash(`/factures/${id}`, "error", messageOf(e));
+  }
+}
+
+/** Prépare (génère et conserve) le fichier TEIF non signé d'une facture validée. */
+export async function prepareEinvoiceAction(formData: FormData) {
+  const actor = await actorOf("invoices:validate");
+  const id = uuid.parse(formData.get("id"));
+  try {
+    const { created } = await prepareEinvoice(db, actor, id);
+    flash(`/factures/${id}`, "ok", created ? "Fichier TEIF préparé (non signé, non transmis)" : "Fichier TEIF déjà préparé");
   } catch (e) {
     flash(`/factures/${id}`, "error", messageOf(e));
   }
