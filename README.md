@@ -11,6 +11,8 @@ et certificats de retenue ; PDF et e-mails ; relances ; stock, bons de livraison
 rapports (CA, balance âgée, TVA, retenues, encaissements) avec export CSV ; tableau de bord ; rôles et journal d'audit ;
 préparation du fichier TEIF avec contrôles internes.
 
+**Liste précise de ce que vous devez fournir** (TTN, e-mail, hébergement), avec où l'obtenir et le format : [`docs/a-fournir.md`](docs/a-fournir.md).
+
 **En attente de TTN** (rien n'a été deviné) : voir [`docs/ttn-a-fournir.md`](docs/ttn-a-fournir.md). Sans le XSD, l'annexe des
 codes et le guide officiels, le fichier TEIF est un *brouillon de préparation* : non validé, non signé, non transmissible.
 
@@ -47,6 +49,7 @@ Docker n'est nécessaire que pour la mise en production ou pour travailler avec 
 activée sur l'ordinateur (option du BIOS, à ne faire qu'à ce moment-là).
 
 ```bash
+# 1) dans le fichier .env : définir ADMIN_PASSWORD (12 caractères minimum, différent des exemples)
 docker compose up --build
 docker compose exec app npm run db:seed
 ```
@@ -85,11 +88,12 @@ Configuré par variables d'environnement (`SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE
 
 ## Sécurité (résumé)
 
-Mots de passe hachés (scrypt), sessions par jeton haché en base, cookie `HttpOnly` + `SameSite=Lax`, verrouillage du compte après
-5 échecs, permissions par rôle vérifiées côté serveur pour chaque action et chaque page, validation de toutes les saisies côté
+Mots de passe hachés (scrypt), mots de passe publics refusés en production, sessions par jeton haché en base, cookie `HttpOnly` + `SameSite=Lax`, verrouillage du compte après
+5 échecs et limitation des échecs par adresse IP (20 en 10 minutes), permissions par rôle vérifiées côté serveur pour chaque action et chaque page, validation de toutes les saisies côté
 serveur, exports CSV protégés contre l'injection de formule, XML et PDF échappés, en-têtes de sécurité (anti-clickjacking,
 `nosniff`, politique de référent), routes automatiques protégées par `CRON_SECRET`. Il n'y a aucun envoi de fichier par les
-utilisateurs. Limites connues : pas de limitation de débit par adresse IP sur la connexion (seulement par compte), pas de
+utilisateurs. E-mail chiffré obligatoire (TLS 1.2 minimum), certificats et secrets exclus de Git. Limites connues : la limitation par IP est
+en mémoire (une seule instance) et suppose un reverse proxy qui pose l'adresse réelle, pas de
 politique de sécurité de contenu stricte sur les scripts (demande des « nonces »), pas de double authentification.
 
 ## Scripts
@@ -100,6 +104,7 @@ politique de sécurité de contenu stricte sur les scripts (demande des « nonce
 | `npm run dev` | serveur de développement (base indiquée par `DATABASE_URL`) |
 | `npm run build` / `npm start` | build et démarrage en production |
 | `npm run typecheck` / `npm run lint` | contrôles de qualité |
+| `npm run check:config` | diagnostic de configuration en français (e-mail, secrets, société…), sans afficher de secret |
 | `npm test` | tests (PostgreSQL en mémoire via PGlite, aucun Docker requis) |
 | `npm run e2e` | parcours complets contre un vrai serveur (après `npm run build`) |
 | `npm run db:generate` | génère une migration après modification de `src/db/schema.ts` |

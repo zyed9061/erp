@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import * as schema from "./schema";
 import type { Db } from "./types";
 import { createUser } from "../lib/users";
+import { MIN_PRODUCTION_PASSWORD_LENGTH, isWeakAdminPassword } from "../lib/config-check";
 
 async function main() {
   const url = process.env.DATABASE_URL;
@@ -11,6 +12,12 @@ async function main() {
   const password = process.env.ADMIN_PASSWORD;
   if (!url || !email || !password) {
     throw new Error("DATABASE_URL, ADMIN_EMAIL et ADMIN_PASSWORD sont requis");
+  }
+
+  if (process.env.NODE_ENV === "production" && isWeakAdminPassword(password)) {
+    throw new Error(
+      `ADMIN_PASSWORD est public ou trop court : en production, choisissez un mot de passe d'au moins ${MIN_PRODUCTION_PASSWORD_LENGTH} caractères qui ne vient pas des exemples.`,
+    );
   }
 
   const pool = new Pool({ connectionString: url, max: 1 });

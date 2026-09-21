@@ -80,6 +80,37 @@ check("l'en-tête X-Powered-By est retiré", !h.get("x-powered-by"));
 const cookie = (await fetch(BASE + "/login", { method: "POST", redirect: "manual" })).headers.get("set-cookie") ?? "";
 check("aucun cookie de session émis sans connexion", !cookie.includes("erp_session"));
 
+
+// Page de configuration (administrateur seulement) et e-mail de test en mode journal
+let g = await admin.get("/parametres/configuration");
+check("configuration : page administrateur avec diagnostic", g.status === 200 && g.html.includes("E-mail (SMTP)") && g.html.includes("AUCUN e-mail réel") && g.html.includes("Envoyer un e-mail de test"));
+check("configuration : aucun secret affiché", !g.html.includes("secret-e2e") && !g.html.includes("ChangeMe-12345"));
+check("configuration : réservée à l'administrateur", (await denied("comptable", "/parametres/configuration")) && (await denied("commercial", "/parametres/configuration")) && (await denied("lecture_seule", "/parametres/configuration")));
+check("configuration : onglet absent pour le comptable", !(await sessions.comptable.get("/parametres")).html.includes("/parametres/configuration"));
+let r = await admin.submit("/parametres/configuration", "text:Envoyer un e-mail de test", {});
+check("e-mail de test en mode journal : dit clairement que rien n'est parti", decodeURIComponent(r.location ?? "").includes("aucun e-mail réel"), r.location ?? "");
+check("mot de passe public détecté dans le diagnostic", (await admin.get("/parametres/configuration")).html.includes("mot de passe public"));
+
+// Limitation des échecs de connexion par adresse IP (en-tête X-Forwarded-For posé par un reverse proxy)
+const loginForm = (await fetch(BASE + "/login")).text();
+const html = (await loginForm).replaceAll("<!-- -->", "");
+const formHtml = html.split("<form").slice(1)[0];
+const hidden = [...formHtml.matchAll(/<input type="hidden" name="([^"]+)"(?: value="([^"]*)")?/g)];
+const attempt = async (ip, email, password) => {
+  const fd = new FormData();
+  for (const m of hidden) fd.set(m[1], (m[2] ?? "").replaceAll("&quot;", '"'));
+  fd.set("email", email); fd.set("password", password);
+  const res = await fetch(BASE + "/login", { method: "POST", body: fd, headers: { origin: BASE, "x-forwarded-for": ip }, redirect: "manual" });
+  return { status: res.status, text: await res.text(), cookie: res.headers.getSetCookie?.().find((c) => c.startsWith("erp_session=")) };
+};
+let blocked = false;
+for (let i = 0; i < 25 && !blocked; i++) blocked = (await attempt("203.0.113.9", `inconnu${i}@example.tn`, "mauvais")).text.includes("Trop de tentatives");
+check("échecs répétés depuis une même adresse : connexion bloquée", blocked);
+const sameIpGood = await attempt("203.0.113.9", "admin@example.tn", "ChangeMe-12345");
+check("adresse bloquée : même le bon mot de passe est refusé", !sameIpGood.cookie);
+const otherIpGood = await attempt("203.0.113.10", "admin@example.tn", "ChangeMe-12345");
+check("une autre adresse n'est pas affectée", !!otherIpGood.cookie);
+
 // Historique des opérations sur une facture
 const inv = await admin.get(ids.facture);
 check("facture : historique des opérations affiché à l'administrateur", inv.html.includes("Historique des opérations") && inv.html.includes("Facture validée et numérotée"));

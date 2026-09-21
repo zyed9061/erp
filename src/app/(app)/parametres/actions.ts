@@ -5,7 +5,9 @@ import { db } from "@/db";
 import { DOC_TYPES } from "@/db/schema";
 import { getClientIp, requirePermission } from "@/lib/auth/session";
 import { flash, messageOf, str } from "@/lib/action-utils";
+import { audit } from "@/lib/audit";
 import { updateCompany } from "@/lib/company";
+import { getMailTransport } from "@/lib/mail/transport";
 import { updateReminderRule } from "@/lib/invoicing/reminders";
 import { updateSeriesConfig } from "@/lib/numbering";
 import { createPaymentTerm, updatePaymentTerm } from "@/lib/payment-terms";
@@ -129,4 +131,22 @@ export async function updateReminderRuleAction(formData: FormData) {
     flash("/parametres/relances", "error", messageOf(e));
   }
   flash("/parametres/relances", "ok", "Modèle de relance enregistré");
+}
+
+/** Envoie un e-mail de test à l'administrateur connecté (en mode journal, rien ne part : le message le dit). */
+export async function sendTestEmailAction() {
+  const user = await requirePermission("settings:manage");
+  const back = "/parametres/configuration";
+  const real = Boolean(process.env.SMTP_HOST?.trim());
+  try {
+    await getMailTransport().send({
+      to: user.email,
+      subject: "Test d'envoi : application de facturation",
+      text: "Si vous lisez ce message, la configuration d'e-mail fonctionne.",
+    });
+    await audit(db, { userId: user.id, userEmail: user.email, ip: await getClientIp(), action: "mail.test", entity: "settings", entityId: "mail", after: { real } });
+  } catch (e) {
+    flash(back, "error", `Échec de l'envoi de test : ${messageOf(e)}`);
+  }
+  flash(back, "ok", real ? `E-mail de test envoyé à ${user.email}` : "Mode journal : aucun e-mail réel n'a été envoyé (SMTP non configuré). Le résumé est dans la console du serveur.");
 }

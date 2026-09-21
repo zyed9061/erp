@@ -1,4 +1,7 @@
-# À FOURNIR PAR TTN
+# À FOURNIR PAR TTN (partie technique)
+
+> La liste précise de ce que vous devez fournir, avec où l'obtenir et dans quel format, est dans [`a-fournir.md`](a-fournir.md).
+> Ce document-ci décrit où chaque élément se branche dans le code.
 
 Tout ce qui suit dépend de documents officiels de Tunisie TradeNet (TTN) que nous n'avons pas. **Rien n'a été deviné** :
 chaque valeur inconnue est marquée `A-FOURNIR-PAR-TTN` dans le fichier généré, et l'application affiche l'avertissement.

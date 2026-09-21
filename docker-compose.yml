@@ -24,7 +24,7 @@ services:
     environment:
       DATABASE_URL: postgres://erp:erp@db:5432/erp
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.tn}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe-12345}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Définissez ADMIN_PASSWORD dans le fichier .env (12 caractères minimum, différent des exemples)}
       ADMIN_NAME: ${ADMIN_NAME:-Administrateur}
       SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}

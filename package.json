@@ -15,7 +15,8 @@
     "recurring": "tsx src/scripts/recurring.ts",
     "lint": "eslint .",
     "dev:local": "tsx src/scripts/dev-local.ts",
-    "e2e": "node e2e/run.mjs"
+    "e2e": "node e2e/run.mjs",
+    "check:config": "tsx src/scripts/check-config.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.2",

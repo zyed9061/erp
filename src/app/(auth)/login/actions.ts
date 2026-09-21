@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "@/db";
+import { loginLimiter } from "@/lib/auth/rate-limit";
 import { authenticate } from "@/lib/auth/service";
 import { getClientIp, setSessionCookie } from "@/lib/auth/session";
 
@@ -27,12 +28,19 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
   });
   if (!parsed.success) return { error: MESSAGES.invalid };
 
+  const ip = await getClientIp();
+  // Sans adresse connue, on ne limite pas par IP (sinon un seul attaquant bloquerait tout le monde) : le verrouillage par compte reste actif.
+  if (ip && loginLimiter.isBlocked(ip)) return { error: MESSAGES.locked };
+
   const result = await authenticate(db, {
     ...parsed.data,
-    ip: await getClientIp(),
+    ip,
     userAgent: (await headers()).get("user-agent"),
   });
-  if (!result.ok) return { error: MESSAGES[result.reason] };
+  if (!result.ok) {
+    if (ip) loginLimiter.record(ip); // on ne compte que les échecs
+    return { error: MESSAGES[result.reason] };
+  }
 
   await setSessionCookie(result.token, result.expiresAt);
   redirect("/");
