@@ -12,11 +12,13 @@ import {
   PAYMENT_STATUS_LABELS, getInvoiceBalance, listWithholdingCertificates, paymentStateOf, paymentsOfInvoice,
 } from "@/lib/invoicing/payments";
 import { addCertificateAction, recordPaymentAction } from "../../paiements/actions";
+import { SendPanel } from "@/components/send-panel";
+import { defaultRecipient, emailHistory } from "@/lib/mail/documents";
 import { METHOD_LABELS } from "../../paiements/labels";
 import { formatAmount, formatPercent, formatTnd } from "@/lib/money";
 import { Field, Flash } from "@/components/ui";
 import {
-  createCreditNoteAction, deleteDraftAction, saveInvoiceAction, validateInvoiceAction,
+  createCreditNoteAction, deleteDraftAction, saveInvoiceAction, sendInvoiceEmailAction, validateInvoiceAction,
 } from "../actions";
 import { loadEditorData } from "../editor-data";
 import { InvoiceEditor } from "../invoice-editor";
@@ -77,6 +79,7 @@ export default async function InvoicePage({
           </p>
         )}
         {quoteLink}
+        <p className="text-sm"><a className="underline" href={`/factures/${inv.id}/pdf`} target="_blank" rel="noopener">Aperçu PDF (brouillon)</a></p>
         <Flash ok={ok} error={error} />
         {canWrite ? (
           <InvoiceEditor
@@ -138,6 +141,8 @@ export default async function InvoicePage({
   const hasWithholding = !isCredit && Number(inv.withholdingAmount) > 0;
   const certificates = hasWithholding ? await listWithholdingCertificates(db, inv.id) : [];
   const certified = certificates.reduce((sum, c) => sum + Number(c.amount), 0);
+  const mailTo = await defaultRecipient(db, inv.customerId);
+  const mails = await emailHistory(db, { invoiceId: inv.id });
 
   return (
     <div className="space-y-4 max-w-4xl">
@@ -161,6 +166,11 @@ export default async function InvoicePage({
         </p>
       )}
       <DocumentBody inv={inv} lines={lines} taxes={taxes} customerName={customer?.name ?? ""} />
+
+      <SendPanel
+        pdfHref={`/factures/${inv.id}/pdf`} action={sendInvoiceEmailAction} id={inv.id}
+        canSend={canWrite} defaultTo={mailTo} history={mails}
+      />
 
       <p className="text-xs" style={{ color: "var(--muted)" }}>
         Validé le {inv.validatedAt ? new Intl.DateTimeFormat("fr-TN", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Tunis" }).format(inv.validatedAt) : "—"}

@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { getClientIp, requirePermission } from "@/lib/auth/session";
 import { flash, messageOf, str } from "@/lib/action-utils";
 import { ServiceError } from "@/lib/errors";
+import { sendInvoiceEmail } from "@/lib/mail/documents";
 import {
   createCreditNoteDraft, createDraftInvoice, deleteDraft, updateDraftInvoice, validateDocument,
   type InvoiceInput,
@@ -77,4 +78,18 @@ export async function createCreditNoteAction(formData: FormData) {
     flash(`/factures/${id}`, "error", messageOf(e));
   }
   flash(`/factures/${creditId}`, "ok", "Avoir créé en brouillon : ajustez les lignes puis validez");
+}
+
+export async function sendInvoiceEmailAction(formData: FormData) {
+  const actor = await actorOf("invoices:write");
+  const id = uuid.parse(formData.get("id"));
+  try {
+    const { log } = await sendInvoiceEmail(db, actor, id, {
+      to: str(formData.get("to")) || undefined,
+      message: str(formData.get("message")),
+    });
+    flash(`/factures/${id}`, "ok", `E-mail envoyé à ${log.toEmail}`);
+  } catch (e) {
+    flash(`/factures/${id}`, "error", messageOf(e));
+  }
 }

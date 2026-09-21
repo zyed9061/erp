@@ -626,6 +626,88 @@ export const invoiceBalances = pgView("invoice_balances", {
   due: numeric("due"),
 }).existing();
 
+// ---------------------------------------------------------------------------
+// Phase 5 : e-mails et relances
+// ---------------------------------------------------------------------------
+
+export const EMAIL_KINDS = ["invoice", "quote", "reminder"] as const;
+export const emailKindEnum = pgEnum("email_kind", EMAIL_KINDS);
+export const emailStatusEnum = pgEnum("email_status", ["sent", "failed"]);
+
+/** Journal des envois (réussis ou non). En ajout seul : trigger, migration 0009. */
+export const emailLog = pgTable(
+  "email_log",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    kind: emailKindEnum("kind").notNull(),
+    invoiceId: uuid("invoice_id").references(() => invoices.id, { onDelete: "restrict" }),
+    quoteId: uuid("quote_id").references(() => quotes.id, { onDelete: "restrict" }),
+    toEmail: text("to_email").notNull(),
+    subject: text("subject").notNull(),
+    status: emailStatusEnum("status").notNull(),
+    error: text("error"),
+    messageId: text("message_id"),
+    attachmentName: text("attachment_name"),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("email_log_invoice_idx").on(t.invoiceId, t.createdAt),
+    index("email_log_quote_idx").on(t.quoteId, t.createdAt),
+    check("email_log_target", sql`${t.invoiceId} IS NOT NULL OR ${t.quoteId} IS NOT NULL`),
+  ],
+);
+
+/** Modèles de relance par niveau (1 = premier rappel), déclenchés N jours après l'échéance. */
+export const reminderRules = pgTable(
+  "reminder_rules",
+  {
+    level: smallint("level").primaryKey(),
+    daysAfterDue: integer("days_after_due").notNull(),
+    subject: text("subject").notNull(),
+    body: text("body").notNull(),
+    isActive: boolean("is_active").notNull().default(true),
+  },
+  (t) => [
+    check("reminder_rules_level", sql`${t.level} BETWEEN 1 AND 9`),
+    check("reminder_rules_days", sql`${t.daysAfterDue} BETWEEN 1 AND 365`),
+  ],
+);
+
+export const reminderStatusEnum = pgEnum("reminder_status", ["pending", "sent", "failed"]);
+
+/**
+ * Relances envoyées. Un niveau n'est envoyé qu'une fois par facture : l'index unique partiel ignore les
+ * échecs (réessayables) mais pas les envois en cours, ce qui protège d'un double envoi concurrent.
+ */
+export const reminders = pgTable(
+  "reminders",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    invoiceId: uuid("invoice_id")
+      .notNull()
+      .references(() => invoices.id, { onDelete: "restrict" }),
+    level: smallint("level").notNull(),
+    status: reminderStatusEnum("status").notNull().default("pending"),
+    toEmail: text("to_email").notNull(),
+    method: text("method").notNull(),
+    emailLogId: uuid("email_log_id").references(() => emailLog.id, { onDelete: "set null" }),
+    error: text("error"),
+    claimedAt: timestamp("claimed_at", { withTimezone: true }).notNull().defaultNow(),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+  },
+  (t) => [
+    uniqueIndex("reminders_active_uq").on(t.invoiceId, t.level).where(sql`${t.status} <> 'failed'`),
+    index("reminders_invoice_idx").on(t.invoiceId),
+    check("reminders_method", sql`${t.method} IN ('auto', 'manual')`),
+  ],
+);
+
+export type EmailLogEntry = typeof emailLog.$inferSelect;
+export type ReminderRule = typeof reminderRules.$inferSelect;
+export type Reminder = typeof reminders.$inferSelect;
+
 export type Payment = typeof payments.$inferSelect;
 export type PaymentAllocation = typeof paymentAllocations.$inferSelect;
 export type WithholdingCertificate = typeof withholdingCertificates.$inferSelect;

@@ -7,11 +7,13 @@ import { requirePermission } from "@/lib/auth/session";
 import { getQuote } from "@/lib/invoicing/quotes";
 import { formatAmount, formatPercent, formatTnd } from "@/lib/money";
 import { Flash } from "@/components/ui";
+import { SendPanel } from "@/components/send-panel";
+import { defaultRecipient, emailHistory } from "@/lib/mail/documents";
 import { loadEditorData } from "../../factures/editor-data";
 import { InvoiceEditor } from "../../factures/invoice-editor";
 import {
   createDepositAction, createFinalInvoiceAction, decideQuoteAction, deleteQuoteAction, saveQuoteAction,
-  sendQuoteAction,
+  sendQuoteAction, sendQuoteEmailAction,
 } from "../actions";
 import { QUOTE_LABELS } from "../labels";
 
@@ -35,6 +37,8 @@ export default async function QuotePage({
   const { ok, error } = await searchParams;
   const canWrite = can(user.role, "quotes:write");
   const canInvoice = can(user.role, "invoices:write");
+  const mailTo = q.status === "draft" ? null : await defaultRecipient(db, q.customerId);
+  const mails = q.status === "draft" ? [] : await emailHistory(db, { quoteId: q.id });
 
   const header = (
     <div className="flex items-center gap-3 flex-wrap">
@@ -52,6 +56,7 @@ export default async function QuotePage({
     return (
       <div className="space-y-4 max-w-6xl">
         {header}
+        <p className="text-sm"><a className="underline" href={`/devis/${q.id}/pdf`} target="_blank" rel="noopener">Aperçu PDF (brouillon)</a></p>
         <Flash ok={ok} error={error} />
         <InvoiceEditor
           action={saveQuoteAction} kind="quote" invoiceId={q.id} version={q.version}
@@ -135,6 +140,11 @@ export default async function QuotePage({
         {q.notes && <p className="text-sm whitespace-pre-wrap border-t pt-3" style={{ borderColor: "var(--border)" }}>{q.notes}</p>}
         <p className="text-xs" style={{ color: "var(--muted)" }}>Le timbre fiscal et la retenue à la source n&apos;apparaissent qu&apos;à la facture.</p>
       </div>
+
+      <SendPanel
+        pdfHref={`/devis/${q.id}/pdf`} action={sendQuoteEmailAction} id={q.id}
+        canSend={canWrite} defaultTo={mailTo} history={mails}
+      />
 
       {q.status === "sent" && canWrite && (
         <div className="flex gap-2 flex-wrap">

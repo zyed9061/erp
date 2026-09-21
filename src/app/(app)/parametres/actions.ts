@@ -6,6 +6,7 @@ import { DOC_TYPES } from "@/db/schema";
 import { getClientIp, requirePermission } from "@/lib/auth/session";
 import { flash, messageOf, str } from "@/lib/action-utils";
 import { updateCompany } from "@/lib/company";
+import { updateReminderRule } from "@/lib/invoicing/reminders";
 import { updateSeriesConfig } from "@/lib/numbering";
 import { createPaymentTerm, updatePaymentTerm } from "@/lib/payment-terms";
 import { createTaxRate, updateTaxRate } from "@/lib/taxes";
@@ -113,4 +114,19 @@ export async function updateSeriesAction(formData: FormData) {
     flash("/parametres/numerotation", "error", messageOf(e));
   }
   flash("/parametres/numerotation", "ok", "Numérotation mise à jour");
+}
+
+export async function updateReminderRuleAction(formData: FormData) {
+  const actor = await actorOf();
+  try {
+    await updateReminderRule(db, actor, z.coerce.number().int().min(1).max(9).parse(formData.get("level")), {
+      daysAfterDue: str(formData.get("daysAfterDue")) as unknown as number,
+      subject: str(formData.get("subject")),
+      body: str(formData.get("body")),
+      isActive: formBool(formData.get("isActive")),
+    });
+  } catch (e) {
+    flash("/parametres/relances", "error", messageOf(e));
+  }
+  flash("/parametres/relances", "ok", "Modèle de relance enregistré");
 }

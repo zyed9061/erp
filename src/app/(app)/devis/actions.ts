@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { getClientIp, requirePermission } from "@/lib/auth/session";
 import { flash, messageOf, str } from "@/lib/action-utils";
 import { ServiceError } from "@/lib/errors";
+import { sendQuoteEmail } from "@/lib/mail/documents";
 import {
   createDepositInvoiceDraft, createDraftQuote, createInvoiceFromQuote, decideQuote, deleteDraftQuote,
   sendQuote, updateDraftQuote, type QuoteInput,
@@ -103,4 +104,18 @@ export async function createFinalInvoiceAction(formData: FormData) {
     flash(`/devis/${id}`, "error", messageOf(e));
   }
   flash(`/factures/${invoiceId}`, "ok", "Facture finale créée en brouillon (acomptes déduits) : vérifiez puis validez");
+}
+
+export async function sendQuoteEmailAction(formData: FormData) {
+  const actor = await actorOf("quotes:write");
+  const id = uuid.parse(formData.get("id"));
+  try {
+    const { log } = await sendQuoteEmail(db, actor, id, {
+      to: str(formData.get("to")) || undefined,
+      message: str(formData.get("message")),
+    });
+    flash(`/devis/${id}`, "ok", `E-mail envoyé à ${log.toEmail}`);
+  } catch (e) {
+    flash(`/devis/${id}`, "error", messageOf(e));
+  }
 }

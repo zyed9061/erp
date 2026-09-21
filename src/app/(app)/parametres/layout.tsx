@@ -6,6 +6,7 @@ const TABS = [
   { href: "/parametres/taxes", label: "Taxes" },
   { href: "/parametres/conditions", label: "Conditions de paiement" },
   { href: "/parametres/numerotation", label: "Numérotation" },
+  { href: "/parametres/relances", label: "Relances" },
 ];
 
 export default async function SettingsLayout({ children }: { children: React.ReactNode }) {

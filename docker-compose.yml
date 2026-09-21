@@ -26,6 +26,13 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.tn}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe-12345}
       ADMIN_NAME: ${ADMIN_NAME:-Administrateur}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      CRON_SECRET: ${CRON_SECRET:-}
     ports:
       - "3000:3000"
 

@@ -57,6 +57,20 @@
       "when": 1789936253904,
       "tag": "0007_devis_paiements_regles",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789974232811,
+      "tag": "0008_emails_relances",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789974236959,
+      "tag": "0009_emails_relances_regles",
+      "breakpoints": true
     }
   ]
 }

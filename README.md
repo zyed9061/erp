@@ -117,6 +117,30 @@ exemptions de timbre, obligation de chronologie des numéros.
 Hypothèses à faire valider par un expert-comptable : pas de timbre sur les acomptes (appliqué une fois, à la facture
 finale), FODEC intégré dans la base des acomptes puis déduit avec elle, timbre non remboursé par un avoir.
 
+## Phase 5 : PDF, e-mails, relances (terminée)
+
+- **PDF** (`/factures/<id>/pdf`, `/devis/<id>/pdf`, `?download=1` pour télécharger) : généré avec `pdf-lib`, sans service
+  externe. En-tête société, tableau paginé (en-tête répété), récapitulatif des taxes, totaux, **montant en lettres**
+  (« arrêtée à la somme de … dinars et … millimes »), numéros de page, empreinte du document, filigrane « BROUILLON ».
+  Un document validé s'imprime avec les **instantanés figés** à la validation : le PDF ne change pas si la fiche client
+  est modifiée ensuite. Polices standard (latin) : un caractère hors latin est remplacé par « ? » au lieu de faire échouer.
+- **Envoi par e-mail** (fiche facture / devis) : PDF en pièce jointe, destinataire par défaut = contact de facturation,
+  sinon e-mail du client. Journal `email_log` en ajout seul (réussites **et** échecs), refus d'un second envoi identique
+  dans la minute, sujet protégé contre l'injection d'en-têtes, corps HTML échappé.
+- **Relances automatiques** (`/relances`, `/parametres/relances`) : trois niveaux (7, 15, 30 jours après l'échéance,
+  modifiables) avec modèles à variables `{{numero}} {{client}} {{echeance}} {{reste_du}} {{jours_retard}} {{societe}}`.
+  On envoie le niveau le plus élevé atteint, une seule fois par facture (index unique) ; une facture payée ou soldée
+  n'est plus relancée ; le montant réclamé est le reste dû réel. Une réservation bloquée plus de 15 min redevient
+  réessayable ; un échec d'envoi est journalisé et retenté à l'exécution suivante.
+- **Déclenchement automatique** : `npm run reminders` (à planifier chaque jour) ou `POST /api/cron/reminders` avec
+  `Authorization: Bearer $CRON_SECRET` (désactivée, 404, tant que `CRON_SECRET` est vide). Idempotent.
+
+### Configuration de l'e-mail
+
+Sans `SMTP_HOST`, **aucun e-mail réel n'est envoyé** : un résumé s'affiche dans la console du serveur (mode journal).
+Pour envoyer pour de vrai, renseigner `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` et `MAIL_FROM`
+(voir `.env.example`). Fonctionne avec tout fournisseur SMTP.
+
 ## Landing page
 
 `landing/index.html` : page d'accueil statique autonome (HTML/CSS/JS sans dépendance). L'adresse de l'application
