@@ -262,37 +262,40 @@ async function writeChildren(tx: Tx, invoiceId: string, lines: ResolvedLine[], c
 
 export async function createDraftInvoice(db: Db, actor: Actor, input: InvoiceInput): Promise<Invoice> {
   const data = invoiceInputSchema.parse(input);
-  return db.transaction(async (tx) => {
-    const ctx = await loadContext(tx, data.customerId);
-    if (!ctx.customer.isActive) throw new ServiceError("Ce client est désactivé");
-    const lines = await resolveLines(tx, data.lines, ctx.vatExempt, new Set());
-    const doc = await computeDocument(tx, ctx, {
-      kind: "invoice", lines, issueDate: data.issueDate, dueDate: data.dueDate,
-      paymentTermId: data.paymentTermId, original: null,
-    });
-    const [created] = await tx
-      .insert(invoices)
-      .values({
-        kind: "invoice",
-        customerId: data.customerId,
-        issueDate: data.issueDate,
-        dueDate: doc.dueDate,
-        paymentTermId: data.paymentTermId,
-        reference: data.reference,
-        notes: data.notes,
-        createdBy: actor.id,
-        ...headerValues(doc.calc, doc),
-      })
-      .returning();
-    if (!created) throw new Error("Insertion de la facture échouée");
-    await writeChildren(tx, created.id, lines, doc.calc);
-    await audit(tx, {
-      userId: actor.id, userEmail: actor.email, ip: actor.ip,
-      action: "invoice.create", entity: "invoice", entityId: created.id,
-      after: { ...created, lineCount: lines.length },
-    });
-    return created;
+  return db.transaction((tx) => createDraftInvoiceTx(tx, actor, data));
+}
+
+/** Variante à appeler dans la transaction de l'appelant (ex. facture récurrente : création + suivi atomiques). */
+export async function createDraftInvoiceTx(tx: Tx, actor: Actor, data: z.output<typeof invoiceInputSchema>): Promise<Invoice> {
+  const ctx = await loadContext(tx, data.customerId);
+  if (!ctx.customer.isActive) throw new ServiceError("Ce client est désactivé");
+  const lines = await resolveLines(tx, data.lines, ctx.vatExempt, new Set());
+  const doc = await computeDocument(tx, ctx, {
+    kind: "invoice", lines, issueDate: data.issueDate, dueDate: data.dueDate,
+    paymentTermId: data.paymentTermId, original: null,
   });
+  const [created] = await tx
+    .insert(invoices)
+    .values({
+      kind: "invoice",
+      customerId: data.customerId,
+      issueDate: data.issueDate,
+      dueDate: doc.dueDate,
+      paymentTermId: data.paymentTermId,
+      reference: data.reference,
+      notes: data.notes,
+      createdBy: actor.id,
+      ...headerValues(doc.calc, doc),
+    })
+    .returning();
+  if (!created) throw new Error("Insertion de la facture échouée");
+  await writeChildren(tx, created.id, lines, doc.calc);
+  await audit(tx, {
+    userId: actor.id, userEmail: actor.email, ip: actor.ip,
+    action: "invoice.create", entity: "invoice", entityId: created.id,
+    after: { ...created, lineCount: lines.length },
+  });
+  return created;
 }
 
 export async function updateDraftInvoice(
@@ -563,87 +566,90 @@ const companySnapshotOf = (c: CompanySettings) => ({
  * si une règle échoue, le numéro est restitué et rien n'est modifié.
  */
 export async function validateDocument(db: Db, actor: Actor, id: string): Promise<Invoice> {
-  return db.transaction(async (tx) => {
-    const [inv] = await tx.select().from(invoices).where(eq(invoices.id, id)).for("update");
-    if (!inv) throw new ServiceError("Document introuvable");
-    if (inv.status !== "draft") throw new ServiceError("Ce document est déjà validé");
+  return db.transaction((tx) => validateDocumentTx(tx, actor, id));
+}
 
-    const lines = await tx.select().from(invoiceLines).where(eq(invoiceLines.invoiceId, id)).orderBy(asc(invoiceLines.position));
-    const taxes = await tx.select().from(invoiceTaxLines).where(eq(invoiceTaxLines.invoiceId, id));
-    if (lines.length === 0) throw new ServiceError("Ajoutez au moins une ligne avant de valider");
+/** Variante à appeler dans la transaction de l'appelant. */
+export async function validateDocumentTx(tx: Tx, actor: Actor, id: string): Promise<Invoice> {
+  const [inv] = await tx.select().from(invoices).where(eq(invoices.id, id)).for("update");
+  if (!inv) throw new ServiceError("Document introuvable");
+  if (inv.status !== "draft") throw new ServiceError("Ce document est déjà validé");
 
-    const ctx = await loadContext(tx, inv.customerId);
-    const { company, customer } = ctx;
-    if (company.legalName.trim() === PLACEHOLDER_NAME || !company.matriculeFiscal) {
-      throw new ServiceError("Renseignez la raison sociale et le matricule fiscal de la société (Paramètres) avant de valider");
-    }
+  const lines = await tx.select().from(invoiceLines).where(eq(invoiceLines.invoiceId, id)).orderBy(asc(invoiceLines.position));
+  const taxes = await tx.select().from(invoiceTaxLines).where(eq(invoiceTaxLines.invoiceId, id));
+  if (lines.length === 0) throw new ServiceError("Ajoutez au moins une ligne avant de valider");
 
-    // Garde-fou : les totaux stockés doivent correspondre au recalcul des lignes.
-    const recomputed = calculateInvoice(lines, {
-      stampDuty: inv.stampDuty,
-      withholdingRate: inv.withholdingRate,
-      withholdingBase: company.withholdingBase,
-      withholdingThreshold: company.withholdingThreshold,
-      guaranteeHoldbackRate: inv.guaranteeHoldbackRate,
-    });
-    if (toMilli(recomputed.totals.netToPay) !== toMilli(inv.netToPay) || toMilli(recomputed.totals.ttc) !== toMilli(inv.totalTtc)) {
-      throw new Error(`Totaux incohérents sur le document ${id} : recalcul différent du stocké`);
-    }
+  const ctx = await loadContext(tx, inv.customerId);
+  const { company, customer } = ctx;
+  if (company.legalName.trim() === PLACEHOLDER_NAME || !company.matriculeFiscal) {
+    throw new ServiceError("Renseignez la raison sociale et le matricule fiscal de la société (Paramètres) avant de valider");
+  }
 
-    if (inv.kind === "credit_note") {
-      if (!inv.originalInvoiceId) throw new Error("Avoir sans facture d'origine");
-      // Verrou sur la facture d'origine : deux avoirs validés en parallèle ne peuvent pas la dépasser.
-      const [original] = await tx.select().from(invoices).where(eq(invoices.id, inv.originalInvoiceId)).for("update");
-      if (!original || original.status !== "validated") throw new ServiceError("Facture d'origine introuvable ou non validée");
-      const already = await creditedTtc(tx, original.id);
-      const remaining = toMilli(original.totalTtc) - already;
-      if (toMilli(inv.totalTtc) > remaining) {
-        throw new ServiceError(`Le total des avoirs dépasserait la facture ${original.number} (reste à créditer : ${fromMilli(remaining)} DT TTC)`);
-      }
-    }
-
-    const docType = inv.kind; // les types de document portent le même nom que les types de facture
-    const num = await nextDocumentNumber(tx, docType, new Date(`${inv.issueDate}T12:00:00Z`));
-
-    // Chronologie : les numéros doivent suivre l'ordre des dates d'émission.
-    const [latest] = await tx
-      .select({ d: sql<string | null>`max(${invoices.issueDate})::text` })
-      .from(invoices)
-      .where(and(eq(invoices.kind, inv.kind), eq(invoices.status, "validated")));
-    if (latest?.d && inv.issueDate < latest.d) {
-      throw new ServiceError(`La date d'émission (${inv.issueDate}) précède celle du dernier document validé (${latest.d}) : les numéros doivent suivre l'ordre chronologique`);
-    }
-
-    const customerSnapshot = customerSnapshotOf(customer);
-    const companySnapshot = companySnapshotOf(company);
-    const numbered = { ...inv, number: num.number, seriesYear: num.fiscalYear, sequence: num.sequence };
-    const contentHash = computeContentHash(numbered, lines, taxes, customerSnapshot, companySnapshot);
-
-    const [after] = await tx
-      .update(invoices)
-      .set({
-        status: "validated",
-        number: num.number,
-        seriesYear: num.fiscalYear,
-        sequence: num.sequence,
-        customerSnapshot,
-        companySnapshot,
-        contentHash,
-        validatedAt: new Date(),
-        validatedBy: actor.id,
-        version: inv.version + 1,
-        updatedAt: new Date(),
-      })
-      .where(eq(invoices.id, id))
-      .returning();
-    if (!after) throw new Error("Validation échouée");
-    await audit(tx, {
-      userId: actor.id, userEmail: actor.email, ip: actor.ip,
-      action: `${inv.kind}.validate`, entity: "invoice", entityId: id,
-      before: { status: "draft" }, after: { status: "validated", number: after.number, contentHash },
-    });
-    return after;
+  // Garde-fou : les totaux stockés doivent correspondre au recalcul des lignes.
+  const recomputed = calculateInvoice(lines, {
+    stampDuty: inv.stampDuty,
+    withholdingRate: inv.withholdingRate,
+    withholdingBase: company.withholdingBase,
+    withholdingThreshold: company.withholdingThreshold,
+    guaranteeHoldbackRate: inv.guaranteeHoldbackRate,
   });
+  if (toMilli(recomputed.totals.netToPay) !== toMilli(inv.netToPay) || toMilli(recomputed.totals.ttc) !== toMilli(inv.totalTtc)) {
+    throw new Error(`Totaux incohérents sur le document ${id} : recalcul différent du stocké`);
+  }
+
+  if (inv.kind === "credit_note") {
+    if (!inv.originalInvoiceId) throw new Error("Avoir sans facture d'origine");
+    // Verrou sur la facture d'origine : deux avoirs validés en parallèle ne peuvent pas la dépasser.
+    const [original] = await tx.select().from(invoices).where(eq(invoices.id, inv.originalInvoiceId)).for("update");
+    if (!original || original.status !== "validated") throw new ServiceError("Facture d'origine introuvable ou non validée");
+    const already = await creditedTtc(tx, original.id);
+    const remaining = toMilli(original.totalTtc) - already;
+    if (toMilli(inv.totalTtc) > remaining) {
+      throw new ServiceError(`Le total des avoirs dépasserait la facture ${original.number} (reste à créditer : ${fromMilli(remaining)} DT TTC)`);
+    }
+  }
+
+  const docType = inv.kind; // les types de document portent le même nom que les types de facture
+  const num = await nextDocumentNumber(tx, docType, new Date(`${inv.issueDate}T12:00:00Z`));
+
+  // Chronologie : les numéros doivent suivre l'ordre des dates d'émission.
+  const [latest] = await tx
+    .select({ d: sql<string | null>`max(${invoices.issueDate})::text` })
+    .from(invoices)
+    .where(and(eq(invoices.kind, inv.kind), eq(invoices.status, "validated")));
+  if (latest?.d && inv.issueDate < latest.d) {
+    throw new ServiceError(`La date d'émission (${inv.issueDate}) précède celle du dernier document validé (${latest.d}) : les numéros doivent suivre l'ordre chronologique`);
+  }
+
+  const customerSnapshot = customerSnapshotOf(customer);
+  const companySnapshot = companySnapshotOf(company);
+  const numbered = { ...inv, number: num.number, seriesYear: num.fiscalYear, sequence: num.sequence };
+  const contentHash = computeContentHash(numbered, lines, taxes, customerSnapshot, companySnapshot);
+
+  const [after] = await tx
+    .update(invoices)
+    .set({
+      status: "validated",
+      number: num.number,
+      seriesYear: num.fiscalYear,
+      sequence: num.sequence,
+      customerSnapshot,
+      companySnapshot,
+      contentHash,
+      validatedAt: new Date(),
+      validatedBy: actor.id,
+      version: inv.version + 1,
+      updatedAt: new Date(),
+    })
+    .where(eq(invoices.id, id))
+    .returning();
+  if (!after) throw new Error("Validation échouée");
+  await audit(tx, {
+    userId: actor.id, userEmail: actor.email, ip: actor.ip,
+    action: `${inv.kind}.validate`, entity: "invoice", entityId: id,
+    before: { status: "draft" }, after: { status: "validated", number: after.number, contentHash },
+  });
+  return after;
 }
 
 /** Vérifie qu'un document validé n'a pas été altéré (recalcul de l'empreinte). */

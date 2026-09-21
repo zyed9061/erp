@@ -42,6 +42,8 @@ npm run dev
 | `npm test` | tests (PostgreSQL en mémoire via PGlite, aucun Docker requis) |
 | `npm run db:generate` | génère une migration après modification de `src/db/schema.ts` |
 | `npm run db:migrate` | applique les migrations |
+| `npm run reminders` | envoie les relances dues (à planifier chaque jour) |
+| `npm run recurring` | génère les factures récurrentes dues (à planifier chaque jour) |
 | `npm run db:seed` | crée l'administrateur initial (ne fait rien si des utilisateurs existent) |
 
 ## Phase 1 : fondations (terminée)
@@ -164,6 +166,31 @@ Pour envoyer pour de vrai, renseigner `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `
 
 Limites connues : pas de valorisation du stock (coût d'achat, CUMP), pas d'avenants au marché, un avoir sur une situation ne
 fait pas reculer l'avancement du chantier, et l'encaissement d'une libération de retenue se saisit à part comme un paiement.
+
+## Phase 7 : récurrentes, rapports, tableau de bord (terminée)
+
+- **Factures récurrentes** (`/recurrentes`) : un modèle (client, lignes, fréquence hebdomadaire / mensuelle / trimestrielle /
+  annuelle, date de première échéance, date de fin facultative) produit une facture à chaque échéance. Selon le modèle :
+  **brouillon** à relire, ou **validation et numérotation automatiques**, avec en plus **envoi par e-mail** au client.
+  Les échéances se calculent depuis la date de début (le 31 reste le dernier jour des mois courts, sans dérive).
+- **Sûr à rejouer** : chaque période est unique (index partiel en base) ; deux exécutions simultanées ne créent qu'une
+  facture. Une échéance en retard est rattrapée (12 périodes au maximum par passage). Une erreur annule la facture de la
+  période (transaction) et est consignée dans l'historique ; l'échéance est retentée au passage suivant. Un envoi d'e-mail
+  qui échoue n'annule jamais la facture : l'échec est affiché dans l'historique du modèle.
+- **Lancement** : bouton « Générer les échéances dues », `npm run recurring` (planificateur système) ou
+  `GET/POST /api/cron/recurring` avec `Authorization: Bearer $CRON_SECRET` (mêmes règles que les relances).
+- **Rapports** (`/rapports`, administrateur et comptable) : chiffre d'affaires (par mois et par client), balance âgée des
+  créances, TVA collectée / FODEC / timbre fiscal par taux et par mois, retenues à la source subies avec les certificats
+  reçus, encaissements par mois et par mode. Base : documents validés, **avoirs déduits**, brouillons exclus, paiements
+  annulés exclus. Ce sont des états de préparation de la déclaration, pas la déclaration elle-même.
+- **Exports CSV** : `/rapports/export/<type>` (Excel FR : séparateur « ; », virgule décimale, UTF-8 avec BOM). Les cellules
+  texte commençant par `= + - @` sont neutralisées (injection de formule via un nom de client).
+- **Tableau de bord** (`/`, administrateur et comptable) : CA du mois et de l'année, encaissements, créances, retards,
+  brouillons, devis en attente, bons à facturer, stocks bas, chantiers actifs, récurrentes à générer, et le CA HT des
+  12 derniers mois (graphique accessible, avec tableau équivalent). Les autres rôles voient un accueil sans chiffres.
+
+Limites connues : pas de prorata ni d'indexation des prix entre deux périodes, les modèles ne se dupliquent pas,
+et les rapports ne couvrent pas la déclaration TVA sur les encaissements (base facturation uniquement).
 
 ## Landing page
 

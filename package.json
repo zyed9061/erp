@@ -11,7 +11,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
     "db:seed": "tsx src/db/seed.ts",
-    "reminders": "tsx src/scripts/reminders.ts"
+    "reminders": "tsx src/scripts/reminders.ts",
+    "recurring": "tsx src/scripts/recurring.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.2",

@@ -1,5 +1,1 @@
-import type { PaymentMethod } from "@/db/schema";
-
-export const METHOD_LABELS: Record<PaymentMethod, string> = {
-  especes: "Espèces", cheque: "Chèque", virement: "Virement", carte: "Carte bancaire", effet: "Effet de commerce",
-};
+export { PAYMENT_METHOD_LABELS as METHOD_LABELS } from "@/lib/payments-labels";

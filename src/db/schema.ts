@@ -934,6 +934,116 @@ export const reminders = pgTable(
   ],
 );
 
+// ---------------------------------------------------------------------------
+// Phase 7 : factures récurrentes
+// ---------------------------------------------------------------------------
+
+export const RECURRING_FREQUENCIES = ["weekly", "monthly", "quarterly", "yearly"] as const;
+export type RecurringFrequency = (typeof RECURRING_FREQUENCIES)[number];
+export const recurringFrequencyEnum = pgEnum("recurring_frequency", RECURRING_FREQUENCIES);
+
+export const RECURRING_STATUSES = ["active", "paused", "ended"] as const;
+export type RecurringStatus = (typeof RECURRING_STATUSES)[number];
+export const recurringStatusEnum = pgEnum("recurring_status", RECURRING_STATUSES);
+
+/**
+ * Modèle de facture récurrente. Les dates d'échéance se calculent depuis `startDate` et le nombre de périodes
+ * déjà traitées (`runIndex`), jamais depuis la date précédente : pas de dérive (31 janvier -> 28 février -> 31 mars).
+ */
+export const recurringTemplates = pgTable(
+  "recurring_templates",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    customerId: uuid("customer_id")
+      .notNull()
+      .references(() => customers.id, { onDelete: "restrict" }),
+    frequency: recurringFrequencyEnum("frequency").notNull(),
+    startDate: date("start_date", { mode: "string" }).notNull(),
+    endDate: date("end_date", { mode: "string" }),
+    /** Nombre de périodes déjà traitées ; la prochaine échéance est start_date + run_index périodes. */
+    runIndex: integer("run_index").notNull().default(0),
+    nextRunDate: date("next_run_date", { mode: "string" }).notNull(),
+    status: recurringStatusEnum("status").notNull().default("active"),
+    /** Valider (numéroter) automatiquement la facture générée ; sinon elle reste en brouillon. */
+    autoValidate: boolean("auto_validate").notNull().default(false),
+    /** Envoyer la facture validée par e-mail (n'a d'effet qu'avec la validation automatique). */
+    autoSend: boolean("auto_send").notNull().default(false),
+    reference: text("reference"),
+    notes: text("notes"),
+    paymentTermId: uuid("payment_term_id").references(() => paymentTerms.id, { onDelete: "set null" }),
+    createdBy: uuid("created_by")
+      .notNull()
+      .references(() => users.id, { onDelete: "restrict" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("recurring_templates_next_idx").on(t.status, t.nextRunDate),
+    check("recurring_dates", sql`${t.endDate} IS NULL OR ${t.endDate} >= ${t.startDate}`),
+    check("recurring_auto_send", sql`NOT ${t.autoSend} OR ${t.autoValidate}`),
+  ],
+);
+
+export const recurringTemplateLines = pgTable(
+  "recurring_template_lines",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    templateId: uuid("template_id")
+      .notNull()
+      .references(() => recurringTemplates.id, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+    productId: uuid("product_id").references(() => products.id, { onDelete: "set null" }),
+    description: text("description").notNull(),
+    quantity: numeric("quantity", { precision: 15, scale: 3 }).notNull(),
+    unit: text("unit").notNull().default("unité"),
+    unitPrice: numeric("unit_price", { precision: 15, scale: 3 }).notNull(),
+    discountPercent: numeric("discount_percent", { precision: 6, scale: 3 }).notNull().default("0.000"),
+    // Taux courant au moment de chaque génération (pas figé) : une évolution de TVA s'applique aux factures à venir.
+    tvaRateId: uuid("tva_rate_id")
+      .notNull()
+      .references(() => taxRates.id, { onDelete: "restrict" }),
+    fodecApplicable: boolean("fodec_applicable").notNull().default(false),
+  },
+  (t) => [
+    index("recurring_lines_template_idx").on(t.templateId, t.position),
+    check("recurring_lines_qty", sql`${t.quantity} > 0`),
+  ],
+);
+
+export const recurringRunStatusEnum = pgEnum("recurring_run_status", ["generated", "failed"]);
+
+/**
+ * Historique des générations. L'index unique partiel garantit qu'une période n'est générée qu'une fois, même si
+ * deux exécutions du planificateur se chevauchent ; un échec ne bloque pas la période (elle est retentée).
+ */
+export const recurringRuns = pgTable(
+  "recurring_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    templateId: uuid("template_id")
+      .notNull()
+      .references(() => recurringTemplates.id, { onDelete: "restrict" }),
+    periodIndex: integer("period_index").notNull(),
+    scheduledDate: date("scheduled_date", { mode: "string" }).notNull(),
+    status: recurringRunStatusEnum("status").notNull(),
+    invoiceId: uuid("invoice_id").references(() => invoices.id, { onDelete: "restrict" }),
+    error: text("error"),
+    /** sent | failed | skipped | null (pas d'envoi demandé) */
+    emailStatus: text("email_status"),
+    emailError: text("email_error"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("recurring_runs_period_uq").on(t.templateId, t.periodIndex).where(sql`${t.status} = 'generated'`),
+    index("recurring_runs_template_idx").on(t.templateId, t.createdAt),
+  ],
+);
+
+export type RecurringTemplate = typeof recurringTemplates.$inferSelect;
+export type RecurringTemplateLine = typeof recurringTemplateLines.$inferSelect;
+export type RecurringRun = typeof recurringRuns.$inferSelect;
+
 export type EmailLogEntry = typeof emailLog.$inferSelect;
 export type ReminderRule = typeof reminderRules.$inferSelect;
 export type Reminder = typeof reminders.$inferSelect;

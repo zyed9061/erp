@@ -23,7 +23,9 @@ export type EditorInitial = {
 
 type Props = {
   action: (formData: FormData) => Promise<void>;
-  kind: "invoice" | "credit_note" | "deposit_invoice" | "quote";
+  kind: "invoice" | "credit_note" | "deposit_invoice" | "quote" | "recurring";
+  /** Champs HTML supplémentaires (uncontrolled) envoyés avec le formulaire, ex. la fréquence d'un modèle récurrent. */
+  extraFields?: React.ReactNode;
   invoiceId?: string;
   version?: number;
   customers: EditorCustomer[];
@@ -69,7 +71,7 @@ export function InvoiceEditor(props: Props) {
         fodecRate: r.fodecApplicable && fodecRate ? fodecRate : "0.000",
       }));
       return calculateInvoice(lines, {
-        stampDuty: kind === "invoice" && company.stampDutyEnabled && customer && !customer.stampExempt ? company.stampDutyAmount : "0.000",
+        stampDuty: (kind === "invoice" || kind === "recurring") && company.stampDutyEnabled && customer && !customer.stampExempt ? company.stampDutyAmount : "0.000",
         withholdingRate: kind === "quote" ? null : kind === "credit_note" ? (props.creditWithholdingRate ?? null) : (customer?.withholdingRate ?? null),
         withholdingBase: company.withholdingBase,
         withholdingThreshold: company.withholdingThreshold,
@@ -124,7 +126,7 @@ export function InvoiceEditor(props: Props) {
           </select>
         </label>
         <label className="block space-y-1">
-          <span className="text-sm">Date d&apos;émission *</span>
+          <span className="text-sm">{kind === "recurring" ? "Première échéance (date de la 1re facture) *" : "Date d'émission *"}</span>
           <input className="input" type="date" value={issueDate} onChange={(e) => { setIssueDate(e.target.value); setDueDate(""); }} required />
         </label>
         {kind === "quote" && (
@@ -142,17 +144,20 @@ export function InvoiceEditor(props: Props) {
                 {props.paymentTerms.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
               </select>
             </label>
-            <label className="block space-y-1">
-              <span className="text-sm">Échéance</span>
-              <input className="input" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-              <span className="block text-xs" style={{ color: "var(--muted)" }}>Vide : calculée depuis la condition de paiement</span>
-            </label>
+            {kind !== "recurring" && (
+              <label className="block space-y-1">
+                <span className="text-sm">Échéance</span>
+                <input className="input" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+                <span className="block text-xs" style={{ color: "var(--muted)" }}>Vide : calculée depuis la condition de paiement</span>
+              </label>
+            )}
           </>
         )}
         <label className="block space-y-1 sm:col-span-2">
           <span className="text-sm">Référence (bon de commande, contrat…)</span>
           <input className="input" value={reference} onChange={(e) => setReference(e.target.value)} maxLength={100} />
         </label>
+        {props.extraFields}
         {vatExempt && customer && (
           <p className="sm:col-span-2 text-sm" style={{ color: "var(--muted)" }}>
             TVA à 0 % sur toutes les lignes ({company.vatRegistered ? "client exonéré ou export" : "société non assujettie"}).

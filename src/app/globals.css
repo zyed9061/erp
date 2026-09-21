@@ -9,6 +9,8 @@
   --accent: #1f5fbf;
   --accent-hover: #184c99;
   --danger: #b42318;
+  --chart-1: #4f46e5;
+  --chart-grid: #e8eaee;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +23,8 @@
     --accent: #5b9bff;
     --accent-hover: #7db0ff;
     --danger: #ff7b6e;
+    --chart-1: #8079f5;
+    --chart-grid: #262c37;
   }
 }
 

@@ -85,6 +85,13 @@
       "when": 1789975262661,
       "tag": "0011_stock_livraisons_btp_regles",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1789978636488,
+      "tag": "0012_recurrentes",
+      "breakpoints": true
     }
   ]
 }
