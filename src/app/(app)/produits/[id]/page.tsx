@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { ProduitForm } from "@/components/ProduitForm";
 import { updateProduit } from "@/lib/actions/produits";
 
@@ -18,8 +19,8 @@ export default async function EditProduitPage({
   const updateProduitWithId = updateProduit.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-neutral-900">{produit.designation}</h1>
+    <div className="space-y-3">
+      <Breadcrumbs lastLabel={produit.designation} />
       <ProduitForm action={updateProduitWithId} produit={produit} />
     </div>
   );

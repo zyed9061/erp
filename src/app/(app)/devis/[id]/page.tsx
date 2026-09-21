@@ -1,6 +1,9 @@
-import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { ToastOnParam } from "@/components/ui/ToastOnParam";
 import { formatMontant, formatDate } from "@/lib/format";
 import { StatutBadge } from "@/components/StatutBadge";
 import { updateDevisStatut, convertirDevisEnFacture } from "@/lib/actions/devis";
@@ -22,6 +25,10 @@ export default async function DevisDetailPage({
 
   return (
     <div className="space-y-6">
+      <Suspense fallback={null}>
+        <ToastOnParam />
+      </Suspense>
+      <Breadcrumbs lastLabel={devis.numero} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-neutral-900">{devis.numero}</h1>
@@ -53,7 +60,8 @@ export default async function DevisDetailPage({
           <form
             action={async () => {
               "use server";
-              await convertirDevisEnFacture(devis.id);
+              const { id } = await convertirDevisEnFacture(devis.id);
+              redirect(`/factures/${id}`);
             }}
           >
             <button

@@ -1,7 +1,12 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatMontant, formatDate } from "@/lib/format";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { ToastOnParam } from "@/components/ui/ToastOnParam";
+import { StatutBadge } from "@/components/StatutBadge";
+import { updateAvoirStatut } from "@/lib/actions/avoirs";
 
 export default async function AvoirDetailPage({
   params,
@@ -20,6 +25,10 @@ export default async function AvoirDetailPage({
 
   return (
     <div className="space-y-6">
+      <Suspense fallback={null}>
+        <ToastOnParam />
+      </Suspense>
+      <Breadcrumbs lastLabel={avoir.numero} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-neutral-900">{avoir.numero}</h1>
@@ -30,13 +39,26 @@ export default async function AvoirDetailPage({
             </Link>
           </p>
         </div>
-        <a
-          href={`/avoirs/${avoir.id}/pdf`}
-          target="_blank"
-          className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
-        >
-          Voir le PDF
-        </a>
+        <div className="flex items-center gap-3">
+          <StatutBadge statut={avoir.statut} />
+          <a
+            href={`/avoirs/${avoir.id}/pdf`}
+            target="_blank"
+            className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
+          >
+            Voir le PDF
+          </a>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {avoir.statut === "EMIS" && (
+          <>
+            <AvoirStatusButton id={avoir.id} statut="APPLIQUE" label="Marquer comme applique" />
+            <AvoirStatusButton id={avoir.id} statut="REMBOURSE" label="Marquer comme rembourse" />
+            <AvoirStatusButton id={avoir.id} statut="ANNULE" label="Annuler" />
+          </>
+        )}
       </div>
 
       {avoir.motif && (
@@ -88,5 +110,31 @@ export default async function AvoirDetailPage({
 
       <p className="text-xs text-neutral-400">Emis le {formatDate(avoir.dateEmission)}</p>
     </div>
+  );
+}
+
+function AvoirStatusButton({
+  id,
+  statut,
+  label,
+}: {
+  id: string;
+  statut: "APPLIQUE" | "REMBOURSE" | "ANNULE";
+  label: string;
+}) {
+  return (
+    <form
+      action={async () => {
+        "use server";
+        await updateAvoirStatut(id, statut);
+      }}
+    >
+      <button
+        type="submit"
+        className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
+      >
+        {label}
+      </button>
+    </form>
   );
 }

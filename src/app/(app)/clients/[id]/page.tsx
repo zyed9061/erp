@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { ClientForm } from "@/components/ClientForm";
 import { updateClient } from "@/lib/actions/clients";
 
@@ -18,8 +19,8 @@ export default async function EditClientPage({
   const updateClientWithId = updateClient.bind(null, id);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-neutral-900">{client.nom}</h1>
+    <div className="space-y-3">
+      <Breadcrumbs lastLabel={client.nom} />
       <ClientForm action={updateClientWithId} client={client} />
     </div>
   );

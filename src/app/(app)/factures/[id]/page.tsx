@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { ToastOnParam } from "@/components/ui/ToastOnParam";
 import { formatMontant, formatDate } from "@/lib/format";
 import { StatutBadge } from "@/components/StatutBadge";
 import { updateFactureStatut, enregistrerPaiement } from "@/lib/actions/factures";
@@ -29,6 +32,10 @@ export default async function FactureDetailPage({
 
   return (
     <div className="space-y-6">
+      <Suspense fallback={null}>
+        <ToastOnParam />
+      </Suspense>
+      <Breadcrumbs lastLabel={facture.numero} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-neutral-900">{facture.numero}</h1>

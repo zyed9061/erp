@@ -1,4 +1,9 @@
+"use client";
+
 import type { Client } from "@/generated/prisma/client";
+import { FormSection } from "@/components/layout/FormSection";
+import { FormActions } from "@/components/ui/FormActions";
+import { useLocale } from "@/i18n/client";
 
 export function ClientForm({
   action,
@@ -7,72 +12,65 @@ export function ClientForm({
   action: (formData: FormData) => void;
   client?: Client;
 }) {
+  const { t } = useLocale();
+  const title = client ? client.nom : t("clients.newClient");
+
   return (
-    <form action={action} className="max-w-xl space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <Field label="Type">
-          <select
-            name="type"
-            defaultValue={client?.type ?? "ENTREPRISE"}
-            className="input"
-          >
-            <option value="ENTREPRISE">Entreprise</option>
-            <option value="PARTICULIER">Particulier</option>
-          </select>
-        </Field>
-        <Field label="Nom / Raison sociale">
-          <input name="nom" defaultValue={client?.nom} required className="input" />
-        </Field>
-      </div>
+    <FormSection maxWidth="max-w-full" title={title}>
+      <form action={action} className="space-y-5">
+        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+          <Field label={t("clients.fieldType")}>
+            <select name="type" defaultValue={client?.type ?? "ENTREPRISE"} className="input-lg">
+              <option value="ENTREPRISE">{t("clients.typeCompany")}</option>
+              <option value="PARTICULIER">{t("clients.typeIndividual")}</option>
+            </select>
+          </Field>
+          <Field label={t("clients.fieldName")} className="sm:col-span-2">
+            <input name="nom" defaultValue={client?.nom} required className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldTaxId")}>
+            <input name="matriculeFiscal" defaultValue={client?.matriculeFiscal ?? ""} className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldEmail")}>
+            <input type="email" name="email" defaultValue={client?.email ?? ""} className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldPhone")}>
+            <input name="telephone" defaultValue={client?.telephone ?? ""} className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldCity")}>
+            <input name="ville" defaultValue={client?.ville ?? ""} className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldPostalCode")}>
+            <input name="codePostal" defaultValue={client?.codePostal ?? ""} className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldCountry")}>
+            <input name="pays" defaultValue={client?.pays ?? "Tunisie"} className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldAddress")} className="sm:col-span-3">
+            <input name="adresse" defaultValue={client?.adresse ?? ""} className="input-lg" />
+          </Field>
+          <Field label={t("clients.fieldNotes")} className="sm:col-span-3">
+            <textarea name="notes" defaultValue={client?.notes ?? ""} rows={2} className="input-lg" />
+          </Field>
+        </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <Field label="Matricule fiscal">
-          <input name="matriculeFiscal" defaultValue={client?.matriculeFiscal ?? ""} className="input" />
-        </Field>
-        <Field label="Email">
-          <input type="email" name="email" defaultValue={client?.email ?? ""} className="input" />
-        </Field>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <Field label="Telephone">
-          <input name="telephone" defaultValue={client?.telephone ?? ""} className="input" />
-        </Field>
-        <Field label="Ville">
-          <input name="ville" defaultValue={client?.ville ?? ""} className="input" />
-        </Field>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <Field label="Code postal">
-          <input name="codePostal" defaultValue={client?.codePostal ?? ""} className="input" />
-        </Field>
-        <Field label="Pays">
-          <input name="pays" defaultValue={client?.pays ?? "Tunisie"} className="input" />
-        </Field>
-      </div>
-
-      <Field label="Adresse">
-        <input name="adresse" defaultValue={client?.adresse ?? ""} className="input" />
-      </Field>
-
-      <Field label="Notes">
-        <textarea name="notes" defaultValue={client?.notes ?? ""} rows={3} className="input" />
-      </Field>
-
-      <button
-        type="submit"
-        className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
-      >
-        Enregistrer
-      </button>
-    </form>
+        <FormActions cancelHref="/clients" />
+      </form>
+    </FormSection>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+  className = "",
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <label className="block">
+    <label className={`block ${className}`}>
       <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
       {children}
     </label>

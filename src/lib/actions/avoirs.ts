@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/current-user";
 import { avoirSchema } from "@/lib/validations/document";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
+import { withToast } from "@/lib/toastRedirect";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -62,5 +63,15 @@ export async function createAvoir(formData: FormData) {
 
   revalidatePath("/avoirs");
   revalidatePath(`/factures/${factureOrigine.id}`);
-  redirect(`/avoirs/${avoir.id}`);
+  redirect(withToast(`/avoirs/${avoir.id}`, "Avoir cree avec succes."));
+}
+
+export async function updateAvoirStatut(
+  id: string,
+  statut: "BROUILLON" | "EMIS" | "APPLIQUE" | "REMBOURSE" | "ANNULE",
+) {
+  await requireUser();
+  await prisma.avoir.update({ where: { id }, data: { statut } });
+  revalidatePath(`/avoirs/${id}`);
+  revalidatePath("/avoirs");
 }

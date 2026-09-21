@@ -1,8 +1,14 @@
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { DevisForm } from "@/components/DevisForm";
 import { createDevis } from "@/lib/actions/devis";
 
-export default async function NewDevisPage() {
+export default async function NewDevisPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ clientId?: string }>;
+}) {
+  const { clientId } = await searchParams;
   const [clients, produits] = await Promise.all([
     prisma.client.findMany({ where: { actif: true }, orderBy: { nom: "asc" } }),
     prisma.produit.findMany({ where: { actif: true }, orderBy: { designation: "asc" } }),
@@ -16,9 +22,14 @@ export default async function NewDevisPage() {
   }));
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-neutral-900">Nouveau devis</h1>
-      <DevisForm action={createDevis} clients={clients} produits={produitOptions} />
+    <div className="space-y-3">
+      <Breadcrumbs />
+      <DevisForm
+        action={createDevis}
+        clients={clients}
+        produits={produitOptions}
+        defaultClientId={clientId}
+      />
     </div>
   );
 }

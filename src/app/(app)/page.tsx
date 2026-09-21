@@ -1,87 +1,219 @@
+import Link from "next/link";
+import {
+  TrendingUp,
+  Wallet,
+  AlertTriangle,
+  CheckCircle2,
+  FileText,
+  Users,
+  Plus,
+} from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatMontant } from "@/lib/format";
+import { computeFactureDisplayStatut } from "@/lib/factureStatus";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { RevenueChart, StatusDistributionChart } from "./DashboardCharts";
+import { DashboardInvoiceGrid, type DashboardFactureRow } from "./DashboardInvoiceGrids";
+
+const STATUT_LABELS: Record<string, string> = {
+  BROUILLON: "Brouillon",
+  ENVOYEE: "Envoyee",
+  PARTIELLEMENT_PAYEE: "Partiellement payee",
+  PAYEE: "Payee",
+  EN_RETARD: "En retard",
+  ANNULEE: "Annulee",
+};
 
 export default async function DashboardPage() {
   const now = new Date();
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const [caduMois, facturesImpayees, devisEnAttente, clientsActifs] = await Promise.all([
-    prisma.facture.aggregate({
-      _sum: { totalTTC: true },
-      where: { dateEmission: { gte: debutMois }, statut: { not: "ANNULEE" } },
-    }),
+  const [factures, devisEnAttente, nombreClients] = await Promise.all([
     prisma.facture.findMany({
-      where: { statut: { in: ["ENVOYEE", "PARTIELLEMENT_PAYEE", "EN_RETARD"] } },
       include: { client: true },
-      orderBy: { dateEcheance: "asc" },
-      take: 5,
+      orderBy: { createdAt: "desc" },
     }),
     prisma.devis.count({ where: { statut: { in: ["BROUILLON", "ENVOYE"] } } }),
     prisma.client.count({ where: { actif: true } }),
   ]);
 
-  const totalImpaye = facturesImpayees.reduce(
-    (acc, f) => acc + (Number(f.totalTTC) - Number(f.montantPaye)),
-    0,
+  const enriched = factures.map((f) => {
+    const totalTTC = Number(f.totalTTC);
+    const montantPaye = Number(f.montantPaye);
+    return {
+      ...f,
+      totalTTC,
+      montantPaye,
+      resteAPayer: totalTTC - montantPaye,
+      displayStatut: computeFactureDisplayStatut({
+        statut: f.statut,
+        dateEcheance: f.dateEcheance,
+        totalTTC,
+        montantPaye,
+      }),
+    };
+  });
+
+  const caDuMois = enriched
+    .filter((f) => f.dateEmission >= debutMois && f.statut !== "ANNULEE")
+    .reduce((sum, f) => sum + f.totalTTC, 0);
+
+  const montantAEncaisser = enriched
+    .filter((f) => f.statut !== "ANNULEE")
+    .reduce((sum, f) => sum + Math.max(0, f.resteAPayer), 0);
+
+  const facturesEnRetard = enriched.filter((f) => f.displayStatut === "EN_RETARD");
+  const facturesPayees = enriched.filter((f) => f.statut === "PAYEE");
+
+  const recentFactures: DashboardFactureRow[] = enriched.slice(0, 5).map((f) => ({
+    id: f.id,
+    numero: f.numero,
+    clientNom: f.client.nom,
+    dateEcheance: f.dateEcheance?.toISOString() ?? null,
+    resteAPayer: f.resteAPayer,
+    statut: f.displayStatut,
+  }));
+
+  const overdueFactures: DashboardFactureRow[] = facturesEnRetard
+    .sort((a, b) => (a.dateEcheance?.getTime() ?? 0) - (b.dateEcheance?.getTime() ?? 0))
+    .slice(0, 8)
+    .map((f) => ({
+      id: f.id,
+      numero: f.numero,
+      clientNom: f.client.nom,
+      dateEcheance: f.dateEcheance?.toISOString() ?? null,
+      resteAPayer: f.resteAPayer,
+      statut: f.displayStatut,
+    }));
+
+  const revenueByMonth: { label: string; total: number }[] = Array.from({ length: 6 }, (_, i) => {
+    const monthDate = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1);
+    const nextMonth = new Date(now.getFullYear(), now.getMonth() - (5 - i) + 1, 1);
+    const total = enriched
+      .filter((f) => f.statut !== "ANNULEE" && f.dateEmission >= monthDate && f.dateEmission < nextMonth)
+      .reduce((sum, f) => sum + f.totalTTC, 0);
+    return { label: monthDate.toLocaleDateString("fr-FR", { month: "short" }), total };
+  });
+
+  const statusCounts = ["BROUILLON", "ENVOYEE", "PARTIELLEMENT_PAYEE", "PAYEE", "EN_RETARD", "ANNULEE"].map(
+    (statut) => ({
+      statut,
+      label: STATUT_LABELS[statut],
+      count: enriched.filter((f) => f.displayStatut === statut).length,
+    }),
   );
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-semibold text-neutral-900">Tableau de bord</h1>
+    <div className="space-y-6">
+      <PageHeader
+        title="Tableau de bord"
+        description="Vue d'ensemble de votre activite de facturation."
+      />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="CA du mois" value={formatMontant(Number(caduMois._sum.totalTTC ?? 0))} />
-        <StatCard label="Impayes en cours" value={formatMontant(totalImpaye)} />
-        <StatCard label="Devis en attente" value={String(devisEnAttente)} />
-        <StatCard label="Clients actifs" value={String(clientsActifs)} />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <StatCard icon={TrendingUp} label="CA du mois" value={formatMontant(caDuMois)} accent="teal" />
+        <StatCard
+          icon={Wallet}
+          label="A encaisser"
+          value={formatMontant(montantAEncaisser)}
+          accent="amber"
+        />
+        <StatCard
+          icon={AlertTriangle}
+          label="Factures en retard"
+          value={String(facturesEnRetard.length)}
+          accent="red"
+        />
+        <StatCard
+          icon={CheckCircle2}
+          label="Factures payees"
+          value={String(facturesPayees.length)}
+          accent="green"
+        />
+        <StatCard icon={FileText} label="Devis en attente" value={String(devisEnAttente)} accent="blue" />
+        <StatCard icon={Users} label="Clients" value={String(nombreClients)} accent="teal" />
       </div>
 
-      <div className="rounded-lg border border-neutral-200 bg-white">
-        <div className="border-b border-neutral-200 px-5 py-3">
-          <h2 className="text-sm font-medium text-neutral-900">Factures a suivre</h2>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5 lg:col-span-2">
+          <h2 className="mb-4 text-sm font-semibold text-neutral-900">
+            Chiffre d&apos;affaires (6 derniers mois)
+          </h2>
+          <RevenueChart data={revenueByMonth} />
         </div>
-        {facturesImpayees.length === 0 ? (
-          <p className="px-5 py-6 text-sm text-neutral-500">Aucune facture en attente de paiement.</p>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="text-left text-neutral-500">
-              <tr>
-                <th className="px-5 py-2 font-normal">Numero</th>
-                <th className="px-5 py-2 font-normal">Client</th>
-                <th className="px-5 py-2 font-normal">Echeance</th>
-                <th className="px-5 py-2 font-normal">Reste a payer</th>
-              </tr>
-            </thead>
-            <tbody>
-              {facturesImpayees.map((f) => (
-                <tr key={f.id} className="border-t border-neutral-100">
-                  <td className="px-5 py-2">
-                    <a href={`/factures/${f.id}`} className="text-neutral-900 hover:underline">
-                      {f.numero}
-                    </a>
-                  </td>
-                  <td className="px-5 py-2">{f.client.nom}</td>
-                  <td className="px-5 py-2">
-                    {f.dateEcheance ? new Date(f.dateEcheance).toLocaleDateString("fr-FR") : "—"}
-                  </td>
-                  <td className="px-5 py-2">
-                    {formatMontant(Number(f.totalTTC) - Number(f.montantPaye))}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
+          <h2 className="mb-4 text-sm font-semibold text-neutral-900">Repartition des factures</h2>
+          <StatusDistributionChart data={statusCounts} />
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
+        <h2 className="mb-3 text-sm font-semibold text-neutral-900">Actions rapides</h2>
+        <div className="flex flex-wrap gap-2">
+          <QuickAction href="/factures/new" label="Nouvelle facture" />
+          <QuickAction href="/devis/new" label="Nouveau devis" />
+          <QuickAction href="/clients/new" label="Nouveau client" />
+          <QuickAction href="/produits/new" label="Ajouter un produit/service" />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
+          <div className="border-b border-neutral-100 px-5 py-3">
+            <h2 className="text-sm font-semibold text-neutral-900">Factures recentes</h2>
+          </div>
+          <DashboardInvoiceGrid rows={recentFactures} emptyMessage="Aucune facture pour le moment." />
+        </div>
+        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
+          <div className="border-b border-neutral-100 px-5 py-3">
+            <h2 className="text-sm font-semibold text-neutral-900">Factures en retard</h2>
+          </div>
+          <DashboardInvoiceGrid rows={overdueFactures} emptyMessage="Aucune facture en retard." />
+        </div>
       </div>
     </div>
   );
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+const ACCENTS = {
+  teal: "bg-brand-50 text-brand-700",
+  amber: "bg-amber-50 text-amber-700",
+  red: "bg-red-50 text-red-700",
+  green: "bg-green-50 text-green-700",
+  blue: "bg-blue-50 text-blue-700",
+};
+
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  accent,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+  accent: keyof typeof ACCENTS;
+}) {
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4">
-      <p className="text-xs uppercase tracking-wide text-neutral-500">{label}</p>
-      <p className="mt-1 text-xl font-semibold text-neutral-900">{value}</p>
+    <div className="rounded-xl border border-neutral-200 bg-white p-4">
+      <div className="flex items-center gap-2">
+        <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${ACCENTS[accent]}`}>
+          <Icon className="h-4 w-4" />
+        </span>
+        <p className="text-xs uppercase tracking-wide text-neutral-500">{label}</p>
+      </div>
+      <p className="mt-2 text-xl font-semibold text-neutral-900">{value}</p>
     </div>
+  );
+}
+
+function QuickAction({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center gap-1.5 rounded-md border border-neutral-200 px-3 py-2 text-sm font-medium text-neutral-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-800"
+    >
+      <Plus className="h-4 w-4" aria-hidden="true" /> {label}
+    </Link>
   );
 }
