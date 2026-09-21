@@ -78,6 +78,8 @@ npm run build       # compilation de production
 npm run e2e         # après le build : 8 parcours complets contre un vrai serveur (formulaires réels, rôles, exports, sécurité)
 ```
 
+Ces cinq contrôles tournent aussi automatiquement sur GitHub à chaque envoi de code (`.github/workflows/ci.yml`).
+
 `npm run e2e` démarre sa propre base embarquée neuve : aucune donnée existante n'est touchée. Les scénarios sont dans `e2e/`.
 
 ## E-mail (SMTP)
