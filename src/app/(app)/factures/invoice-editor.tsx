@@ -37,6 +37,8 @@ type Props = {
   };
   /** Avoir : taux de retenue hérité de la facture d'origine. */
   creditWithholdingRate?: string | null;
+  /** Retenue de garantie (chantier) : conservée pour l'aperçu des totaux. */
+  guaranteeHoldbackRate?: string | null;
   initial: EditorInitial;
 };
 
@@ -71,11 +73,12 @@ export function InvoiceEditor(props: Props) {
         withholdingRate: kind === "quote" ? null : kind === "credit_note" ? (props.creditWithholdingRate ?? null) : (customer?.withholdingRate ?? null),
         withholdingBase: company.withholdingBase,
         withholdingThreshold: company.withholdingThreshold,
+        guaranteeHoldbackRate: props.guaranteeHoldbackRate ?? null,
       });
     } catch {
       return null; // saisie incomplète ou invalide : pas d'aperçu
     }
-  }, [rows, vatExempt, tvaRates, fodecRate, kind, company, customer, props.creditWithholdingRate]);
+  }, [rows, vatExempt, tvaRates, fodecRate, kind, company, customer, props.creditWithholdingRate, props.guaranteeHoldbackRate]);
 
   const update = (key: string, patch: Partial<EditorLine>) =>
     setRows((rs) => rs.map((r) => (r.key === key ? { ...r, ...patch } : r)));
@@ -243,6 +246,7 @@ function Totals({ calc }: { calc: ReturnType<typeof calculateInvoice> | null }) 
       {row("Total TTC", t?.ttc, true)}
       {t && t.stampDuty !== "0.000" && row("Timbre fiscal", t.stampDuty)}
       {t && t.withholdingAmount !== "0.000" && row(`Retenue à la source (${formatPercent(t.withholdingRate ?? "0")})`, `-${t.withholdingAmount}`)}
+      {t && t.guaranteeHoldback !== "0.000" && row(`Retenue de garantie (${formatPercent(t.guaranteeHoldbackRate ?? "0")})`, `-${t.guaranteeHoldback}`)}
       {row("Net à payer", t?.netToPay, true)}
     </div>
   );

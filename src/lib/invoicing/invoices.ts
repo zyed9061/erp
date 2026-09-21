@@ -153,9 +153,13 @@ async function computeDocument(
     dueDate: string | null;
     paymentTermId: string | null;
     original: Invoice | null;
+    /** Retenue de garantie (BTP) : reprise d'un brouillon existant, du chantier, ou de la facture d'origine (avoir). */
+    guaranteeHoldbackRate?: string | null;
   },
 ) {
   const { customer, company } = ctx;
+  const guaranteeHoldbackRate =
+    p.kind === "credit_note" ? (p.original?.guaranteeHoldbackRate ?? null) : (p.guaranteeHoldbackRate ?? null);
 
   let withholdingRate: string | null = null;
   if (p.kind !== "credit_note") {
@@ -177,6 +181,7 @@ async function computeDocument(
     withholdingRate,
     withholdingBase: company.withholdingBase,
     withholdingThreshold: company.withholdingThreshold,
+    guaranteeHoldbackRate,
   });
   if (toMilli(calc.totals.netToPay) > MAX_MILLI || toMilli(calc.totals.gross) > MAX_MILLI) {
     throw new ServiceError("Montant total trop élevé");
@@ -201,10 +206,13 @@ async function computeDocument(
     throw new ServiceError("L'échéance ne peut pas précéder la date d'émission");
   }
 
-  return { calc, dueDate, withholdingRate, stampDuty };
+  return { calc, dueDate, withholdingRate, stampDuty, guaranteeHoldbackRate };
 }
 
-function headerValues(calc: CalcResult, extra: { withholdingRate: string | null; stampDuty: string }) {
+function headerValues(
+  calc: CalcResult,
+  extra: { withholdingRate: string | null; stampDuty: string; guaranteeHoldbackRate: string | null },
+) {
   const t = calc.totals;
   return {
     totalGross: t.gross,
@@ -217,6 +225,8 @@ function headerValues(calc: CalcResult, extra: { withholdingRate: string | null;
     stampDuty: extra.stampDuty,
     withholdingRate: extra.withholdingRate,
     withholdingAmount: t.withholdingAmount,
+    guaranteeHoldbackRate: extra.guaranteeHoldbackRate,
+    guaranteeHoldback: t.guaranteeHoldback,
     netToPay: t.netToPay,
   };
 }
@@ -318,7 +328,7 @@ export async function updateDraftInvoice(
     const lines = await resolveLines(tx, data.lines, ctx.vatExempt, new Set(existing.map((e) => e.code)));
     const doc = await computeDocument(tx, ctx, {
       kind: before.kind, lines, issueDate: data.issueDate, dueDate: data.dueDate,
-      paymentTermId: data.paymentTermId, original,
+      paymentTermId: data.paymentTermId, original, guaranteeHoldbackRate: before.guaranteeHoldbackRate,
     });
 
     await tx.delete(invoiceLines).where(eq(invoiceLines.invoiceId, id));
@@ -380,12 +390,15 @@ export async function createDraftFromResolved(
     notes?: string | null;
     quoteId?: string | null;
     depositPercent?: string | null;
+    projectId?: string | null;
+    guaranteeHoldbackRate?: string | null;
   },
 ): Promise<Invoice> {
   const ctx = await loadContext(tx, p.customerId);
   if (!ctx.customer.isActive) throw new ServiceError("Ce client est désactivé");
   const doc = await computeDocument(tx, ctx, {
     kind: p.kind, lines: p.lines, issueDate: p.issueDate, dueDate: null, paymentTermId: null, original: null,
+    guaranteeHoldbackRate: p.guaranteeHoldbackRate ?? null,
   });
   const [created] = await tx
     .insert(invoices)
@@ -398,6 +411,7 @@ export async function createDraftFromResolved(
       notes: p.notes ?? null,
       quoteId: p.quoteId ?? null,
       depositPercent: p.depositPercent ?? null,
+      projectId: p.projectId ?? null,
       createdBy: actor.id,
       ...headerValues(doc.calc, doc),
     })
@@ -517,6 +531,8 @@ export function computeContentHash(
     issueDate: inv.issueDate, dueDate: inv.dueDate, reference: inv.reference, currency: inv.currency,
     totals: [inv.totalGross, inv.totalDiscount, inv.totalHt, inv.totalFodec, inv.totalTvaBase,
       inv.totalTva, inv.totalTtc, inv.stampDuty, inv.withholdingRate, inv.withholdingAmount, inv.netToPay],
+    // Ajouté seulement s'il existe : les empreintes des documents sans retenue de garantie restent inchangées.
+    ...(inv.guaranteeHoldbackRate ? { guaranteeHoldback: [inv.guaranteeHoldbackRate, inv.guaranteeHoldback] } : {}),
     lines: [...lines].sort((a, b) => a.position - b.position).map((l) => [
       l.position, l.description, l.quantity, l.unit, l.unitPrice, l.discountPercent,
       l.tvaCode, l.tvaRate, l.fodecRate, l.lineGross, l.lineDiscount, l.lineNetHt, l.lineFodec,
@@ -568,6 +584,7 @@ export async function validateDocument(db: Db, actor: Actor, id: string): Promis
       withholdingRate: inv.withholdingRate,
       withholdingBase: company.withholdingBase,
       withholdingThreshold: company.withholdingThreshold,
+      guaranteeHoldbackRate: inv.guaranteeHoldbackRate,
     });
     if (toMilli(recomputed.totals.netToPay) !== toMilli(inv.netToPay) || toMilli(recomputed.totals.ttc) !== toMilli(inv.totalTtc)) {
       throw new Error(`Totaux incohérents sur le document ${id} : recalcul différent du stocké`);

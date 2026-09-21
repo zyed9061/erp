@@ -42,6 +42,12 @@ export function ProductForm({
         <label className="flex items-center gap-2 text-sm self-end pb-2">
           <input type="checkbox" name="fodecApplicable" defaultChecked={product?.fodecApplicable} /> Soumis au FODEC
         </label>
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" name="trackStock" defaultChecked={product?.trackStock} /> Suivre le stock (biens uniquement)
+        </label>
+        <Field label="Seuil d'alerte de stock" hint="Alerte quand le stock passe sous ce seuil (0 = pas d'alerte)">
+          <input className="input" name="minStock" inputMode="decimal" defaultValue={product?.minStock ?? "0.000"} />
+        </Field>
         <Field label="Description" className="sm:col-span-2">
           <textarea className="input" name="description" rows={3} defaultValue={product?.description ?? ""} maxLength={2000} />
         </Field>

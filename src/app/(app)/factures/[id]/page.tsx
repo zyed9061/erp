@@ -51,6 +51,9 @@ export default async function InvoicePage({
       {inv.kind === "deposit_invoice" ? ` (acompte de ${formatPercent(inv.depositPercent ?? "0")})` : ""}.
     </p>
   ) : null;
+  const projectLink = inv.projectId ? (
+    <p className="text-sm">Situation de travaux : <Link className="underline" href={`/chantiers/${inv.projectId}`}>voir le chantier</Link>.</p>
+  ) : null;
 
   const header = (
     <div className="flex items-center gap-3 flex-wrap">
@@ -79,6 +82,7 @@ export default async function InvoicePage({
           </p>
         )}
         {quoteLink}
+{projectLink}
         <p className="text-sm"><a className="underline" href={`/factures/${inv.id}/pdf`} target="_blank" rel="noopener">Aperçu PDF (brouillon)</a></p>
         <Flash ok={ok} error={error} />
         {canWrite ? (
@@ -94,6 +98,7 @@ export default async function InvoicePage({
             fodecRate={data.fodecRate}
             company={data.company}
             creditWithholdingRate={inv.withholdingRate}
+            guaranteeHoldbackRate={inv.guaranteeHoldbackRate}
             initial={{
               customerId: inv.customerId, issueDate: inv.issueDate, dueDate: inv.dueDate ?? "",
               paymentTermId: inv.paymentTermId ?? "", reference: inv.reference ?? "", notes: inv.notes ?? "",
@@ -154,6 +159,7 @@ export default async function InvoicePage({
         </p>
       )}
       {quoteLink}
+{projectLink}
       <Flash ok={ok} error={error} />
       {!intact && (
         <p role="alert" className="card p-3 text-sm" style={{ color: "var(--danger)" }}>
@@ -322,6 +328,7 @@ function DocumentBody({
         <Row label="Total TTC" value={inv.totalTtc} strong />
         {Number(inv.stampDuty) > 0 && <Row label="Timbre fiscal" value={inv.stampDuty} />}
         {Number(inv.withholdingAmount) > 0 && <Row label={`Retenue à la source (${formatPercent(inv.withholdingRate ?? "0")})`} value={`-${inv.withholdingAmount}`} />}
+        {Number(inv.guaranteeHoldback) > 0 && <Row label={`Retenue de garantie (${formatPercent(inv.guaranteeHoldbackRate ?? "0")})`} value={`-${inv.guaranteeHoldback}`} />}
         <Row label="Net à payer" value={inv.netToPay} strong />
       </div>
       {inv.notes && <p className="text-sm whitespace-pre-wrap border-t pt-3" style={{ borderColor: "var(--border)" }}>{inv.notes}</p>}

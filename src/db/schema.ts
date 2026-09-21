@@ -253,6 +253,9 @@ export const products = pgTable(
       .notNull()
       .references(() => taxRates.id, { onDelete: "restrict" }),
     fodecApplicable: boolean("fodec_applicable").notNull().default(false),
+    // Suivi de stock (biens uniquement) : le stock se lit dans le registre stock_movements.
+    trackStock: boolean("track_stock").notNull().default(false),
+    minStock: numeric("min_stock", { precision: 15, scale: 3 }).notNull().default("0.000"),
     isActive: boolean("is_active").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
@@ -398,6 +401,63 @@ export type Quote = typeof quotes.$inferSelect;
 export type QuoteLine = typeof quoteLines.$inferSelect;
 
 // ---------------------------------------------------------------------------
+// Phase 6 : chantiers (BTP)
+// Le bordereau d'un chantier est figé dès la première situation (trigger, migration 0011).
+// ---------------------------------------------------------------------------
+
+export const PROJECT_STATUSES = ["active", "completed", "cancelled"] as const;
+export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
+export const projectStatusEnum = pgEnum("project_status", PROJECT_STATUSES);
+
+export const projects = pgTable(
+  "projects",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    description: text("description"),
+    customerId: uuid("customer_id")
+      .notNull()
+      .references(() => customers.id, { onDelete: "restrict" }),
+    status: projectStatusEnum("status").notNull().default("active"),
+    /** Retenue de garantie (en % du TTC de chaque situation), conservée par le client jusqu'à la réception. */
+    holdbackPercent: numeric("holdback_percent", { precision: 6, scale: 3 }).notNull().default("0.000"),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("projects_customer_idx").on(t.customerId),
+    check("projects_holdback", sql`${t.holdbackPercent} >= 0 AND ${t.holdbackPercent} <= 100`),
+  ],
+);
+
+/** Bordereau (marché) : postes du contrat, avec leur quantité et leur prix unitaire. */
+export const projectLines = pgTable(
+  "project_lines",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    projectId: uuid("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+    description: text("description").notNull(),
+    unit: text("unit").notNull().default("u"),
+    quantity: numeric("quantity", { precision: 15, scale: 3 }).notNull(),
+    unitPrice: numeric("unit_price", { precision: 15, scale: 3 }).notNull(),
+    tvaCode: text("tva_code").notNull(),
+    tvaRate: numeric("tva_rate", { precision: 6, scale: 3 }).notNull(),
+  },
+  (t) => [
+    index("project_lines_project_idx").on(t.projectId, t.position),
+    check("project_lines_qty", sql`${t.quantity} > 0`),
+    check("project_lines_price", sql`${t.unitPrice} >= 0`),
+  ],
+);
+
+export type Project = typeof projects.$inferSelect;
+export type ProjectLine = typeof projectLines.$inferSelect;
+
+// ---------------------------------------------------------------------------
 // Phase 3 (suite) : factures, avoirs et factures d'acompte
 // ---------------------------------------------------------------------------
 
@@ -450,6 +510,11 @@ export const invoices = pgTable(
     netToPay: money("net_to_pay"),
 
     // Instantanés figés à la validation : la facture ne dépend plus des fiches client/société.
+    // Chantier (situation de travaux) et retenue de garantie déduite du net à payer.
+    projectId: uuid("project_id").references((): AnyPgColumn => projects.id, { onDelete: "restrict" }),
+    guaranteeHoldbackRate: numeric("guarantee_holdback_rate", { precision: 6, scale: 3 }),
+    guaranteeHoldback: money("guarantee_holdback"),
+
     // Lien avec le devis d'origine ; pour un acompte, pourcentage du devis facturé.
     quoteId: uuid("quote_id").references((): AnyPgColumn => quotes.id, { onDelete: "restrict" }),
     depositPercent: numeric("deposit_percent", { precision: 6, scale: 3 }),
@@ -537,6 +602,171 @@ export const invoiceTaxLines = pgTable(
 export type Invoice = typeof invoices.$inferSelect;
 export type InvoiceLine = typeof invoiceLines.$inferSelect;
 export type InvoiceTaxLine = typeof invoiceTaxLines.$inferSelect;
+
+// ---------------------------------------------------------------------------
+// Phase 6 : situations de travaux, bons de livraison, stock
+// ---------------------------------------------------------------------------
+
+/** Une situation = une facture de chantier ; ses lignes gardent l'avancement CUMULÉ de chaque poste. */
+export const projectSituations = pgTable(
+  "project_situations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    projectId: uuid("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "restrict" }),
+    number: integer("number").notNull(),
+    // Supprimer le brouillon de facture supprime la situation (jamais une facture validée : trigger).
+    invoiceId: uuid("invoice_id")
+      .notNull()
+      .references(() => invoices.id, { onDelete: "cascade" }),
+    issueDate: date("issue_date", { mode: "string" }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("project_situations_number_uq").on(t.projectId, t.number),
+    uniqueIndex("project_situations_invoice_uq").on(t.invoiceId),
+  ],
+);
+
+export const projectSituationLines = pgTable(
+  "project_situation_lines",
+  {
+    situationId: uuid("situation_id")
+      .notNull()
+      .references(() => projectSituations.id, { onDelete: "cascade" }),
+    projectLineId: uuid("project_line_id")
+      .notNull()
+      .references(() => projectLines.id, { onDelete: "restrict" }),
+    cumulativePercent: numeric("cumulative_percent", { precision: 6, scale: 3 }).notNull(),
+    cumulativeQuantity: numeric("cumulative_quantity", { precision: 15, scale: 3 }).notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.situationId, t.projectLineId] }),
+    check("situation_lines_percent", sql`${t.cumulativePercent} >= 0 AND ${t.cumulativePercent} <= 100`),
+  ],
+);
+
+/** Libérations de la retenue de garantie (registre en ajout seul). */
+export const projectHoldbackReleases = pgTable(
+  "project_holdback_releases",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    projectId: uuid("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "restrict" }),
+    amount: numeric("amount", { precision: 15, scale: 3 }).notNull(),
+    releasedOn: date("released_on", { mode: "string" }).notNull(),
+    reference: text("reference"),
+    notes: text("notes"),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [check("holdback_release_amount", sql`${t.amount} > 0`)],
+);
+
+export const DELIVERY_STATUSES = ["draft", "validated", "cancelled"] as const;
+export type DeliveryStatus = (typeof DELIVERY_STATUSES)[number];
+export const deliveryStatusEnum = pgEnum("delivery_status", DELIVERY_STATUSES);
+
+/**
+ * Bon de livraison : numéroté (sans trou) à la validation, qui sort le stock. Verrouillé ensuite ;
+ * seule l'annulation (avec remise en stock) ou le rattachement à une facture sont possibles.
+ */
+export const deliveryNotes = pgTable(
+  "delivery_notes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    status: deliveryStatusEnum("status").notNull().default("draft"),
+    number: text("number"),
+    seriesYear: integer("series_year"),
+    sequence: integer("sequence"),
+    customerId: uuid("customer_id")
+      .notNull()
+      .references(() => customers.id, { onDelete: "restrict" }),
+    issueDate: date("issue_date", { mode: "string" }).notNull(),
+    reference: text("reference"),
+    notes: text("notes"),
+    /** Facture (brouillon ou validée) qui reprend ce bon ; libéré si le brouillon est supprimé. */
+    invoiceId: uuid("invoice_id").references(() => invoices.id, { onDelete: "set null" }),
+    validatedAt: timestamp("validated_at", { withTimezone: true }),
+    cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+    cancelReason: text("cancel_reason"),
+    version: integer("version").notNull().default(1),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("delivery_notes_number_uq").on(t.number).where(sql`${t.number} IS NOT NULL`),
+    index("delivery_notes_customer_idx").on(t.customerId),
+    index("delivery_notes_invoice_idx").on(t.invoiceId),
+    check("delivery_notes_has_number", sql`${t.status} = 'draft' OR ${t.number} IS NOT NULL`),
+  ],
+);
+
+export const deliveryNoteLines = pgTable(
+  "delivery_note_lines",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    deliveryNoteId: uuid("delivery_note_id")
+      .notNull()
+      .references(() => deliveryNotes.id, { onDelete: "cascade" }),
+    position: integer("position").notNull(),
+    productId: uuid("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "restrict" }),
+    description: text("description").notNull(),
+    quantity: numeric("quantity", { precision: 15, scale: 3 }).notNull(),
+    unit: text("unit").notNull().default("unité"),
+    // Prix et taxes copiés du produit à l'enregistrement : la facturation ultérieure reste reproductible.
+    unitPrice: numeric("unit_price", { precision: 15, scale: 3 }).notNull(),
+    tvaCode: text("tva_code").notNull(),
+    tvaRate: numeric("tva_rate", { precision: 6, scale: 3 }).notNull(),
+    fodecRate: numeric("fodec_rate", { precision: 6, scale: 3 }).notNull().default("0.000"),
+  },
+  (t) => [
+    index("delivery_note_lines_note_idx").on(t.deliveryNoteId, t.position),
+    check("delivery_note_lines_qty", sql`${t.quantity} > 0`),
+  ],
+);
+
+export const STOCK_MOVEMENT_TYPES = ["entry", "exit", "adjustment", "delivery"] as const;
+export type StockMovementType = (typeof STOCK_MOVEMENT_TYPES)[number];
+export const stockMovementTypeEnum = pgEnum("stock_movement_type", STOCK_MOVEMENT_TYPES);
+
+/** Registre des mouvements de stock (en ajout seul) : le stock = somme des quantités signées. */
+export const stockMovements = pgTable(
+  "stock_movements",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    productId: uuid("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "restrict" }),
+    type: stockMovementTypeEnum("type").notNull(),
+    /** Positif = entrée en stock, négatif = sortie. */
+    quantity: numeric("quantity", { precision: 15, scale: 3 }).notNull(),
+    occurredOn: date("occurred_on", { mode: "string" }).notNull(),
+    reference: text("reference"),
+    notes: text("notes"),
+    deliveryNoteId: uuid("delivery_note_id").references(() => deliveryNotes.id, { onDelete: "restrict" }),
+    createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("stock_movements_product_idx").on(t.productId, t.createdAt),
+    check("stock_movements_nonzero", sql`${t.quantity} <> 0`),
+    check("stock_movements_entry_sign", sql`${t.type} <> 'entry' OR ${t.quantity} > 0`),
+    check("stock_movements_exit_sign", sql`${t.type} <> 'exit' OR ${t.quantity} < 0`),
+  ],
+);
+
+export type ProjectSituation = typeof projectSituations.$inferSelect;
+export type ProjectSituationLine = typeof projectSituationLines.$inferSelect;
+export type ProjectHoldbackRelease = typeof projectHoldbackReleases.$inferSelect;
+export type DeliveryNote = typeof deliveryNotes.$inferSelect;
+export type DeliveryNoteLine = typeof deliveryNoteLines.$inferSelect;
+export type StockMovement = typeof stockMovements.$inferSelect;
 
 // ---------------------------------------------------------------------------
 // Phase 4 : paiements, imputations, certificats de retenue

@@ -37,6 +37,9 @@ export default async function ProductPage({
         <StatusBadge active={product.isActive} />
       </div>
       <Flash ok={ok} error={error} />
+      {product.trackStock && (
+        <p className="text-sm"><a className="underline" href={`/stock/${product.id}`}>Voir le stock et les mouvements</a></p>
+      )}
       <ProductForm action={updateProductAction} product={product} tvaRates={tvaRates} canWrite={canWrite} submitLabel="Enregistrer" />
       {canWrite && (
         <form action={toggleProductAction}>

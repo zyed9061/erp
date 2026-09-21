@@ -71,6 +71,20 @@
       "when": 1789974236959,
       "tag": "0009_emails_relances_regles",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789975258466,
+      "tag": "0010_stock_livraisons_btp",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789975262661,
+      "tag": "0011_stock_livraisons_btp_regles",
+      "breakpoints": true
     }
   ]
 }

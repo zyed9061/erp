@@ -141,6 +141,30 @@ Sans `SMTP_HOST`, **aucun e-mail réel n'est envoyé** : un résumé s'affiche d
 Pour envoyer pour de vrai, renseigner `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` et `MAIL_FROM`
 (voir `.env.example`). Fonctionne avec tout fournisseur SMTP.
 
+## Phase 6 : stock, bons de livraison, chantiers BTP (terminée)
+
+- **Stock** (`/stock`) : suivi par article (biens uniquement, case « Suivre le stock » sur la fiche). Le stock est la somme
+  d'un **registre de mouvements en ajout seul** (entrée, sortie, ajustement d'inventaire motivé, livraison) ; une erreur se
+  corrige par un ajustement. Le stock ne peut **jamais devenir négatif**, même avec deux sorties simultanées (verrou sur le
+  produit). Seuil d'alerte, ruptures, historique par article.
+- **Bons de livraison** (`/livraisons`) : brouillon avec stock affiché, puis **validation** = numéro `BL-…` sans trou **et**
+  sortie de stock dans la même transaction (stock insuffisant : tout est annulé, numéro restitué). Bon verrouillé ensuite
+  (trigger) ; **annulation** motivée avec remise en stock tant qu'il n'est pas facturé. Prix et TVA copiés de l'article :
+  la facture reste reproductible. PDF sans prix, avec zone de signature « Reçu par ».
+- **Facturation des bons** : on coche des bons validés d'un même client → un brouillon de facture, chaque bon rattaché
+  (jamais facturé deux fois ; supprimer le brouillon libère les bons).
+- **Chantiers BTP** (`/chantiers`) : bordereau du marché (postes, quantités, prix, TVA), **situations de travaux** sur
+  l'**avancement cumulé** de chaque poste (seule la part ajoutée est facturée), une facture de situation par étape.
+  Les quantités sont arrondies sur le cumul, jamais sur l'écart : la somme des situations retombe exactement sur le marché
+  à 100 %. Bordereau verrouillé dès la première situation.
+- **Retenue de garantie** (% du TTC, déduite du net à payer, en plus de la retenue à la source) : suivie par chantier
+  (retenue, libérations, reste), registre de libérations en ajout seul plafonné au reste. Un avoir reprend la retenue de la
+  facture d'origine.
+- **Retenue de garantie et paiements** : le net à payer l'exclut, donc la partie retenue n'est jamais « en retard ».
+
+Limites connues : pas de valorisation du stock (coût d'achat, CUMP), pas d'avenants au marché, un avoir sur une situation ne
+fait pas reculer l'avancement du chantier, et l'encaissement d'une libération de retenue se saisit à part comme un paiement.
+
 ## Landing page
 
 `landing/index.html` : page d'accueil statique autonome (HTML/CSS/JS sans dépendance). L'adresse de l'application

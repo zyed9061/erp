@@ -16,6 +16,8 @@ function productFromForm(f: FormData) {
     unitPrice: str(f.get("unitPrice")),
     tvaRateId: str(f.get("tvaRateId")),
     fodecApplicable: formBool(f.get("fodecApplicable")),
+    trackStock: formBool(f.get("trackStock")),
+    minStock: str(f.get("minStock")) || "0",
   };
 }
 

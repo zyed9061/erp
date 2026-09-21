@@ -4,8 +4,9 @@ import type { Db } from "@/db/types";
 import { PRODUCT_TYPES, products, taxRates, type Product } from "@/db/schema";
 import { audit } from "./audit";
 import { ServiceError, type Actor } from "./errors";
-import { amountSchema } from "./money";
+import { amountSchema, toMilli } from "./money";
 import { nextDocumentNumber } from "./numbering";
+import { stockOnHand } from "./stock";
 import { optText } from "./validation";
 
 export const productSchema = z.object({
@@ -16,6 +17,8 @@ export const productSchema = z.object({
   unitPrice: amountSchema,
   tvaRateId: z.string().uuid("Choisissez un taux de TVA"),
   fodecApplicable: z.boolean().default(false),
+  trackStock: z.boolean().default(false),
+  minStock: amountSchema.prefault("0"),
 });
 export type ProductInput = z.input<typeof productSchema>;
 
@@ -72,6 +75,7 @@ export async function createProduct(
 
   return db.transaction(async (tx) => {
     await checkTvaRate(tx, data.tvaRateId);
+    if (data.trackStock && data.type !== "bien") throw new ServiceError("Seuls les biens peuvent être suivis en stock");
     let code = requestedCode;
     if (code) {
       const [dup] = await tx.select({ id: products.id }).from(products).where(eq(products.code, code));
@@ -95,6 +99,10 @@ export async function updateProduct(db: Db, actor: Actor, id: string, input: Pro
     const [before] = await tx.select().from(products).where(eq(products.id, id)).for("update");
     if (!before) throw new ServiceError("Article introuvable");
     await checkTvaRate(tx, data.tvaRateId, before.tvaRateId);
+    if (data.trackStock && data.type !== "bien") throw new ServiceError("Seuls les biens peuvent être suivis en stock");
+    if (before.trackStock && !data.trackStock && toMilli(await stockOnHand(tx, id)) !== 0n) {
+      throw new ServiceError("Ramenez le stock à zéro (ajustement) avant de désactiver le suivi de stock");
+    }
     const [after] = await tx
       .update(products)
       .set({ ...data, updatedAt: new Date() })

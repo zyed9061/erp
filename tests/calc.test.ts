@@ -122,6 +122,18 @@ describe("calcul d'une facture", () => {
     expect(calculateInvoice(lines, opts("ttc", "0")).totals.netToPay).toBe("1173.150"); // 1190 + 1 − 17,85
   });
 
+  it("déduit la retenue de garantie (BTP) du net à payer, sur le TTC, en plus de la retenue à la source", () => {
+    const lines = [line({ unitPrice: "1000" })]; // TTC 1190
+    const base = { stampDuty: "1", withholdingRate: null, withholdingBase: "ttc" as const, withholdingThreshold: "0" };
+    const held = calculateInvoice(lines, { ...base, guaranteeHoldbackRate: "10" });
+    expect(held.totals).toMatchObject({ ttc: "1190.000", guaranteeHoldbackRate: "10", guaranteeHoldback: "119.000", netToPay: "1072.000" }); // 1190 + 1 − 119
+    const both = calculateInvoice(lines, { ...base, withholdingRate: "1.5", guaranteeHoldbackRate: "10" });
+    expect(both.totals).toMatchObject({ withholdingAmount: "17.850", guaranteeHoldback: "119.000", netToPay: "1054.150" });
+    for (const none of [null, undefined, "0"]) {
+      expect(calculateInvoice(lines, { ...base, guaranteeHoldbackRate: none }).totals.guaranteeHoldback).toBe("0.000");
+    }
+  });
+
   it("sans retenue ni timbre, net à payer = TTC", () => {
     const r = calculateInvoice([line({ unitPrice: "10" })], noExtras);
     expect(r.totals).toMatchObject({ ttc: "11.900", withholdingRate: null, withholdingAmount: "0.000", netToPay: "11.900" });

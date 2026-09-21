@@ -12,7 +12,7 @@ import { divRound, fromMilli, toMilli } from "@/lib/money";
  *   base TVA = Σ (HT ligne + FODEC ligne), par taux de TVA
  *   TVA = base TVA × taux                      (arrondie une fois par taux)
  *   TTC = HT + FODEC + TVA
- *   net à payer = TTC + timbre − retenue à la source
+ *   net à payer = TTC + timbre − retenue à la source − retenue de garantie (BTP, sur le TTC)
  *
  * Règle d'arrondi (unique, appliquée partout : écran, PDF, TEIF, rapports) :
  * au millime le plus proche, moitié vers le haut. Les montants affichés sont exactement
@@ -38,6 +38,8 @@ export type CalcOptions = {
   withholdingBase: "ht" | "ttc";
   /** La retenue ne s'applique que si la base atteint ce seuil. */
   withholdingThreshold: string;
+  /** Retenue de garantie (BTP) en % du TTC, conservée par le client jusqu'à la réception des travaux. */
+  guaranteeHoldbackRate?: string | null;
 };
 
 export type CalcLine = { gross: string; discount: string; netHt: string; fodec: string };
@@ -55,6 +57,8 @@ export type CalcTotals = {
   stampDuty: string;
   withholdingRate: string | null;
   withholdingAmount: string;
+  guaranteeHoldbackRate: string | null;
+  guaranteeHoldback: string;
   netToPay: string;
 };
 
@@ -118,6 +122,9 @@ export function calculateInvoice(inputs: CalcLineInput[], options: CalcOptions):
     if (rate > 0n && base >= toMilli(options.withholdingThreshold)) withholding = pct(base, rate);
   }
 
+  const holdbackRate = options.guaranteeHoldbackRate ? toMilli(options.guaranteeHoldbackRate) : 0n;
+  const holdback = holdbackRate > 0n && ttc > 0n ? pct(ttc, holdbackRate) : 0n;
+
   return {
     lines,
     taxes,
@@ -132,7 +139,9 @@ export function calculateInvoice(inputs: CalcLineInput[], options: CalcOptions):
       stampDuty: fromMilli(stamp),
       withholdingRate: options.withholdingRate,
       withholdingAmount: fromMilli(withholding),
-      netToPay: fromMilli(ttc + stamp - withholding),
+      guaranteeHoldbackRate: options.guaranteeHoldbackRate ?? null,
+      guaranteeHoldback: fromMilli(holdback),
+      netToPay: fromMilli(ttc + stamp - withholding - holdback),
     },
   };
 }

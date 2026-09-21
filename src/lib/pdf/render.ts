@@ -29,6 +29,8 @@ export type PdfData = {
   totals: {
     ht: string; fodec: string; tva: string; ttc: string; stampDuty: string;
     withholdingRate: string | null; withholdingAmount: string; netToPay: string;
+    /** Retenue de garantie (BTP), déduite du net à payer. */
+    guaranteeHoldbackRate?: string | null; guaranteeHoldback?: string;
   };
   /** Montant à écrire en lettres (net à payer pour une facture, TTC pour un devis). */
   wordsAmount: string;
@@ -187,7 +189,10 @@ export async function renderDocumentPdf(data: PdfData): Promise<Uint8Array> {
   if (Number(t.withholdingAmount) > 0) {
     totalRows.push([`Retenue à la source (${formatPercent(t.withholdingRate ?? "0")})`, `-${amt(t.withholdingAmount)}`, false]);
   }
-  const showNet = Number(t.stampDuty) > 0 || Number(t.withholdingAmount) > 0;
+  if (Number(t.guaranteeHoldback ?? 0) > 0) {
+    totalRows.push([`Retenue de garantie (${formatPercent(t.guaranteeHoldbackRate ?? "0")})`, `-${amt(t.guaranteeHoldback!)}`, false]);
+  }
+  const showNet = Number(t.stampDuty) > 0 || Number(t.withholdingAmount) > 0 || Number(t.guaranteeHoldback ?? 0) > 0;
   if (showNet) totalRows.push(["Net à payer", `${amt(t.netToPay)} DT`, true]);
   else totalRows[totalRows.length - 1] = ["Total TTC", `${amt(t.ttc)} DT`, true];
 

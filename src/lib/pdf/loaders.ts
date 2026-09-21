@@ -65,6 +65,7 @@ export async function loadInvoicePdf(db: Db, id: string): Promise<{ data: PdfDat
     totals: {
       ht: inv.totalHt, fodec: inv.totalFodec, tva: inv.totalTva, ttc: inv.totalTtc, stampDuty: inv.stampDuty,
       withholdingRate: inv.withholdingRate, withholdingAmount: inv.withholdingAmount, netToPay: inv.netToPay,
+      guaranteeHoldbackRate: inv.guaranteeHoldbackRate, guaranteeHoldback: inv.guaranteeHoldback,
     },
     wordsAmount: inv.netToPay,
     wordsIntro: KIND_WORDS[inv.kind],
