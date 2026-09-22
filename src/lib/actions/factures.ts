@@ -170,7 +170,8 @@ export async function enregistrerPaiement(
     montant: formData.get("montant"),
     modePaiement: formData.get("modePaiement"),
     reference: formData.get("reference"),
-    notes: formData.get("notes"),
+    // PaiementForm has no notes field, so formData.get returns null, which the schema rejects.
+    notes: formData.get("notes") ?? undefined,
   });
 
   const facture = await prisma.facture.findUniqueOrThrow({ where: { id: data.factureId } });
