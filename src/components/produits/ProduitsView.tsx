@@ -12,6 +12,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import {
   Card,
   CardField,
+  ActionsCell,
   CardSection,
   Cell,
   CellLink,
@@ -20,6 +21,7 @@ import {
   TableSection,
 } from "@/components/ui/ListShell";
 import { IconBox, IconChart, IconTag, IconWrench } from "@/components/ui/icons";
+import { useProduitRowActions } from "./useProduitRowActions";
 
 export type ProduitRow = {
   id: string;
@@ -28,6 +30,8 @@ export type ProduitRow = {
   type: "PRODUIT" | "SERVICE";
   prixUnitaireHT: number;
   tauxTva: number;
+  categorie: string | null;
+  actif: boolean;
 };
 
 const T = ENTITY.produits;
@@ -36,9 +40,20 @@ const TYPES = [
   { key: "SERVICE", label: "Services" },
 ] as const;
 
-export function ProduitsView({ produits }: { produits: ProduitRow[] }) {
+export function ProduitsView({
+  produits,
+  archives = [],
+}: {
+  /** Catalogue actif (statistiques et liste par defaut). */
+  produits: ProduitRow[];
+  /** References desactivees, consultables pour les reactiver. */
+  archives?: ProduitRow[];
+}) {
   const [query, setQuery] = useState("");
   const [type, setType] = useState<string | null>(null);
+  const [voirArchives, setVoirArchives] = useState(false);
+  const liste = voirArchives ? archives : produits;
+  const { actionsFor, dialogs } = useProduitRowActions();
 
   const stats = useMemo(() => {
     const services = produits.filter((p) => p.type === "SERVICE").length;
@@ -50,20 +65,20 @@ export function ProduitsView({ produits }: { produits: ProduitRow[] }) {
 
   const counts = useMemo(() => {
     const map: Record<string, number> = {};
-    for (const p of produits) map[p.type] = (map[p.type] ?? 0) + 1;
+    for (const p of liste) map[p.type] = (map[p.type] ?? 0) + 1;
     return map;
-  }, [produits]);
+  }, [liste]);
 
   const visibles = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return produits.filter((p) => {
+    return liste.filter((p) => {
       if (type && p.type !== type) return false;
       if (!q) return true;
-      return [p.designation, p.reference]
+      return [p.designation, p.reference, p.categorie]
         .filter(Boolean)
         .some((v) => v!.toLowerCase().includes(q));
     });
-  }, [produits, query, type]);
+  }, [liste, query, type]);
 
   const filtresActifs = Boolean(query.trim() || type);
   const reinitialiser = () => {
@@ -156,7 +171,7 @@ export function ProduitsView({ produits }: { produits: ProduitRow[] }) {
       >
         <FilterChip
           label="Tous"
-          count={produits.length}
+          count={liste.length}
           actif={type === null}
           onClick={() => setType(null)}
           classesActif="bg-neutral-900 text-white"
@@ -173,10 +188,23 @@ export function ProduitsView({ produits }: { produits: ProduitRow[] }) {
             classesInactif={T.chipInactive}
           />
         ))}
+        {archives.length > 0 && (
+          <FilterChip
+            label="Desactives"
+            count={archives.length}
+            actif={voirArchives}
+            onClick={() => {
+              setVoirArchives(!voirArchives);
+              setType(null);
+            }}
+            classesActif="bg-neutral-700 text-white"
+            classesInactif="text-neutral-500 hover:bg-neutral-100"
+          />
+        )}
       </FilterBar>
 
       <TableSection
-        headers={["Reference", "Designation", "Type", "Prix HT", "TVA"]}
+        headers={["Reference", "Designation", "Type", "Prix HT", "TVA", ""]}
         empty={vide || undefined}
       >
         {visibles.map((p) => (
@@ -195,6 +223,7 @@ export function ProduitsView({ produits }: { produits: ProduitRow[] }) {
               {formatMontant(p.prixUnitaireHT)}
             </Cell>
             <Cell className="tabular-nums text-neutral-600">{p.tauxTva}%</Cell>
+            <ActionsCell actions={actionsFor(p)} label={`Actions pour ${p.designation}`} />
           </Row>
         ))}
       </TableSection>
@@ -225,6 +254,8 @@ export function ProduitsView({ produits }: { produits: ProduitRow[] }) {
           {visibles.length > 1 ? "s" : ""}
         </ListFooter>
       )}
+
+      {dialogs}
     </div>
   );
 }

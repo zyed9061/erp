@@ -15,6 +15,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import {
   Card,
   CardField,
+  ActionsCell,
   CardSection,
   Cell,
   CellLink,
@@ -28,11 +29,13 @@ import {
   IconReceipt,
   IconWallet,
 } from "@/components/ui/icons";
+import { useFactureRowActions } from "./useFactureRowActions";
 
 export type FactureRow = {
   id: string;
   numero: string;
   clientNom: string;
+  clientEmail: string | null;
   dateEmission: string;
   dateEcheance: string | null;
   totalTTC: number;
@@ -73,6 +76,7 @@ function ProgressBar({ paye, total, statut }: { paye: number; total: number; sta
 export function FacturesView({ factures }: { factures: FactureRow[] }) {
   const [query, setQuery] = useState("");
   const [statut, setStatut] = useState<string | null>(null);
+  const { actionsFor, dialogs } = useFactureRowActions();
 
   const stats = useMemo(() => {
     const vivantes = factures.filter((f) => f.statut !== "ANNULEE");
@@ -232,6 +236,7 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
           "Encaissement",
           "Reste a payer",
           "Statut",
+          "",
         ]}
         empty={vide || undefined}
       >
@@ -259,6 +264,7 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
             <Cell>
               <StatutPill statut={f.statut} />
             </Cell>
+            <ActionsCell actions={actionsFor(f)} label={`Actions pour ${f.numero}`} />
           </Row>
         ))}
       </TableSection>
@@ -303,6 +309,8 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
           </span>
         </ListFooter>
       )}
+
+      {dialogs}
     </div>
   );
 }

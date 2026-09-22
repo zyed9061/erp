@@ -18,6 +18,7 @@ import {
   IconUsers,
   IconWallet,
 } from "@/components/ui/icons";
+import { RevenueChart, StatusDistributionChart } from "./DashboardCharts";
 
 export type SuiviRow = {
   id: string;
@@ -40,7 +41,18 @@ export type DashboardData = {
   nbOuvertes: number;
   nbEnRetard: number;
   mois: string;
+  /** Chiffre d'affaires TTC des 6 derniers mois (hors annulees). */
+  revenueByMonth: { label: string; total: number }[];
+  /** Nombre de factures par statut affiche (retard derive inclus). */
+  statusCounts: { statut: string; label: string; count: number }[];
 };
+
+const RACCOURCIS = [
+  { href: "/factures/new", label: "Nouvelle facture" },
+  { href: "/devis/new", label: "Nouveau devis" },
+  { href: "/clients/new", label: "Nouveau client" },
+  { href: "/produits/new", label: "Ajouter un produit/service" },
+];
 
 const T = ENTITY.dashboard;
 
@@ -222,6 +234,44 @@ export function DashboardView({ data }: { data: DashboardData }) {
             <IconArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
         )}
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.35, ease: EASE }}
+        className="grid gap-4 lg:grid-cols-3"
+      >
+        <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70 lg:col-span-2">
+          <h2 className="mb-4 text-sm font-semibold text-neutral-900">
+            Chiffre d&apos;affaires (6 derniers mois)
+          </h2>
+          <RevenueChart data={data.revenueByMonth} />
+        </div>
+        <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70">
+          <h2 className="mb-4 text-sm font-semibold text-neutral-900">Repartition des factures</h2>
+          <StatusDistributionChart data={data.statusCounts} />
+        </div>
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4, ease: EASE }}
+        className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70"
+      >
+        <h2 className="mb-3 text-sm font-semibold text-neutral-900">Actions rapides</h2>
+        <div className="flex flex-wrap gap-2">
+          {RACCOURCIS.map((r) => (
+            <Link
+              key={r.href}
+              href={r.href}
+              className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 ring-1 ring-neutral-200 transition-colors hover:bg-violet-50 hover:text-violet-700 hover:ring-violet-200"
+            >
+              + {r.label}
+            </Link>
+          ))}
+        </div>
       </motion.section>
     </div>
   );

@@ -37,3 +37,20 @@ export function calculerTotaux(lignes: LigneCalcul[], timbreFiscal = 0): TotauxD
 
   return { sousTotalHT, totalTva, totalTTC };
 }
+
+export function calculerResteAPayer(totalTTC: number, montantPaye: number): number {
+  return arrondir(totalTTC - montantPaye);
+}
+
+/**
+ * Rejette un paiement superieur au solde restant. Le montant positif est deja
+ * garanti par le schema de validation (paiementSchema) ; seule la borne haute
+ * est verifiee ici.
+ */
+export function verifierMontantPaiement(resteAPayer: number, montant: number): void {
+  if (montant > resteAPayer) {
+    throw new Error(
+      `Le montant depasse le solde restant a payer (${resteAPayer}).`,
+    );
+  }
+}

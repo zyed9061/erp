@@ -23,6 +23,7 @@ export default async function FacturesListPage() {
       id: f.id,
       numero: f.numero,
       clientNom: f.client.nom,
+      clientEmail: f.client.email,
       dateEmission: formatDate(f.dateEmission),
       dateEcheance: f.dateEcheance ? formatDate(f.dateEcheance) : null,
       totalTTC,

@@ -1,10 +1,16 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useLocale } from "@/i18n/client";
 import { STATUTS_URGENTS, themeFor } from "./statut";
 
 export function StatutPill({ statut }: { statut: string }) {
   const theme = themeFor(statut);
+  const { t } = useLocale();
+  // Libelle traduit (FR/EN/AR) ; repli sur le libelle du theme si la cle manque.
+  const cle = `status.${statut}`;
+  const traduit = t(cle);
+  const label = traduit === cle ? theme.label : traduit;
   const reduceMotion = useReducedMotion();
   // Le point qui pulse boucle indefiniment : on le supprime en mouvement reduit.
   // L'information reste portee par le libelle et la couleur, jamais par la seule
@@ -25,7 +31,7 @@ export function StatutPill({ statut }: { statut: string }) {
         )}
         <span className={`relative inline-flex h-1.5 w-1.5 rounded-full ${theme.dot}`} />
       </span>
-      {theme.label}
+      {label}
     </span>
   );
 }

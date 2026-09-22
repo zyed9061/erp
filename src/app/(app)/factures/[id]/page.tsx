@@ -1,9 +1,13 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { ToastOnParam } from "@/components/ui/ToastOnParam";
 import { formatMontant, formatDate } from "@/lib/format";
 import { StatutBadge } from "@/components/StatutBadge";
-import { updateFactureStatut, enregistrerPaiement } from "@/lib/actions/factures";
+import { PaiementForm } from "@/components/PaiementForm";
+import { updateFactureStatut } from "@/lib/actions/factures";
 import { statutEffectif } from "@/lib/facture-statut";
 
 export default async function FactureDetailPage({
@@ -39,6 +43,10 @@ export default async function FactureDetailPage({
 
   return (
     <div className="space-y-6">
+      <Suspense fallback={null}>
+        <ToastOnParam />
+      </Suspense>
+      <Breadcrumbs lastLabel={facture.numero} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-neutral-900">{facture.numero}</h1>
@@ -163,56 +171,7 @@ export default async function FactureDetailPage({
         </div>
 
         {resteAPayer > 0 && facture.statut !== "ANNULEE" && (
-          <div className="rounded-lg border border-neutral-200 bg-white p-5">
-            <h2 className="mb-3 text-sm font-medium text-neutral-900">Enregistrer un paiement</h2>
-            <form action={enregistrerPaiement} className="space-y-3">
-              <input type="hidden" name="factureId" value={facture.id} />
-              <div className="grid grid-cols-2 gap-3">
-                <label className="block">
-                  <span className="mb-1 block text-sm text-neutral-700">Date</span>
-                  <input
-                    type="date"
-                    name="datePaiement"
-                    defaultValue={new Date().toISOString().slice(0, 10)}
-                    required
-                    className="input"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-1 block text-sm text-neutral-700">Montant</span>
-                  <input
-                    type="number"
-                    step="0.001"
-                    name="montant"
-                    defaultValue={resteAPayer}
-                    max={resteAPayer}
-                    required
-                    className="input"
-                  />
-                </label>
-              </div>
-              <label className="block">
-                <span className="mb-1 block text-sm text-neutral-700">Mode de paiement</span>
-                <select name="modePaiement" className="input">
-                  <option value="VIREMENT">Virement</option>
-                  <option value="CHEQUE">Cheque</option>
-                  <option value="ESPECES">Especes</option>
-                  <option value="CARTE">Carte</option>
-                  <option value="AUTRE">Autre</option>
-                </select>
-              </label>
-              <label className="block">
-                <span className="mb-1 block text-sm text-neutral-700">Reference</span>
-                <input name="reference" className="input" />
-              </label>
-              <button
-                type="submit"
-                className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
-              >
-                Enregistrer le paiement
-              </button>
-            </form>
-          </div>
+          <PaiementForm factureId={facture.id} resteAPayer={resteAPayer} />
         )}
       </div>
     </div>

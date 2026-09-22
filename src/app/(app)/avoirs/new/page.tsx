@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { AvoirForm } from "@/components/AvoirForm";
 import { createAvoir } from "@/lib/actions/avoirs";
 
@@ -27,8 +28,8 @@ export default async function NewAvoirPage({
   }));
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-neutral-900">Nouvel avoir</h1>
+    <div className="space-y-3">
+      <Breadcrumbs />
       <AvoirForm
         action={createAvoir}
         factures={factureOptions}

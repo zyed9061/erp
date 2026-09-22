@@ -5,8 +5,15 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/current-user";
 import { factureSchema, paiementSchema } from "@/lib/validations/document";
-import { calculerLigne, calculerTotaux } from "@/lib/calculs";
+import {
+  calculerLigne,
+  calculerResteAPayer,
+  calculerTotaux,
+  verifierMontantPaiement,
+} from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
+import { withToast } from "@/lib/toastRedirect";
+import { formatMontant } from "@/lib/format";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -71,7 +78,52 @@ export async function createFacture(formData: FormData) {
   });
 
   revalidatePath("/factures");
-  redirect(`/factures/${facture.id}`);
+  redirect(withToast(`/factures/${facture.id}`, "Facture creee avec succes."));
+}
+
+export async function duplicateFacture(id: string) {
+  const user = await requireUser();
+
+  const source = await prisma.facture.findUniqueOrThrow({
+    where: { id },
+    include: { lignes: true },
+  });
+
+  const annee = new Date().getFullYear();
+  const numero = await nextDocumentNumber("FACTURE", annee);
+
+  const copie = await prisma.facture.create({
+    data: {
+      numero,
+      annee,
+      dateEmission: new Date(),
+      dateEcheance: source.dateEcheance,
+      conditionsPaiement: source.conditionsPaiement,
+      notes: source.notes,
+      clientId: source.clientId,
+      createdById: user.id,
+      sousTotalHT: source.sousTotalHT,
+      totalTva: source.totalTva,
+      timbreFiscal: source.timbreFiscal,
+      totalTTC: source.totalTTC,
+      lignes: {
+        create: source.lignes.map((l) => ({
+          ordre: l.ordre,
+          designation: l.designation,
+          description: l.description,
+          quantite: l.quantite,
+          prixUnitaireHT: l.prixUnitaireHT,
+          remisePct: l.remisePct,
+          tauxTva: l.tauxTva,
+          totalHT: l.totalHT,
+          produitId: l.produitId,
+        })),
+      },
+    },
+  });
+
+  revalidatePath("/factures");
+  return { id: copie.id };
 }
 
 export async function updateFactureStatut(
@@ -106,7 +158,14 @@ async function recalculerStatutPaiement(factureId: string) {
   await prisma.facture.update({ where: { id: factureId }, data: { statut } });
 }
 
-export async function enregistrerPaiement(formData: FormData) {
+export type PaiementFormState = {
+  error?: string;
+};
+
+export async function enregistrerPaiement(
+  _prevState: PaiementFormState | undefined,
+  formData: FormData,
+): Promise<PaiementFormState> {
   const user = await requireUser();
   const data = paiementSchema.parse({
     factureId: formData.get("factureId"),
@@ -116,6 +175,17 @@ export async function enregistrerPaiement(formData: FormData) {
     reference: formData.get("reference"),
     notes: formData.get("notes"),
   });
+
+  const facture = await prisma.facture.findUniqueOrThrow({ where: { id: data.factureId } });
+  const resteAPayer = calculerResteAPayer(Number(facture.totalTTC), Number(facture.montantPaye));
+
+  try {
+    verifierMontantPaiement(resteAPayer, data.montant);
+  } catch {
+    return {
+      error: `Le montant depasse le solde restant a payer (${formatMontant(resteAPayer)}).`,
+    };
+  }
 
   await prisma.$transaction(async (tx) => {
     await tx.paiement.create({
@@ -130,7 +200,6 @@ export async function enregistrerPaiement(formData: FormData) {
       },
     });
 
-    const facture = await tx.facture.findUniqueOrThrow({ where: { id: data.factureId } });
     await tx.facture.update({
       where: { id: data.factureId },
       data: { montantPaye: Number(facture.montantPaye) + data.montant },
@@ -140,4 +209,5 @@ export async function enregistrerPaiement(formData: FormData) {
   await recalculerStatutPaiement(data.factureId);
 
   revalidatePath(`/factures/${data.factureId}`);
+  redirect(withToast(`/factures/${data.factureId}`, "Paiement enregistre avec succes."));
 }

@@ -19,6 +19,7 @@ export default async function AvoirsListPage() {
     dateEmission: formatDate(a.dateEmission),
     motif: a.motif,
     totalTTC: Number(a.totalTTC),
+    statut: a.statut,
   }));
 
   return <AvoirsView avoirs={rows} />;

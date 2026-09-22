@@ -84,6 +84,11 @@ export const STATUT_THEME: Record<string, StatutTheme> = {
   REFUSE: { label: "Refuse", ...rose },
   EXPIRE: { label: "Expire", ...amber },
   CONVERTI: { label: "Converti", ...violet },
+  // Avoirs
+  EMIS: { label: "Emis", ...sky },
+  APPLIQUE: { label: "Applique", ...emerald },
+  REMBOURSE: { label: "Rembourse", ...violet },
+  ANNULE: { label: "Annule", ...zinc },
 };
 
 export const FALLBACK_THEME: StatutTheme = { label: "Inconnu", ...slate };
@@ -110,6 +115,8 @@ export const DEVIS_STATUTS = [
   "EXPIRE",
   "CONVERTI",
 ] as const;
+
+export const AVOIR_STATUTS = ["BROUILLON", "EMIS", "APPLIQUE", "REMBOURSE", "ANNULE"] as const;
 
 /** Statuts qui meritent un point qui pulse (action requise). */
 export const STATUTS_URGENTS = new Set(["EN_RETARD", "EXPIRE"]);

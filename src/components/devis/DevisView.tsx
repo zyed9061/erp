@@ -14,6 +14,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import {
   Card,
   CardField,
+  ActionsCell,
   CardSection,
   Cell,
   CellLink,
@@ -27,15 +28,18 @@ import {
   IconHourglass,
   IconPercent,
 } from "@/components/ui/icons";
+import { useDevisRowActions } from "./useDevisRowActions";
 
 export type DevisRow = {
   id: string;
   numero: string;
   clientNom: string;
+  clientEmail: string | null;
   dateEmission: string;
   dateValidite: string | null;
   totalTTC: number;
   statut: string;
+  hasFacture: boolean;
 };
 
 const T = ENTITY.devis;
@@ -45,6 +49,7 @@ const GAGNES = new Set(["ACCEPTE", "CONVERTI"]);
 export function DevisView({ devis }: { devis: DevisRow[] }) {
   const [query, setQuery] = useState("");
   const [statut, setStatut] = useState<string | null>(null);
+  const { actionsFor } = useDevisRowActions();
 
   const stats = useMemo(() => {
     const enAttente = devis.filter((d) => EN_ATTENTE.has(d.statut));
@@ -202,7 +207,7 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
       </FilterBar>
 
       <TableSection
-        headers={["Numero", "Client", "Date", "Validite", "Total TTC", "Statut"]}
+        headers={["Numero", "Client", "Date", "Validite", "Total TTC", "Statut", ""]}
         empty={vide || undefined}
       >
         {visibles.map((d) => (
@@ -222,6 +227,7 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
             <Cell>
               <StatutPill statut={d.statut} />
             </Cell>
+            <ActionsCell actions={actionsFor(d)} label={`Actions pour ${d.numero}`} />
           </Row>
         ))}
       </TableSection>

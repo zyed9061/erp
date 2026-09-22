@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { EASE, listVariants, rowVariants } from "./motion";
 import { IconArrowRight } from "./icons";
+import { RowActionsMenu, type RowAction } from "./RowActionsMenu";
 
 /** Tableau (>= md). Les cartes mobiles sont rendues par <CardSection>. */
 export function TableSection({
@@ -191,5 +192,14 @@ export function ListFooter({ children }: { children: React.ReactNode }) {
     >
       {children}
     </motion.p>
+  );
+}
+
+/** Derniere cellule : menu d'actions de la ligne ("..."). */
+export function ActionsCell({ actions, label }: { actions: RowAction[]; label: string }) {
+  return (
+    <td className="w-12 px-3 py-3.5 text-right">
+      <RowActionsMenu actions={actions} label={label} />
+    </td>
   );
 }

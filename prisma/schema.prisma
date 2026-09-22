@@ -132,9 +132,11 @@ model Produit {
   designation    String
   description    String?
   type           ProduitType @default(SERVICE)
+  categorie      String?
   prixUnitaireHT Decimal     @db.Decimal(12, 3)
   uniteMesure    String      @default("unite")
   tauxTva        Decimal     @default(19) @db.Decimal(5, 2)
+  stock          Int?
   actif          Boolean     @default(true)
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
@@ -276,17 +278,26 @@ model LigneFacture {
 // Avoirs (notes de credit)
 // ---------------------------------------------------------------------------
 
+enum AvoirStatus {
+  BROUILLON
+  EMIS
+  APPLIQUE
+  REMBOURSE
+  ANNULE
+}
+
 model Avoir {
-  id           String   @id @default(cuid())
-  numero       String   @unique
+  id           String      @id @default(cuid())
+  numero       String      @unique
   annee        Int
-  dateEmission DateTime @default(now())
+  dateEmission DateTime    @default(now())
+  statut       AvoirStatus @default(EMIS)
   motif        String?
-  sousTotalHT  Decimal  @default(0) @db.Decimal(14, 3)
-  totalTva     Decimal  @default(0) @db.Decimal(14, 3)
-  totalTTC     Decimal  @default(0) @db.Decimal(14, 3)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  sousTotalHT  Decimal     @default(0) @db.Decimal(14, 3)
+  totalTva     Decimal     @default(0) @db.Decimal(14, 3)
+  totalTTC     Decimal     @default(0) @db.Decimal(14, 3)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   clientId String
   client   Client @relation(fields: [clientId], references: [id], onDelete: Restrict)

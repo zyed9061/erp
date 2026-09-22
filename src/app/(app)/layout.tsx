@@ -1,13 +1,24 @@
-import { AppNav } from "@/components/AppNav";
+import { auth, signOut } from "@/auth";
+import { AppShell } from "@/components/layout/AppShell";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+
+  async function handleSignOut() {
+    "use server";
+    await signOut({ redirectTo: "/login" });
+  }
+
   return (
     <MotionProvider>
-      <div className="flex min-h-screen flex-col bg-neutral-50">
-        <AppNav />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">{children}</main>
-      </div>
+      <AppShell
+        userName={session?.user?.name ?? "Utilisateur"}
+        userEmail={session?.user?.email ?? ""}
+        onSignOut={handleSignOut}
+      >
+        <div className="mx-auto w-full max-w-6xl">{children}</div>
+      </AppShell>
     </MotionProvider>
   );
 }

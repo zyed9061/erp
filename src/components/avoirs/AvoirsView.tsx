@@ -13,6 +13,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import {
   Card,
   CardField,
+  ActionsCell,
   CardSection,
   Cell,
   CellLink,
@@ -21,6 +22,8 @@ import {
   TableSection,
 } from "@/components/ui/ListShell";
 import { IconChart, IconRefund, IconUsers, IconReceipt } from "@/components/ui/icons";
+import { StatutPill } from "@/components/ui/StatutPill";
+import { useAvoirRowActions } from "./useAvoirRowActions";
 
 export type AvoirRow = {
   id: string;
@@ -31,12 +34,14 @@ export type AvoirRow = {
   dateEmission: string;
   motif: string | null;
   totalTTC: number;
+  statut: string;
 };
 
 const T = ENTITY.avoirs;
 
 export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
   const [query, setQuery] = useState("");
+  const { actionsFor } = useAvoirRowActions();
 
   const stats = useMemo(() => {
     const total = avoirs.reduce((s, a) => s + a.totalTTC, 0);
@@ -147,7 +152,7 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
       </FilterBar>
 
       <TableSection
-        headers={["Numero", "Client", "Facture d'origine", "Motif", "Date", "Total TTC"]}
+        headers={["Numero", "Client", "Facture d'origine", "Motif", "Date", "Total TTC", "Statut", ""]}
         empty={vide || undefined}
       >
         {visibles.map((a) => (
@@ -172,6 +177,10 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
             <Cell className="font-medium tabular-nums text-rose-600">
               -{formatMontant(a.totalTTC)}
             </Cell>
+            <Cell>
+              <StatutPill statut={a.statut} />
+            </Cell>
+            <ActionsCell actions={actionsFor(a)} label={`Actions pour ${a.numero}`} />
           </Row>
         ))}
       </TableSection>

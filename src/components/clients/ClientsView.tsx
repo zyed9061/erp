@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import {
   Card,
   CardField,
+  ActionsCell,
   CardSection,
   Cell,
   CellLink,
@@ -19,6 +20,8 @@ import {
   TableSection,
 } from "@/components/ui/ListShell";
 import { IconBuilding, IconUser, IconUsers, IconTag } from "@/components/ui/icons";
+import { useLocale } from "@/i18n/client";
+import { useClientRowActions } from "./useClientRowActions";
 
 export type ClientRow = {
   id: string;
@@ -27,6 +30,7 @@ export type ClientRow = {
   email: string | null;
   telephone: string | null;
   ville: string | null;
+  actif: boolean;
 };
 
 const T = ENTITY.clients;
@@ -35,9 +39,21 @@ const TYPES = [
   { key: "PARTICULIER", label: "Particuliers" },
 ] as const;
 
-export function ClientsView({ clients }: { clients: ClientRow[] }) {
+export function ClientsView({
+  clients,
+  archives = [],
+}: {
+  /** Clients actifs (statistiques et liste par defaut). */
+  clients: ClientRow[];
+  /** Clients archives, consultables pour les reactiver. */
+  archives?: ClientRow[];
+}) {
+  const { t } = useLocale();
   const [query, setQuery] = useState("");
   const [type, setType] = useState<string | null>(null);
+  const [voirArchives, setVoirArchives] = useState(false);
+  const liste = voirArchives ? archives : clients;
+  const { actionsFor, dialogs } = useClientRowActions();
 
   const stats = useMemo(() => {
     const entreprises = clients.filter((c) => c.type === "ENTREPRISE").length;
@@ -52,20 +68,20 @@ export function ClientsView({ clients }: { clients: ClientRow[] }) {
 
   const counts = useMemo(() => {
     const map: Record<string, number> = {};
-    for (const c of clients) map[c.type] = (map[c.type] ?? 0) + 1;
+    for (const c of liste) map[c.type] = (map[c.type] ?? 0) + 1;
     return map;
-  }, [clients]);
+  }, [liste]);
 
   const visibles = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return clients.filter((c) => {
+    return liste.filter((c) => {
       if (type && c.type !== type) return false;
       if (!q) return true;
       return [c.nom, c.email, c.ville, c.telephone]
         .filter(Boolean)
         .some((v) => v!.toLowerCase().includes(q));
     });
-  }, [clients, query, type]);
+  }, [liste, query, type]);
 
   const filtresActifs = Boolean(query.trim() || type);
   const reinitialiser = () => {
@@ -77,9 +93,9 @@ export function ClientsView({ clients }: { clients: ClientRow[] }) {
     <EmptyState
       filtre={filtresActifs}
       onReset={reinitialiser}
-      titre="Aucun client pour le moment"
-      message="Ajoutez un premier client : il sera ensuite selectionnable dans vos devis et factures."
-      action={{ href: "/clients/new", label: "Nouveau client" }}
+      titre={t("clients.emptyTitle")}
+      message={t("clients.emptyDescription")}
+      action={{ href: "/clients/new", label: t("clients.newClient") }}
       accent={T.emptyAccent}
       link={T.emptyLink}
       icon={<IconUsers className="h-7 w-7" />}
@@ -90,7 +106,7 @@ export function ClientsView({ clients }: { clients: ClientRow[] }) {
     <div className="space-y-6">
       <PageHero
         eyebrow="Repertoire"
-        title="Clients"
+        title={t("clients.title")}
         subtitle={
           stats.total === 0
             ? "Aucun client enregistre pour le moment."
@@ -99,7 +115,7 @@ export function ClientsView({ clients }: { clients: ClientRow[] }) {
         accent={T.hero}
         glow={T.heroGlow}
         actionText={T.actionText}
-        action={{ href: "/clients/new", label: "Nouveau client" }}
+        action={{ href: "/clients/new", label: t("clients.newClient") }}
       />
 
       <motion.section
@@ -161,32 +177,52 @@ export function ClientsView({ clients }: { clients: ClientRow[] }) {
       <FilterBar
         query={query}
         onQueryChange={setQuery}
-        placeholder="Rechercher un nom, un email, une ville..."
+        placeholder={t("clients.searchPlaceholder")}
         focus={T.focus}
       >
         <FilterChip
           label="Tous"
-          count={clients.length}
+          count={liste.length}
           actif={type === null}
           onClick={() => setType(null)}
           classesActif="bg-neutral-900 text-white"
           classesInactif="text-neutral-600 hover:bg-neutral-100"
         />
-        {TYPES.filter((t) => counts[t.key]).map((t) => (
+        {TYPES.filter((ty) => counts[ty.key]).map((ty) => (
           <FilterChip
-            key={t.key}
-            label={t.label}
-            count={counts[t.key]}
-            actif={type === t.key}
-            onClick={() => setType(type === t.key ? null : t.key)}
+            key={ty.key}
+            label={ty.key === "ENTREPRISE" ? t("clients.typeCompany") : t("clients.typeIndividual")}
+            count={counts[ty.key]}
+            actif={type === ty.key}
+            onClick={() => setType(type === ty.key ? null : ty.key)}
             classesActif={T.chipActive}
             classesInactif={T.chipInactive}
           />
         ))}
+        {archives.length > 0 && (
+          <FilterChip
+            label={t("common.archived")}
+            count={archives.length}
+            actif={voirArchives}
+            onClick={() => {
+              setVoirArchives(!voirArchives);
+              setType(null);
+            }}
+            classesActif="bg-neutral-700 text-white"
+            classesInactif="text-neutral-500 hover:bg-neutral-100"
+          />
+        )}
       </FilterBar>
 
       <TableSection
-        headers={["Nom", "Type", "Email", "Telephone", "Ville"]}
+        headers={[
+          t("clients.columnName"),
+          t("clients.columnType"),
+          t("clients.columnEmail"),
+          t("clients.columnPhone"),
+          t("clients.columnCity"),
+          "",
+        ]}
         empty={vide || undefined}
       >
         {visibles.map((c) => (
@@ -203,6 +239,7 @@ export function ClientsView({ clients }: { clients: ClientRow[] }) {
             <Cell className="text-neutral-600">{c.email || "—"}</Cell>
             <Cell className="text-neutral-600">{c.telephone || "—"}</Cell>
             <Cell className="text-neutral-600">{c.ville || "—"}</Cell>
+            <ActionsCell actions={actionsFor(c)} label={t("common.actionsFor", { name: c.nom })} />
           </Row>
         ))}
       </TableSection>
@@ -240,11 +277,14 @@ export function ClientsView({ clients }: { clients: ClientRow[] }) {
           {visibles.length > 1 ? "s" : ""}
         </ListFooter>
       )}
+
+      {dialogs}
     </div>
   );
 }
 
 function TypePill({ type }: { type: ClientRow["type"] }) {
+  const { t } = useLocale();
   const entreprise = type === "ENTREPRISE";
   return (
     <span
@@ -255,7 +295,7 @@ function TypePill({ type }: { type: ClientRow["type"] }) {
       }`}
     >
       {entreprise ? <IconBuilding className="h-3.5 w-3.5" /> : <IconUser className="h-3.5 w-3.5" />}
-      {entreprise ? "Entreprise" : "Particulier"}
+      {entreprise ? t("clients.typeCompany") : t("clients.typeIndividual")}
     </span>
   );
 }

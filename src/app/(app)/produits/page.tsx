@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
+import { ToastOnParam } from "@/components/ui/ToastOnParam";
 import { ProduitsView, type ProduitRow } from "@/components/produits/ProduitsView";
 
 export default async function ProduitsPage() {
+  // References desactivees incluses : elles restent consultables (et reactivables).
   const produits = await prisma.produit.findMany({
-    where: { actif: true },
     orderBy: { designation: "asc" },
   });
 
@@ -15,7 +17,19 @@ export default async function ProduitsPage() {
     type: p.type,
     prixUnitaireHT: Number(p.prixUnitaireHT),
     tauxTva: Number(p.tauxTva),
+    categorie: p.categorie,
+    actif: p.actif,
   }));
 
-  return <ProduitsView produits={rows} />;
+  return (
+    <>
+      <Suspense fallback={null}>
+        <ToastOnParam />
+      </Suspense>
+      <ProduitsView
+        produits={rows.filter((p) => p.actif)}
+        archives={rows.filter((p) => !p.actif)}
+      />
+    </>
+  );
 }

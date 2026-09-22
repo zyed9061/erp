@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/current-user";
 import { clientSchema } from "@/lib/validations/client";
+import { withToast } from "@/lib/toastRedirect";
+import { getT } from "@/i18n/server";
 
 function parseFormData(formData: FormData) {
   return {
@@ -28,7 +30,8 @@ export async function createClient(formData: FormData) {
   await prisma.client.create({ data });
 
   revalidatePath("/clients");
-  redirect("/clients");
+  const t = await getT();
+  redirect(withToast("/clients", t("clients.toastCreated")));
 }
 
 export async function updateClient(id: string, formData: FormData) {
@@ -39,11 +42,18 @@ export async function updateClient(id: string, formData: FormData) {
 
   revalidatePath("/clients");
   revalidatePath(`/clients/${id}`);
-  redirect("/clients");
+  const t = await getT();
+  redirect(withToast("/clients", t("clients.toastUpdated")));
 }
 
 export async function deactivateClient(id: string) {
   await requireUser();
   await prisma.client.update({ where: { id }, data: { actif: false } });
+  revalidatePath("/clients");
+}
+
+export async function activateClient(id: string) {
+  await requireUser();
+  await prisma.client.update({ where: { id }, data: { actif: true } });
   revalidatePath("/clients");
 }
