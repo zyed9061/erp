@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/current-user";
 import { devisSchema } from "@/lib/validations/document";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
+import { nouvelleCouleur } from "@/lib/couleurs-serveur";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -30,36 +31,40 @@ export async function createDevis(formData: FormData) {
   const totaux = calculerTotaux(data.lignes);
   const numero = await nextDocumentNumber("DEVIS", annee);
 
-  const devis = await prisma.devis.create({
-    data: {
-      numero,
-      annee,
-      dateEmission: new Date(data.dateEmission),
-      dateValidite: data.dateValidite ? new Date(data.dateValidite) : null,
-      conditions: data.conditions || null,
-      notes: data.notes || null,
-      clientId: data.clientId,
-      createdById: user.id,
-      sousTotalHT: totaux.sousTotalHT,
-      totalTva: totaux.totalTva,
-      totalTTC: totaux.totalTTC,
-      lignes: {
-        create: data.lignes.map((ligne, index) => {
-          const calculee = calculerLigne(ligne);
-          return {
-            ordre: index,
-            designation: ligne.designation,
-            description: ligne.description || null,
-            quantite: ligne.quantite,
-            prixUnitaireHT: ligne.prixUnitaireHT,
-            remisePct: ligne.remisePct,
-            tauxTva: ligne.tauxTva,
-            totalHT: calculee.totalHT,
-            produitId: ligne.produitId || null,
-          };
-        }),
+  const devis = await prisma.$transaction(async (tx) => {
+    const couleur = await nouvelleCouleur(tx, "devis", numero);
+    return tx.devis.create({
+      data: {
+        couleur,
+        numero,
+        annee,
+        dateEmission: new Date(data.dateEmission),
+        dateValidite: data.dateValidite ? new Date(data.dateValidite) : null,
+        conditions: data.conditions || null,
+        notes: data.notes || null,
+        clientId: data.clientId,
+        createdById: user.id,
+        sousTotalHT: totaux.sousTotalHT,
+        totalTva: totaux.totalTva,
+        totalTTC: totaux.totalTTC,
+        lignes: {
+          create: data.lignes.map((ligne, index) => {
+            const calculee = calculerLigne(ligne);
+            return {
+              ordre: index,
+              designation: ligne.designation,
+              description: ligne.description || null,
+              quantite: ligne.quantite,
+              prixUnitaireHT: ligne.prixUnitaireHT,
+              remisePct: ligne.remisePct,
+              tauxTva: ligne.tauxTva,
+              totalHT: calculee.totalHT,
+              produitId: ligne.produitId || null,
+            };
+          }),
+        },
       },
-    },
+    });
   });
 
   revalidatePath("/devis");
@@ -101,8 +106,10 @@ export async function convertirDevisEnFacture(devisId: string) {
       timbreFiscal,
     );
 
+    const couleur = await nouvelleCouleur(tx, "facture", numero);
     const nouvelleFacture = await tx.facture.create({
       data: {
+        couleur,
         numero,
         annee,
         clientId: devis.clientId,

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/current-user";
 import { produitSchema } from "@/lib/validations/produit";
+import { lireCouleur, nouvelleCouleur } from "@/lib/couleurs-serveur";
 
 function parseFormData(formData: FormData) {
   return {
@@ -22,11 +23,15 @@ export async function createProduit(formData: FormData) {
   await requireUser();
   const data = produitSchema.parse(parseFormData(formData));
 
-  await prisma.produit.create({
-    data: {
-      ...data,
-      reference: data.reference || null,
-    },
+  await prisma.$transaction(async (tx) => {
+    const couleur = await nouvelleCouleur(tx, "produit", `${data.designation}${Date.now()}`);
+    await tx.produit.create({
+      data: {
+        ...data,
+        reference: data.reference || null,
+        couleur,
+      },
+    });
   });
 
   revalidatePath("/produits");
@@ -37,15 +42,21 @@ export async function updateProduit(id: string, formData: FormData) {
   await requireUser();
   const data = produitSchema.parse(parseFormData(formData));
 
-  await prisma.produit.update({
-    where: { id },
-    data: {
-      ...data,
-      reference: data.reference || null,
-    },
+  await prisma.$transaction(async (tx) => {
+    // Produit cree avant l'introduction des couleurs : on lui en attribue une maintenant.
+    const couleur = (await lireCouleur(tx, "produit", id)) ?? (await nouvelleCouleur(tx, "produit", id));
+    await tx.produit.update({
+      where: { id },
+      data: {
+        ...data,
+        reference: data.reference || null,
+        couleur,
+      },
+    });
   });
 
   revalidatePath("/produits");
+  revalidatePath(`/produits/${id}`);
   redirect("/produits");
 }
 

@@ -20,6 +20,21 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Couleurs par element & donnees de demo
+
+Chaque element a une couleur unique dans sa section (clients : vert, produits : bleu, devis : gris,
+avoirs : rouge, factures : rose). Deux elements d'une meme section ne peuvent avoir ni la meme
+couleur ni une couleur trop proche (voir `src/lib/couleur.ts`). Elle s'attribue automatiquement a la
+creation et se change depuis la page de l'element.
+
+Apres avoir recupere ces changements :
+
+```bash
+npx prisma migrate deploy                  # ajoute la colonne `couleur`
+npx tsx prisma/backfill-couleurs.ts        # colore les elements existants (idempotent)
+npx tsx prisma/seed-demo.ts                # (optionnel) donnees FICTIVES : produits, devis, factures, avoirs
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

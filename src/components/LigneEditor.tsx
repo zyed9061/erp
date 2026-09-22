@@ -72,7 +72,7 @@ export function LigneEditor({
     <div className="space-y-3">
       <input type="hidden" name="lignes" value={JSON.stringify(lignes)} />
 
-      <div className="overflow-x-auto rounded-lg border border-neutral-200 bg-white">
+      <div className="overflow-x-auto rounded-lg border border-neutral-200 bg-surface">
         <table className="w-full text-sm">
           <thead className="text-left text-neutral-500">
             <tr>
@@ -164,7 +164,7 @@ export function LigneEditor({
                     <button
                       type="button"
                       onClick={() => supprimerLigne(index)}
-                      className="text-neutral-400 hover:text-red-600"
+                      className="text-neutral-400 hover:text-danger"
                       disabled={lignes.length === 1}
                     >
                       ✕

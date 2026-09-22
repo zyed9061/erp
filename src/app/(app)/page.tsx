@@ -30,13 +30,17 @@ export default async function DashboardPage() {
       <h1 className="text-2xl font-semibold text-neutral-900">Tableau de bord</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="CA du mois" value={formatMontant(Number(caduMois._sum.totalTTC ?? 0))} />
-        <StatCard label="Impayes en cours" value={formatMontant(totalImpaye)} />
-        <StatCard label="Devis en attente" value={String(devisEnAttente)} />
-        <StatCard label="Clients actifs" value={String(clientsActifs)} />
+        <StatCard
+          label="CA du mois"
+          value={formatMontant(Number(caduMois._sum.totalTTC ?? 0))}
+          accent="border-t-brand"
+        />
+        <StatCard label="Impayes en cours" value={formatMontant(totalImpaye)} accent="border-t-accent" />
+        <StatCard label="Devis en attente" value={String(devisEnAttente)} accent="border-t-pop" />
+        <StatCard label="Clients actifs" value={String(clientsActifs)} accent="border-t-teal" />
       </div>
 
-      <div className="rounded-lg border border-neutral-200 bg-white">
+      <div className="rounded-lg border border-neutral-200 bg-surface">
         <div className="border-b border-neutral-200 px-5 py-3">
           <h2 className="text-sm font-medium text-neutral-900">Factures a suivre</h2>
         </div>
@@ -77,9 +81,9 @@ export default async function DashboardPage() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+function StatCard({ label, value, accent }: { label: string; value: string; accent: string }) {
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4">
+    <div className={`rounded-lg border border-t-4 border-neutral-200 bg-surface p-4 shadow-sm ${accent}`}>
       <p className="text-xs uppercase tracking-wide text-neutral-500">{label}</p>
       <p className="mt-1 text-xl font-semibold text-neutral-900">{value}</p>
     </div>

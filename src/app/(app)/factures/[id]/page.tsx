@@ -4,6 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { formatMontant, formatDate } from "@/lib/format";
 import { StatutBadge } from "@/components/StatutBadge";
 import { updateFactureStatut, enregistrerPaiement } from "@/lib/actions/factures";
+import { CouleurPicker } from "@/components/CouleurPicker";
+import { Pastille } from "@/components/Pastille";
+import { styleCouleur } from "@/lib/couleur";
+import { couleursDesAutres } from "@/lib/couleurs-serveur";
 
 export default async function FactureDetailPage({
   params,
@@ -26,13 +30,17 @@ export default async function FactureDetailPage({
   }
 
   const resteAPayer = Number(facture.totalTTC) - Number(facture.montantPaye);
+  const autres = await couleursDesAutres("facture", id);
 
   return (
-    <div className="space-y-6">
+    <div className="item-color space-y-6" style={styleCouleur("rose", facture.couleur, facture.id)}>
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-neutral-900">{facture.numero}</h1>
-          <p className="text-sm text-neutral-500">{facture.client.nom}</p>
+        <div className="flex items-center gap-4 border-l-4 border-l-(--item-color) pl-4">
+          <Pastille texte="F" forme="carre" taille="lg" />
+          <div>
+            <h1 className="text-2xl font-semibold text-neutral-900">{facture.numero}</h1>
+            <p className="text-sm text-neutral-500">{facture.client.nom}</p>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <StatutBadge statut={facture.statut} />
@@ -70,14 +78,18 @@ export default async function FactureDetailPage({
         </Link>
       </div>
 
-      <div className="rounded-lg border border-neutral-200 bg-white p-5 text-sm text-neutral-600">
+      <div className="max-w-xl">
+        <CouleurPicker entite="facture" id={id} couleurActuelle={facture.couleur} autres={autres} />
+      </div>
+
+      <div className="rounded-lg border border-neutral-200 bg-surface p-5 text-sm text-neutral-600">
         <div className="grid grid-cols-2 gap-2">
           <span>Date d&apos;emission: {formatDate(facture.dateEmission)}</span>
           {facture.dateEcheance && <span>Echeance: {formatDate(facture.dateEcheance)}</span>}
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
+      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-surface">
         <table className="w-full text-sm">
           <thead className="text-left text-neutral-500">
             <tr>
@@ -134,7 +146,7 @@ export default async function FactureDetailPage({
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-neutral-200 bg-white p-5">
+        <div className="rounded-lg border border-neutral-200 bg-surface p-5">
           <h2 className="mb-3 text-sm font-medium text-neutral-900">Paiements</h2>
           {facture.paiements.length === 0 ? (
             <p className="text-sm text-neutral-500">Aucun paiement enregistre.</p>
@@ -153,7 +165,7 @@ export default async function FactureDetailPage({
         </div>
 
         {resteAPayer > 0 && facture.statut !== "ANNULEE" && (
-          <div className="rounded-lg border border-neutral-200 bg-white p-5">
+          <div className="rounded-lg border border-neutral-200 bg-surface p-5">
             <h2 className="mb-3 text-sm font-medium text-neutral-900">Enregistrer un paiement</h2>
             <form action={enregistrerPaiement} className="space-y-3">
               <input type="hidden" name="factureId" value={facture.id} />
@@ -197,7 +209,7 @@ export default async function FactureDetailPage({
               </label>
               <button
                 type="submit"
-                className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
+                className="rounded bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"
               >
                 Enregistrer le paiement
               </button>

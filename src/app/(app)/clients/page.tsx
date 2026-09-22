@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { styleCouleur } from "@/lib/couleur";
+import { Pastille } from "@/components/Pastille";
 
 export default async function ClientsPage() {
   const clients = await prisma.client.findMany({
@@ -13,13 +15,13 @@ export default async function ClientsPage() {
         <h1 className="text-2xl font-semibold text-neutral-900">Clients</h1>
         <Link
           href="/clients/new"
-          className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
+          className="rounded bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"
         >
           Nouveau client
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
+      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-surface">
         <table className="w-full text-sm">
           <thead className="text-left text-neutral-500">
             <tr>
@@ -32,9 +34,17 @@ export default async function ClientsPage() {
           </thead>
           <tbody>
             {clients.map((client) => (
-              <tr key={client.id} className="border-t border-neutral-100">
-                <td className="px-5 py-3">
-                  <Link href={`/clients/${client.id}`} className="text-neutral-900 hover:underline">
+              <tr
+                key={client.id}
+                style={styleCouleur("vert", client.couleur, client.id)}
+                className="item-color border-t border-neutral-100"
+              >
+                <td className="border-l-4 border-l-(--item-color) px-5 py-3">
+                  <Link
+                    href={`/clients/${client.id}`}
+                    className="flex items-center gap-3 text-neutral-900 hover:underline"
+                  >
+                    <Pastille texte={client.nom} />
                     {client.nom}
                   </Link>
                 </td>

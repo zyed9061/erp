@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatMontant, formatDate } from "@/lib/format";
+import { styleCouleur } from "@/lib/couleur";
+import { Pastille } from "@/components/Pastille";
 
 export default async function AvoirsListPage() {
   const avoirs = await prisma.avoir.findMany({
@@ -12,7 +14,7 @@ export default async function AvoirsListPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold text-neutral-900">Avoirs</h1>
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
+      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-surface">
         <table className="w-full text-sm">
           <thead className="text-left text-neutral-500">
             <tr>
@@ -25,9 +27,17 @@ export default async function AvoirsListPage() {
           </thead>
           <tbody>
             {avoirs.map((a) => (
-              <tr key={a.id} className="border-t border-neutral-100">
-                <td className="px-5 py-3">
-                  <Link href={`/avoirs/${a.id}`} className="text-neutral-900 hover:underline">
+              <tr
+                key={a.id}
+                style={styleCouleur("rouge", a.couleur, a.id)}
+                className="item-color border-t border-neutral-100"
+              >
+                <td className="border-l-4 border-l-(--item-color) px-5 py-3">
+                  <Link
+                    href={`/avoirs/${a.id}`}
+                    className="flex items-center gap-3 text-neutral-900 hover:underline"
+                  >
+                    <Pastille texte="A" forme="carre" />
                     {a.numero}
                   </Link>
                 </td>

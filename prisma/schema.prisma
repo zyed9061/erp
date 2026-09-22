@@ -107,6 +107,7 @@ model Client {
   pays            String     @default("Tunisie")
   notes           String?
   actif           Boolean    @default(true)
+  couleur         String? // vert unique du client (#rrggbb), voir src/lib/couleur.ts
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
@@ -136,6 +137,7 @@ model Produit {
   uniteMesure    String      @default("unite")
   tauxTva        Decimal     @default(19) @db.Decimal(5, 2)
   actif          Boolean     @default(true)
+  couleur        String? // bleu unique du produit (#rrggbb), voir src/lib/couleur.ts
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 
@@ -168,6 +170,7 @@ model Devis {
   statut        DevisStatus @default(BROUILLON)
   notes         String?
   conditions    String?
+  couleur       String? // gris unique du devis (#rrggbb), voir src/lib/couleur.ts
   sousTotalHT   Decimal     @default(0) @db.Decimal(14, 3)
   totalTva      Decimal     @default(0) @db.Decimal(14, 3)
   totalTTC      Decimal     @default(0) @db.Decimal(14, 3)
@@ -228,6 +231,7 @@ model Facture {
   statut          FactureStatus @default(BROUILLON)
   notes           String?
   conditionsPaiement String?
+  couleur         String? // rose unique de la facture (#rrggbb), voir src/lib/couleur.ts
   sousTotalHT     Decimal       @default(0) @db.Decimal(14, 3)
   totalTva        Decimal       @default(0) @db.Decimal(14, 3)
   timbreFiscal    Decimal       @default(0) @db.Decimal(10, 3)
@@ -282,6 +286,7 @@ model Avoir {
   annee        Int
   dateEmission DateTime @default(now())
   motif        String?
+  couleur      String? // rouge unique de l'avoir (#rrggbb), voir src/lib/couleur.ts
   sousTotalHT  Decimal  @default(0) @db.Decimal(14, 3)
   totalTva     Decimal  @default(0) @db.Decimal(14, 3)
   totalTTC     Decimal  @default(0) @db.Decimal(14, 3)

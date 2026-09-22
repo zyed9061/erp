@@ -2,6 +2,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatMontant, formatDate } from "@/lib/format";
+import { CouleurPicker } from "@/components/CouleurPicker";
+import { Pastille } from "@/components/Pastille";
+import { styleCouleur } from "@/lib/couleur";
+import { couleursDesAutres } from "@/lib/couleurs-serveur";
 
 export default async function AvoirDetailPage({
   params,
@@ -18,17 +22,22 @@ export default async function AvoirDetailPage({
     notFound();
   }
 
+  const autres = await couleursDesAutres("avoir", id);
+
   return (
-    <div className="space-y-6">
+    <div className="item-color space-y-6" style={styleCouleur("rouge", avoir.couleur, avoir.id)}>
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-neutral-900">{avoir.numero}</h1>
-          <p className="text-sm text-neutral-500">
-            {avoir.client.nom} — Avoir sur la facture{" "}
-            <Link href={`/factures/${avoir.factureOrigine.id}`} className="hover:underline">
-              {avoir.factureOrigine.numero}
-            </Link>
-          </p>
+        <div className="flex items-center gap-4 border-l-4 border-l-(--item-color) pl-4">
+          <Pastille texte="A" forme="carre" taille="lg" />
+          <div>
+            <h1 className="text-2xl font-semibold text-neutral-900">{avoir.numero}</h1>
+            <p className="text-sm text-neutral-500">
+              {avoir.client.nom} — Avoir sur la facture{" "}
+              <Link href={`/factures/${avoir.factureOrigine.id}`} className="hover:underline">
+                {avoir.factureOrigine.numero}
+              </Link>
+            </p>
+          </div>
         </div>
         <a
           href={`/avoirs/${avoir.id}/pdf`}
@@ -39,14 +48,18 @@ export default async function AvoirDetailPage({
         </a>
       </div>
 
+      <div className="max-w-xl">
+        <CouleurPicker entite="avoir" id={id} couleurActuelle={avoir.couleur} autres={autres} />
+      </div>
+
       {avoir.motif && (
-        <div className="rounded-lg border border-neutral-200 bg-white p-5 text-sm text-neutral-600">
+        <div className="rounded-lg border border-neutral-200 bg-surface p-5 text-sm text-neutral-600">
           <strong className="text-neutral-900">Motif: </strong>
           {avoir.motif}
         </div>
       )}
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
+      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-surface">
         <table className="w-full text-sm">
           <thead className="text-left text-neutral-500">
             <tr>

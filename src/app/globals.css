@@ -1,22 +1,124 @@
 @import "tailwindcss";
 
+/*
+  Palette "Cyber Lagoon" — electric blue brand, hot magenta + acid lime accents,
+  teal as the cool link, blue-tinted neutrals. Light by default; dark values are
+  applied when <html data-theme="dark"> (set by the inline script in layout.tsx
+  from localStorage or the system preference).
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --background: var(--n-50);
+  --foreground: var(--n-900);
+  --surface: #ffffff;
+
+  --n-50: #f1f7ff;
+  --n-100: #e3eeff;
+  --n-200: #cfe0fa;
+  --n-300: #b3cbee;
+  --n-400: #7f97c2;
+  --n-500: #536b98;
+  --n-600: #3b5079;
+  --n-700: #263a62;
+  --n-800: #16264a;
+  --n-900: #08153a;
+
+  --brand: #0a5cff;
+  --brand-hover: #0847cc;
+  --brand-soft: #dce9ff;
+  --accent: #ff1fb4;
+  --accent-soft: #ffe0f5;
+  --pop: #c6ff1a;
+  --pop-soft: #f1ffc2;
+  --teal: #00b8b0;
+
+  --info: #0a5cff;
+  --info-soft: #dce9ff;
+  --success: #008a5a;
+  --success-soft: #d2f8e6;
+  --danger: #d10a6b;
+  --danger-soft: #ffe0f0;
+  --warning: #9a5b00;
+  --warning-soft: #fff1c2;
+  --special: #7b2ff7;
+  --special-soft: #ebe0ff;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --surface: #0f1836;
+
+  --n-50: #0a1128;
+  --n-100: #16224a;
+  --n-200: #1f3060;
+  --n-300: #2f4480;
+  --n-400: #7488ba;
+  --n-500: #93a5d3;
+  --n-600: #b3c1e6;
+  --n-700: #cbd6f1;
+  --n-800: #e1e8f8;
+  --n-900: #f3f6ff;
+
+  --brand: #2f6ff0;
+  --brand-hover: #4d85f5;
+  --brand-soft: #12275c;
+  --accent: #ff4fc7;
+  --accent-soft: #4a1240;
+  --pop: #c6ff1a;
+  --pop-soft: #2f3d06;
+  --teal: #19e0d6;
+
+  --info: #7fb0ff;
+  --info-soft: #12275c;
+  --success: #3deba5;
+  --success-soft: #0b3a2e;
+  --danger: #ff6bb5;
+  --danger-soft: #4a1230;
+  --warning: #ffc64d;
+  --warning-soft: #4a3406;
+  --special: #b58cff;
+  --special-soft: #2e1a63;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-neutral-50: var(--n-50);
+  --color-neutral-100: var(--n-100);
+  --color-neutral-200: var(--n-200);
+  --color-neutral-300: var(--n-300);
+  --color-neutral-400: var(--n-400);
+  --color-neutral-500: var(--n-500);
+  --color-neutral-600: var(--n-600);
+  --color-neutral-700: var(--n-700);
+  --color-neutral-800: var(--n-800);
+  --color-neutral-900: var(--n-900);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-pop: var(--pop);
+  --color-pop-soft: var(--pop-soft);
+  --color-teal: var(--teal);
+
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-special: var(--special);
+  --color-special-soft: var(--special-soft);
 }
 
 body {
@@ -25,8 +127,18 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Couleur unique par element (famille par section) : --cg-* sont poses en ligne (voir styleCouleur dans lib/couleur.ts) */
+.item-color {
+  --item-color: var(--cg-light);
+  --item-ink: var(--cg-ink-light);
+}
+:root[data-theme="dark"] .item-color {
+  --item-color: var(--cg-dark);
+  --item-ink: var(--cg-ink-dark);
+}
+
 @layer components {
   .input {
-    @apply w-full rounded border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none;
+    @apply w-full rounded border border-neutral-300 bg-surface px-3 py-2 text-sm text-neutral-900 focus:border-brand focus:ring-2 focus:ring-brand/25 focus:outline-none;
   }
 }

@@ -42,7 +42,7 @@ export function AvoirForm({
 
       <button
         type="submit"
-        className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
+        className="rounded bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-hover"
       >
         Creer l&apos;avoir
       </button>

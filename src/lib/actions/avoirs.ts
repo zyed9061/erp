@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/current-user";
 import { avoirSchema } from "@/lib/validations/document";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
+import { nouvelleCouleur } from "@/lib/couleurs-serveur";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -31,33 +32,37 @@ export async function createAvoir(formData: FormData) {
   const numero = await nextDocumentNumber("AVOIR", annee);
   const totaux = calculerTotaux(data.lignes);
 
-  const avoir = await prisma.avoir.create({
-    data: {
-      numero,
-      annee,
-      motif: data.motif || null,
-      clientId: factureOrigine.clientId,
-      factureOrigineId: factureOrigine.id,
-      createdById: user.id,
-      sousTotalHT: totaux.sousTotalHT,
-      totalTva: totaux.totalTva,
-      totalTTC: totaux.totalTTC,
-      lignes: {
-        create: data.lignes.map((ligne, index) => {
-          const calculee = calculerLigne(ligne);
-          return {
-            ordre: index,
-            designation: ligne.designation,
-            description: ligne.description || null,
-            quantite: ligne.quantite,
-            prixUnitaireHT: ligne.prixUnitaireHT,
-            tauxTva: ligne.tauxTva,
-            totalHT: calculee.totalHT,
-            produitId: ligne.produitId || null,
-          };
-        }),
+  const avoir = await prisma.$transaction(async (tx) => {
+    const couleur = await nouvelleCouleur(tx, "avoir", numero);
+    return tx.avoir.create({
+      data: {
+        couleur,
+        numero,
+        annee,
+        motif: data.motif || null,
+        clientId: factureOrigine.clientId,
+        factureOrigineId: factureOrigine.id,
+        createdById: user.id,
+        sousTotalHT: totaux.sousTotalHT,
+        totalTva: totaux.totalTva,
+        totalTTC: totaux.totalTTC,
+        lignes: {
+          create: data.lignes.map((ligne, index) => {
+            const calculee = calculerLigne(ligne);
+            return {
+              ordre: index,
+              designation: ligne.designation,
+              description: ligne.description || null,
+              quantite: ligne.quantite,
+              prixUnitaireHT: ligne.prixUnitaireHT,
+              tauxTva: ligne.tauxTva,
+              totalHT: calculee.totalHT,
+              produitId: ligne.produitId || null,
+            };
+          }),
+        },
       },
-    },
+    });
   });
 
   revalidatePath("/avoirs");
