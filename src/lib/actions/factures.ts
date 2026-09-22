@@ -13,6 +13,7 @@ import {
 } from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
 import { withToast } from "@/lib/toastRedirect";
+import { getLocale, getT } from "@/i18n/server";
 import { formatMontant } from "@/lib/format";
 
 function parseFormData(formData: FormData) {
@@ -78,7 +79,8 @@ export async function createFacture(formData: FormData) {
   });
 
   revalidatePath("/factures");
-  redirect(withToast(`/factures/${facture.id}`, "Facture creee avec succes."));
+  const t = await getT();
+  redirect(withToast(`/factures/${facture.id}`, t("invoices.toastCreated")));
 }
 
 export async function duplicateFacture(id: string) {
@@ -173,7 +175,8 @@ export async function enregistrerPaiement(
     montant: formData.get("montant"),
     modePaiement: formData.get("modePaiement"),
     reference: formData.get("reference"),
-    notes: formData.get("notes"),
+    // PaiementForm has no notes field, so formData.get returns null, which the schema rejects.
+    notes: formData.get("notes") ?? undefined,
   });
 
   const facture = await prisma.facture.findUniqueOrThrow({ where: { id: data.factureId } });
@@ -182,8 +185,9 @@ export async function enregistrerPaiement(
   try {
     verifierMontantPaiement(resteAPayer, data.montant);
   } catch {
+    const [t, locale] = await Promise.all([getT(), getLocale()]);
     return {
-      error: `Le montant depasse le solde restant a payer (${formatMontant(resteAPayer)}).`,
+      error: t("invoices.errorOverpayment", { amount: formatMontant(resteAPayer, "TND", locale) }),
     };
   }
 
@@ -209,5 +213,6 @@ export async function enregistrerPaiement(
   await recalculerStatutPaiement(data.factureId);
 
   revalidatePath(`/factures/${data.factureId}`);
-  redirect(withToast(`/factures/${data.factureId}`, "Paiement enregistre avec succes."));
+  const t = await getT();
+  redirect(withToast(`/factures/${data.factureId}`, t("invoices.toastPaymentRecorded")));
 }

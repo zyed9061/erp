@@ -1,9 +1,10 @@
 import { auth, signOut } from "@/auth";
 import { AppShell } from "@/components/layout/AppShell";
 import { MotionProvider } from "@/components/ui/MotionProvider";
+import { getT } from "@/i18n/server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth();
+  const [t, session] = await Promise.all([getT(), auth()]);
 
   async function handleSignOut() {
     "use server";
@@ -13,7 +14,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <MotionProvider>
       <AppShell
-        userName={session?.user?.name ?? "Utilisateur"}
+        userName={session?.user?.name ?? t("common.user")}
         userEmail={session?.user?.email ?? ""}
         onSignOut={handleSignOut}
       >

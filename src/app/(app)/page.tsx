@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
 import { joursAvantEcheance, statutEffectif } from "@/lib/facture-statut";
+import { getLocale, getT } from "@/i18n/server";
+import { INTL_LOCALE } from "@/i18n/config";
 import {
   DashboardView,
   type DashboardData,
@@ -16,21 +18,14 @@ const STATUTS_REPARTITION = [
   "ANNULEE",
 ] as const;
 
-const STATUT_LABELS: Record<string, string> = {
-  BROUILLON: "Brouillon",
-  ENVOYEE: "Envoyee",
-  PARTIELLEMENT_PAYEE: "Partiellement payee",
-  PAYEE: "Payee",
-  EN_RETARD: "En retard",
-  ANNULEE: "Annulee",
-};
-
 export default async function DashboardPage() {
   const now = new Date();
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const [caduMois, facturesOuvertes, devisEnAttente, clientsActifs, facturesGraphiques] =
+  const [t, locale, caduMois, facturesOuvertes, devisEnAttente, clientsActifs, facturesGraphiques] =
     await Promise.all([
+      getT(),
+      getLocale(),
       prisma.facture.aggregate({
         _sum: { totalTTC: true },
         where: { dateEmission: { gte: debutMois }, statut: { not: "ANNULEE" } },
@@ -71,7 +66,7 @@ export default async function DashboardPage() {
         id: f.id,
         numero: f.numero,
         clientNom: f.client.nom,
-        echeance: f.dateEcheance ? formatDate(f.dateEcheance) : null,
+        echeance: f.dateEcheance ? formatDate(f.dateEcheance, locale) : null,
         joursRestants: joursAvantEcheance(f.dateEcheance, now),
         reste: totalTTC - montantPaye,
         statut: statutEffectif(
@@ -100,7 +95,7 @@ export default async function DashboardPage() {
     const total = facturesGraphiques
       .filter((f) => f.statut !== "ANNULEE" && f.dateEmission >= debut && f.dateEmission < fin)
       .reduce((sum, f) => sum + Number(f.totalTTC), 0);
-    return { label: debut.toLocaleDateString("fr-FR", { month: "short" }), total };
+    return { label: debut.toLocaleDateString(INTL_LOCALE[locale], { month: "short" }), total };
   });
 
   // Repartition par statut affiche (retard derive inclus).
@@ -117,7 +112,7 @@ export default async function DashboardPage() {
   );
   const statusCounts = STATUTS_REPARTITION.map((statut) => ({
     statut,
-    label: STATUT_LABELS[statut],
+    label: t(`status.${statut}`),
     count: statutsAffiches.filter((s) => s === statut).length,
   }));
 
@@ -129,7 +124,7 @@ export default async function DashboardPage() {
     suivi,
     nbOuvertes: facturesOuvertes.length,
     nbEnRetard,
-    mois: now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }),
+    mois: now.toLocaleDateString(INTL_LOCALE[locale], { month: "long", year: "numeric" }),
     revenueByMonth,
     statusCounts,
   };

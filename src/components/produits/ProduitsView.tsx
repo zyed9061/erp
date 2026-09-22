@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/ListShell";
 import { IconBox, IconChart, IconTag, IconWrench } from "@/components/ui/icons";
 import { useProduitRowActions } from "./useProduitRowActions";
+import { useLocale } from "@/i18n/client";
+import { tp } from "@/i18n/plural";
 
 export type ProduitRow = {
   id: string;
@@ -36,8 +38,8 @@ export type ProduitRow = {
 
 const T = ENTITY.produits;
 const TYPES = [
-  { key: "PRODUIT", label: "Produits" },
-  { key: "SERVICE", label: "Services" },
+  { key: "PRODUIT", labelKey: "views.products.statProducts" },
+  { key: "SERVICE", labelKey: "views.products.statServices" },
 ] as const;
 
 export function ProduitsView({
@@ -54,6 +56,8 @@ export function ProduitsView({
   const [voirArchives, setVoirArchives] = useState(false);
   const liste = voirArchives ? archives : produits;
   const { actionsFor, dialogs } = useProduitRowActions();
+  const { t, locale } = useLocale();
+  const fmt = (n: number) => formatMontant(n, "TND", locale);
 
   const stats = useMemo(() => {
     const services = produits.filter((p) => p.type === "SERVICE").length;
@@ -90,9 +94,9 @@ export function ProduitsView({
     <EmptyState
       filtre={filtresActifs}
       onReset={reinitialiser}
-      titre="Aucun produit pour le moment"
-      message="Creez un produit ou un service : il sera proposé a la saisie de vos lignes de facture."
-      action={{ href: "/produits/new", label: "Nouveau produit" }}
+      titre={t("views.products.emptyTitle")}
+      message={t("views.products.emptyMessage")}
+      action={{ href: "/produits/new", label: t("products.newProduct") }}
       accent={T.emptyAccent}
       link={T.emptyLink}
       icon={<IconBox className="h-7 w-7" />}
@@ -102,17 +106,17 @@ export function ProduitsView({
   return (
     <div className="space-y-6">
       <PageHero
-        eyebrow="Catalogue"
-        title="Produits & Services"
+        eyebrow={t("views.products.eyebrow")}
+        title={t("products.title")}
         subtitle={
           stats.total === 0
-            ? "Votre catalogue est encore vide."
-            : `${stats.total} reference${stats.total > 1 ? "s" : ""} - prix moyen ${formatMontant(stats.prixMoyen)} HT.`
+            ? t("views.products.subtitleEmpty")
+            : tp(t, "views.products.subtitle", stats.total, { amount: fmt(stats.prixMoyen) })
         }
         accent={T.hero}
         glow={T.heroGlow}
         actionText={T.actionText}
-        action={{ href: "/produits/new", label: "Nouveau produit" }}
+        action={{ href: "/produits/new", label: t("products.newProduct") }}
       />
 
       <motion.section
@@ -123,40 +127,40 @@ export function ProduitsView({
       >
         <StatCard
           index={0}
-          label="References"
+          label={t("views.products.statReferences")}
           value={stats.total}
           format={(n) => String(Math.round(n))}
-          hint="Catalogue actif"
+          hint={t("views.products.statReferencesHint")}
           accent="from-teal-500 to-emerald-500"
           glow="hover:shadow-emerald-500/10"
           icon={<IconTag className="h-5 w-5" />}
         />
         <StatCard
           index={1}
-          label="Produits"
+          label={t("views.products.statProducts")}
           value={stats.produits}
           format={(n) => String(Math.round(n))}
-          hint="Biens physiques"
+          hint={t("views.products.statProductsHint")}
           accent="from-sky-500 to-blue-500"
           glow="hover:shadow-blue-500/10"
           icon={<IconBox className="h-5 w-5" />}
         />
         <StatCard
           index={2}
-          label="Services"
+          label={t("views.products.statServices")}
           value={stats.services}
           format={(n) => String(Math.round(n))}
-          hint="Prestations"
+          hint={t("views.products.statServicesHint")}
           accent="from-violet-500 to-purple-500"
           glow="hover:shadow-violet-500/10"
           icon={<IconWrench className="h-5 w-5" />}
         />
         <StatCard
           index={3}
-          label="Prix moyen HT"
+          label={t("views.products.statAvgPrice")}
           value={stats.prixMoyen}
-          format={(n) => formatMontant(n)}
-          hint="Toutes references"
+          format={(n) => fmt(n)}
+          hint={t("views.products.statAvgPriceHint")}
           accent="from-amber-400 to-orange-500"
           glow="hover:shadow-amber-500/10"
           icon={<IconChart className="h-5 w-5" />}
@@ -166,31 +170,31 @@ export function ProduitsView({
       <FilterBar
         query={query}
         onQueryChange={setQuery}
-        placeholder="Rechercher une designation, une reference..."
+        placeholder={t("views.products.searchPlaceholder")}
         focus={T.focus}
       >
         <FilterChip
-          label="Tous"
+          label={t("views.common.all")}
           count={liste.length}
           actif={type === null}
           onClick={() => setType(null)}
           classesActif="bg-neutral-900 text-white"
           classesInactif="text-neutral-600 hover:bg-neutral-100"
         />
-        {TYPES.filter((t) => counts[t.key]).map((t) => (
+        {TYPES.filter((ty) => counts[ty.key]).map((ty) => (
           <FilterChip
-            key={t.key}
-            label={t.label}
-            count={counts[t.key]}
-            actif={type === t.key}
-            onClick={() => setType(type === t.key ? null : t.key)}
+            key={ty.key}
+            label={t(ty.labelKey)}
+            count={counts[ty.key]}
+            actif={type === ty.key}
+            onClick={() => setType(type === ty.key ? null : ty.key)}
             classesActif={T.chipActive}
             classesInactif={T.chipInactive}
           />
         ))}
         {archives.length > 0 && (
           <FilterChip
-            label="Desactives"
+            label={t("views.products.deactivatedChip")}
             count={archives.length}
             actif={voirArchives}
             onClick={() => {
@@ -204,7 +208,14 @@ export function ProduitsView({
       </FilterBar>
 
       <TableSection
-        headers={["Reference", "Designation", "Type", "Prix HT", "TVA", ""]}
+        headers={[
+          t("products.columnReference"),
+          t("products.fieldDesignation"),
+          t("products.columnType"),
+          t("products.columnPriceHT"),
+          t("documents.vat"),
+          "",
+        ]}
         empty={vide || undefined}
       >
         {visibles.map((p) => (
@@ -220,10 +231,10 @@ export function ProduitsView({
               <TypePill type={p.type} />
             </Cell>
             <Cell className="font-medium tabular-nums text-neutral-900">
-              {formatMontant(p.prixUnitaireHT)}
+              {fmt(p.prixUnitaireHT)}
             </Cell>
             <Cell className="tabular-nums text-neutral-600">{p.tauxTva}%</Cell>
-            <ActionsCell actions={actionsFor(p)} label={`Actions pour ${p.designation}`} />
+            <ActionsCell actions={actionsFor(p)} label={t("common.actionsFor", { name: p.designation })} />
           </Row>
         ))}
       </TableSection>
@@ -235,14 +246,14 @@ export function ProduitsView({
               <div className="min-w-0">
                 <p className="font-semibold text-neutral-900">{p.designation}</p>
                 <p className="truncate font-mono text-xs text-neutral-500">
-                  {p.reference || "Sans reference"}
+                  {p.reference || t("views.products.noReference")}
                 </p>
               </div>
               <TypePill type={p.type} />
             </div>
             <div className="mt-3 flex items-end justify-between gap-3">
-              <CardField label="Prix HT" value={formatMontant(p.prixUnitaireHT)} />
-              <CardField label="TVA" value={`${p.tauxTva}%`} align="right" />
+              <CardField label={t("products.columnPriceHT")} value={fmt(p.prixUnitaireHT)} />
+              <CardField label={t("documents.vat")} value={`${p.tauxTva}%`} align="right" />
             </div>
           </Card>
         ))}
@@ -250,8 +261,7 @@ export function ProduitsView({
 
       {visibles.length > 0 && (
         <ListFooter>
-          {visibles.length} reference{visibles.length > 1 ? "s" : ""} affichee
-          {visibles.length > 1 ? "s" : ""}
+          {tp(t, "views.products.footer", visibles.length)}
         </ListFooter>
       )}
 
@@ -261,6 +271,7 @@ export function ProduitsView({
 }
 
 function TypePill({ type }: { type: ProduitRow["type"] }) {
+  const { t } = useLocale();
   const service = type === "SERVICE";
   return (
     <span
@@ -271,7 +282,7 @@ function TypePill({ type }: { type: ProduitRow["type"] }) {
       }`}
     >
       {service ? <IconWrench className="h-3.5 w-3.5" /> : <IconBox className="h-3.5 w-3.5" />}
-      {service ? "Service" : "Produit"}
+      {service ? t("products.typeService") : t("products.typeProduct")}
     </span>
   );
 }

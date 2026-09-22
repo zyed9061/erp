@@ -24,6 +24,8 @@ import {
 import { IconChart, IconRefund, IconUsers, IconReceipt } from "@/components/ui/icons";
 import { StatutPill } from "@/components/ui/StatutPill";
 import { useAvoirRowActions } from "./useAvoirRowActions";
+import { useLocale } from "@/i18n/client";
+import { tp } from "@/i18n/plural";
 
 export type AvoirRow = {
   id: string;
@@ -42,6 +44,8 @@ const T = ENTITY.avoirs;
 export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
   const [query, setQuery] = useState("");
   const { actionsFor } = useAvoirRowActions();
+  const { t, locale } = useLocale();
+  const fmt = (n: number) => formatMontant(n, "TND", locale);
 
   const stats = useMemo(() => {
     const total = avoirs.reduce((s, a) => s + a.totalTTC, 0);
@@ -69,8 +73,8 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
     <EmptyState
       filtre={filtresActifs}
       onReset={() => setQuery("")}
-      titre="Aucun avoir pour le moment"
-      message="Un avoir se cree depuis une facture existante, pour en annuler tout ou partie."
+      titre={t("views.creditNotes.emptyTitle")}
+      message={t("views.creditNotes.emptyMessage")}
       accent={T.emptyAccent}
       link={T.emptyLink}
       icon={<IconRefund className="h-7 w-7" />}
@@ -80,12 +84,12 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
   return (
     <div className="space-y-6">
       <PageHero
-        eyebrow="Regularisations"
-        title="Avoirs"
+        eyebrow={t("views.creditNotes.eyebrow")}
+        title={t("creditNotes.title")}
         subtitle={
           stats.nb === 0
-            ? "Aucun avoir emis. Ils se creent depuis une facture."
-            : `${stats.nb} avoir${stats.nb > 1 ? "s" : ""} - ${formatMontant(stats.total)} regularises.`
+            ? t("views.creditNotes.subtitleEmpty")
+            : tp(t, "views.creditNotes.subtitle", stats.nb, { amount: fmt(stats.total) })
         }
         accent={T.hero}
         glow={T.heroGlow}
@@ -100,40 +104,40 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
       >
         <StatCard
           index={0}
-          label="Avoirs emis"
+          label={t("views.creditNotes.statIssued")}
           value={stats.nb}
           format={(n) => String(Math.round(n))}
-          hint="Depuis le debut"
+          hint={t("views.creditNotes.statIssuedHint")}
           accent="from-rose-500 to-pink-500"
           glow="hover:shadow-rose-500/10"
           icon={<IconRefund className="h-5 w-5" />}
         />
         <StatCard
           index={1}
-          label="Montant regularise"
+          label={t("views.creditNotes.statAmount")}
           value={stats.total}
-          format={(n) => formatMontant(n)}
-          hint="Total TTC"
+          format={(n) => fmt(n)}
+          hint={t("views.creditNotes.statAmountHint")}
           accent="from-violet-500 to-purple-500"
           glow="hover:shadow-violet-500/10"
           icon={<IconReceipt className="h-5 w-5" />}
         />
         <StatCard
           index={2}
-          label="Clients concernes"
+          label={t("views.creditNotes.statClients")}
           value={stats.clients}
           format={(n) => String(Math.round(n))}
-          hint="Clients distincts"
+          hint={t("views.creditNotes.statClientsHint")}
           accent="from-sky-500 to-blue-500"
           glow="hover:shadow-blue-500/10"
           icon={<IconUsers className="h-5 w-5" />}
         />
         <StatCard
           index={3}
-          label="Montant moyen"
+          label={t("views.creditNotes.statAverage")}
           value={stats.moyenne}
-          format={(n) => formatMontant(n)}
-          hint="Par avoir"
+          format={(n) => fmt(n)}
+          hint={t("views.creditNotes.statAverageHint")}
           accent="from-amber-400 to-orange-500"
           glow="hover:shadow-amber-500/10"
           icon={<IconChart className="h-5 w-5" />}
@@ -143,16 +147,25 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
       <FilterBar
         query={query}
         onQueryChange={setQuery}
-        placeholder="Rechercher un avoir, un client, une facture..."
+        placeholder={t("views.creditNotes.searchPlaceholder")}
         focus={T.focus}
       >
         <p className="px-2 text-xs text-neutral-500">
-          Un avoir se cree depuis le detail d&apos;une facture.
+          {t("views.creditNotes.filterHint")}
         </p>
       </FilterBar>
 
       <TableSection
-        headers={["Numero", "Client", "Facture d'origine", "Motif", "Date", "Total TTC", "Statut", ""]}
+        headers={[
+          t("documents.columnNumber"),
+          t("documents.columnClient"),
+          t("creditNotes.originInvoice"),
+          t("creditNotes.columnReason"),
+          t("documents.columnDate"),
+          t("documents.totalTTC"),
+          t("documents.columnStatus"),
+          "",
+        ]}
         empty={vide || undefined}
       >
         {visibles.map((a) => (
@@ -175,12 +188,12 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
             <Cell className="max-w-[220px] truncate text-neutral-600">{a.motif || "—"}</Cell>
             <Cell className="text-neutral-500">{a.dateEmission}</Cell>
             <Cell className="font-medium tabular-nums text-rose-600">
-              -{formatMontant(a.totalTTC)}
+              -{fmt(a.totalTTC)}
             </Cell>
             <Cell>
               <StatutPill statut={a.statut} />
             </Cell>
-            <ActionsCell actions={actionsFor(a)} label={`Actions pour ${a.numero}`} />
+            <ActionsCell actions={actionsFor(a)} label={t("common.actionsFor", { name: a.numero })} />
           </Row>
         ))}
       </TableSection>
@@ -199,12 +212,12 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
             </div>
             <div className="mt-3 flex items-end justify-between gap-3">
               <CardField
-                label="Total TTC"
-                value={`-${formatMontant(a.totalTTC)}`}
+                label={t("documents.totalTTC")}
+                value={`-${fmt(a.totalTTC)}`}
                 className="text-rose-600"
               />
               <CardField
-                label="Date"
+                label={t("documents.columnDate")}
                 value={a.dateEmission}
                 align="right"
                 className="text-sm text-neutral-700"
@@ -216,8 +229,7 @@ export function AvoirsView({ avoirs }: { avoirs: AvoirRow[] }) {
 
       {visibles.length > 0 && (
         <ListFooter>
-          {visibles.length} avoir{visibles.length > 1 ? "s" : ""} affiche
-          {visibles.length > 1 ? "s" : ""}
+          {tp(t, "views.creditNotes.footer", visibles.length)}
         </ListFooter>
       )}
     </div>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { RowAction } from "@/components/ui/RowActionsMenu";
 import { useToast } from "@/components/ui/Toast";
+import { useLocale } from "@/i18n/client";
 import { updateFactureStatut, duplicateFacture } from "@/lib/actions/factures";
 import { sendDocumentByEmail, sendPaymentReminder } from "@/lib/services/notifications";
 
@@ -20,6 +21,7 @@ export type FactureActionRow = {
 /** Actions de ligne des factures (menu "...") et confirmation d'annulation. */
 export function useFactureRowActions() {
   const router = useRouter();
+  const { t } = useLocale();
   const { showSuccess, showError } = useToast();
   const [, startTransition] = useTransition();
   const [cancelTarget, setCancelTarget] = useState<FactureActionRow | null>(null);
@@ -33,11 +35,11 @@ export function useFactureRowActions() {
           showSuccess(successMessage);
           router.refresh();
         } catch {
-          showError("Une erreur est survenue.");
+          showError(t("common.error"));
         }
       });
     },
-    [startTransition, showSuccess, showError, router],
+    [startTransition, showSuccess, showError, router, t],
   );
 
   function handleCancel() {
@@ -47,11 +49,11 @@ export function useFactureRowActions() {
     startTransition(async () => {
       try {
         await updateFactureStatut(target.id, "ANNULEE");
-        showSuccess(`${target.numero} a ete annulee.`);
+        showSuccess(t("invoices.toastCancelled", { number: target.numero }));
         setCancelTarget(null);
         router.refresh();
       } catch {
-        showError("Une erreur est survenue.");
+        showError(t("common.error"));
       } finally {
         setCancelPending(false);
       }
@@ -61,26 +63,26 @@ export function useFactureRowActions() {
   const actionsFor = useCallback(
     (row: FactureActionRow): RowAction[] => {
       const actions: RowAction[] = [
-        { label: "Voir", onSelect: () => router.push(`/factures/${row.id}`) },
+        { label: t("common.view"), onSelect: () => router.push(`/factures/${row.id}`) },
         {
-          label: "Dupliquer",
+          label: t("common.duplicate"),
           onSelect: () =>
             startTransition(async () => {
               try {
                 const result = await duplicateFacture(row.id);
-                showSuccess(`${row.numero} a ete dupliquee.`);
+                showSuccess(t("invoices.toastDuplicated", { number: row.numero }));
                 router.push(`/factures/${result.id}`);
               } catch {
-                showError("Une erreur est survenue.");
+                showError(t("common.error"));
               }
             }),
         },
         {
-          label: "Telecharger le PDF",
+          label: t("common.downloadPdf"),
           onSelect: () => window.open(`/factures/${row.id}/pdf`, "_blank"),
         },
         {
-          label: "Envoyer par email",
+          label: t("common.sendByEmail"),
           onSelect: () =>
             startTransition(async () => {
               const result = await sendDocumentByEmail({
@@ -89,23 +91,27 @@ export function useFactureRowActions() {
                 numero: row.numero,
                 clientEmail: row.clientEmail,
               });
-              if (result.success) showSuccess(result.message);
-              else showError(result.message);
+              const message = t(`notifications.${result.messageKey}`, result.vars);
+              if (result.success) showSuccess(message);
+              else showError(message);
             }),
         },
-        { label: "Creer un avoir", onSelect: () => router.push(`/avoirs/new?factureId=${row.id}`) },
+        {
+          label: t("invoices.actionCreateCreditNote"),
+          onSelect: () => router.push(`/avoirs/new?factureId=${row.id}`),
+        },
       ];
 
       if (row.reste > 0 && row.statut !== "ANNULEE") {
         actions.push({
-          label: "Enregistrer un paiement",
+          label: t("invoices.actionRecordPayment"),
           onSelect: () => router.push(`/factures/${row.id}`),
         });
       }
 
       if (row.statut === "EN_RETARD" || row.statut === "PARTIELLEMENT_PAYEE") {
         actions.push({
-          label: "Envoyer un rappel",
+          label: t("invoices.actionSendReminder"),
           onSelect: () =>
             startTransition(async () => {
               const result = await sendPaymentReminder({
@@ -113,23 +119,27 @@ export function useFactureRowActions() {
                 numero: row.numero,
                 clientEmail: row.clientEmail,
               });
-              if (result.success) showSuccess(result.message);
-              else showError(result.message);
+              const message = t(`notifications.${result.messageKey}`, result.vars);
+              if (result.success) showSuccess(message);
+              else showError(message);
             }),
         });
       }
 
       if (row.statut === "BROUILLON") {
         actions.push({
-          label: "Marquer comme envoyee",
+          label: t("invoices.actionMarkSent"),
           onSelect: () =>
-            runAction(updateFactureStatut(row.id, "ENVOYEE"), `${row.numero} marquee comme envoyee.`),
+            runAction(
+              updateFactureStatut(row.id, "ENVOYEE"),
+              t("invoices.toastMarkedSent", { number: row.numero }),
+            ),
         });
       }
 
       if (row.statut !== "ANNULEE" && row.statut !== "PAYEE") {
         actions.push({
-          label: "Annuler",
+          label: t("invoices.actionCancel"),
           destructive: true,
           onSelect: () => setCancelTarget(row),
         });
@@ -137,15 +147,15 @@ export function useFactureRowActions() {
 
       return actions;
     },
-    [router, runAction, showSuccess, showError],
+    [router, runAction, showSuccess, showError, t],
   );
 
   const dialogs = (
     <ConfirmDialog
       open={Boolean(cancelTarget)}
-      title="Annuler cette facture ?"
-      description={`La facture ${cancelTarget?.numero} sera marquee comme annulee. Cette action ne supprime pas les paiements deja enregistres.`}
-      confirmLabel="Annuler la facture"
+      title={t("invoices.cancelConfirmTitle")}
+      description={t("invoices.cancelConfirmDescription", { number: cancelTarget?.numero ?? "" })}
+      confirmLabel={t("invoices.cancelConfirmButton")}
       pending={cancelPending}
       onConfirm={handleCancel}
       onCancel={() => setCancelTarget(null)}

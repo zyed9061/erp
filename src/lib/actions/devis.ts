@@ -8,6 +8,7 @@ import { devisSchema } from "@/lib/validations/document";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
 import { withToast } from "@/lib/toastRedirect";
+import { getT } from "@/i18n/server";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -64,7 +65,8 @@ export async function createDevis(formData: FormData) {
   });
 
   revalidatePath("/devis");
-  redirect(withToast(`/devis/${devis.id}`, "Devis cree avec succes."));
+  const t = await getT();
+  redirect(withToast(`/devis/${devis.id}`, t("quotes.toastCreated")));
 }
 
 export async function duplicateDevis(id: string) {

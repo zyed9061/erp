@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/ListShell";
 import { IconBuilding, IconUser, IconUsers, IconTag } from "@/components/ui/icons";
 import { useLocale } from "@/i18n/client";
+import { tp } from "@/i18n/plural";
 import { useClientRowActions } from "./useClientRowActions";
 
 export type ClientRow = {
@@ -35,8 +36,8 @@ export type ClientRow = {
 
 const T = ENTITY.clients;
 const TYPES = [
-  { key: "ENTREPRISE", label: "Entreprises" },
-  { key: "PARTICULIER", label: "Particuliers" },
+  { key: "ENTREPRISE" },
+  { key: "PARTICULIER" },
 ] as const;
 
 export function ClientsView({
@@ -93,8 +94,8 @@ export function ClientsView({
     <EmptyState
       filtre={filtresActifs}
       onReset={reinitialiser}
-      titre={t("clients.emptyTitle")}
-      message={t("clients.emptyDescription")}
+      titre={t("views.clients.emptyTitle")}
+      message={t("views.clients.emptyMessage")}
       action={{ href: "/clients/new", label: t("clients.newClient") }}
       accent={T.emptyAccent}
       link={T.emptyLink}
@@ -105,12 +106,17 @@ export function ClientsView({
   return (
     <div className="space-y-6">
       <PageHero
-        eyebrow="Repertoire"
+        eyebrow={t("views.clients.eyebrow")}
         title={t("clients.title")}
         subtitle={
           stats.total === 0
-            ? "Aucun client enregistre pour le moment."
-            : `${stats.total} client${stats.total > 1 ? "s" : ""} actif${stats.total > 1 ? "s" : ""}${stats.villes > 0 ? ` dans ${stats.villes} ville${stats.villes > 1 ? "s" : ""}` : ""}.`
+            ? t("views.clients.subtitleEmpty")
+            : [
+                tp(t, "views.clients.subtitle", stats.total),
+                stats.villes > 0 ? tp(t, "views.clients.cities", stats.villes) : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")
         }
         accent={T.hero}
         glow={T.heroGlow}
@@ -126,23 +132,25 @@ export function ClientsView({
       >
         <StatCard
           index={0}
-          label="Clients actifs"
+          label={t("views.dashboard.activeClients")}
           value={stats.total}
           format={(n) => String(Math.round(n))}
-          hint="Fiches en cours"
+          hint={t("views.clients.statActiveHint")}
           accent="from-sky-500 to-blue-500"
           glow="hover:shadow-blue-500/10"
           icon={<IconUsers className="h-5 w-5" />}
         />
         <StatCard
           index={1}
-          label="Entreprises"
+          label={t("views.clients.statCompanies")}
           value={stats.entreprises}
           format={(n) => String(Math.round(n))}
           hint={
             stats.total > 0
-              ? `${Math.round((stats.entreprises / stats.total) * 100)}% du repertoire`
-              : "Aucune"
+              ? t("views.clients.statShareHint", {
+                  pct: Math.round((stats.entreprises / stats.total) * 100),
+                })
+              : t("views.clients.statCompaniesNone")
           }
           accent="from-indigo-500 to-violet-500"
           glow="hover:shadow-indigo-500/10"
@@ -150,13 +158,15 @@ export function ClientsView({
         />
         <StatCard
           index={2}
-          label="Particuliers"
+          label={t("views.clients.statIndividuals")}
           value={stats.particuliers}
           format={(n) => String(Math.round(n))}
           hint={
             stats.total > 0
-              ? `${Math.round((stats.particuliers / stats.total) * 100)}% du repertoire`
-              : "Aucun"
+              ? t("views.clients.statShareHint", {
+                  pct: Math.round((stats.particuliers / stats.total) * 100),
+                })
+              : t("views.clients.statIndividualsNone")
           }
           accent="from-teal-500 to-emerald-500"
           glow="hover:shadow-emerald-500/10"
@@ -164,10 +174,10 @@ export function ClientsView({
         />
         <StatCard
           index={3}
-          label="Villes couvertes"
+          label={t("views.clients.statCities")}
           value={stats.villes}
           format={(n) => String(Math.round(n))}
-          hint="Villes renseignees"
+          hint={t("views.clients.statCitiesHint")}
           accent="from-amber-400 to-orange-500"
           glow="hover:shadow-amber-500/10"
           icon={<IconTag className="h-5 w-5" />}
@@ -177,11 +187,11 @@ export function ClientsView({
       <FilterBar
         query={query}
         onQueryChange={setQuery}
-        placeholder={t("clients.searchPlaceholder")}
+        placeholder={t("views.clients.searchPlaceholder")}
         focus={T.focus}
       >
         <FilterChip
-          label="Tous"
+          label={t("views.common.all")}
           count={liste.length}
           actif={type === null}
           onClick={() => setType(null)}
@@ -250,18 +260,18 @@ export function ClientsView({
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="font-semibold text-neutral-900">{c.nom}</p>
-                <p className="truncate text-sm text-neutral-600">{c.email || "Sans email"}</p>
+                <p className="truncate text-sm text-neutral-600">{c.email || t("views.clients.noEmail")}</p>
               </div>
               <TypePill type={c.type} />
             </div>
             <div className="mt-3 flex items-end justify-between gap-3">
               <CardField
-                label="Telephone"
+                label={t("clients.columnPhone")}
                 value={c.telephone || "—"}
                 className="text-sm text-neutral-700"
               />
               <CardField
-                label="Ville"
+                label={t("clients.columnCity")}
                 value={c.ville || "—"}
                 align="right"
                 className="text-sm text-neutral-700"
@@ -273,8 +283,7 @@ export function ClientsView({
 
       {visibles.length > 0 && (
         <ListFooter>
-          {visibles.length} client{visibles.length > 1 ? "s" : ""} affiche
-          {visibles.length > 1 ? "s" : ""}
+          {tp(t, "views.clients.footer", visibles.length)}
         </ListFooter>
       )}
 

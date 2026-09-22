@@ -30,6 +30,8 @@ import {
   IconWallet,
 } from "@/components/ui/icons";
 import { useFactureRowActions } from "./useFactureRowActions";
+import { useLocale } from "@/i18n/client";
+import { tp } from "@/i18n/plural";
 
 export type FactureRow = {
   id: string;
@@ -77,6 +79,8 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
   const [query, setQuery] = useState("");
   const [statut, setStatut] = useState<string | null>(null);
   const { actionsFor, dialogs } = useFactureRowActions();
+  const { t, locale } = useLocale();
+  const fmt = (n: number) => formatMontant(n, "TND", locale);
 
   const stats = useMemo(() => {
     const vivantes = factures.filter((f) => f.statut !== "ANNULEE");
@@ -117,9 +121,9 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
     <EmptyState
       filtre={filtresActifs}
       onReset={reinitialiser}
-      titre="Aucune facture pour le moment"
-      message="Creez votre premiere facture : elle apparaitra ici avec son suivi d'encaissement."
-      action={{ href: "/factures/new", label: "Nouvelle facture" }}
+      titre={t("views.invoices.emptyTitle")}
+      message={t("views.invoices.emptyMessage")}
+      action={{ href: "/factures/new", label: t("invoices.newInvoice") }}
       accent={T.emptyAccent}
       link={T.emptyLink}
     />
@@ -128,17 +132,17 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
   return (
     <div className="space-y-6">
       <PageHero
-        eyebrow="Facturation"
-        title="Factures"
+        eyebrow={t("views.invoices.eyebrow")}
+        title={t("invoices.title")}
         subtitle={
           stats.nbTotal === 0
-            ? "Aucun document pour le moment."
-            : `${stats.nbTotal} document${stats.nbTotal > 1 ? "s" : ""} - ${formatMontant(stats.reste)} encore a encaisser.`
+            ? t("views.invoices.subtitleEmpty")
+            : tp(t, "views.invoices.subtitle", stats.nbTotal, { amount: fmt(stats.reste) })
         }
         accent={T.hero}
         glow={T.heroGlow}
         actionText={T.actionText}
-        action={{ href: "/factures/new", label: "Nouvelle facture" }}
+        action={{ href: "/factures/new", label: t("invoices.newInvoice") }}
       />
 
       <motion.section
@@ -149,23 +153,25 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
       >
         <StatCard
           index={0}
-          label="Total facture"
+          label={t("views.invoices.statTotal")}
           value={stats.totalFacture}
-          format={(n) => formatMontant(n)}
-          hint="Hors factures annulees"
+          format={(n) => fmt(n)}
+          hint={t("views.invoices.statTotalHint")}
           accent="from-indigo-500 to-violet-500"
           glow="hover:shadow-violet-500/10"
           icon={<IconReceipt className="h-5 w-5" />}
         />
         <StatCard
           index={1}
-          label="Encaisse"
+          label={t("views.invoices.statCollected")}
           value={stats.encaisse}
-          format={(n) => formatMontant(n)}
+          format={(n) => fmt(n)}
           hint={
             stats.totalFacture > 0
-              ? `${Math.round((stats.encaisse / stats.totalFacture) * 100)}% du total`
-              : "Aucun paiement"
+              ? t("views.invoices.statCollectedHint", {
+                  pct: Math.round((stats.encaisse / stats.totalFacture) * 100),
+                })
+              : t("views.invoices.statCollectedNone")
           }
           accent="from-emerald-500 to-teal-500"
           glow="hover:shadow-emerald-500/10"
@@ -173,23 +179,23 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
         />
         <StatCard
           index={2}
-          label="Reste a encaisser"
+          label={t("views.invoices.statRemaining")}
           value={stats.reste}
-          format={(n) => formatMontant(n)}
-          hint="Toutes factures ouvertes"
+          format={(n) => fmt(n)}
+          hint={t("views.invoices.statRemainingHint")}
           accent="from-amber-400 to-orange-500"
           glow="hover:shadow-amber-500/10"
           icon={<IconHourglass className="h-5 w-5" />}
         />
         <StatCard
           index={3}
-          label="En retard"
+          label={t("views.invoices.statOverdue")}
           value={stats.enRetard}
-          format={(n) => formatMontant(n)}
+          format={(n) => fmt(n)}
           hint={
             stats.nbEnRetard > 0
-              ? `${stats.nbEnRetard} facture${stats.nbEnRetard > 1 ? "s" : ""} concernee${stats.nbEnRetard > 1 ? "s" : ""}`
-              : "Rien en souffrance"
+              ? tp(t, "views.invoices.statOverdueHint", stats.nbEnRetard)
+              : t("views.invoices.statOverdueNone")
           }
           accent="from-rose-500 to-red-500"
           glow="hover:shadow-rose-500/10"
@@ -200,11 +206,11 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
       <FilterBar
         query={query}
         onQueryChange={setQuery}
-        placeholder="Rechercher un numero, un client..."
+        placeholder={t("views.invoices.searchPlaceholder")}
         focus={T.focus}
       >
         <FilterChip
-          label="Toutes"
+          label={t("views.common.all")}
           count={factures.length}
           actif={statut === null}
           onClick={() => setStatut(null)}
@@ -216,7 +222,7 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
           return (
             <FilterChip
               key={s}
-              label={theme.label}
+              label={t(`status.${s}`)}
               count={counts[s]}
               actif={statut === s}
               onClick={() => setStatut(statut === s ? null : s)}
@@ -229,13 +235,13 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
 
       <TableSection
         headers={[
-          "Numero",
-          "Client",
-          "Date",
-          "Total TTC",
-          "Encaissement",
-          "Reste a payer",
-          "Statut",
+          t("documents.columnNumber"),
+          t("documents.columnClient"),
+          t("documents.columnDate"),
+          t("documents.totalTTC"),
+          t("views.invoices.columnCollection"),
+          t("invoices.columnBalance"),
+          t("documents.columnStatus"),
           "",
         ]}
         empty={vide || undefined}
@@ -251,7 +257,7 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
             <Cell>{f.clientNom}</Cell>
             <Cell className="text-neutral-500">{f.dateEmission}</Cell>
             <Cell className="font-medium tabular-nums text-neutral-900">
-              {formatMontant(f.totalTTC)}
+              {fmt(f.totalTTC)}
             </Cell>
             <Cell>
               <ProgressBar paye={f.montantPaye} total={f.totalTTC} statut={f.statut} />
@@ -259,12 +265,12 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
             <Cell
               className={`font-medium tabular-nums ${f.reste > 0 ? "text-neutral-900" : "text-emerald-600"}`}
             >
-              {formatMontant(f.reste)}
+              {fmt(f.reste)}
             </Cell>
             <Cell>
               <StatutPill statut={f.statut} />
             </Cell>
-            <ActionsCell actions={actionsFor(f)} label={`Actions pour ${f.numero}`} />
+            <ActionsCell actions={actionsFor(f)} label={t("common.actionsFor", { name: f.numero })} />
           </Row>
         ))}
       </TableSection>
@@ -280,10 +286,10 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
               <StatutPill statut={f.statut} />
             </div>
             <div className="mt-3 flex items-end justify-between gap-3">
-              <CardField label="Total TTC" value={formatMontant(f.totalTTC)} />
+              <CardField label={t("documents.totalTTC")} value={fmt(f.totalTTC)} />
               <CardField
-                label="Reste"
-                value={formatMontant(f.reste)}
+                label={t("views.common.remaining")}
+                value={fmt(f.reste)}
                 align="right"
                 className={f.reste > 0 ? "text-neutral-900" : "text-emerald-600"}
               />
@@ -298,12 +304,11 @@ export function FacturesView({ factures }: { factures: FactureRow[] }) {
 
       {visibles.length > 0 && (
         <ListFooter>
-          {visibles.length} facture{visibles.length > 1 ? "s" : ""} affichee
-          {visibles.length > 1 ? "s" : ""} - total{" "}
+          {tp(t, "views.invoices.footer", visibles.length)}{" "}
           <span className="font-medium text-neutral-700">
             <AnimatedNumber
               value={visibles.reduce((s, f) => s + f.totalTTC, 0)}
-              format={(n) => formatMontant(n)}
+              format={(n) => fmt(n)}
               duration={0.6}
             />
           </span>

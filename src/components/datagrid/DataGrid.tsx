@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import type {
   ColDef,
@@ -13,6 +13,7 @@ import { RefreshCw, SlidersHorizontal, Columns3, Search, AlertTriangle } from "l
 import { useLocale } from "@/i18n/client";
 import "./gridSetup";
 import { appGridTheme } from "./gridSetup";
+import { AG_GRID_LOCALE_TEXT } from "./gridLocale";
 import { FilterDrawer } from "./FilterDrawer";
 import { ColumnDrawer, type ColumnDrawerItem } from "./ColumnDrawer";
 import { ActiveFilters, type ActiveFilterChip } from "./ActiveFilters";
@@ -72,7 +73,7 @@ export function DataGrid<T>({
   onRowClicked,
   onRefresh,
 }: DataGridProps<T>) {
-  const { t } = useLocale();
+  const { t, locale, dir } = useLocale();
   const resolvedPlaceholder = quickSearchPlaceholder ?? `${t("common.search")}...`;
   const resolvedEmptyTitle = emptyTitle ?? t("common.noResults");
   const resolvedEmptyDescription = emptyDescription ?? t("common.noResultsDescription");
@@ -89,6 +90,21 @@ export function DataGrid<T>({
   const [columnDrawerOpen, setColumnDrawerOpen] = useState(false);
   const [columnItems, setColumnItems] = useState<ColumnDrawerItem[]>([]);
   const restoredRef = useRef(false);
+
+  // AG Grid's localeText and enableRtl are init-only options, so the grid is remounted (keyed by
+  // locale) when the language changes. Snapshot the live column/filter state before the old
+  // instance is destroyed so the new one picks up exactly where the user was.
+  const carryOverRef = useRef<{ columnState: unknown[]; filterModel: Record<string, unknown> } | null>(
+    null,
+  );
+  useLayoutEffect(() => {
+    return () => {
+      const api = gridApiRef.current;
+      if (api && !api.isDestroyed()) {
+        carryOverRef.current = { columnState: api.getColumnState(), filterModel: api.getFilterModel() };
+      }
+    };
+  }, [locale]);
 
   const dateRangeFieldsInMs = useMemo(
     () =>
@@ -135,10 +151,6 @@ export function DataGrid<T>({
   }, [setFilters, dateRangeFilters]);
 
   useEffect(() => {
-    gridApiRef.current?.setGridOption("quickFilterText", quickSearch);
-  }, [quickSearch]);
-
-  useEffect(() => {
     if (gridReady) {
       gridApiRef.current?.setGridOption("paginationPageSize", pageSize);
     }
@@ -167,7 +179,12 @@ export function DataGrid<T>({
       gridApiRef.current = event.api;
       setGridReady(true);
 
-      if (!restoredRef.current) {
+      const carried = carryOverRef.current;
+      if (carried) {
+        carryOverRef.current = null;
+        event.api.applyColumnState({ state: carried.columnState as never[], applyOrder: true });
+        event.api.setFilterModel(carried.filterModel);
+      } else if (!restoredRef.current) {
         restoredRef.current = true;
         const saved = loadGridState(moduleKey, userId);
         if (saved) {
@@ -453,10 +470,14 @@ export function DataGrid<T>({
           ) : (
             <div style={{ height: 560, width: "100%" }}>
               <AgGridReact<T>
+                key={locale}
+                localeText={AG_GRID_LOCALE_TEXT[locale]}
+                enableRtl={dir === "rtl"}
                 theme={appGridTheme}
                 columnDefs={columnDefs}
                 rowData={rowData}
                 defaultColDef={defaultColDef}
+                quickFilterText={quickSearch}
                 pagination
                 paginationPageSize={pageSize}
                 paginationPageSizeSelector={false}

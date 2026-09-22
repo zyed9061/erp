@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale } from "@/i18n/client";
 import { motion, useReducedMotion } from "motion/react";
 import { EASE } from "./motion";
 import { IconEmptyBox, IconPlus } from "./icons";
@@ -31,6 +32,7 @@ export function EmptyState({
   link = "text-violet-700 hover:bg-violet-50",
   icon,
 }: Props) {
+  const { t } = useLocale();
   // La vignette flotte en boucle : on la fige en mouvement reduit.
   const reduceMotion = useReducedMotion();
 
@@ -53,16 +55,16 @@ export function EmptyState({
 
       {filtre ? (
         <>
-          <p className="text-sm font-medium text-neutral-800">Aucun resultat</p>
+          <p className="text-sm font-medium text-neutral-800">{t("views.common.noResultTitle")}</p>
           <p className="max-w-xs text-sm text-neutral-500">
-            Rien ne correspond a cette recherche ou a ce filtre.
+            {t("views.common.noResultMessage")}
           </p>
           <button
             type="button"
             onClick={onReset}
             className={`mt-1 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${link}`}
           >
-            Reinitialiser les filtres
+            {t("views.common.resetFilters")}
           </button>
         </>
       ) : (

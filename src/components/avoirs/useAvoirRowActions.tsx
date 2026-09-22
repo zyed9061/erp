@@ -4,6 +4,7 @@ import { useCallback, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { RowAction } from "@/components/ui/RowActionsMenu";
 import { useToast } from "@/components/ui/Toast";
+import { useLocale } from "@/i18n/client";
 import { updateAvoirStatut } from "@/lib/actions/avoirs";
 
 export type AvoirActionRow = { id: string; numero: string; statut: string };
@@ -11,6 +12,7 @@ export type AvoirActionRow = { id: string; numero: string; statut: string };
 /** Actions de ligne des avoirs (menu "..."). */
 export function useAvoirRowActions() {
   const router = useRouter();
+  const { t } = useLocale();
   const { showSuccess, showError } = useToast();
   const [, startTransition] = useTransition();
 
@@ -22,19 +24,19 @@ export function useAvoirRowActions() {
           showSuccess(successMessage);
           router.refresh();
         } catch {
-          showError("Une erreur est survenue.");
+          showError(t("common.error"));
         }
       });
     },
-    [startTransition, showSuccess, showError, router],
+    [startTransition, showSuccess, showError, router, t],
   );
 
   const actionsFor = useCallback(
     (row: AvoirActionRow): RowAction[] => {
       const actions: RowAction[] = [
-        { label: "Voir", onSelect: () => router.push(`/avoirs/${row.id}`) },
+        { label: t("common.view"), onSelect: () => router.push(`/avoirs/${row.id}`) },
         {
-          label: "Telecharger le PDF",
+          label: t("common.downloadPdf"),
           onSelect: () => window.open(`/avoirs/${row.id}/pdf`, "_blank"),
         },
       ];
@@ -42,21 +44,27 @@ export function useAvoirRowActions() {
       if (row.statut === "EMIS") {
         actions.push(
           {
-            label: "Marquer comme applique",
+            label: t("creditNotes.actionMarkApplied"),
             onSelect: () =>
-              runAction(updateAvoirStatut(row.id, "APPLIQUE"), `${row.numero} marque comme applique.`),
+              runAction(
+                updateAvoirStatut(row.id, "APPLIQUE"),
+                t("creditNotes.toastMarkedApplied", { number: row.numero }),
+              ),
           },
           {
-            label: "Marquer comme rembourse",
+            label: t("creditNotes.actionMarkRefunded"),
             onSelect: () =>
-              runAction(updateAvoirStatut(row.id, "REMBOURSE"), `${row.numero} marque comme rembourse.`),
+              runAction(
+                updateAvoirStatut(row.id, "REMBOURSE"),
+                t("creditNotes.toastMarkedRefunded", { number: row.numero }),
+              ),
           },
         );
       }
 
       return actions;
     },
-    [router, runAction],
+    [router, runAction, t],
   );
 
   return { actionsFor };

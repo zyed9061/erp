@@ -1,8 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
+import { getLocale } from "@/i18n/server";
 import { DevisView, type DevisRow } from "@/components/devis/DevisView";
 
 export default async function DevisListPage() {
+  const locale = await getLocale();
   const devis = await prisma.devis.findMany({
     include: { client: true, facture: { select: { id: true } } },
     orderBy: { createdAt: "desc" },
@@ -15,8 +17,8 @@ export default async function DevisListPage() {
     numero: d.numero,
     clientNom: d.client.nom,
     clientEmail: d.client.email,
-    dateEmission: formatDate(d.dateEmission),
-    dateValidite: d.dateValidite ? formatDate(d.dateValidite) : null,
+    dateEmission: formatDate(d.dateEmission, locale),
+    dateValidite: d.dateValidite ? formatDate(d.dateValidite, locale) : null,
     totalTTC: Number(d.totalTTC),
     statut: d.statut,
     hasFacture: Boolean(d.facture),

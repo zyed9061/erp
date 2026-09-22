@@ -3,6 +3,7 @@
 import { LigneEditor, type ProduitOption } from "@/components/LigneEditor";
 import { FormSection } from "@/components/layout/FormSection";
 import { FormActions } from "@/components/ui/FormActions";
+import { useLocale } from "@/i18n/client";
 
 export type ClientOption = { id: string; nom: string };
 
@@ -17,15 +18,16 @@ export function DevisForm({
   produits: ProduitOption[];
   defaultClientId?: string;
 }) {
+  const { t } = useLocale();
   const today = new Date().toISOString().slice(0, 10);
 
   return (
-    <FormSection maxWidth="max-w-full" title="Nouveau devis">
+    <FormSection maxWidth="max-w-full" title={t("quotes.newQuote")}>
       <form action={action} className="space-y-5">
         <div className="grid grid-cols-3 gap-5">
-          <Field label="Client">
+          <Field label={t("documents.client")}>
             <select name="clientId" required defaultValue={defaultClientId ?? ""} className="input-lg">
-              <option value="">Selectionner un client</option>
+              <option value="">{t("documents.selectClient")}</option>
               {clients.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.nom}
@@ -33,10 +35,10 @@ export function DevisForm({
               ))}
             </select>
           </Field>
-          <Field label="Date d'emission">
+          <Field label={t("documents.issueDate")}>
             <input type="date" name="dateEmission" defaultValue={today} required className="input-lg" />
           </Field>
-          <Field label="Valable jusqu'au">
+          <Field label={t("quotes.validUntil")}>
             <input type="date" name="dateValidite" className="input-lg" />
           </Field>
         </div>
@@ -44,15 +46,15 @@ export function DevisForm({
         <LigneEditor produits={produits} />
 
         <div className="grid grid-cols-2 gap-5">
-          <Field label="Conditions">
+          <Field label={t("quotes.fieldConditions")}>
             <textarea name="conditions" rows={2} className="input-lg" />
           </Field>
-          <Field label="Notes internes">
+          <Field label={t("documents.internalNotes")}>
             <textarea name="notes" rows={2} className="input-lg" />
           </Field>
         </div>
 
-        <FormActions cancelHref="/devis" submitLabel="Creer le devis" />
+        <FormActions cancelHref="/devis" submitLabel={t("quotes.submit")} />
       </form>
     </FormSection>
   );

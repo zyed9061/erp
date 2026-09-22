@@ -29,6 +29,8 @@ import {
   IconPercent,
 } from "@/components/ui/icons";
 import { useDevisRowActions } from "./useDevisRowActions";
+import { useLocale } from "@/i18n/client";
+import { tp } from "@/i18n/plural";
 
 export type DevisRow = {
   id: string;
@@ -50,6 +52,8 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
   const [query, setQuery] = useState("");
   const [statut, setStatut] = useState<string | null>(null);
   const { actionsFor } = useDevisRowActions();
+  const { t, locale } = useLocale();
+  const fmt = (n: number) => formatMontant(n, "TND", locale);
 
   const stats = useMemo(() => {
     const enAttente = devis.filter((d) => EN_ATTENTE.has(d.statut));
@@ -93,9 +97,9 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
     <EmptyState
       filtre={filtresActifs}
       onReset={reinitialiser}
-      titre="Aucun devis pour le moment"
-      message="Etablissez un premier devis : une fois accepte, il se convertit en facture."
-      action={{ href: "/devis/new", label: "Nouveau devis" }}
+      titre={t("views.quotes.emptyTitle")}
+      message={t("views.quotes.emptyMessage")}
+      action={{ href: "/devis/new", label: t("quotes.newQuote") }}
       accent={T.emptyAccent}
       link={T.emptyLink}
       icon={<IconFileText className="h-7 w-7" />}
@@ -105,17 +109,19 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
   return (
     <div className="space-y-6">
       <PageHero
-        eyebrow="Avant-vente"
-        title="Devis"
+        eyebrow={t("views.quotes.eyebrow")}
+        title={t("quotes.title")}
         subtitle={
           stats.nbTotal === 0
-            ? "Aucun devis pour le moment."
-            : `${stats.nbTotal} devis - ${formatMontant(stats.montantEnAttente)} en attente de reponse.`
+            ? t("views.quotes.subtitleEmpty")
+            : tp(t, "views.quotes.subtitle", stats.nbTotal, {
+                amount: fmt(stats.montantEnAttente),
+              })
         }
         accent={T.hero}
         glow={T.heroGlow}
         actionText={T.actionText}
-        action={{ href: "/devis/new", label: "Nouveau devis" }}
+        action={{ href: "/devis/new", label: t("quotes.newQuote") }}
       />
 
       <motion.section
@@ -126,23 +132,23 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
       >
         <StatCard
           index={0}
-          label="Montant total"
+          label={t("views.quotes.statTotal")}
           value={stats.montantTotal}
-          format={(n) => formatMontant(n)}
-          hint="Tous devis confondus"
+          format={(n) => fmt(n)}
+          hint={t("views.quotes.statTotalHint")}
           accent="from-amber-500 to-orange-500"
           glow="hover:shadow-amber-500/10"
           icon={<IconFileText className="h-5 w-5" />}
         />
         <StatCard
           index={1}
-          label="En attente"
+          label={t("views.quotes.statPending")}
           value={stats.montantEnAttente}
-          format={(n) => formatMontant(n)}
+          format={(n) => fmt(n)}
           hint={
             stats.nbEnAttente > 0
-              ? `${stats.nbEnAttente} devis sans reponse`
-              : "Aucun devis en suspens"
+              ? tp(t, "views.quotes.statPendingHint", stats.nbEnAttente)
+              : t("views.quotes.statPendingNone")
           }
           accent="from-sky-500 to-blue-500"
           glow="hover:shadow-blue-500/10"
@@ -150,11 +156,13 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
         />
         <StatCard
           index={2}
-          label="Acceptes"
+          label={t("views.quotes.statWon")}
           value={stats.montantGagne}
-          format={(n) => formatMontant(n)}
+          format={(n) => fmt(n)}
           hint={
-            stats.nbGagnes > 0 ? `${stats.nbGagnes} devis remporte${stats.nbGagnes > 1 ? "s" : ""}` : "Rien de signe"
+            stats.nbGagnes > 0
+              ? tp(t, "views.quotes.statWonHint", stats.nbGagnes)
+              : t("views.quotes.statWonNone")
           }
           accent="from-emerald-500 to-teal-500"
           glow="hover:shadow-emerald-500/10"
@@ -162,13 +170,13 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
         />
         <StatCard
           index={3}
-          label="Taux d'acceptation"
+          label={t("views.quotes.statRate")}
           value={stats.taux}
           format={(n) => `${Math.round(n)}%`}
           hint={
             stats.nbTranches > 0
-              ? `Sur ${stats.nbTranches} devis tranche${stats.nbTranches > 1 ? "s" : ""}`
-              : "Pas encore de verdict"
+              ? tp(t, "views.quotes.statRateHint", stats.nbTranches)
+              : t("views.quotes.statRateNone")
           }
           accent="from-violet-500 to-purple-500"
           glow="hover:shadow-violet-500/10"
@@ -179,11 +187,11 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
       <FilterBar
         query={query}
         onQueryChange={setQuery}
-        placeholder="Rechercher un numero, un client..."
+        placeholder={t("views.quotes.searchPlaceholder")}
         focus={T.focus}
       >
         <FilterChip
-          label="Tous"
+          label={t("views.common.all")}
           count={devis.length}
           actif={statut === null}
           onClick={() => setStatut(null)}
@@ -195,7 +203,7 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
           return (
             <FilterChip
               key={s}
-              label={theme.label}
+              label={t(`status.${s}`)}
               count={counts[s]}
               actif={statut === s}
               onClick={() => setStatut(statut === s ? null : s)}
@@ -207,7 +215,15 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
       </FilterBar>
 
       <TableSection
-        headers={["Numero", "Client", "Date", "Validite", "Total TTC", "Statut", ""]}
+        headers={[
+          t("documents.columnNumber"),
+          t("documents.columnClient"),
+          t("documents.columnDate"),
+          t("views.quotes.columnValidity"),
+          t("documents.totalTTC"),
+          t("documents.columnStatus"),
+          "",
+        ]}
         empty={vide || undefined}
       >
         {visibles.map((d) => (
@@ -222,12 +238,12 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
             <Cell className="text-neutral-500">{d.dateEmission}</Cell>
             <Cell className="text-neutral-500">{d.dateValidite || "—"}</Cell>
             <Cell className="font-medium tabular-nums text-neutral-900">
-              {formatMontant(d.totalTTC)}
+              {fmt(d.totalTTC)}
             </Cell>
             <Cell>
               <StatutPill statut={d.statut} />
             </Cell>
-            <ActionsCell actions={actionsFor(d)} label={`Actions pour ${d.numero}`} />
+            <ActionsCell actions={actionsFor(d)} label={t("common.actionsFor", { name: d.numero })} />
           </Row>
         ))}
       </TableSection>
@@ -243,9 +259,9 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
               <StatutPill statut={d.statut} />
             </div>
             <div className="mt-3 flex items-end justify-between gap-3">
-              <CardField label="Total TTC" value={formatMontant(d.totalTTC)} />
+              <CardField label={t("documents.totalTTC")} value={fmt(d.totalTTC)} />
               <CardField
-                label="Validite"
+                label={t("views.quotes.columnValidity")}
                 value={d.dateValidite || "—"}
                 align="right"
                 className="text-sm text-neutral-700"
@@ -257,7 +273,7 @@ export function DevisView({ devis }: { devis: DevisRow[] }) {
 
       {visibles.length > 0 && (
         <ListFooter>
-          {visibles.length} devis affiche{visibles.length > 1 ? "s" : ""}
+          {tp(t, "views.quotes.footer", visibles.length)}
         </ListFooter>
       )}
     </div>

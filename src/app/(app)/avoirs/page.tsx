@@ -1,8 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
+import { getLocale } from "@/i18n/server";
 import { AvoirsView, type AvoirRow } from "@/components/avoirs/AvoirsView";
 
 export default async function AvoirsListPage() {
+  const locale = await getLocale();
   const avoirs = await prisma.avoir.findMany({
     include: { client: true, factureOrigine: true },
     orderBy: { createdAt: "desc" },
@@ -16,7 +18,7 @@ export default async function AvoirsListPage() {
     clientNom: a.client.nom,
     factureId: a.factureOrigine.id,
     factureNumero: a.factureOrigine.numero,
-    dateEmission: formatDate(a.dateEmission),
+    dateEmission: formatDate(a.dateEmission, locale),
     motif: a.motif,
     totalTTC: Number(a.totalTTC),
     statut: a.statut,

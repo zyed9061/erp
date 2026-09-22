@@ -1,9 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
+import { getLocale } from "@/i18n/server";
 import { statutEffectif } from "@/lib/facture-statut";
 import { FacturesView, type FactureRow } from "@/components/factures/FacturesView";
 
 export default async function FacturesListPage() {
+  const locale = await getLocale();
   const factures = await prisma.facture.findMany({
     include: { client: true },
     orderBy: { createdAt: "desc" },
@@ -24,8 +26,8 @@ export default async function FacturesListPage() {
       numero: f.numero,
       clientNom: f.client.nom,
       clientEmail: f.client.email,
-      dateEmission: formatDate(f.dateEmission),
-      dateEcheance: f.dateEcheance ? formatDate(f.dateEcheance) : null,
+      dateEmission: formatDate(f.dateEmission, locale),
+      dateEcheance: f.dateEcheance ? formatDate(f.dateEcheance, locale) : null,
       totalTTC,
       montantPaye,
       reste: totalTTC - montantPaye,

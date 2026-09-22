@@ -19,6 +19,8 @@ import {
   IconWallet,
 } from "@/components/ui/icons";
 import { RevenueChart, StatusDistributionChart } from "./DashboardCharts";
+import { useLocale } from "@/i18n/client";
+import { tp } from "@/i18n/plural";
 
 export type SuiviRow = {
   id: string;
@@ -48,15 +50,17 @@ export type DashboardData = {
 };
 
 const RACCOURCIS = [
-  { href: "/factures/new", label: "Nouvelle facture" },
-  { href: "/devis/new", label: "Nouveau devis" },
-  { href: "/clients/new", label: "Nouveau client" },
-  { href: "/produits/new", label: "Ajouter un produit/service" },
+  { href: "/factures/new", labelKey: "invoices.newInvoice" },
+  { href: "/devis/new", labelKey: "quotes.newQuote" },
+  { href: "/clients/new", labelKey: "clients.newClient" },
+  { href: "/produits/new", labelKey: "dashboard.addProduct" },
 ];
 
 const T = ENTITY.dashboard;
 
 export function DashboardView({ data }: { data: DashboardData }) {
+  const { t, locale } = useLocale();
+  const fmt = (n: number) => formatMontant(n, "TND", locale);
   const reste = data.nbOuvertes - data.suivi.length;
   // La vignette flotte en boucle : on la fige en mouvement reduit.
   const reduceMotion = useReducedMotion();
@@ -64,17 +68,17 @@ export function DashboardView({ data }: { data: DashboardData }) {
   return (
     <div className="space-y-6">
       <PageHero
-        eyebrow="Vue d'ensemble"
-        title="Tableau de bord"
+        eyebrow={t("views.dashboard.eyebrow")}
+        title={t("dashboard.title")}
         subtitle={
           data.totalImpaye > 0
-            ? `${formatMontant(data.totalImpaye)} restent a encaisser sur vos factures ouvertes.`
-            : "Tout est encaisse : aucune facture en attente de paiement."
+            ? t("views.dashboard.subtitleUnpaid", { amount: fmt(data.totalImpaye) })
+            : t("views.dashboard.subtitleAllPaid")
         }
         accent={T.hero}
         glow={T.heroGlow}
         actionText={T.actionText}
-        action={{ href: "/factures/new", label: "Nouvelle facture" }}
+        action={{ href: "/factures/new", label: t("invoices.newInvoice") }}
       />
 
       <motion.section
@@ -85,9 +89,9 @@ export function DashboardView({ data }: { data: DashboardData }) {
       >
         <StatCard
           index={0}
-          label="CA du mois"
+          label={t("dashboard.revenueThisMonth")}
           value={data.caDuMois}
-          format={(n) => formatMontant(n)}
+          format={(n) => fmt(n)}
           hint={data.mois}
           accent="from-violet-500 to-purple-500"
           glow="hover:shadow-violet-500/10"
@@ -95,15 +99,15 @@ export function DashboardView({ data }: { data: DashboardData }) {
         />
         <StatCard
           index={1}
-          label="Impayes en cours"
+          label={t("views.dashboard.unpaid")}
           value={data.totalImpaye}
-          format={(n) => formatMontant(n)}
+          format={(n) => fmt(n)}
           hint={
             data.nbEnRetard > 0
-              ? `dont ${data.nbEnRetard} en retard`
+              ? t("views.dashboard.hintOverdue", { count: data.nbEnRetard })
               : data.nbOuvertes > 0
-                ? `${data.nbOuvertes} facture${data.nbOuvertes > 1 ? "s" : ""} a suivre`
-                : "Rien a relancer"
+                ? tp(t, "views.dashboard.hintOpen", data.nbOuvertes)
+                : t("views.dashboard.hintNothingToChase")
           }
           accent="from-amber-400 to-orange-500"
           glow="hover:shadow-amber-500/10"
@@ -111,20 +115,20 @@ export function DashboardView({ data }: { data: DashboardData }) {
         />
         <StatCard
           index={2}
-          label="Devis en attente"
+          label={t("dashboard.pendingQuotes")}
           value={data.devisEnAttente}
           format={(n) => String(Math.round(n))}
-          hint="Brouillons et envoyes"
+          hint={t("views.dashboard.hintPendingQuotes")}
           accent="from-sky-500 to-blue-500"
           glow="hover:shadow-blue-500/10"
           icon={<IconFileText className="h-5 w-5" />}
         />
         <StatCard
           index={3}
-          label="Clients actifs"
+          label={t("views.dashboard.activeClients")}
           value={data.clientsActifs}
           format={(n) => String(Math.round(n))}
-          hint="Fiches en cours"
+          hint={t("views.dashboard.hintActiveClients")}
           accent="from-teal-500 to-emerald-500"
           glow="hover:shadow-emerald-500/10"
           icon={<IconUsers className="h-5 w-5" />}
@@ -140,10 +144,10 @@ export function DashboardView({ data }: { data: DashboardData }) {
       >
         <div className="flex items-center justify-between gap-3 border-b border-neutral-100 bg-gradient-to-r from-neutral-50 to-neutral-100/60 px-5 py-3.5">
           <h2 className="text-sm font-semibold text-neutral-900">
-            Factures a suivre
+            {t("views.dashboard.followUp")}
             {data.nbOuvertes > 0 && (
-              <span className="ml-2 font-normal text-neutral-500">
-                {data.suivi.length} plus urgentes
+              <span className="ms-2 font-normal text-neutral-500">
+                {t("views.dashboard.mostUrgent", { count: data.suivi.length })}
               </span>
             )}
           </h2>
@@ -152,11 +156,11 @@ export function DashboardView({ data }: { data: DashboardData }) {
               <span className="font-medium text-neutral-700">
                 <AnimatedNumber
                   value={data.totalImpaye}
-                  format={(n) => formatMontant(n)}
+                  format={(n) => fmt(n)}
                   duration={0.8}
                 />
               </span>{" "}
-              en attente
+              {t("views.dashboard.pendingSuffix")}
             </span>
           )}
         </div>
@@ -172,9 +176,9 @@ export function DashboardView({ data }: { data: DashboardData }) {
             >
               <IconCheckCircle className="h-7 w-7" />
             </motion.span>
-            <p className="text-sm font-medium text-neutral-800">Tout est encaisse</p>
+            <p className="text-sm font-medium text-neutral-800">{t("views.dashboard.allCollectedTitle")}</p>
             <p className="max-w-xs text-sm text-neutral-500">
-              Aucune facture en attente de paiement.
+              {t("views.dashboard.allCollectedMessage")}
             </p>
           </div>
         ) : (
@@ -207,15 +211,17 @@ export function DashboardView({ data }: { data: DashboardData }) {
 
                   <div className="w-28 shrink-0 text-right">
                     <p className="text-[11px] uppercase tracking-wider text-neutral-400">
-                      Echeance
+                      {t("views.common.dueDate")}
                     </p>
                     <EcheanceLabel echeance={f.echeance} jours={f.joursRestants} />
                   </div>
 
                   <div className="w-32 shrink-0 text-right">
-                    <p className="text-[11px] uppercase tracking-wider text-neutral-400">Reste</p>
+                    <p className="text-[11px] uppercase tracking-wider text-neutral-400">
+                      {t("views.common.remaining")}
+                    </p>
                     <p className="font-semibold tabular-nums text-neutral-900">
-                      {formatMontant(f.reste)}
+                      {fmt(f.reste)}
                     </p>
                   </div>
                 </Link>
@@ -229,8 +235,7 @@ export function DashboardView({ data }: { data: DashboardData }) {
             href="/factures"
             className="group flex items-center justify-center gap-1.5 border-t border-neutral-100 px-5 py-3 text-xs font-medium text-violet-700 transition-colors hover:bg-violet-50/50"
           >
-            Voir les {reste} autre{reste > 1 ? "s" : ""} facture{reste > 1 ? "s" : ""} ouverte
-            {reste > 1 ? "s" : ""}
+            {tp(t, "views.dashboard.seeOthers", reste)}
             <IconArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
           </Link>
         )}
@@ -244,12 +249,18 @@ export function DashboardView({ data }: { data: DashboardData }) {
       >
         <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70 lg:col-span-2">
           <h2 className="mb-4 text-sm font-semibold text-neutral-900">
-            Chiffre d&apos;affaires (6 derniers mois)
+            {t("dashboard.revenueChartTitle")}
           </h2>
-          <RevenueChart data={data.revenueByMonth} />
+          <RevenueChart
+            data={data.revenueByMonth}
+            title={t("dashboard.revenueChartTitle")}
+            locale={locale}
+          />
         </div>
         <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70">
-          <h2 className="mb-4 text-sm font-semibold text-neutral-900">Repartition des factures</h2>
+          <h2 className="mb-4 text-sm font-semibold text-neutral-900">
+            {t("dashboard.invoiceBreakdown")}
+          </h2>
           <StatusDistributionChart data={data.statusCounts} />
         </div>
       </motion.section>
@@ -260,7 +271,7 @@ export function DashboardView({ data }: { data: DashboardData }) {
         transition={{ duration: 0.5, delay: 0.4, ease: EASE }}
         className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200/70"
       >
-        <h2 className="mb-3 text-sm font-semibold text-neutral-900">Actions rapides</h2>
+        <h2 className="mb-3 text-sm font-semibold text-neutral-900">{t("dashboard.quickActions")}</h2>
         <div className="flex flex-wrap gap-2">
           {RACCOURCIS.map((r) => (
             <Link
@@ -268,7 +279,7 @@ export function DashboardView({ data }: { data: DashboardData }) {
               href={r.href}
               className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 ring-1 ring-neutral-200 transition-colors hover:bg-violet-50 hover:text-violet-700 hover:ring-violet-200"
             >
-              + {r.label}
+              + {t(r.labelKey)}
             </Link>
           ))}
         </div>
@@ -279,6 +290,7 @@ export function DashboardView({ data }: { data: DashboardData }) {
 
 /** Echeance coloree selon l'urgence : depassee, proche, ou confortable. */
 function EcheanceLabel({ echeance, jours }: { echeance: string | null; jours: number | null }) {
+  const { t } = useLocale();
   if (!echeance || jours === null) {
     return <p className="text-sm text-neutral-400">—</p>;
   }
@@ -287,10 +299,10 @@ function EcheanceLabel({ echeance, jours }: { echeance: string | null; jours: nu
     jours < 0 ? "text-rose-600" : jours <= 7 ? "text-amber-600" : "text-neutral-700";
   const suffixe =
     jours < 0
-      ? `${Math.abs(jours)} j de retard`
+      ? t("views.common.daysLate", { count: Math.abs(jours) })
       : jours === 0
-        ? "aujourd'hui"
-        : `dans ${jours} j`;
+        ? t("views.common.dueToday")
+        : t("views.common.dueInDays", { count: jours });
 
   return (
     <p className={`text-sm font-medium ${ton}`}>
