@@ -279,6 +279,8 @@ const de: Messages = {
     paymentMethod: "Zahlungsart",
     paymentReference: "Referenz",
     submitPayment: "Zahlung erfassen",
+    submittingPayment: "Wird gespeichert...",
+    errorOverpayment: "Der Betrag übersteigt den offenen Restbetrag ({amount}).",
     dueDate: "Fälligkeitsdatum",
     applyStampDuty: "Stempelsteuer anwenden",
     paymentTerms: "Zahlungsbedingungen",

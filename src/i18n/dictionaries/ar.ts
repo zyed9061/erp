@@ -278,6 +278,8 @@ const ar: Messages = {
     paymentMethod: "طريقة الدفع",
     paymentReference: "المرجع",
     submitPayment: "تسجيل الدفعة",
+    submittingPayment: "جارٍ الحفظ...",
+    errorOverpayment: "المبلغ يتجاوز الرصيد المتبقي للدفع ({amount}).",
     dueDate: "تاريخ الاستحقاق",
     applyStampDuty: "تطبيق الطابع الجبائي",
     paymentTerms: "شروط الدفع",

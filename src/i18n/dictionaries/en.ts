@@ -279,6 +279,8 @@ const en: Messages = {
     paymentMethod: "Payment method",
     paymentReference: "Reference",
     submitPayment: "Record payment",
+    submittingPayment: "Saving...",
+    errorOverpayment: "The amount exceeds the remaining balance ({amount}).",
     dueDate: "Due date",
     applyStampDuty: "Apply stamp duty",
     paymentTerms: "Payment terms",

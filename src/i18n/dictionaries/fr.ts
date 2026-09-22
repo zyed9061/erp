@@ -280,6 +280,8 @@ const fr = {
     paymentMethod: "Mode de paiement",
     paymentReference: "Reference",
     submitPayment: "Enregistrer le paiement",
+    submittingPayment: "Enregistrement...",
+    errorOverpayment: "Le montant depasse le solde restant a payer ({amount}).",
     dueDate: "Date d'echeance",
     applyStampDuty: "Appliquer le timbre fiscal",
     paymentTerms: "Conditions de paiement",
