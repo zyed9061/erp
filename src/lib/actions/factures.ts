@@ -5,9 +5,15 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/current-user";
 import { factureSchema, paiementSchema } from "@/lib/validations/document";
-import { calculerLigne, calculerTotaux } from "@/lib/calculs";
+import {
+  calculerLigne,
+  calculerResteAPayer,
+  calculerTotaux,
+  verifierMontantPaiement,
+} from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
 import { withToast } from "@/lib/toastRedirect";
+import { formatMontant } from "@/lib/format";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -147,7 +153,14 @@ async function recalculerStatutPaiement(factureId: string) {
   await prisma.facture.update({ where: { id: factureId }, data: { statut } });
 }
 
-export async function enregistrerPaiement(formData: FormData) {
+export type PaiementFormState = {
+  error?: string;
+};
+
+export async function enregistrerPaiement(
+  _prevState: PaiementFormState | undefined,
+  formData: FormData,
+): Promise<PaiementFormState> {
   const user = await requireUser();
   const data = paiementSchema.parse({
     factureId: formData.get("factureId"),
@@ -157,6 +170,17 @@ export async function enregistrerPaiement(formData: FormData) {
     reference: formData.get("reference"),
     notes: formData.get("notes"),
   });
+
+  const facture = await prisma.facture.findUniqueOrThrow({ where: { id: data.factureId } });
+  const resteAPayer = calculerResteAPayer(Number(facture.totalTTC), Number(facture.montantPaye));
+
+  try {
+    verifierMontantPaiement(resteAPayer, data.montant);
+  } catch {
+    return {
+      error: `Le montant depasse le solde restant a payer (${formatMontant(resteAPayer)}).`,
+    };
+  }
 
   await prisma.$transaction(async (tx) => {
     await tx.paiement.create({
@@ -171,7 +195,6 @@ export async function enregistrerPaiement(formData: FormData) {
       },
     });
 
-    const facture = await tx.facture.findUniqueOrThrow({ where: { id: data.factureId } });
     await tx.facture.update({
       where: { id: data.factureId },
       data: { montantPaye: Number(facture.montantPaye) + data.montant },
