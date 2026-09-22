@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/current-user";
 import { withToast } from "@/lib/toastRedirect";
+import { getT } from "@/i18n/server";
 
 function parseFormData(formData: FormData) {
   return {
@@ -33,5 +34,6 @@ export async function updateCompanyProfile(formData: FormData) {
   }
 
   revalidatePath("/parametres");
-  redirect(withToast("/parametres", "Parametres enregistres avec succes."));
+  const t = await getT();
+  redirect(withToast("/parametres", t("settings.toastSaved")));
 }

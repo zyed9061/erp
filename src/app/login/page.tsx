@@ -1,13 +1,15 @@
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
+import { getT } from "@/i18n/server";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 }) {
-  const params = await searchParams;
+  const [params, t] = await Promise.all([searchParams, getT()]);
 
   async function authenticate(formData: FormData) {
     "use server";
@@ -27,21 +29,24 @@ export default async function LoginPage({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-6">
+    <div className="relative flex min-h-screen items-center justify-center bg-neutral-50 px-6">
+      <div className="absolute end-4 top-4">
+        <LanguageSwitcher />
+      </div>
       <div className="w-full max-w-sm rounded-lg border border-neutral-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-1 text-xl font-semibold text-neutral-900">Facturation</h1>
-        <p className="mb-6 text-sm text-neutral-500">Connectez-vous a votre compte</p>
+        <h1 className="mb-1 text-xl font-semibold text-neutral-900">{t("nav.brand")}</h1>
+        <p className="mb-6 text-sm text-neutral-500">{t("login.subtitle")}</p>
 
         {params.error && (
           <p className="mb-4 rounded bg-red-50 px-3 py-2 text-sm text-red-700">
-            Identifiants incorrects.
+            {t("login.invalidCredentials")}
           </p>
         )}
 
         <form action={authenticate} className="space-y-4">
           <div>
             <label htmlFor="email" className="mb-1 block text-sm font-medium text-neutral-700">
-              Email
+              {t("login.email")}
             </label>
             <input
               id="email"
@@ -53,7 +58,7 @@ export default async function LoginPage({
           </div>
           <div>
             <label htmlFor="password" className="mb-1 block text-sm font-medium text-neutral-700">
-              Mot de passe
+              {t("login.password")}
             </label>
             <input
               id="password"
@@ -67,7 +72,7 @@ export default async function LoginPage({
             type="submit"
             className="w-full rounded bg-neutral-900 px-3 py-2 text-sm font-medium text-white hover:bg-neutral-700"
           >
-            Se connecter
+            {t("login.submit")}
           </button>
         </form>
       </div>

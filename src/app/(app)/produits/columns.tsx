@@ -6,6 +6,8 @@ import { ActifBadge } from "@/components/StatutBadge";
 import { RowActionsMenu, type RowAction } from "@/components/ui/RowActionsMenu";
 import { formatMontant } from "@/lib/format";
 import type { GridFilterField } from "@/components/datagrid/types";
+import type { Translator } from "@/i18n/translate";
+import type { Locale } from "@/i18n/config";
 
 export interface ProduitRow {
   id: string;
@@ -23,13 +25,15 @@ export interface ProduitRow {
 }
 
 export function buildProduitColumns(
+  t: Translator,
+  locale: Locale,
   getActions: (row: ProduitRow) => RowAction[],
 ): ColDef<ProduitRow>[] {
   return [
-    { field: "reference", headerName: "Reference", filter: "agTextColumnFilter", width: 130 },
+    { field: "reference", headerName: t("products.columnReference"), filter: "agTextColumnFilter", width: 130 },
     {
       field: "designation",
-      headerName: "Nom",
+      headerName: t("products.columnName"),
       filter: "agTextColumnFilter",
       flex: 1.3,
       minWidth: 200,
@@ -43,29 +47,29 @@ export function buildProduitColumns(
     },
     {
       field: "type",
-      headerName: "Type",
+      headerName: t("products.columnType"),
       width: 110,
       filter: false,
-      valueFormatter: (p) => (p.value === "SERVICE" ? "Service" : "Produit"),
+      valueFormatter: (p) => (p.value === "SERVICE" ? t("products.typeService") : t("products.typeProduct")),
     },
     {
       field: "description",
-      headerName: "Description",
+      headerName: t("products.columnDescription"),
       filter: "agTextColumnFilter",
       flex: 1,
       minWidth: 160,
     },
     {
       field: "prixUnitaireHT",
-      headerName: "Prix HT",
+      headerName: t("products.columnPriceHT"),
       filter: "agNumberColumnFilter",
       width: 120,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "tauxTva",
-      headerName: "Taux de taxe",
+      headerName: t("products.columnTaxRate"),
       filter: "agNumberColumnFilter",
       width: 120,
       type: "rightAligned",
@@ -73,17 +77,17 @@ export function buildProduitColumns(
     },
     {
       field: "prixTTC",
-      headerName: "Prix TTC",
+      headerName: t("products.columnPriceTTC"),
       filter: "agNumberColumnFilter",
       width: 120,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
-    { field: "uniteMesure", headerName: "Unite", width: 100, filter: false },
-    { field: "categorie", headerName: "Categorie", filter: "agTextColumnFilter", width: 140 },
+    { field: "uniteMesure", headerName: t("products.columnUnit"), width: 100, filter: false },
+    { field: "categorie", headerName: t("products.columnCategory"), filter: "agTextColumnFilter", width: 140 },
     {
       field: "stock",
-      headerName: "Stock",
+      headerName: t("products.columnStock"),
       filter: "agNumberColumnFilter",
       width: 100,
       type: "rightAligned",
@@ -91,17 +95,17 @@ export function buildProduitColumns(
     },
     {
       field: "actif",
-      headerName: "Statut",
+      headerName: t("products.columnStatus"),
       width: 120,
       filter: false,
       cellRenderer: (params: { value?: boolean }) => (
-        <ActifBadge actif={Boolean(params.value)} inactiveLabel="Inactif" />
+        <ActifBadge actif={Boolean(params.value)} inactiveLabel={t("common.inactive")} />
       ),
-      valueFormatter: (p) => (p.value ? "Actif" : "Inactif"),
+      valueFormatter: (p) => (p.value ? t("common.active") : t("common.inactive")),
     },
     {
       colId: "__actions",
-      headerName: "Actions",
+      headerName: t("common.actions"),
       width: 90,
       sortable: false,
       filter: false,
@@ -110,7 +114,7 @@ export function buildProduitColumns(
       cellRenderer: (params: { data?: ProduitRow }) =>
         params.data ? (
           <RowActionsMenu
-            label={`Actions pour ${params.data.designation}`}
+            label={t("common.actionsFor", { name: params.data.designation })}
             actions={getActions(params.data)}
           />
         ) : null,
@@ -118,32 +122,32 @@ export function buildProduitColumns(
   ];
 }
 
-export function buildProduitFilterFields(rows: ProduitRow[]): GridFilterField[] {
+export function buildProduitFilterFields(t: Translator, rows: ProduitRow[]): GridFilterField[] {
   const categories = Array.from(new Set(rows.map((r) => r.categorie).filter(Boolean))) as string[];
 
   return [
     {
       key: "type",
-      label: "Type",
+      label: t("products.filterType"),
       type: "set",
       options: [
-        { value: "PRODUIT", label: "Produit" },
-        { value: "SERVICE", label: "Service" },
+        { value: "PRODUIT", label: t("products.typeProduct") },
+        { value: "SERVICE", label: t("products.typeService") },
       ],
     },
     {
       key: "categorie",
-      label: "Categorie",
+      label: t("products.filterCategory"),
       type: "set",
       options: categories.map((c) => ({ value: c, label: c })),
     },
     {
       key: "actif",
-      label: "Statut",
+      label: t("products.filterStatus"),
       type: "set",
       options: [
-        { value: "true", label: "Actif" },
-        { value: "false", label: "Inactif" },
+        { value: "true", label: t("common.active") },
+        { value: "false", label: t("common.inactive") },
       ],
     },
   ];

@@ -6,6 +6,8 @@ import { StatutBadge } from "@/components/StatutBadge";
 import { RowActionsMenu, type RowAction } from "@/components/ui/RowActionsMenu";
 import { formatMontant, formatDate } from "@/lib/format";
 import type { GridFilterField } from "@/components/datagrid/types";
+import type { Translator } from "@/i18n/translate";
+import type { Locale } from "@/i18n/config";
 
 export interface AvoirRow {
   id: string;
@@ -21,11 +23,15 @@ export interface AvoirRow {
   statut: string;
 }
 
-export function buildAvoirColumns(getActions: (row: AvoirRow) => RowAction[]): ColDef<AvoirRow>[] {
+export function buildAvoirColumns(
+  t: Translator,
+  locale: Locale,
+  getActions: (row: AvoirRow) => RowAction[],
+): ColDef<AvoirRow>[] {
   return [
     {
       field: "numero",
-      headerName: "Numero",
+      headerName: t("documents.columnNumber"),
       filter: "agTextColumnFilter",
       width: 160,
       pinned: "left",
@@ -36,10 +42,10 @@ export function buildAvoirColumns(getActions: (row: AvoirRow) => RowAction[]): C
           </Link>
         ) : null,
     },
-    { field: "clientNom", headerName: "Client", filter: "agTextColumnFilter", flex: 1, minWidth: 170 },
+    { field: "clientNom", headerName: t("documents.columnClient"), filter: "agTextColumnFilter", flex: 1, minWidth: 170 },
     {
       field: "factureNumero",
-      headerName: "Facture associee",
+      headerName: t("creditNotes.columnInvoice"),
       filter: "agTextColumnFilter",
       width: 160,
       cellRenderer: (params: { data?: AvoirRow }) =>
@@ -51,39 +57,39 @@ export function buildAvoirColumns(getActions: (row: AvoirRow) => RowAction[]): C
     },
     {
       field: "dateEmission",
-      headerName: "Date",
+      headerName: t("documents.columnDate"),
       filter: "agDateColumnFilter",
       width: 130,
-      valueFormatter: (p) => formatDate(p.value),
+      valueFormatter: (p) => formatDate(p.value, locale),
     },
-    { field: "motif", headerName: "Motif", filter: "agTextColumnFilter", flex: 1, minWidth: 160 },
+    { field: "motif", headerName: t("creditNotes.columnReason"), filter: "agTextColumnFilter", flex: 1, minWidth: 160 },
     {
       field: "montantHT",
-      headerName: "Montant HT",
+      headerName: t("documents.columnAmountHT"),
       filter: "agNumberColumnFilter",
       width: 130,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "taxes",
-      headerName: "Taxes",
+      headerName: t("documents.columnTaxes"),
       filter: "agNumberColumnFilter",
       width: 110,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "montantTTC",
-      headerName: "Montant TTC",
+      headerName: t("documents.columnAmountTTC"),
       filter: "agNumberColumnFilter",
       width: 130,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "statut",
-      headerName: "Statut",
+      headerName: t("documents.columnStatus"),
       width: 140,
       filter: false,
       cellRenderer: (params: { value?: string }) =>
@@ -91,7 +97,7 @@ export function buildAvoirColumns(getActions: (row: AvoirRow) => RowAction[]): C
     },
     {
       colId: "__actions",
-      headerName: "Actions",
+      headerName: t("common.actions"),
       width: 90,
       sortable: false,
       filter: false,
@@ -99,23 +105,23 @@ export function buildAvoirColumns(getActions: (row: AvoirRow) => RowAction[]): C
       pinned: "right",
       cellRenderer: (params: { data?: AvoirRow }) =>
         params.data ? (
-          <RowActionsMenu label={`Actions pour ${params.data.numero}`} actions={getActions(params.data)} />
+          <RowActionsMenu label={t("common.actionsFor", { name: params.data.numero })} actions={getActions(params.data)} />
         ) : null,
     },
   ];
 }
 
-export const AVOIR_FILTER_FIELDS: GridFilterField[] = [
-  {
-    key: "statut",
-    label: "Statut",
-    type: "set",
-    options: [
-      { value: "EMIS", label: "Emis" },
-      { value: "APPLIQUE", label: "Applique" },
-      { value: "REMBOURSE", label: "Rembourse" },
-      { value: "ANNULE", label: "Annule" },
-    ],
-  },
-  { key: "dateEmission", label: "Date", type: "dateRange" },
-];
+export function buildAvoirFilterFields(t: Translator): GridFilterField[] {
+  return [
+    {
+      key: "statut",
+      label: t("documents.filterStatus"),
+      type: "set",
+      options: ["EMIS", "APPLIQUE", "REMBOURSE", "ANNULE"].map((value) => ({
+        value,
+        label: t(`status.${value}`),
+      })),
+    },
+    { key: "dateEmission", label: t("documents.columnDate"), type: "dateRange" },
+  ];
+}

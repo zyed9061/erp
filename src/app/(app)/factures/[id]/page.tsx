@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { getLocale, getT } from "@/i18n/server";
 import { ToastOnParam } from "@/components/ui/ToastOnParam";
 import { formatMontant, formatDate } from "@/lib/format";
 import { StatutBadge } from "@/components/StatutBadge";
@@ -14,6 +15,7 @@ export default async function FactureDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const [t, locale] = await Promise.all([getT(), getLocale()]);
   const facture = await prisma.facture.findUnique({
     where: { id },
     include: {
@@ -48,7 +50,7 @@ export default async function FactureDetailPage({
             target="_blank"
             className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
           >
-            Voir le PDF
+            {t("documents.viewPdf")}
           </a>
         </div>
       </div>
@@ -65,7 +67,7 @@ export default async function FactureDetailPage({
               type="submit"
               className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
             >
-              Marquer comme envoyee
+              {t("invoices.actionMarkSent")}
             </button>
           </form>
         )}
@@ -73,27 +75,29 @@ export default async function FactureDetailPage({
           href={`/avoirs/new?factureId=${facture.id}`}
           className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
         >
-          Creer un avoir
+          {t("invoices.actionCreateCreditNote")}
         </Link>
       </div>
 
       <div className="rounded-lg border border-neutral-200 bg-white p-5 text-sm text-neutral-600">
         <div className="grid grid-cols-2 gap-2">
-          <span>Date d&apos;emission: {formatDate(facture.dateEmission)}</span>
-          {facture.dateEcheance && <span>Echeance: {formatDate(facture.dateEcheance)}</span>}
+          <span>{t("documents.issueDateValue", { date: formatDate(facture.dateEmission, locale) })}</span>
+          {facture.dateEcheance && (
+            <span>{t("invoices.dueDateValue", { date: formatDate(facture.dateEcheance, locale) })}</span>
+          )}
         </div>
       </div>
 
       <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
         <table className="w-full text-sm">
-          <thead className="text-left text-neutral-500">
+          <thead className="text-start text-neutral-500">
             <tr>
-              <th className="px-4 py-2 font-normal">Designation</th>
-              <th className="px-4 py-2 font-normal">Qte</th>
-              <th className="px-4 py-2 font-normal">Prix HT</th>
-              <th className="px-4 py-2 font-normal">Remise</th>
-              <th className="px-4 py-2 font-normal">TVA</th>
-              <th className="px-4 py-2 font-normal">Total HT</th>
+              <th className="px-4 py-2 font-normal">{t("documents.designation")}</th>
+              <th className="px-4 py-2 font-normal">{t("documents.quantity")}</th>
+              <th className="px-4 py-2 font-normal">{t("documents.priceHT")}</th>
+              <th className="px-4 py-2 font-normal">{t("documents.discount")}</th>
+              <th className="px-4 py-2 font-normal">{t("documents.vat")}</th>
+              <th className="px-4 py-2 font-normal">{t("documents.totalHT")}</th>
             </tr>
           </thead>
           <tbody>
@@ -101,58 +105,58 @@ export default async function FactureDetailPage({
               <tr key={ligne.id} className="border-t border-neutral-100">
                 <td className="px-4 py-2">{ligne.designation}</td>
                 <td className="px-4 py-2">{Number(ligne.quantite)}</td>
-                <td className="px-4 py-2">{formatMontant(Number(ligne.prixUnitaireHT))}</td>
+                <td className="px-4 py-2">{formatMontant(Number(ligne.prixUnitaireHT), "TND", locale)}</td>
                 <td className="px-4 py-2">{Number(ligne.remisePct)}%</td>
                 <td className="px-4 py-2">{Number(ligne.tauxTva)}%</td>
-                <td className="px-4 py-2">{formatMontant(Number(ligne.totalHT))}</td>
+                <td className="px-4 py-2">{formatMontant(Number(ligne.totalHT), "TND", locale)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div className="ml-auto max-w-xs space-y-1 text-sm">
+      <div className="ms-auto max-w-xs space-y-1 text-sm">
         <div className="flex justify-between">
-          <span className="text-neutral-500">Sous-total HT</span>
-          <span>{formatMontant(Number(facture.sousTotalHT))}</span>
+          <span className="text-neutral-500">{t("documents.subtotalHT")}</span>
+          <span>{formatMontant(Number(facture.sousTotalHT), "TND", locale)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-neutral-500">TVA</span>
-          <span>{formatMontant(Number(facture.totalTva))}</span>
+          <span className="text-neutral-500">{t("documents.vat")}</span>
+          <span>{formatMontant(Number(facture.totalTva), "TND", locale)}</span>
         </div>
         {Number(facture.timbreFiscal) > 0 && (
           <div className="flex justify-between">
-            <span className="text-neutral-500">Timbre fiscal</span>
-            <span>{formatMontant(Number(facture.timbreFiscal))}</span>
+            <span className="text-neutral-500">{t("documents.stampDuty")}</span>
+            <span>{formatMontant(Number(facture.timbreFiscal), "TND", locale)}</span>
           </div>
         )}
         <div className="flex justify-between border-t border-neutral-200 pt-1 font-medium text-neutral-900">
-          <span>Total TTC</span>
-          <span>{formatMontant(Number(facture.totalTTC))}</span>
+          <span>{t("documents.totalTTC")}</span>
+          <span>{formatMontant(Number(facture.totalTTC), "TND", locale)}</span>
         </div>
         <div className="flex justify-between text-neutral-500">
-          <span>Deja paye</span>
-          <span>{formatMontant(Number(facture.montantPaye))}</span>
+          <span>{t("invoices.alreadyPaid")}</span>
+          <span>{formatMontant(Number(facture.montantPaye), "TND", locale)}</span>
         </div>
         <div className="flex justify-between font-medium text-neutral-900">
-          <span>Reste a payer</span>
-          <span>{formatMontant(resteAPayer)}</span>
+          <span>{t("invoices.balance")}</span>
+          <span>{formatMontant(resteAPayer, "TND", locale)}</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-lg border border-neutral-200 bg-white p-5">
-          <h2 className="mb-3 text-sm font-medium text-neutral-900">Paiements</h2>
+          <h2 className="mb-3 text-sm font-medium text-neutral-900">{t("invoices.payments")}</h2>
           {facture.paiements.length === 0 ? (
-            <p className="text-sm text-neutral-500">Aucun paiement enregistre.</p>
+            <p className="text-sm text-neutral-500">{t("invoices.noPayments")}</p>
           ) : (
             <ul className="space-y-2 text-sm">
               {facture.paiements.map((p) => (
                 <li key={p.id} className="flex justify-between border-b border-neutral-100 pb-2">
                   <span className="text-neutral-600">
-                    {formatDate(p.datePaiement)} — {p.modePaiement}
+                    {formatDate(p.datePaiement, locale)} — {t(`paymentMethods.${p.modePaiement}`)}
                   </span>
-                  <span className="font-medium text-neutral-900">{formatMontant(Number(p.montant))}</span>
+                  <span className="font-medium text-neutral-900">{formatMontant(Number(p.montant), "TND", locale)}</span>
                 </li>
               ))}
             </ul>
@@ -161,12 +165,12 @@ export default async function FactureDetailPage({
 
         {resteAPayer > 0 && facture.statut !== "ANNULEE" && (
           <div className="rounded-lg border border-neutral-200 bg-white p-5">
-            <h2 className="mb-3 text-sm font-medium text-neutral-900">Enregistrer un paiement</h2>
+            <h2 className="mb-3 text-sm font-medium text-neutral-900">{t("invoices.recordPaymentTitle")}</h2>
             <form action={enregistrerPaiement} className="space-y-3">
               <input type="hidden" name="factureId" value={facture.id} />
               <div className="grid grid-cols-2 gap-3">
                 <label className="block">
-                  <span className="mb-1 block text-sm text-neutral-700">Date</span>
+                  <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentDate")}</span>
                   <input
                     type="date"
                     name="datePaiement"
@@ -176,7 +180,7 @@ export default async function FactureDetailPage({
                   />
                 </label>
                 <label className="block">
-                  <span className="mb-1 block text-sm text-neutral-700">Montant</span>
+                  <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentAmount")}</span>
                   <input
                     type="number"
                     step="0.001"
@@ -189,24 +193,24 @@ export default async function FactureDetailPage({
                 </label>
               </div>
               <label className="block">
-                <span className="mb-1 block text-sm text-neutral-700">Mode de paiement</span>
+                <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentMethod")}</span>
                 <select name="modePaiement" className="input">
-                  <option value="VIREMENT">Virement</option>
-                  <option value="CHEQUE">Cheque</option>
-                  <option value="ESPECES">Especes</option>
-                  <option value="CARTE">Carte</option>
-                  <option value="AUTRE">Autre</option>
+                  {(["VIREMENT", "CHEQUE", "ESPECES", "CARTE", "AUTRE"] as const).map((mode) => (
+                    <option key={mode} value={mode}>
+                      {t(`paymentMethods.${mode}`)}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="block">
-                <span className="mb-1 block text-sm text-neutral-700">Reference</span>
+                <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentReference")}</span>
                 <input name="reference" className="input" />
               </label>
               <button
                 type="submit"
                 className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
               >
-                Enregistrer le paiement
+                {t("invoices.submitPayment")}
               </button>
             </form>
           </div>

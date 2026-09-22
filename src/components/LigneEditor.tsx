@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { formatMontant } from "@/lib/format";
+import { useLocale } from "@/i18n/client";
 
 export type ProduitOption = {
   id: string;
@@ -38,6 +39,7 @@ export function LigneEditor({
   produits: ProduitOption[];
   timbreFiscal?: number;
 }) {
+  const { t, locale } = useLocale();
   const [lignes, setLignes] = useState<LigneState[]>([{ ...ligneVide }]);
 
   function mettreAJourLigne(index: number, patch: Partial<LigneState>) {
@@ -74,15 +76,15 @@ export function LigneEditor({
 
       <div className="overflow-x-auto rounded-lg border border-neutral-200 bg-white">
         <table className="w-full text-sm">
-          <thead className="text-left text-neutral-500">
+          <thead className="text-start text-neutral-500">
             <tr>
-              <th className="px-3 py-2 font-normal">Produit</th>
-              <th className="px-3 py-2 font-normal">Designation</th>
-              <th className="px-3 py-2 font-normal">Qte</th>
-              <th className="px-3 py-2 font-normal">Prix HT</th>
-              <th className="px-3 py-2 font-normal">Remise %</th>
-              <th className="px-3 py-2 font-normal">TVA %</th>
-              <th className="px-3 py-2 font-normal">Total HT</th>
+              <th className="px-3 py-2 font-normal">{t("documents.product")}</th>
+              <th className="px-3 py-2 font-normal">{t("documents.designation")}</th>
+              <th className="px-3 py-2 font-normal">{t("documents.quantity")}</th>
+              <th className="px-3 py-2 font-normal">{t("documents.priceHT")}</th>
+              <th className="px-3 py-2 font-normal">{t("documents.discountPct")}</th>
+              <th className="px-3 py-2 font-normal">{t("documents.vatPct")}</th>
+              <th className="px-3 py-2 font-normal">{t("documents.totalHT")}</th>
               <th className="px-3 py-2" />
             </tr>
           </thead>
@@ -158,7 +160,7 @@ export function LigneEditor({
                     />
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap text-neutral-600">
-                    {formatMontant(calculee.totalHT)}
+                    {formatMontant(calculee.totalHT, "TND", locale)}
                   </td>
                   <td className="px-3 py-2">
                     <button
@@ -166,6 +168,7 @@ export function LigneEditor({
                       onClick={() => supprimerLigne(index)}
                       className="text-neutral-400 hover:text-red-600"
                       disabled={lignes.length === 1}
+                      aria-label={t("common.removeLine")}
                     >
                       ✕
                     </button>
@@ -182,27 +185,27 @@ export function LigneEditor({
         onClick={ajouterLigne}
         className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
       >
-        + Ajouter une ligne
+        {t("documents.addLine")}
       </button>
 
-      <div className="ml-auto max-w-xs space-y-1 text-sm">
+      <div className="ms-auto max-w-xs space-y-1 text-sm">
         <div className="flex justify-between">
-          <span className="text-neutral-500">Sous-total HT</span>
-          <span>{formatMontant(totaux.sousTotalHT)}</span>
+          <span className="text-neutral-500">{t("documents.subtotalHT")}</span>
+          <span>{formatMontant(totaux.sousTotalHT, "TND", locale)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-neutral-500">TVA</span>
-          <span>{formatMontant(totaux.totalTva)}</span>
+          <span className="text-neutral-500">{t("documents.vat")}</span>
+          <span>{formatMontant(totaux.totalTva, "TND", locale)}</span>
         </div>
         {timbreFiscal > 0 && (
           <div className="flex justify-between">
-            <span className="text-neutral-500">Timbre fiscal</span>
-            <span>{formatMontant(timbreFiscal)}</span>
+            <span className="text-neutral-500">{t("documents.stampDuty")}</span>
+            <span>{formatMontant(timbreFiscal, "TND", locale)}</span>
           </div>
         )}
         <div className="flex justify-between border-t border-neutral-200 pt-1 font-medium text-neutral-900">
-          <span>Total TTC</span>
-          <span>{formatMontant(totaux.totalTTC)}</span>
+          <span>{t("documents.totalTTC")}</span>
+          <span>{formatMontant(totaux.totalTTC, "TND", locale)}</span>
         </div>
       </div>
     </div>

@@ -6,6 +6,8 @@ import { StatutBadge } from "@/components/StatutBadge";
 import { RowActionsMenu, type RowAction } from "@/components/ui/RowActionsMenu";
 import { formatMontant, formatDate } from "@/lib/format";
 import type { GridFilterField } from "@/components/datagrid/types";
+import type { Translator } from "@/i18n/translate";
+import type { Locale } from "@/i18n/config";
 
 export interface FactureRow {
   id: string;
@@ -23,12 +25,14 @@ export interface FactureRow {
 }
 
 export function buildFactureColumns(
+  t: Translator,
+  locale: Locale,
   getActions: (row: FactureRow) => RowAction[],
 ): ColDef<FactureRow>[] {
   return [
     {
       field: "numero",
-      headerName: "Numero",
+      headerName: t("documents.columnNumber"),
       filter: "agTextColumnFilter",
       width: 160,
       pinned: "left",
@@ -39,65 +43,65 @@ export function buildFactureColumns(
           </Link>
         ) : null,
     },
-    { field: "clientNom", headerName: "Client", filter: "agTextColumnFilter", flex: 1, minWidth: 170 },
+    { field: "clientNom", headerName: t("documents.columnClient"), filter: "agTextColumnFilter", flex: 1, minWidth: 170 },
     {
       field: "dateEmission",
-      headerName: "Date d'emission",
+      headerName: t("documents.issueDate"),
       filter: "agDateColumnFilter",
       width: 140,
-      valueFormatter: (p) => formatDate(p.value),
+      valueFormatter: (p) => formatDate(p.value, locale),
     },
     {
       field: "dateEcheance",
-      headerName: "Date d'echeance",
+      headerName: t("invoices.columnDueDate"),
       filter: "agDateColumnFilter",
       width: 140,
-      valueFormatter: (p) => (p.value ? formatDate(p.value) : "-"),
+      valueFormatter: (p) => (p.value ? formatDate(p.value, locale) : "-"),
     },
     {
       field: "montantHT",
-      headerName: "Montant HT",
+      headerName: t("documents.columnAmountHT"),
       filter: "agNumberColumnFilter",
       width: 130,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "taxes",
-      headerName: "Taxes",
+      headerName: t("documents.columnTaxes"),
       filter: "agNumberColumnFilter",
       width: 110,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "montantTTC",
-      headerName: "Montant TTC",
+      headerName: t("documents.columnAmountTTC"),
       filter: "agNumberColumnFilter",
       width: 130,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "montantPaye",
-      headerName: "Montant paye",
+      headerName: t("invoices.columnAmountPaid"),
       filter: "agNumberColumnFilter",
       width: 130,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "resteAPayer",
-      headerName: "Reste a payer",
+      headerName: t("invoices.columnBalance"),
       filter: "agNumberColumnFilter",
       width: 130,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
       cellClass: (p) => (Number(p.value) > 0 ? "text-red-600 font-medium" : undefined),
     },
     {
       field: "statut",
-      headerName: "Statut",
+      headerName: t("documents.columnStatus"),
       width: 170,
       filter: false,
       cellRenderer: (params: { value?: string }) =>
@@ -105,7 +109,7 @@ export function buildFactureColumns(
     },
     {
       colId: "__actions",
-      headerName: "Actions",
+      headerName: t("common.actions"),
       width: 90,
       sortable: false,
       filter: false,
@@ -113,25 +117,22 @@ export function buildFactureColumns(
       pinned: "right",
       cellRenderer: (params: { data?: FactureRow }) =>
         params.data ? (
-          <RowActionsMenu label={`Actions pour ${params.data.numero}`} actions={getActions(params.data)} />
+          <RowActionsMenu label={t("common.actionsFor", { name: params.data.numero })} actions={getActions(params.data)} />
         ) : null,
     },
   ];
 }
 
-export const FACTURE_FILTER_FIELDS: GridFilterField[] = [
-  {
-    key: "statut",
-    label: "Statut",
-    type: "set",
-    options: [
-      { value: "BROUILLON", label: "Brouillon" },
-      { value: "ENVOYEE", label: "Envoyee" },
-      { value: "PARTIELLEMENT_PAYEE", label: "Partiellement payee" },
-      { value: "PAYEE", label: "Payee" },
-      { value: "EN_RETARD", label: "En retard" },
-      { value: "ANNULEE", label: "Annulee" },
-    ],
-  },
-  { key: "dateEmission", label: "Date d'emission", type: "dateRange" },
-];
+export function buildFactureFilterFields(t: Translator): GridFilterField[] {
+  return [
+    {
+      key: "statut",
+      label: t("documents.filterStatus"),
+      type: "set",
+      options: ["BROUILLON", "ENVOYEE", "PARTIELLEMENT_PAYEE", "PAYEE", "EN_RETARD", "ANNULEE"].map(
+        (value) => ({ value, label: t(`status.${value}`) }),
+      ),
+    },
+    { key: "dateEmission", label: t("documents.filterIssueDate"), type: "dateRange" },
+  ];
+}

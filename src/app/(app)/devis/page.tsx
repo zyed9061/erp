@@ -1,11 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { getT } from "@/i18n/server";
 import { DevisGrid } from "./DevisGrid";
 import type { DevisRow } from "./columns";
 
 export default async function DevisListPage() {
-  const [session, devis] = await Promise.all([
+  const [t, session, devis] = await Promise.all([
+    getT(),
     auth(),
     prisma.devis.findMany({
       include: { client: true, facture: { select: { id: true } } },
@@ -29,7 +31,7 @@ export default async function DevisListPage() {
 
   return (
     <div>
-      <PageHeader title="Devis" description="Suivez vos devis, de la creation a la conversion en facture." />
+      <PageHeader title={t("quotes.title")} description={t("quotes.description")} />
       <DevisGrid data={rows} userId={session?.user?.id} />
     </div>
   );

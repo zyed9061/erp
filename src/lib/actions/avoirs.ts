@@ -8,6 +8,7 @@ import { avoirSchema } from "@/lib/validations/document";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
 import { withToast } from "@/lib/toastRedirect";
+import { getT } from "@/i18n/server";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -63,7 +64,8 @@ export async function createAvoir(formData: FormData) {
 
   revalidatePath("/avoirs");
   revalidatePath(`/factures/${factureOrigine.id}`);
-  redirect(withToast(`/avoirs/${avoir.id}`, "Avoir cree avec succes."));
+  const t = await getT();
+  redirect(withToast(`/avoirs/${avoir.id}`, t("creditNotes.toastCreated")));
 }
 
 export async function updateAvoirStatut(

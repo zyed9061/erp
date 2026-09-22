@@ -6,12 +6,14 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { DataGrid } from "@/components/datagrid/DataGrid";
 import { useToast } from "@/components/ui/Toast";
+import { useLocale } from "@/i18n/client";
 import { updateDevisStatut, convertirDevisEnFacture, duplicateDevis } from "@/lib/actions/devis";
 import { sendDocumentByEmail } from "@/lib/services/notifications";
-import { buildDevisColumns, DEVIS_FILTER_FIELDS, type DevisRow } from "./columns";
+import { buildDevisColumns, buildDevisFilterFields, type DevisRow } from "./columns";
 
 export function DevisGrid({ data, userId }: { data: DevisRow[]; userId?: string }) {
   const router = useRouter();
+  const { t, locale } = useLocale();
   const { showSuccess, showError } = useToast();
   const [, startTransition] = useTransition();
 
@@ -24,33 +26,33 @@ export function DevisGrid({ data, userId }: { data: DevisRow[]; userId?: string 
           if (onDone) onDone(result);
           else router.refresh();
         } catch {
-          showError("Une erreur est survenue.");
+          showError(t("common.error"));
         }
       });
     },
-    [startTransition, showSuccess, showError, router],
+    [startTransition, showSuccess, showError, router, t],
   );
 
   const columnDefs = useMemo(
     () =>
-      buildDevisColumns((row) => {
+      buildDevisColumns(t, locale, (row) => {
         const actions = [
-          { label: "Voir", onSelect: () => router.push(`/devis/${row.id}`) },
+          { label: t("common.view"), onSelect: () => router.push(`/devis/${row.id}`) },
           {
-            label: "Dupliquer",
+            label: t("common.duplicate"),
             onSelect: () =>
               runAction(
                 duplicateDevis(row.id),
-                `${row.numero} a ete duplique.`,
+                t("quotes.toastDuplicated", { number: row.numero }),
                 (result) => router.push(`/devis/${(result as { id: string }).id}`),
               ),
           },
           {
-            label: "Telecharger le PDF",
+            label: t("common.downloadPdf"),
             onSelect: () => window.open(`/devis/${row.id}/pdf`, "_blank"),
           },
           {
-            label: "Envoyer par email",
+            label: t("common.sendByEmail"),
             onSelect: () => {
               startTransition(async () => {
                 const result = await sendDocumentByEmail({
@@ -59,8 +61,9 @@ export function DevisGrid({ data, userId }: { data: DevisRow[]; userId?: string 
                   numero: row.numero,
                   clientEmail: row.clientEmail,
                 });
-                if (result.success) showSuccess(result.message);
-                else showError(result.message);
+                const message = t(`notifications.${result.messageKey}`, result.vars);
+                if (result.success) showSuccess(message);
+                else showError(message);
               });
             },
           },
@@ -68,32 +71,32 @@ export function DevisGrid({ data, userId }: { data: DevisRow[]; userId?: string 
 
         if (row.statut === "BROUILLON") {
           actions.push({
-            label: "Marquer comme envoye",
+            label: t("quotes.actionMarkSent"),
             onSelect: () =>
-              runAction(updateDevisStatut(row.id, "ENVOYE"), `${row.numero} marque comme envoye.`),
+              runAction(updateDevisStatut(row.id, "ENVOYE"), t("quotes.toastMarkedSent", { number: row.numero })),
           });
         }
         if (row.statut === "ENVOYE") {
           actions.push(
             {
-              label: "Marquer comme accepte",
+              label: t("quotes.actionMarkAccepted"),
               onSelect: () =>
-                runAction(updateDevisStatut(row.id, "ACCEPTE"), `${row.numero} marque comme accepte.`),
+                runAction(updateDevisStatut(row.id, "ACCEPTE"), t("quotes.toastMarkedAccepted", { number: row.numero })),
             },
             {
-              label: "Marquer comme refuse",
+              label: t("quotes.actionMarkRefused"),
               onSelect: () =>
-                runAction(updateDevisStatut(row.id, "REFUSE"), `${row.numero} marque comme refuse.`),
+                runAction(updateDevisStatut(row.id, "REFUSE"), t("quotes.toastMarkedRefused", { number: row.numero })),
             },
           );
         }
         if (row.statut === "ACCEPTE" && !row.hasFacture) {
           actions.push({
-            label: "Convertir en facture",
+            label: t("quotes.actionConvert"),
             onSelect: () =>
               runAction(
                 convertirDevisEnFacture(row.id),
-                `${row.numero} converti en facture.`,
+                t("quotes.toastConverted", { number: row.numero }),
                 (result) => router.push(`/factures/${(result as { id: string }).id}`),
               ),
           });
@@ -101,8 +104,10 @@ export function DevisGrid({ data, userId }: { data: DevisRow[]; userId?: string 
 
         return actions;
       }),
-    [router, runAction, showSuccess, showError],
+    [router, runAction, showSuccess, showError, t, locale],
   );
+
+  const filterFields = useMemo(() => buildDevisFilterFields(t), [t]);
 
   return (
     <DataGrid<DevisRow>
@@ -110,18 +115,18 @@ export function DevisGrid({ data, userId }: { data: DevisRow[]; userId?: string 
       userId={userId}
       columnDefs={columnDefs}
       rowData={data}
-      filterFields={DEVIS_FILTER_FIELDS}
-      quickSearchPlaceholder="Rechercher un devis..."
+      filterFields={filterFields}
+      quickSearchPlaceholder={t("quotes.searchPlaceholder")}
       onRefresh={() => router.refresh()}
       onRowClicked={(row) => router.push(`/devis/${row.id}`)}
-      emptyTitle="Aucun devis"
-      emptyDescription="Creez votre premier devis pour un client."
+      emptyTitle={t("quotes.emptyTitle")}
+      emptyDescription={t("quotes.emptyDescription")}
       headerActions={
         <Link
           href="/devis/new"
           className="flex items-center gap-1.5 rounded-md bg-brand-700 px-3 py-2 text-sm font-medium text-white hover:bg-brand-800"
         >
-          <Plus className="h-4 w-4" aria-hidden="true" /> Nouveau devis
+          <Plus className="h-4 w-4" aria-hidden="true" /> {t("quotes.newQuote")}
         </Link>
       }
     />

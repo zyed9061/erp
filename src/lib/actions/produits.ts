@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/current-user";
 import { produitSchema } from "@/lib/validations/produit";
 import { withToast } from "@/lib/toastRedirect";
+import { getT } from "@/i18n/server";
 
 function parseFormData(formData: FormData) {
   return {
@@ -35,7 +36,8 @@ export async function createProduit(formData: FormData) {
   });
 
   revalidatePath("/produits");
-  redirect(withToast("/produits", "Produit cree avec succes."));
+  const t = await getT();
+  redirect(withToast("/produits", t("products.toastCreated")));
 }
 
 export async function updateProduit(id: string, formData: FormData) {
@@ -53,7 +55,8 @@ export async function updateProduit(id: string, formData: FormData) {
   });
 
   revalidatePath("/produits");
-  redirect(withToast("/produits", "Produit modifie avec succes."));
+  const t = await getT();
+  redirect(withToast("/produits", t("products.toastUpdated")));
 }
 
 export async function deactivateProduit(id: string) {

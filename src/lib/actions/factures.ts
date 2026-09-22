@@ -8,6 +8,7 @@ import { factureSchema, paiementSchema } from "@/lib/validations/document";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { nextDocumentNumber } from "@/lib/numbering";
 import { withToast } from "@/lib/toastRedirect";
+import { getT } from "@/i18n/server";
 
 function parseFormData(formData: FormData) {
   const lignesRaw = formData.get("lignes");
@@ -72,7 +73,8 @@ export async function createFacture(formData: FormData) {
   });
 
   revalidatePath("/factures");
-  redirect(withToast(`/factures/${facture.id}`, "Facture creee avec succes."));
+  const t = await getT();
+  redirect(withToast(`/factures/${facture.id}`, t("invoices.toastCreated")));
 }
 
 export async function duplicateFacture(id: string) {
@@ -181,5 +183,6 @@ export async function enregistrerPaiement(formData: FormData) {
   await recalculerStatutPaiement(data.factureId);
 
   revalidatePath(`/factures/${data.factureId}`);
-  redirect(withToast(`/factures/${data.factureId}`, "Paiement enregistre avec succes."));
+  const t = await getT();
+  redirect(withToast(`/factures/${data.factureId}`, t("invoices.toastPaymentRecorded")));
 }
