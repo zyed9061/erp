@@ -2,6 +2,9 @@
 
 import { useActionState } from "react";
 import { enregistrerPaiement } from "@/lib/actions/factures";
+import { useLocale } from "@/i18n/client";
+
+const MODES_PAIEMENT = ["VIREMENT", "CHEQUE", "ESPECES", "CARTE", "AUTRE"] as const;
 
 export function PaiementForm({
   factureId,
@@ -10,16 +13,17 @@ export function PaiementForm({
   factureId: string;
   resteAPayer: number;
 }) {
+  const { t } = useLocale();
   const [state, formAction, isPending] = useActionState(enregistrerPaiement, undefined);
 
   return (
     <div className="rounded-lg border border-neutral-200 bg-white p-5">
-      <h2 className="mb-3 text-sm font-medium text-neutral-900">Enregistrer un paiement</h2>
+      <h2 className="mb-3 text-sm font-medium text-neutral-900">{t("invoices.recordPaymentTitle")}</h2>
       <form action={formAction} className="space-y-3">
         <input type="hidden" name="factureId" value={factureId} />
         <div className="grid grid-cols-2 gap-3">
           <label className="block">
-            <span className="mb-1 block text-sm text-neutral-700">Date</span>
+            <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentDate")}</span>
             <input
               type="date"
               name="datePaiement"
@@ -29,7 +33,7 @@ export function PaiementForm({
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm text-neutral-700">Montant</span>
+            <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentAmount")}</span>
             <input
               type="number"
               step="0.001"
@@ -42,17 +46,17 @@ export function PaiementForm({
           </label>
         </div>
         <label className="block">
-          <span className="mb-1 block text-sm text-neutral-700">Mode de paiement</span>
+          <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentMethod")}</span>
           <select name="modePaiement" className="input">
-            <option value="VIREMENT">Virement</option>
-            <option value="CHEQUE">Cheque</option>
-            <option value="ESPECES">Especes</option>
-            <option value="CARTE">Carte</option>
-            <option value="AUTRE">Autre</option>
+            {MODES_PAIEMENT.map((mode) => (
+              <option key={mode} value={mode}>
+                {t(`paymentMethods.${mode}`)}
+              </option>
+            ))}
           </select>
         </label>
         <label className="block">
-          <span className="mb-1 block text-sm text-neutral-700">Reference</span>
+          <span className="mb-1 block text-sm text-neutral-700">{t("invoices.paymentReference")}</span>
           <input name="reference" className="input" />
         </label>
 
@@ -65,7 +69,7 @@ export function PaiementForm({
           disabled={isPending}
           className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50"
         >
-          {isPending ? "Enregistrement..." : "Enregistrer le paiement"}
+          {isPending ? t("invoices.submittingPayment") : t("invoices.submitPayment")}
         </button>
       </form>
     </div>

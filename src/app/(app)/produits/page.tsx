@@ -3,11 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ToastOnParam } from "@/components/ui/ToastOnParam";
+import { getT } from "@/i18n/server";
 import { ProduitsGrid } from "./ProduitsGrid";
 import type { ProduitRow } from "./columns";
 
 export default async function ProduitsPage() {
-  const [session, produits] = await Promise.all([
+  const [t, session, produits] = await Promise.all([
+    getT(),
     auth(),
     prisma.produit.findMany({ orderBy: { designation: "asc" } }),
   ]);
@@ -36,10 +38,7 @@ export default async function ProduitsPage() {
       <Suspense fallback={null}>
         <ToastOnParam />
       </Suspense>
-      <PageHeader
-        title="Produits & Services"
-        description="Gerez votre catalogue utilise dans les devis et les factures."
-      />
+      <PageHeader title={t("products.title")} description={t("products.description")} />
       <ProduitsGrid data={rows} userId={session?.user?.id} />
     </div>
   );

@@ -12,23 +12,18 @@ import { prisma } from "@/lib/prisma";
 import { formatMontant } from "@/lib/format";
 import { computeFactureDisplayStatut } from "@/lib/factureStatus";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { getLocale, getT } from "@/i18n/server";
+import { INTL_LOCALE } from "@/i18n/config";
 import { RevenueChart, StatusDistributionChart } from "./DashboardCharts";
 import { DashboardInvoiceGrid, type DashboardFactureRow } from "./DashboardInvoiceGrids";
-
-const STATUT_LABELS: Record<string, string> = {
-  BROUILLON: "Brouillon",
-  ENVOYEE: "Envoyee",
-  PARTIELLEMENT_PAYEE: "Partiellement payee",
-  PAYEE: "Payee",
-  EN_RETARD: "En retard",
-  ANNULEE: "Annulee",
-};
 
 export default async function DashboardPage() {
   const now = new Date();
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const [factures, devisEnAttente, nombreClients] = await Promise.all([
+  const [t, locale, factures, devisEnAttente, nombreClients] = await Promise.all([
+    getT(),
+    getLocale(),
     prisma.facture.findMany({
       include: { client: true },
       orderBy: { createdAt: "desc" },
@@ -92,83 +87,90 @@ export default async function DashboardPage() {
     const total = enriched
       .filter((f) => f.statut !== "ANNULEE" && f.dateEmission >= monthDate && f.dateEmission < nextMonth)
       .reduce((sum, f) => sum + f.totalTTC, 0);
-    return { label: monthDate.toLocaleDateString("fr-FR", { month: "short" }), total };
+    return { label: monthDate.toLocaleDateString(INTL_LOCALE[locale], { month: "short" }), total };
   });
 
   const statusCounts = ["BROUILLON", "ENVOYEE", "PARTIELLEMENT_PAYEE", "PAYEE", "EN_RETARD", "ANNULEE"].map(
     (statut) => ({
       statut,
-      label: STATUT_LABELS[statut],
+      label: t(`status.${statut}`),
       count: enriched.filter((f) => f.displayStatut === statut).length,
     }),
   );
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Tableau de bord"
-        description="Vue d'ensemble de votre activite de facturation."
-      />
+      <PageHeader title={t("dashboard.title")} description={t("dashboard.description")} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <StatCard icon={TrendingUp} label="CA du mois" value={formatMontant(caDuMois)} accent="teal" />
+        <StatCard
+          icon={TrendingUp}
+          label={t("dashboard.revenueThisMonth")}
+          value={formatMontant(caDuMois, "TND", locale)}
+          accent="teal"
+        />
         <StatCard
           icon={Wallet}
-          label="A encaisser"
-          value={formatMontant(montantAEncaisser)}
+          label={t("dashboard.toCollect")}
+          value={formatMontant(montantAEncaisser, "TND", locale)}
           accent="amber"
         />
         <StatCard
           icon={AlertTriangle}
-          label="Factures en retard"
+          label={t("dashboard.overdueInvoices")}
           value={String(facturesEnRetard.length)}
           accent="red"
         />
         <StatCard
           icon={CheckCircle2}
-          label="Factures payees"
+          label={t("dashboard.paidInvoices")}
           value={String(facturesPayees.length)}
           accent="green"
         />
-        <StatCard icon={FileText} label="Devis en attente" value={String(devisEnAttente)} accent="blue" />
-        <StatCard icon={Users} label="Clients" value={String(nombreClients)} accent="teal" />
+        <StatCard
+          icon={FileText}
+          label={t("dashboard.pendingQuotes")}
+          value={String(devisEnAttente)}
+          accent="blue"
+        />
+        <StatCard icon={Users} label={t("dashboard.clients")} value={String(nombreClients)} accent="teal" />
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5 lg:col-span-2">
           <h2 className="mb-4 text-sm font-semibold text-neutral-900">
-            Chiffre d&apos;affaires (6 derniers mois)
+            {t("dashboard.revenueChartTitle")}
           </h2>
-          <RevenueChart data={revenueByMonth} />
+          <RevenueChart data={revenueByMonth} title={t("dashboard.revenueChartTitle")} locale={locale} />
         </div>
         <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
-          <h2 className="mb-4 text-sm font-semibold text-neutral-900">Repartition des factures</h2>
+          <h2 className="mb-4 text-sm font-semibold text-neutral-900">{t("dashboard.invoiceBreakdown")}</h2>
           <StatusDistributionChart data={statusCounts} />
         </div>
       </div>
 
       <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
-        <h2 className="mb-3 text-sm font-semibold text-neutral-900">Actions rapides</h2>
+        <h2 className="mb-3 text-sm font-semibold text-neutral-900">{t("dashboard.quickActions")}</h2>
         <div className="flex flex-wrap gap-2">
-          <QuickAction href="/factures/new" label="Nouvelle facture" />
-          <QuickAction href="/devis/new" label="Nouveau devis" />
-          <QuickAction href="/clients/new" label="Nouveau client" />
-          <QuickAction href="/produits/new" label="Ajouter un produit/service" />
+          <QuickAction href="/factures/new" label={t("invoices.newInvoice")} />
+          <QuickAction href="/devis/new" label={t("quotes.newQuote")} />
+          <QuickAction href="/clients/new" label={t("clients.newClient")} />
+          <QuickAction href="/produits/new" label={t("dashboard.addProduct")} />
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
           <div className="border-b border-neutral-100 px-5 py-3">
-            <h2 className="text-sm font-semibold text-neutral-900">Factures recentes</h2>
+            <h2 className="text-sm font-semibold text-neutral-900">{t("dashboard.recentInvoices")}</h2>
           </div>
-          <DashboardInvoiceGrid rows={recentFactures} emptyMessage="Aucune facture pour le moment." />
+          <DashboardInvoiceGrid rows={recentFactures} emptyMessage={t("dashboard.noInvoices")} />
         </div>
         <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
           <div className="border-b border-neutral-100 px-5 py-3">
-            <h2 className="text-sm font-semibold text-neutral-900">Factures en retard</h2>
+            <h2 className="text-sm font-semibold text-neutral-900">{t("dashboard.overdueInvoices")}</h2>
           </div>
-          <DashboardInvoiceGrid rows={overdueFactures} emptyMessage="Aucune facture en retard." />
+          <DashboardInvoiceGrid rows={overdueFactures} emptyMessage={t("dashboard.noOverdueInvoices")} />
         </div>
       </div>
     </div>

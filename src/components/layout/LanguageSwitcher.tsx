@@ -55,7 +55,7 @@ export function LanguageSwitcher() {
                 setOpen(false);
                 setLocale(code);
               }}
-              className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-neutral-700 hover:bg-neutral-50"
+              className="flex w-full items-center justify-between px-3 py-2 text-start text-sm text-neutral-700 hover:bg-neutral-50"
             >
               {LOCALE_LABELS[code]}
               {locale === code && <Check className="h-4 w-4 text-brand-700" aria-hidden="true" />}

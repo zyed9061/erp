@@ -51,7 +51,7 @@ export function TopHeader({
       <button
         type="button"
         onClick={onOpenMobileMenu}
-        aria-label={t("nav.dashboard")}
+        aria-label={t("nav.openMenu")}
         className="rounded-md p-2 text-neutral-600 hover:bg-neutral-100 md:hidden"
       >
         <Menu className="h-5 w-5" aria-hidden="true" />

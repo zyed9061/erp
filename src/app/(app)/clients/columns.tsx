@@ -7,6 +7,7 @@ import { RowActionsMenu, type RowAction } from "@/components/ui/RowActionsMenu";
 import { formatMontant, formatDate } from "@/lib/format";
 import type { GridFilterField } from "@/components/datagrid/types";
 import type { Translator } from "@/i18n/translate";
+import type { Locale } from "@/i18n/config";
 
 export interface ClientRow {
   id: string;
@@ -24,6 +25,7 @@ export interface ClientRow {
 
 export function buildClientColumns(
   t: Translator,
+  locale: Locale,
   getActions: (row: ClientRow) => RowAction[],
 ): ColDef<ClientRow>[] {
   return [
@@ -58,7 +60,7 @@ export function buildClientColumns(
       filter: "agNumberColumnFilter",
       width: 150,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
     },
     {
       field: "soldeDu",
@@ -66,7 +68,7 @@ export function buildClientColumns(
       filter: "agNumberColumnFilter",
       width: 140,
       type: "rightAligned",
-      valueFormatter: (p) => formatMontant(p.value ?? 0),
+      valueFormatter: (p) => formatMontant(p.value ?? 0, "TND", locale),
       cellClass: (p) => (Number(p.value) > 0 ? "text-red-600 font-medium" : undefined),
     },
     {
@@ -74,7 +76,7 @@ export function buildClientColumns(
       headerName: t("clients.columnLastInvoice"),
       filter: "agDateColumnFilter",
       width: 150,
-      valueFormatter: (p) => (p.value ? formatDate(p.value) : "-"),
+      valueFormatter: (p) => (p.value ? formatDate(p.value, locale) : "-"),
     },
     {
       field: "actif",

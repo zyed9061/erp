@@ -1,12 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { getT } from "@/i18n/server";
 import { computeFactureDisplayStatut } from "@/lib/factureStatus";
 import { FacturesGrid } from "./FacturesGrid";
 import type { FactureRow } from "./columns";
 
 export default async function FacturesListPage() {
-  const [session, factures] = await Promise.all([
+  const [t, session, factures] = await Promise.all([
+    getT(),
     auth(),
     prisma.facture.findMany({
       include: { client: true },
@@ -40,7 +42,7 @@ export default async function FacturesListPage() {
 
   return (
     <div>
-      <PageHeader title="Factures" description="Suivez la facturation et les encaissements de vos clients." />
+      <PageHeader title={t("invoices.title")} description={t("invoices.description")} />
       <FacturesGrid data={rows} userId={session?.user?.id} />
     </div>
   );

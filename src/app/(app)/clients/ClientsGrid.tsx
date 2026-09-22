@@ -13,7 +13,7 @@ import { buildClientColumns, buildClientFilterFields, type ClientRow } from "./c
 
 export function ClientsGrid({ data, userId }: { data: ClientRow[]; userId?: string }) {
   const router = useRouter();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { showSuccess, showError } = useToast();
   const [isPending, startTransition] = useTransition();
   const [archiveTarget, setArchiveTarget] = useState<ClientRow | null>(null);
@@ -40,7 +40,7 @@ export function ClientsGrid({ data, userId }: { data: ClientRow[]; userId?: stri
 
   const columnDefs = useMemo(
     () =>
-      buildClientColumns(t, (row) => [
+      buildClientColumns(t, locale, (row) => [
         { label: t("clients.actionViewProfile"), onSelect: () => router.push(`/clients/${row.id}`) },
         { label: t("common.edit"), onSelect: () => router.push(`/clients/${row.id}`) },
         {
@@ -57,7 +57,7 @@ export function ClientsGrid({ data, userId }: { data: ClientRow[]; userId?: stri
           onSelect: () => setArchiveTarget(row),
         },
       ]),
-    [router, t],
+    [router, t, locale],
   );
 
   const filterFields = useMemo(() => buildClientFilterFields(t), [t]);

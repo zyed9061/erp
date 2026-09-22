@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { CheckCircle2, AlertTriangle, X } from "lucide-react";
+import { useLocale } from "@/i18n/client";
 
 interface ToastMessage {
   id: number;
@@ -18,6 +19,7 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
+  const { t } = useLocale();
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [mounted, setMounted] = useState(false);
 
@@ -50,7 +52,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         createPortal(
           <div
             aria-live="polite"
-            className="fixed bottom-4 right-4 z-[100] flex w-80 max-w-[90vw] flex-col gap-2"
+            className="fixed bottom-4 end-4 z-[100] flex w-80 max-w-[90vw] flex-col gap-2"
           >
             {toasts.map((toast) => (
               <div
@@ -71,7 +73,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 <span className="h-6 w-px shrink-0 bg-white/40" aria-hidden="true" />
                 <button
                   type="button"
-                  aria-label="Fermer"
+                  aria-label={t("common.close")}
                   onClick={() => setToasts((current) => current.filter((t) => t.id !== toast.id))}
                   className="shrink-0 text-white/70 hover:text-white"
                 >

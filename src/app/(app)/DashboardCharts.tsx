@@ -1,6 +1,15 @@
 import { formatMontant } from "@/lib/format";
+import type { Locale } from "@/i18n/config";
 
-export function RevenueChart({ data }: { data: { label: string; total: number }[] }) {
+export function RevenueChart({
+  data,
+  title,
+  locale,
+}: {
+  data: { label: string; total: number }[];
+  title: string;
+  locale: Locale;
+}) {
   const max = Math.max(1, ...data.map((d) => d.total));
   const width = 560;
   const height = 200;
@@ -8,7 +17,7 @@ export function RevenueChart({ data }: { data: { label: string; total: number }[
   const barWidth = (width - barGap * (data.length - 1)) / data.length;
 
   return (
-    <svg viewBox={`0 0 ${width} ${height + 24}`} className="w-full" role="img" aria-label="Chiffre d'affaires des 6 derniers mois">
+    <svg viewBox={`0 0 ${width} ${height + 24}`} className="w-full" role="img" aria-label={title}>
       {data.map((d, i) => {
         const barHeight = (d.total / max) * height;
         const x = i * (barWidth + barGap);
@@ -23,7 +32,7 @@ export function RevenueChart({ data }: { data: { label: string; total: number }[
               rx={4}
               className="fill-brand-600"
             >
-              <title>{`${d.label}: ${formatMontant(d.total)}`}</title>
+              <title>{`${d.label}: ${formatMontant(d.total, "TND", locale)}`}</title>
             </rect>
             <text
               x={x + barWidth / 2}
@@ -71,7 +80,7 @@ export function StatusDistributionChart({
               title={`${d.label}: ${d.count}`}
             />
           </div>
-          <span className="w-6 shrink-0 text-right text-xs font-medium text-neutral-700">{d.count}</span>
+          <span className="w-6 shrink-0 text-end text-xs font-medium text-neutral-700">{d.count}</span>
         </div>
       ))}
     </div>

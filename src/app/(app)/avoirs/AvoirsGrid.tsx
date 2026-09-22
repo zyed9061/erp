@@ -4,11 +4,13 @@ import { useCallback, useMemo, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { DataGrid } from "@/components/datagrid/DataGrid";
 import { useToast } from "@/components/ui/Toast";
+import { useLocale } from "@/i18n/client";
 import { updateAvoirStatut } from "@/lib/actions/avoirs";
-import { buildAvoirColumns, AVOIR_FILTER_FIELDS, type AvoirRow } from "./columns";
+import { buildAvoirColumns, buildAvoirFilterFields, type AvoirRow } from "./columns";
 
 export function AvoirsGrid({ data, userId }: { data: AvoirRow[]; userId?: string }) {
   const router = useRouter();
+  const { t, locale } = useLocale();
   const { showSuccess, showError } = useToast();
   const [, startTransition] = useTransition();
 
@@ -20,20 +22,20 @@ export function AvoirsGrid({ data, userId }: { data: AvoirRow[]; userId?: string
           showSuccess(successMessage);
           router.refresh();
         } catch {
-          showError("Une erreur est survenue.");
+          showError(t("common.error"));
         }
       });
     },
-    [startTransition, showSuccess, showError, router],
+    [startTransition, showSuccess, showError, router, t],
   );
 
   const columnDefs = useMemo(
     () =>
-      buildAvoirColumns((row) => {
+      buildAvoirColumns(t, locale, (row) => {
         const actions = [
-          { label: "Voir", onSelect: () => router.push(`/avoirs/${row.id}`) },
+          { label: t("common.view"), onSelect: () => router.push(`/avoirs/${row.id}`) },
           {
-            label: "Telecharger le PDF",
+            label: t("common.downloadPdf"),
             onSelect: () => window.open(`/avoirs/${row.id}/pdf`, "_blank"),
           },
         ];
@@ -41,16 +43,16 @@ export function AvoirsGrid({ data, userId }: { data: AvoirRow[]; userId?: string
         if (row.statut === "EMIS") {
           actions.push(
             {
-              label: "Marquer comme applique",
+              label: t("creditNotes.actionMarkApplied"),
               onSelect: () =>
-                runAction(updateAvoirStatut(row.id, "APPLIQUE"), `${row.numero} marque comme applique.`),
+                runAction(updateAvoirStatut(row.id, "APPLIQUE"), t("creditNotes.toastMarkedApplied", { number: row.numero })),
             },
             {
-              label: "Marquer comme rembourse",
+              label: t("creditNotes.actionMarkRefunded"),
               onSelect: () =>
                 runAction(
                   updateAvoirStatut(row.id, "REMBOURSE"),
-                  `${row.numero} marque comme rembourse.`,
+                  t("creditNotes.toastMarkedRefunded", { number: row.numero }),
                 ),
             },
           );
@@ -58,8 +60,10 @@ export function AvoirsGrid({ data, userId }: { data: AvoirRow[]; userId?: string
 
         return actions;
       }),
-    [router, runAction],
+    [router, runAction, t, locale],
   );
+
+  const filterFields = useMemo(() => buildAvoirFilterFields(t), [t]);
 
   return (
     <DataGrid<AvoirRow>
@@ -67,12 +71,12 @@ export function AvoirsGrid({ data, userId }: { data: AvoirRow[]; userId?: string
       userId={userId}
       columnDefs={columnDefs}
       rowData={data}
-      filterFields={AVOIR_FILTER_FIELDS}
-      quickSearchPlaceholder="Rechercher un avoir..."
+      filterFields={filterFields}
+      quickSearchPlaceholder={t("creditNotes.searchPlaceholder")}
       onRefresh={() => router.refresh()}
       onRowClicked={(row) => router.push(`/avoirs/${row.id}`)}
-      emptyTitle="Aucun avoir"
-      emptyDescription="Un avoir se cree depuis une facture existante."
+      emptyTitle={t("creditNotes.emptyTitle")}
+      emptyDescription={t("creditNotes.emptyDescription")}
     />
   );
 }

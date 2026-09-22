@@ -1,11 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { getT } from "@/i18n/server";
 import { AvoirsGrid } from "./AvoirsGrid";
 import type { AvoirRow } from "./columns";
 
 export default async function AvoirsListPage() {
-  const [session, avoirs] = await Promise.all([
+  const [t, session, avoirs] = await Promise.all([
+    getT(),
     auth(),
     prisma.avoir.findMany({
       include: { client: true, factureOrigine: true },
@@ -29,7 +31,7 @@ export default async function AvoirsListPage() {
 
   return (
     <div>
-      <PageHeader title="Avoirs" description="Consultez les notes de credit emises pour vos clients." />
+      <PageHeader title={t("creditNotes.title")} description={t("creditNotes.description")} />
       <AvoirsGrid data={rows} userId={session?.user?.id} />
     </div>
   );
