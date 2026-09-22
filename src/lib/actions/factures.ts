@@ -91,7 +91,12 @@ async function recalculerStatutPaiement(factureId: string) {
 
   let statut = facture.statut;
   if (montantPaye <= 0) {
-    statut = facture.statut === "ANNULEE" ? "ANNULEE" : "ENVOYEE";
+    // Retomber a ENVOYEE seulement depuis un etat de paiement : un brouillon
+    // annule ou un document annule ne doivent pas etre promus « envoyee ».
+    statut =
+      facture.statut === "ANNULEE" || facture.statut === "BROUILLON"
+        ? facture.statut
+        : "ENVOYEE";
   } else if (montantPaye >= totalTTC) {
     statut = "PAYEE";
   } else {

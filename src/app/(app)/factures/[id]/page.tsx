@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { formatMontant, formatDate } from "@/lib/format";
 import { StatutBadge } from "@/components/StatutBadge";
 import { updateFactureStatut, enregistrerPaiement } from "@/lib/actions/factures";
+import { statutEffectif } from "@/lib/facture-statut";
 
 export default async function FactureDetailPage({
   params,
@@ -27,6 +28,15 @@ export default async function FactureDetailPage({
 
   const resteAPayer = Number(facture.totalTTC) - Number(facture.montantPaye);
 
+  // Affichage : le retard est derive de l'echeance (jamais stocke). Les actions
+  // ci-dessous continuent de s'appuyer sur `facture.statut`, le statut reel.
+  const statutAffiche = statutEffectif({
+    statut: facture.statut,
+    dateEcheance: facture.dateEcheance,
+    totalTTC: Number(facture.totalTTC),
+    montantPaye: Number(facture.montantPaye),
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -35,7 +45,7 @@ export default async function FactureDetailPage({
           <p className="text-sm text-neutral-500">{facture.client.nom}</p>
         </div>
         <div className="flex items-center gap-3">
-          <StatutBadge statut={facture.statut} />
+          <StatutBadge statut={statutAffiche} />
           <a
             href={`/factures/${facture.id}/pdf`}
             target="_blank"

@@ -1,87 +1,79 @@
 import { prisma } from "@/lib/prisma";
-import { formatMontant } from "@/lib/format";
+import { formatDate } from "@/lib/format";
+import { joursAvantEcheance, statutEffectif } from "@/lib/facture-statut";
+import {
+  DashboardView,
+  type DashboardData,
+  type SuiviRow,
+} from "@/components/dashboard/DashboardView";
 
 export default async function DashboardPage() {
   const now = new Date();
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const [caduMois, facturesImpayees, devisEnAttente, clientsActifs] = await Promise.all([
+  const [caduMois, facturesOuvertes, devisEnAttente, clientsActifs] = await Promise.all([
     prisma.facture.aggregate({
       _sum: { totalTTC: true },
       where: { dateEmission: { gte: debutMois }, statut: { not: "ANNULEE" } },
     }),
+    // EN_RETARD n'est jamais ecrit en base (il est derive), mais on le garde dans
+    // le filtre pour les eventuelles lignes historiques qui le porteraient encore.
     prisma.facture.findMany({
       where: { statut: { in: ["ENVOYEE", "PARTIELLEMENT_PAYEE", "EN_RETARD"] } },
       include: { client: true },
       orderBy: { dateEcheance: "asc" },
-      take: 5,
     }),
     prisma.devis.count({ where: { statut: { in: ["BROUILLON", "ENVOYE"] } } }),
     prisma.client.count({ where: { actif: true } }),
   ]);
 
-  const totalImpaye = facturesImpayees.reduce(
+  const totalImpaye = facturesOuvertes.reduce(
     (acc, f) => acc + (Number(f.totalTTC) - Number(f.montantPaye)),
     0,
   );
 
-  return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-semibold text-neutral-900">Tableau de bord</h1>
+  // Les plus urgentes d'abord (retards en tete), puis on n'en garde que 5.
+  const suivi: SuiviRow[] = facturesOuvertes
+    .map((f) => {
+      const totalTTC = Number(f.totalTTC);
+      const montantPaye = Number(f.montantPaye);
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="CA du mois" value={formatMontant(Number(caduMois._sum.totalTTC ?? 0))} />
-        <StatCard label="Impayes en cours" value={formatMontant(totalImpaye)} />
-        <StatCard label="Devis en attente" value={String(devisEnAttente)} />
-        <StatCard label="Clients actifs" value={String(clientsActifs)} />
-      </div>
+      return {
+        id: f.id,
+        numero: f.numero,
+        clientNom: f.client.nom,
+        echeance: f.dateEcheance ? formatDate(f.dateEcheance) : null,
+        joursRestants: joursAvantEcheance(f.dateEcheance, now),
+        reste: totalTTC - montantPaye,
+        statut: statutEffectif(
+          { statut: f.statut, dateEcheance: f.dateEcheance, totalTTC, montantPaye },
+          now,
+        ),
+      };
+    })
+    .sort((a, b) => {
+      // Sans echeance : en dernier.
+      if (a.joursRestants === null) return b.joursRestants === null ? 0 : 1;
+      if (b.joursRestants === null) return -1;
+      return a.joursRestants - b.joursRestants;
+    })
+    .slice(0, 5);
 
-      <div className="rounded-lg border border-neutral-200 bg-white">
-        <div className="border-b border-neutral-200 px-5 py-3">
-          <h2 className="text-sm font-medium text-neutral-900">Factures a suivre</h2>
-        </div>
-        {facturesImpayees.length === 0 ? (
-          <p className="px-5 py-6 text-sm text-neutral-500">Aucune facture en attente de paiement.</p>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="text-left text-neutral-500">
-              <tr>
-                <th className="px-5 py-2 font-normal">Numero</th>
-                <th className="px-5 py-2 font-normal">Client</th>
-                <th className="px-5 py-2 font-normal">Echeance</th>
-                <th className="px-5 py-2 font-normal">Reste a payer</th>
-              </tr>
-            </thead>
-            <tbody>
-              {facturesImpayees.map((f) => (
-                <tr key={f.id} className="border-t border-neutral-100">
-                  <td className="px-5 py-2">
-                    <a href={`/factures/${f.id}`} className="text-neutral-900 hover:underline">
-                      {f.numero}
-                    </a>
-                  </td>
-                  <td className="px-5 py-2">{f.client.nom}</td>
-                  <td className="px-5 py-2">
-                    {f.dateEcheance ? new Date(f.dateEcheance).toLocaleDateString("fr-FR") : "—"}
-                  </td>
-                  <td className="px-5 py-2">
-                    {formatMontant(Number(f.totalTTC) - Number(f.montantPaye))}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-    </div>
-  );
-}
+  const nbEnRetard = facturesOuvertes.filter((f) => {
+    const jours = joursAvantEcheance(f.dateEcheance, now);
+    return jours !== null && jours < 0 && Number(f.totalTTC) - Number(f.montantPaye) > 0;
+  }).length;
 
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4">
-      <p className="text-xs uppercase tracking-wide text-neutral-500">{label}</p>
-      <p className="mt-1 text-xl font-semibold text-neutral-900">{value}</p>
-    </div>
-  );
+  const data: DashboardData = {
+    caDuMois: Number(caduMois._sum.totalTTC ?? 0),
+    totalImpaye,
+    devisEnAttente,
+    clientsActifs,
+    suivi,
+    nbOuvertes: facturesOuvertes.length,
+    nbEnRetard,
+    mois: now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }),
+  };
+
+  return <DashboardView data={data} />;
 }
