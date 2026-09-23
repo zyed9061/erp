@@ -45,3 +45,7 @@ next-env.d.ts
 
 # playwright mcp
 /.playwright-mcp
+
+# local dev database and logs
+/.data/
+/.devlocal.log
