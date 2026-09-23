@@ -5,6 +5,7 @@ const fr: {
   status: Record<string, string>;
   confirmDialog: Record<string, string>;
   clients: Record<string, string>;
+  chat: Record<string, string>;
 } = {
   common: {
     save: "Enregistrer",
@@ -145,6 +146,48 @@ const fr: {
     fieldNotes: "Notes",
     filterFieldType: "Type",
     filterFieldStatus: "Statut",
+  },
+  chat: {
+    open: "Ouvrir l'assistant IA",
+    title: "Assistant IA",
+    subtitle: "Reponses basees sur vos donnees",
+    newConversation: "Nouvelle conversation",
+    close: "Fermer l'assistant",
+    placeholder: "Posez votre question...",
+    send: "Envoyer",
+    stop: "Arreter",
+    emptyTitle: "Comment puis-je vous aider ?",
+    emptyDescription: "Je reponds uniquement a partir des donnees reelles de l'application, en lecture seule.",
+    suggestionsLabel: "Suggestions",
+    suggestion1: "Combien ai-je facture ce mois-ci ?",
+    suggestion2: "Combien ai-je encaisse ce mois-ci ?",
+    suggestion3: "Quelles factures sont impayees ?",
+    suggestion4: "Quels sont mes 5 meilleurs clients ?",
+    suggestion5: "Combien de devis sont en attente ?",
+    suggestion6: "Quelle est la facture la plus elevee ?",
+    thinking: "Analyse en cours...",
+    you: "Vous",
+    assistant: "Assistant",
+    disclaimer: "Lecture seule. Verifiez les chiffres importants dans les ecrans concernes.",
+    toolResumeActivite: "Calcul de la synthese financiere",
+    toolListerFactures: "Consultation des factures",
+    toolObtenirFacture: "Lecture de la facture",
+    toolTopClients: "Classement des clients",
+    toolStatistiquesDevis: "Analyse des devis",
+    toolListerDevis: "Consultation des devis",
+    toolListerPaiements: "Consultation des paiements",
+    toolListerAvoirs: "Consultation des avoirs",
+    toolRechercherClients: "Recherche de clients",
+    toolRechercherProduits: "Recherche de produits",
+    toolProduitsPlusVendus: "Analyse des ventes par produit",
+    toolDefault: "Lecture des donnees",
+    errorUnauthorized: "Votre session a expire. Reconnectez-vous pour utiliser l'assistant.",
+    errorNotConfigured: "L'assistant IA n'est pas configure sur ce serveur.",
+    errorUpstream: "Le service IA est indisponible pour le moment. Reessayez dans un instant.",
+    errorIncomplete: "La reponse a ete interrompue. Reformulez ou precisez votre question.",
+    errorTooManySteps: "La question est trop complexe. Essayez de la decouper en questions plus simples.",
+    errorGeneric: "Une erreur est survenue. Reessayez.",
+    stopped: "Reponse interrompue.",
   },
 };
 
