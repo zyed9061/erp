@@ -48,7 +48,7 @@ export function AppShell({
         onCloseMobile={() => setMobileOpen(false)}
       />
       <div
-        className="flex min-h-screen flex-col transition-[margin-left] duration-200 md:ml-[var(--sbw)]"
+        className="flex min-h-screen min-w-0 flex-col transition-[margin] duration-200 md:ms-[var(--sbw)]"
         style={{ "--sbw": collapsed ? "68px" : "256px" } as CSSProperties}
       >
         <TopHeader
@@ -57,7 +57,7 @@ export function AppShell({
           onOpenMobileMenu={() => setMobileOpen(true)}
           onSignOut={onSignOut}
         />
-        <main className="flex-1 px-4 py-4 sm:px-6">{children}</main>
+        <main className="min-w-0 flex-1 px-4 py-4 sm:px-6 lg:px-8">{children}</main>
       </div>
     </div>
   );

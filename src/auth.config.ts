@@ -2,6 +2,9 @@ import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
   session: { strategy: "jwt" },
+  // Self-hosted deployments (next start, Docker) sit behind a proxy whose Host
+  // header Auth.js would otherwise reject with UntrustedHost.
+  trustHost: true,
   pages: {
     signIn: "/login",
   },

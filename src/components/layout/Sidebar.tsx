@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { NAV_ITEMS, isNavItemActive } from "@/lib/nav";
@@ -20,6 +21,15 @@ export function Sidebar({
   const pathname = usePathname();
   const { t } = useLocale();
 
+  // Close the mobile drawer after navigating.
+  useEffect(() => {
+    onCloseMobile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // The collapsed rail only applies from md up; the mobile drawer is always full width.
+  const railOnly = collapsed && !mobileOpen;
+
   return (
     <>
       {mobileOpen && (
@@ -32,12 +42,12 @@ export function Sidebar({
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex flex-col border-e border-neutral-200 bg-white transition-all duration-200 ${
-          collapsed ? "w-[68px]" : "w-64"
-        } ${mobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+        className={`fixed inset-y-0 start-0 z-40 flex w-64 flex-col border-e border-neutral-200 bg-white shadow-xl transition-all duration-200 md:shadow-none ${
+          collapsed ? "md:w-[68px]" : ""
+        } ${mobileOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"} md:translate-x-0 md:rtl:translate-x-0`}
       >
         <div className="flex h-16 items-center justify-between border-b border-neutral-100 px-4">
-          {!collapsed && (
+          {!railOnly && (
             <span className="flex items-center gap-2 text-sm font-semibold tracking-tight text-neutral-900">
               <span className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-700 text-xs font-bold text-white">
                 F
@@ -50,7 +60,7 @@ export function Sidebar({
             onClick={onToggleCollapsed}
             aria-label={t(collapsed ? "common.view" : "common.close")}
             aria-pressed={collapsed}
-            className={`hidden rounded-md p-1.5 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 md:inline-flex ${collapsed ? "mx-auto" : ""}`}
+            className={`hidden rounded-md p-1.5 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 md:inline-flex ${railOnly ? "mx-auto" : ""}`}
           >
             {collapsed ? (
               <ChevronsRight className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />
@@ -74,12 +84,12 @@ export function Sidebar({
                     active
                       ? "bg-brand-50 text-neutral-900"
                       : "text-neutral-600 hover:bg-brand-50/60 hover:text-neutral-900"
-                  } ${collapsed ? "justify-center" : ""}`}
+                  } ${railOnly ? "justify-center" : ""}`}
                 >
                   <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
-                  {!collapsed && <span>{label}</span>}
+                  {!railOnly && <span>{label}</span>}
                 </Link>
-                {collapsed && (
+                {railOnly && (
                   <span
                     role="tooltip"
                     className="pointer-events-none absolute start-full top-1/2 z-50 ms-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-neutral-900 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100"
