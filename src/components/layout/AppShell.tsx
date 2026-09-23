@@ -3,6 +3,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopHeader } from "@/components/layout/TopHeader";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 const STORAGE_KEY = "erp:sidebar-collapsed";
 
@@ -59,6 +60,7 @@ export function AppShell({
         />
         <main className="flex-1 px-4 py-4 sm:px-6">{children}</main>
       </div>
+      <ChatWidget />
     </div>
   );
 }
