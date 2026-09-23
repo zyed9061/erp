@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ERP Facturation
 
-## Getting Started
+Invoicing app for a Tunisian business: quotes (devis), invoices (factures), credit notes (avoirs), payments, clients, products and PDF export. The UI is available in French, English, Arabic (RTL) and German.
 
-First, run the development server:
+Stack: Next.js 16 (App Router), Prisma 7 + PostgreSQL, Auth.js v5 (credentials), Tailwind CSS 4, AG Grid.
+
+## Requirements
+
+- Node.js 22 or newer
+- PostgreSQL 16 (you can use the provided `docker-compose.yml`)
+
+## Local installation
 
 ```bash
+# 1. Install dependencies
+npm install
+
+# 2. Create your environment file
+cp .env.example .env
+#    then set AUTH_SECRET (generate one with: npx auth secret)
+
+# 3. Start PostgreSQL (exposed on port 5433)
+docker compose up -d
+
+# 4. Apply migrations and create the admin user
+#    (the Prisma client is generated automatically by npm install)
+npx prisma migrate deploy
+npx prisma db seed
+
+# 5. Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 and sign in with the admin account printed by the seed step.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Description |
+| --- | --- | --- |
+| `DATABASE_URL` | yes | PostgreSQL connection string |
+| `AUTH_SECRET` | yes | Secret used to sign sessions. Without it, sign-in fails. |
+| `NEXTAUTH_URL` | no | Public URL of the app, e.g. `https://erp.example.com` |
+| `SEED_ADMIN_EMAIL` | for seeding | Email of the admin account created by `prisma db seed` |
+| `SEED_ADMIN_PASSWORD` | for seeding | Password of that admin account |
 
-## Learn More
+Always set `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` before seeding a real database. Otherwise the seed uses built-in defaults.
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm test` | Unit tests (Vitest) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+The app runs on any Node.js host (VPS, Docker, Render, Railway, Vercel) with a PostgreSQL database.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Provision PostgreSQL and set `DATABASE_URL`, `AUTH_SECRET` and `NEXTAUTH_URL` on the host.
+2. Build:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm ci
+   npm run build
+   ```
+
+   `npm ci` also generates the Prisma client (`src/generated/prisma`, not committed) through the `postinstall` script.
+
+3. Apply migrations on each release, then seed once on the first deployment:
+
+   ```bash
+   npx prisma migrate deploy
+   npx prisma db seed   # first deployment only
+   ```
+
+4. Start the server (port 3000 by default; use `-p` to change it):
+
+   ```bash
+   npm start
+   ```
+
+Behind a reverse proxy (Nginx, Caddy), forward the `Host` and `X-Forwarded-Proto` headers and serve the app over HTTPS.
+
+On Vercel, keep the default build command and add the environment variables in the project settings. Run `npx prisma migrate deploy` against the production database from your machine or a CI step.
