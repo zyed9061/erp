@@ -1,0 +1,82 @@
+view,column,role,description
+invoice_features,facture_id,id,Invoice id (links to the app and to ml/data/demo-*.csv ground truth)
+invoice_features,numero,id,Invoice number (FAC-YYYY-NNNN)
+invoice_features,client_id,id,Client id
+invoice_features,issue_date,id,Issue date; use it for the time-based train/test split
+invoice_features,effective_due_date,feature,Due date or issue date + 30 days when the invoice has none
+invoice_features,total_ttc,feature,Invoice total including tax (TND)
+invoice_features,subtotal_ht,feature,Invoice total excluding tax (TND)
+invoice_features,total_vat,feature,VAT amount (TND)
+invoice_features,stamp_duty,feature,Stamp duty (timbre fiscal) applied (TND)
+invoice_features,term_days,feature,Days between issue and effective due date (payment terms)
+invoice_features,no_due_date,feature,True when the invoice had no due date (30-day default applied)
+invoice_features,line_count,feature,Number of invoice lines
+invoice_features,max_discount_pct,feature,Highest line discount (%)
+invoice_features,from_quote,feature,True when the invoice was converted from a quote
+invoice_features,issue_month,feature,Month of issue (1-12)
+invoice_features,issue_in_quarter_end_month,feature,True when issued in March/June/September/December
+invoice_features,due_in_holiday_month,feature,True when due in August or December
+invoice_features,client_type,feature,ENTREPRISE (company) or PARTICULIER (individual)
+invoice_features,client_city,feature,Client city
+invoice_features,client_age_days,feature,Days since the client was created at issue date
+invoice_features,prior_invoice_count,feature,Client invoices issued before this one
+invoice_features,prior_known_outcomes,feature,Earlier invoices whose outcome (on time / late) was already known at issue date
+invoice_features,prior_late_count,feature,Earlier invoices already known to be late at issue date
+invoice_features,prior_late_rate,feature,prior_late_count / prior_known_outcomes (empty when no known outcome)
+invoice_features,prior_avg_days_late,feature,Average days late of earlier invoices settled before issue date
+invoice_features,prior_open_count,feature,Earlier invoices not yet settled at issue date
+invoice_features,prior_open_amount,feature,Amount still due on earlier invoices at issue date (TND)
+invoice_features,prior_avg_amount,feature,Average total of earlier invoices (TND)
+invoice_features,amount_vs_prior_avg,feature,total_ttc / prior_avg_amount (how unusual the amount is for this client)
+invoice_features,days_since_prior_invoice,feature,Days since the client's previous invoice
+invoice_features,is_late,label,TARGET: 1 = paid more than 7 days after due date or unpaid 7 days after it; 0 = on time; empty = not known yet (open)
+invoice_features,label_status,label,on_time / late / open (open rows are the ones to score)
+invoice_features,days_late,outcome,Days between due date and full payment (regression target). Never use as a feature
+invoice_features,settled_date,outcome,Date the invoice was fully paid. Never use as a feature
+invoice_features,outcome_known_date,outcome,Date the label became known. Never use as a feature
+invoice_lines,ligne_id,id,Invoice line id
+invoice_lines,facture_id,id,Invoice id
+invoice_lines,numero,id,Invoice number
+invoice_lines,client_id,id,Client id
+invoice_lines,issue_date,id,Invoice issue date
+invoice_lines,line_order,info,Position of the line on the invoice
+invoice_lines,produit_id,id,Product id (empty for free-text lines)
+invoice_lines,product_reference,feature,Product reference
+invoice_lines,product_category,feature,Product category
+invoice_lines,designation,info,Line label
+invoice_lines,quantity,feature,Quantity
+invoice_lines,unit_price,feature,Unit price excluding tax on the invoice (TND)
+invoice_lines,catalog_unit_price,feature,Current catalogue price of the product (TND)
+invoice_lines,price_vs_catalog,feature,unit_price / catalog_unit_price
+invoice_lines,discount_pct,feature,Line discount (%)
+invoice_lines,vat_rate,feature,VAT rate on the invoice line (%)
+invoice_lines,catalog_vat_rate,feature,VAT rate of the product in the catalogue (%)
+invoice_lines,vat_differs_from_catalog,feature,True when the line VAT differs from the product's VAT (rule-based anomaly signal)
+invoice_lines,total_ht,feature,Line total excluding tax (TND)
+client_features,client_id,id,Client id
+client_features,client_name,info,Client name
+client_features,client_type,feature,ENTREPRISE or PARTICULIER
+client_features,client_city,feature,City
+client_features,client_since,info,Client creation date
+client_features,tenure_days,feature,Days since the client was created
+client_features,invoice_count,feature,Issued invoices (drafts and cancelled excluded)
+client_features,total_revenue,feature,Total invoiced including tax (TND)
+client_features,avg_invoice_amount,feature,Average invoice total (TND)
+client_features,last_invoice_date,info,Date of the last invoice
+client_features,recency_days,feature,Days since the last invoice
+client_features,invoices_per_month,feature,Invoicing frequency since the first invoice
+client_features,known_outcomes,feature,Invoices with a known outcome (on time or late)
+client_features,late_count,feature,Invoices paid late or overdue by more than 7 days
+client_features,late_rate,feature,late_count / known_outcomes
+client_features,avg_days_late,feature,Average days between due date and full payment
+client_features,open_amount,feature,Amount still due (TND)
+client_features,overdue_amount,feature,Amount still due on invoices past their due date (TND)
+client_features,instalment_share,feature,Share of paid invoices settled in several payments
+client_features,quote_count,feature,Quotes issued to the client
+client_features,quote_conversion_rate,feature,Converted quotes / decided quotes (converted + refused + expired)
+client_features,credit_note_count,feature,Credit notes issued to the client
+monthly_cashflow,month,id,First day of the month
+monthly_cashflow,invoiced_ttc,feature,Amount invoiced in the month including tax (TND)
+monthly_cashflow,invoice_count,feature,Invoices issued in the month
+monthly_cashflow,collected,feature,Payments received in the month (TND); forecasting target
+monthly_cashflow,payment_count,feature,Payments received in the month

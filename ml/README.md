@@ -25,7 +25,7 @@ ML dataset (one row per invoice / per client, computed "as of" the invoice date)
 |---|---|---|
 | 0 | Feature branch, demo database, this folder | done |
 | 1 | Demo data generator (~1,200 invoices, client personas, injected anomalies) | done |
-| 2 | ML dataset (SQL views) and Excel/CSV export | planned |
+| 2 | ML dataset (SQL views) and Excel/CSV export | done |
 | 3 | Power BI connection guide and report guide | planned |
 | 4 | Training and evaluation: classification, regression, clustering, anomaly detection | planned |
 | 5 | In-app scores (badge, dashboard card, segments, anomaly alerts) in 4 languages | planned |
@@ -82,6 +82,33 @@ long relationship lowers it.
 **Caveat:** a model trained on generated data only rediscovers the patterns built into the
 generator. Metrics on demo data validate the pipeline, not real-world accuracy. Retrain on real
 payment history before trusting the scores.
+
+## ML dataset (phase 2)
+
+Read-only SQL views in a separate `ml` schema (`ml/sql/views.sql`). They add no tables and
+need no Prisma migration. Every column and its role is listed in
+[`dataset_dictionary.csv`](dataset_dictionary.csv): `id`, `feature`, `label` (the target), or
+`outcome`. Outcome columns reveal the answer, so never use them as model inputs.
+
+| View | One row per | Use |
+|---|---|---|
+| `ml.invoice_features` | issued invoice | Late-payment classification (`is_late`) and days-late regression (`days_late`); `label_status = 'open'` rows are the ones to score |
+| `ml.invoice_lines` | invoice line | Anomaly detection (price, quantity, discount and VAT compared with the catalogue) |
+| `ml.client_features` | client | Client segmentation (clustering) and dashboards |
+| `ml.monthly_cashflow` | month | Cash-flow forecasting and dashboards |
+
+```bash
+npm run ml:views                        # (re)create the views, e.g. before connecting Power BI
+npm run ml:export                       # views + CSV + Excel -> ml/data/export/
+python ml/export/validate_dataset.py    # checks: dictionary, labels, no look-ahead, demo ground truth
+```
+
+- **Which database:** both commands use `DATABASE_URL`, the same database as the app. The export
+  warns when that isn't a `_demo` database.
+- **Export format:** the CSV files are UTF-8 with a BOM, so Excel reads accents correctly.
+  `ml-dataset.xlsx` has one sheet per view plus a `dictionary` sheet, with real dates and numbers,
+  so it opens correctly with French regional settings.
+- **Drafts and cancelled invoices** are excluded from all invoice views.
 
 ## Python setup
 

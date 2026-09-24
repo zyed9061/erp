@@ -9,7 +9,9 @@
     "lint": "eslint",
     "test": "vitest run",
     "postinstall": "prisma generate",
-    "demo:data": "tsx prisma/demo/load-demo-data.ts"
+    "demo:data": "tsx prisma/demo/load-demo-data.ts",
+    "ml:views": "tsx ml/export/export-dataset.ts --views-only",
+    "ml:export": "tsx ml/export/export-dataset.ts"
   },
   "dependencies": {
     "@ag-grid-community/locale": "36.2.0",
