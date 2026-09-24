@@ -8,6 +8,8 @@ import { formatMontant, formatDate } from "@/lib/format";
 import type { GridFilterField } from "@/components/datagrid/types";
 import type { Translator } from "@/i18n/translate";
 import type { Locale } from "@/i18n/config";
+import { SegmentBadge } from "@/components/ml/MlBadges";
+import { SEGMENTS, type Segment } from "@/lib/ml";
 
 export interface ClientRow {
   id: string;
@@ -21,6 +23,8 @@ export interface ClientRow {
   soldeDu: number;
   derniereFacture: string | null;
   actif: boolean;
+  /** Payment-behaviour segment from the ML model (null until a model run is imported). */
+  segment: Segment | null;
 }
 
 export function buildClientColumns(
@@ -42,6 +46,14 @@ export function buildClientColumns(
             {params.data.nom}
           </Link>
         ) : null,
+    },
+    {
+      field: "segment",
+      headerName: t("ml.columnSegment"),
+      width: 170,
+      filter: false,
+      cellRenderer: (params: { value?: Segment | null }) => (params.value ? <SegmentBadge segment={params.value} /> : null),
+      valueFormatter: (p) => (p.value ? t(`ml.segment.${p.value}`) : ""),
     },
     {
       field: "type",
@@ -115,6 +127,12 @@ export function buildClientFilterFields(t: Translator): GridFilterField[] {
         { value: "ENTREPRISE", label: t("clients.typeCompany") },
         { value: "PARTICULIER", label: t("clients.typeIndividual") },
       ],
+    },
+    {
+      key: "segment",
+      label: t("ml.filterSegment"),
+      type: "set",
+      options: SEGMENTS.map((value) => ({ value, label: t(`ml.segment.${value}`) })),
     },
     {
       key: "actif",

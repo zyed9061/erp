@@ -11,7 +11,9 @@
     "postinstall": "prisma generate",
     "demo:data": "tsx prisma/demo/load-demo-data.ts",
     "ml:views": "tsx ml/export/export-dataset.ts --views-only",
-    "ml:export": "tsx ml/export/export-dataset.ts"
+    "ml:export": "tsx ml/export/export-dataset.ts",
+    "ml:import-scores": "tsx ml/export/import-scores.ts",
+    "ml:train": "npm run ml:export && python ml/train/train.py && npm run ml:import-scores"
   },
   "dependencies": {
     "@ag-grid-community/locale": "36.2.0",

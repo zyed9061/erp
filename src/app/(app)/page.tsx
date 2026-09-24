@@ -16,20 +16,26 @@ import { getLocale, getT } from "@/i18n/server";
 import { INTL_LOCALE } from "@/i18n/config";
 import { RevenueChart, StatusDistributionChart } from "./DashboardCharts";
 import { DashboardInvoiceGrid, type DashboardFactureRow } from "./DashboardInvoiceGrids";
+import { PriorityCollections, type PriorityRow } from "./PriorityCollections";
+import { showsRisk } from "@/lib/ml";
 
 export default async function DashboardPage() {
   const now = new Date();
   const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const [t, locale, factures, devisEnAttente, nombreClients] = await Promise.all([
+  const [t, locale, factures, devisEnAttente, nombreClients, mlRun] = await Promise.all([
     getT(),
     getLocale(),
     prisma.facture.findMany({
-      include: { client: true },
+      include: {
+        client: true,
+        mlScore: { select: { riskLevel: true, lateProbability: true, expectedPaymentDate: true, isAnomaly: true } },
+      },
       orderBy: { createdAt: "desc" },
     }),
     prisma.devis.count({ where: { statut: { in: ["BROUILLON", "ENVOYE"] } } }),
     prisma.client.count({ where: { actif: true } }),
+    prisma.mlModelRun.findFirst({ orderBy: { trainedAt: "desc" }, select: { modelVersion: true } }),
   ]);
 
   const enriched = factures.map((f) => {
@@ -90,6 +96,42 @@ export default async function DashboardPage() {
     return { label: monthDate.toLocaleDateString(INTL_LOCALE[locale], { month: "short" }), total };
   });
 
+  // ---- ML insights (only when a model run has been imported into this database)
+  const scoredOpen = enriched.filter((f) => f.mlScore?.riskLevel && showsRisk(f.statut, f.resteAPayer));
+  const highRisk = scoredOpen
+    .filter((f) => f.mlScore!.riskLevel === "HIGH")
+    .map((f) => ({ ...f, probability: Number(f.mlScore!.lateProbability ?? 0) }))
+    .sort((a, b) => b.probability * b.resteAPayer - a.probability * a.resteAPayer);
+  const priorityRows: PriorityRow[] = highRisk.slice(0, 5).map((f) => ({
+    id: f.id,
+    numero: f.numero,
+    clientNom: f.client.nom,
+    clientEmail: f.client.email,
+    resteAPayer: f.resteAPayer,
+    lateProbability: f.probability,
+    dateEcheance: f.dateEcheance?.toISOString() ?? null,
+  }));
+  const amountAtRisk = highRisk.reduce((sum, f) => sum + f.resteAPayer, 0);
+  const unusualCount = enriched.filter((f) => f.mlScore?.isAnomaly && f.statut !== "ANNULEE").length;
+
+  // Expected collections per week (weeks start on Monday), at the model's expected payment date.
+  // Calendar arithmetic (not fixed 7-day milliseconds) so weeks stay aligned across DST changes.
+  const mondayOffset = (now.getDay() + 6) % 7;
+  const weekStarts = Array.from(
+    { length: 9 },
+    (_, i) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - mondayOffset + 7 * i),
+  );
+  const forecast = weekStarts.slice(0, 8).map((start) => ({
+    label: start.toLocaleDateString(INTL_LOCALE[locale], { day: "2-digit", month: "2-digit" }),
+    total: 0,
+  }));
+  for (const f of scoredOpen) {
+    const expected = f.mlScore!.expectedPaymentDate;
+    if (!expected) continue;
+    const week = weekStarts.findIndex((start, i) => i < 8 && expected >= start && expected < weekStarts[i + 1]);
+    if (week >= 0) forecast[week].total += f.resteAPayer;
+  }
+
   const statusCounts = ["BROUILLON", "ENVOYEE", "PARTIELLEMENT_PAYEE", "PAYEE", "EN_RETARD", "ANNULEE"].map(
     (statut) => ({
       statut,
@@ -135,6 +177,25 @@ export default async function DashboardPage() {
         />
         <StatCard icon={Users} label={t("dashboard.clients")} value={String(nombreClients)} accent="teal" />
       </div>
+
+      {mlRun && (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <PriorityCollections
+              top={priorityRows}
+              reminderTargets={highRisk.map((f) => ({ id: f.id, numero: f.numero, clientEmail: f.client.email }))}
+              amountAtRisk={amountAtRisk}
+              highRiskCount={highRisk.length}
+              unusualCount={unusualCount}
+            />
+          </div>
+          <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
+            <h2 className="text-sm font-semibold text-neutral-900">{t("ml.forecastTitle")}</h2>
+            <p className="mb-4 text-xs text-neutral-500">{t("ml.forecastHint")}</p>
+            <RevenueChart data={forecast} title={t("ml.forecastTitle")} locale={locale} />
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5 lg:col-span-2">

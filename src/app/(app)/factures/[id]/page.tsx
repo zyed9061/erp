@@ -8,6 +8,7 @@ import { ToastOnParam } from "@/components/ui/ToastOnParam";
 import { formatMontant, formatDate } from "@/lib/format";
 import { StatutBadge } from "@/components/StatutBadge";
 import { PaiementForm } from "@/components/PaiementForm";
+import { InvoiceInsights } from "@/components/ml/InvoiceInsights";
 import { updateFactureStatut } from "@/lib/actions/factures";
 
 export default async function FactureDetailPage({
@@ -24,12 +25,20 @@ export default async function FactureDetailPage({
       lignes: true,
       paiements: { orderBy: { datePaiement: "desc" } },
       avoirs: true,
+      mlScore: true,
     },
   });
 
   if (!facture) {
     notFound();
   }
+
+  const mlRun = facture.mlScore
+    ? await prisma.mlModelRun.findUnique({
+        where: { modelVersion: facture.mlScore.modelVersion },
+        select: { modelVersion: true, trainedAt: true, demoData: true },
+      })
+    : null;
 
   const resteAPayer = Number(facture.totalTTC) - Number(facture.montantPaye);
 
@@ -88,6 +97,15 @@ export default async function FactureDetailPage({
           )}
         </div>
       </div>
+
+      <InvoiceInsights
+        score={facture.mlScore}
+        run={mlRun}
+        statut={facture.statut}
+        resteAPayer={Number(facture.totalTTC) - Number(facture.montantPaye)}
+        t={t}
+        locale={locale}
+      />
 
       <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
         <table className="w-full text-sm">

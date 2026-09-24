@@ -17,6 +17,7 @@ export default async function ClientsPage() {
         factures: {
           select: { totalTTC: true, montantPaye: true, dateEmission: true },
         },
+        mlSegment: { select: { segment: true } },
       },
     }),
   ]);
@@ -46,6 +47,7 @@ export default async function ClientsPage() {
       soldeDu,
       derniereFacture,
       actif: client.actif,
+      segment: client.mlSegment?.segment ?? null,
     };
   });
 

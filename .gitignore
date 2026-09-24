@@ -52,3 +52,4 @@ next-env.d.ts
 
 # ML: generated datasets, ground truth and exports (may contain client data)
 /ml/data/
+__pycache__/

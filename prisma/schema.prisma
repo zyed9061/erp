@@ -113,6 +113,7 @@ model Client {
   devis    Devis[]
   factures Facture[]
   avoirs   Avoir[]
+  mlSegment MlClientSegment?
 
   @@map("clients")
 }
@@ -250,6 +251,7 @@ model Facture {
   lignes    LigneFacture[]
   paiements Paiement[]
   avoirs    Avoir[]
+  mlScore   MlInvoiceScore?
 
   @@map("factures")
 }
@@ -360,4 +362,66 @@ model Paiement {
   createdBy   User   @relation("PaiementCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
 
   @@map("paiements")
+}
+
+
+// ---------------------------------------------------------------------------
+// Machine learning (written by `npm run ml:train`, see ml/README.md). Read-only for the app.
+// ---------------------------------------------------------------------------
+
+enum MlRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ClientSegment {
+  KEY_ACCOUNT
+  RELIABLE
+  OCCASIONAL_LATE
+  SLOW_PAYER
+  INACTIVE
+  NEW
+}
+
+/// Late-payment risk (open invoices only) and anomaly flag (all issued invoices).
+model MlInvoiceScore {
+  factureId           String       @id
+  facture             Facture      @relation(fields: [factureId], references: [id], onDelete: Cascade)
+  lateProbability     Decimal?     @db.Decimal(5, 4)
+  riskLevel           MlRiskLevel?
+  /// [{ code, values }] reason codes translated by the app (messages "ml.reasons.*")
+  reasons             Json?
+  predictedDaysLate   Int?
+  expectedPaymentDate DateTime?
+  isAnomaly           Boolean      @default(false)
+  anomalyScore        Decimal?     @db.Decimal(6, 4)
+  /// [{ code, values }] translated by the app (messages "ml.anomalies.*")
+  anomalyReasons      Json?
+  modelVersion        String
+  scoredAt            DateTime
+
+  @@index([riskLevel])
+  @@map("ml_invoice_scores")
+}
+
+model MlClientSegment {
+  clientId     String        @id
+  client       Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  segment      ClientSegment
+  modelVersion String
+  scoredAt     DateTime
+
+  @@map("ml_client_segments")
+}
+
+/// One row per training run: shown in the app ("scores from ...") and kept for audit.
+model MlModelRun {
+  modelVersion String   @id
+  trainedAt    DateTime
+  demoData     Boolean
+  metrics      Json
+  importedAt   DateTime @default(now())
+
+  @@map("ml_model_runs")
 }

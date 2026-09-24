@@ -27,8 +27,8 @@ ML dataset (one row per invoice / per client, computed "as of" the invoice date)
 | 1 | Demo data generator (~1,200 invoices, client personas, injected anomalies) | done |
 | 2 | ML dataset (SQL views) and Excel/CSV export | done |
 | 3 | Power BI connection guide and report guide | planned |
-| 4 | Training and evaluation: classification, regression, clustering, anomaly detection | planned |
-| 5 | In-app scores (badge, dashboard card, segments, anomaly alerts) in 4 languages | planned |
+| 4 | Training and evaluation: classification, regression, clustering, anomaly detection | done |
+| 5 | In-app scores (badge, dashboard card, segments, anomaly alerts) in 4 languages | done |
 | 6 | Tests and pull request | planned |
 
 ## Decisions
@@ -109,6 +109,65 @@ python ml/export/validate_dataset.py    # checks: dictionary, labels, no look-ah
   `ml-dataset.xlsx` has one sheet per view plus a `dictionary` sheet, with real dates and numbers,
   so it opens correctly with French regional settings.
 - **Drafts and cancelled invoices** are excluded from all invoice views.
+
+## Models (phase 4)
+
+```bash
+npm run ml:train   # export the dataset, train + evaluate (ml/train/train.py), import the scores
+```
+
+This writes `ml/data/scores/` (scores and `run.json` with every metric) and
+`ml/data/reports/model-report.md`, a readable evaluation report. Then it loads the scores into
+the app database.
+
+| Question | Method | Output in the app |
+|---|---|---|
+| Will this open invoice be paid late? | Gradient boosting or logistic regression; the logistic regression is kept unless boosting is at least 0.01 AUC better | Risk LOW / MEDIUM / HIGH (probability >= 25% / >= 50%) with up to 3 reasons |
+| How late? When will it be paid? | Gradient boosting regression on days late | Expected payment date and the 8-week collection forecast |
+| What type of client is this? | k-means (payment behaviour weighted x2, k = 4 to 6 by silhouette), named by fixed rules | Segment: KEY_ACCOUNT, RELIABLE, OCCASIONAL_LATE, SLOW_PAYER, INACTIVE, or NEW (fewer than 3 invoices) |
+| Is this invoice unusual? | Rules (duplicate, VAT different from the product, quantity, discount, amount) plus an Isolation Forest for the most extreme 0.5% | "To review" badge with the reasons |
+
+**Evaluation is time-based:** the models train on invoices whose outcome was known before a
+cut-off date, and are tested on the 25% most recent invoices.
+
+**Results on the demo data (seed 42):**
+
+| Metric | Value |
+|---|---|
+| Late-payment AUC (test) | gradient boosting **0.815**, logistic regression 0.774, client's past late rate alone 0.787, best achievable 0.866 (the generator's true probabilities) |
+| High-risk invoices that were really late (precision) | 68% |
+| Days-late error (mean absolute error) | **9.1 days**, vs 9.6 using the client's average delay |
+| Segments vs hidden personas | all CHRONIC and NEW_RISKY clients are SLOW_PAYER; all RELIABLE clients are RELIABLE, KEY_ACCOUNT or INACTIVE (adjusted Rand index 0.41) |
+| Unusual invoices | 33 flagged; recall **100%** (23/23 injected), precision 70% |
+
+These numbers show the pipeline works on data with known patterns. They are not a promise of
+real-world accuracy.
+
+## In the app (phase 5)
+
+- **Tables:** `ml_invoice_scores`, `ml_client_segments` and `ml_model_runs`, added by the Prisma
+  migration `add_ml_scores`. They're written only by `npm run ml:import-scores`; the app only
+  reads them. If no model has been imported, the app shows nothing extra.
+- **Invoices:** a *Late-payment risk* column and a *Check* column, both with filters. The invoice
+  page adds a *Payment forecast* card (probability, expected date, main factors, model version)
+  and an *Unusual invoice* warning.
+- **Dashboard:** a *Priority collections* card (amount at high risk, top 5 invoices, and one click
+  to send reminders to all of them) and *Expected collections* for the next 8 weeks.
+- **Clients:** a *Segment* column with a filter.
+- **Languages:** all texts exist in French, English, Arabic and German (messages `ml.*`). The
+  reason codes are shared with `ml/train` and covered by `src/lib/ml.test.ts`.
+- **Stale scores:** a score is hidden once the invoice is paid or cancelled. Retrain (for
+  example weekly) to refresh the scores.
+
+## Before using real data
+
+1. **Retrain on real history** with `npm run ml:train`, once there are at least ~200 paid
+   invoices. Read `model-report.md`, and check that the model beats the "client's past late
+   rate" baseline before showing scores to users.
+2. **Check the thresholds** (`HIGH_RISK`, `MEDIUM_RISK`, and the anomaly thresholds): they were
+   chosen on demo data.
+3. **Keep the exports private:** `ml/data/` then contains real client data. It's git-ignored;
+   don't share it.
 
 ## Python setup
 

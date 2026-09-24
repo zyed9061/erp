@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { getT } from "@/i18n/server";
 import { computeFactureDisplayStatut } from "@/lib/factureStatus";
+import { showsRisk } from "@/lib/ml";
 import { FacturesGrid } from "./FacturesGrid";
 import type { FactureRow } from "./columns";
 
@@ -11,7 +12,7 @@ export default async function FacturesListPage() {
     getT(),
     auth(),
     prisma.facture.findMany({
-      include: { client: true },
+      include: { client: true, mlScore: { select: { riskLevel: true, lateProbability: true, isAnomaly: true } } },
       orderBy: { createdAt: "desc" },
     }),
   ]);
@@ -19,6 +20,7 @@ export default async function FacturesListPage() {
   const rows: FactureRow[] = factures.map((f) => {
     const montantTTC = Number(f.totalTTC);
     const montantPaye = Number(f.montantPaye);
+    const withRisk = f.mlScore?.riskLevel && showsRisk(f.statut, montantTTC - montantPaye);
     return {
       id: f.id,
       numero: f.numero,
@@ -37,6 +39,9 @@ export default async function FacturesListPage() {
         totalTTC: montantTTC,
         montantPaye,
       }),
+      riskLevel: withRisk ? f.mlScore!.riskLevel : null,
+      lateProbability: withRisk && f.mlScore!.lateProbability !== null ? Number(f.mlScore!.lateProbability) : null,
+      isAnomaly: Boolean(f.mlScore?.isAnomaly) && f.statut !== "ANNULEE",
     };
   });
 

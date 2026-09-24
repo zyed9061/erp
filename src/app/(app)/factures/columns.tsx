@@ -8,6 +8,8 @@ import { formatMontant, formatDate } from "@/lib/format";
 import type { GridFilterField } from "@/components/datagrid/types";
 import type { Translator } from "@/i18n/translate";
 import type { Locale } from "@/i18n/config";
+import { AnomalyBadge, RiskBadge } from "@/components/ml/MlBadges";
+import type { RiskLevel } from "@/lib/ml";
 
 export interface FactureRow {
   id: string;
@@ -22,6 +24,11 @@ export interface FactureRow {
   montantPaye: number;
   resteAPayer: number;
   statut: string;
+  /** Late-payment risk from the ML model (open invoices only). */
+  riskLevel: RiskLevel | null;
+  lateProbability: number | null;
+  /** Flagged as unusual by the ML anomaly detection. */
+  isAnomaly: boolean;
 }
 
 export function buildFactureColumns(
@@ -44,6 +51,28 @@ export function buildFactureColumns(
         ) : null,
     },
     { field: "clientNom", headerName: t("documents.columnClient"), filter: "agTextColumnFilter", flex: 1, minWidth: 170 },
+    {
+      field: "riskLevel",
+      headerName: t("ml.columnRisk"),
+      headerTooltip: t("ml.riskHint"),
+      width: 160,
+      filter: false,
+      // Sort by probability, not alphabetically by level.
+      comparator: (_a, _b, nodeA, nodeB) => (nodeA.data?.lateProbability ?? -1) - (nodeB.data?.lateProbability ?? -1),
+      cellRenderer: (params: { data?: FactureRow }) =>
+        params.data?.riskLevel ? (
+          <RiskBadge level={params.data.riskLevel} probability={params.data.lateProbability} />
+        ) : null,
+      valueFormatter: (p) => (p.value ? t(`ml.risk.${p.value}`) : ""),
+    },
+    {
+      field: "isAnomaly",
+      headerName: t("ml.columnCheck"),
+      width: 130,
+      filter: false,
+      cellRenderer: (params: { value?: boolean }) => (params.value ? <AnomalyBadge /> : null),
+      valueFormatter: (p) => (p.value ? t("ml.anomalyBadge") : ""),
+    },
     {
       field: "dateEmission",
       headerName: t("documents.issueDate"),
@@ -132,6 +161,18 @@ export function buildFactureFilterFields(t: Translator): GridFilterField[] {
       options: ["BROUILLON", "ENVOYEE", "PARTIELLEMENT_PAYEE", "PAYEE", "EN_RETARD", "ANNULEE"].map(
         (value) => ({ value, label: t(`status.${value}`) }),
       ),
+    },
+    {
+      key: "riskLevel",
+      label: t("ml.filterRisk"),
+      type: "set",
+      options: (["HIGH", "MEDIUM", "LOW"] as const).map((value) => ({ value, label: t(`ml.risk.${value}`) })),
+    },
+    {
+      key: "isAnomaly",
+      label: t("ml.filterCheck"),
+      type: "set",
+      options: [{ value: "true", label: t("ml.filterCheckFlagged") }],
     },
     { key: "dateEmission", label: t("documents.filterIssueDate"), type: "dateRange" },
   ];
