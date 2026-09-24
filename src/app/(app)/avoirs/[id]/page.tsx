@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatMontant, formatDate } from "@/lib/format";
-import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { CalendarDays, CircleDollarSign, MessageSquareText, Undo2 } from "lucide-react";
+import { DocumentHeader, InfoTile } from "@/components/layout/DocumentHeader";
+import { TotalsCard } from "@/components/ui/TotalsCard";
+import { FadeIn } from "@/components/motion/Motion";
 import { getLocale, getT } from "@/i18n/server";
 import { ToastOnParam } from "@/components/ui/ToastOnParam";
-import { StatutBadge } from "@/components/StatutBadge";
 import { updateAvoirStatut } from "@/lib/actions/avoirs";
 
 export default async function AvoirDetailPage({
@@ -30,89 +32,88 @@ export default async function AvoirDetailPage({
       <Suspense fallback={null}>
         <ToastOnParam />
       </Suspense>
-      <Breadcrumbs lastLabel={avoir.numero} />
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-neutral-900">{avoir.numero}</h1>
-          <p className="text-sm text-neutral-500">
-            {avoir.client.nom} — {t("creditNotes.onInvoice")}{" "}
-            <Link href={`/factures/${avoir.factureOrigine.id}`} className="hover:underline">
+
+      <DocumentHeader
+        icon={Undo2}
+        numero={avoir.numero}
+        subtitle={
+          <>
+            {avoir.client.nom} · {t("creditNotes.onInvoice")}{" "}
+            <Link href={`/factures/${avoir.factureOrigine.id}`} className="font-medium text-brand-600 hover:underline">
               {avoir.factureOrigine.numero}
             </Link>
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <StatutBadge statut={avoir.statut} />
-          <a
-            href={`/avoirs/${avoir.id}/pdf`}
-            target="_blank"
-            className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
-          >
-            {t("documents.viewPdf")}
-          </a>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
+          </>
+        }
+        statut={avoir.statut}
+        pdfHref={`/avoirs/${avoir.id}/pdf`}
+        pdfLabel={t("documents.viewPdf")}
+      >
         {avoir.statut === "EMIS" && (
           <>
-            <AvoirStatusButton id={avoir.id} statut="APPLIQUE" label={t("creditNotes.actionMarkApplied")} />
+            <AvoirStatusButton id={avoir.id} statut="APPLIQUE" label={t("creditNotes.actionMarkApplied")} primary />
             <AvoirStatusButton id={avoir.id} statut="REMBOURSE" label={t("creditNotes.actionMarkRefunded")} />
             <AvoirStatusButton id={avoir.id} statut="ANNULE" label={t("creditNotes.actionCancel")} />
           </>
         )}
-      </div>
+      </DocumentHeader>
+
+      <FadeIn delay={0.05} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <InfoTile icon={CalendarDays} label={t("documents.issueDate")} value={formatDate(avoir.dateEmission, locale)} />
+        <InfoTile icon={CircleDollarSign} label={t("documents.totalTTC")} value={formatMontant(Number(avoir.totalTTC), "TND", locale)} />
+      </FadeIn>
 
       {avoir.motif && (
-        <div className="rounded-lg border border-neutral-200 bg-white p-5 text-sm text-neutral-600">
-          <strong className="text-neutral-900">{t("creditNotes.reasonLabel")} </strong>
-          {avoir.motif}
-        </div>
+        <FadeIn delay={0.08} className="card flex items-start gap-3 p-5 text-sm text-slate-600">
+          <MessageSquareText className="mt-0.5 h-4.5 w-4.5 shrink-0 text-brand-500" aria-hidden="true" />
+          <p>
+            <strong className="text-slate-900">{t("creditNotes.reasonLabel")} </strong>
+            {avoir.motif}
+          </p>
+        </FadeIn>
       )}
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
-        <table className="w-full text-sm">
-          <thead className="text-start text-neutral-500">
-            <tr>
-              <th className="px-4 py-2 font-normal">{t("documents.designation")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.quantity")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.priceHT")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.vat")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.totalHT")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {avoir.lignes.map((ligne) => (
-              <tr key={ligne.id} className="border-t border-neutral-100">
-                <td className="px-4 py-2">{ligne.designation}</td>
-                <td className="px-4 py-2">{Number(ligne.quantite)}</td>
-                <td className="px-4 py-2">{formatMontant(Number(ligne.prixUnitaireHT), "TND", locale)}</td>
-                <td className="px-4 py-2">{Number(ligne.tauxTva)}%</td>
-                <td className="px-4 py-2">{formatMontant(Number(ligne.totalHT), "TND", locale)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 xl:items-start">
+        <FadeIn inView className="card overflow-hidden xl:col-span-2">
+          <div className="overflow-x-auto">
+            <table className="data-table min-w-[560px]">
+              <thead>
+                <tr>
+                  <th>{t("documents.designation")}</th>
+                  <th className="text-end!">{t("documents.quantity")}</th>
+                  <th className="text-end!">{t("documents.priceHT")}</th>
+                  <th className="text-end!">{t("documents.vat")}</th>
+                  <th className="text-end!">{t("documents.totalHT")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {avoir.lignes.map((ligne) => (
+                  <tr key={ligne.id}>
+                    <td className="font-medium text-slate-900">{ligne.designation}</td>
+                    <td className="text-end tabular-nums">{Number(ligne.quantite)}</td>
+                    <td className="text-end whitespace-nowrap tabular-nums">
+                      {formatMontant(Number(ligne.prixUnitaireHT), "TND", locale)}
+                    </td>
+                    <td className="text-end tabular-nums">{Number(ligne.tauxTva)}%</td>
+                    <td className="text-end font-medium whitespace-nowrap text-slate-900 tabular-nums">
+                      {formatMontant(Number(ligne.totalHT), "TND", locale)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </FadeIn>
 
-      <div className="ms-auto max-w-xs space-y-1 text-sm">
-        <div className="flex justify-between">
-          <span className="text-neutral-500">{t("documents.subtotalHT")}</span>
-          <span>{formatMontant(Number(avoir.sousTotalHT), "TND", locale)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-neutral-500">{t("documents.vat")}</span>
-          <span>{formatMontant(Number(avoir.totalTva), "TND", locale)}</span>
-        </div>
-        <div className="flex justify-between border-t border-neutral-200 pt-1 font-medium text-neutral-900">
-          <span>{t("documents.totalTTC")}</span>
-          <span>{formatMontant(Number(avoir.totalTTC), "TND", locale)}</span>
-        </div>
+        <FadeIn inView delay={0.08}>
+          <TotalsCard className="xl:max-w-none"
+            rows={[
+              { label: t("documents.subtotalHT"), value: formatMontant(Number(avoir.sousTotalHT), "TND", locale) },
+              { label: t("documents.vat"), value: formatMontant(Number(avoir.totalTva), "TND", locale) },
+              { label: t("documents.totalTTC"), value: formatMontant(Number(avoir.totalTTC), "TND", locale), variant: "total" as const },
+            ]}
+          />
+        </FadeIn>
       </div>
-
-      <p className="text-xs text-neutral-400">
-        {t("creditNotes.issuedOn", { date: formatDate(avoir.dateEmission, locale) })}
-      </p>
     </div>
   );
 }
@@ -121,10 +122,12 @@ function AvoirStatusButton({
   id,
   statut,
   label,
+  primary = false,
 }: {
   id: string;
   statut: "APPLIQUE" | "REMBOURSE" | "ANNULE";
   label: string;
+  primary?: boolean;
 }) {
   return (
     <form
@@ -133,10 +136,7 @@ function AvoirStatusButton({
         await updateAvoirStatut(id, statut);
       }}
     >
-      <button
-        type="submit"
-        className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
-      >
+      <button type="submit" className={primary ? "btn-primary" : "btn-secondary"}>
         {label}
       </button>
     </form>

@@ -6,6 +6,7 @@ import { useLocale } from "@/i18n/client";
 import "./gridSetup";
 import { appGridTheme } from "./gridSetup";
 import { AG_GRID_LOCALE_TEXT } from "./gridLocale";
+import { emptyOverlay } from "./DataGrid";
 
 export function MiniGrid<T>({
   columnDefs,
@@ -39,7 +40,7 @@ export function MiniGrid<T>({
         suppressCellFocus
         animateRows
         getRowId={getRowId ? (params) => getRowId(params.data as T) : undefined}
-        overlayNoRowsTemplate={`<div style="padding:1.5rem;color:#a3a3a3;font-size:0.8125rem;">${resolvedEmptyMessage}</div>`}
+        overlayNoRowsTemplate={emptyOverlay(resolvedEmptyMessage)}
       />
     </div>
   );

@@ -1,3 +1,5 @@
+import { FadeIn } from "@/components/motion/Motion";
+
 export function FormSection({
   children,
   title,
@@ -8,15 +10,16 @@ export function FormSection({
   maxWidth?: string;
 }) {
   return (
-    <div className={`mx-auto w-full ${maxWidth}`}>
-      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
+    <FadeIn className={`mx-auto w-full ${maxWidth}`}>
+      <div className="card overflow-hidden">
         {title && (
-          <div className="border-b border-neutral-100 px-6 py-4">
-            <h2 className="text-base font-semibold text-neutral-900">{title}</h2>
+          <div className="relative border-b border-slate-100 bg-linear-to-r from-brand-50/70 via-white to-white px-5 py-5 sm:px-8">
+            <span className="bg-brand-gradient absolute inset-y-0 start-0 w-1" aria-hidden="true" />
+            <h2 className="text-lg font-semibold tracking-tight text-slate-900">{title}</h2>
           </div>
         )}
-        <div className="p-6 sm:p-8">{children}</div>
+        <div className="p-5 sm:p-8">{children}</div>
       </div>
-    </div>
+    </FadeIn>
   );
 }

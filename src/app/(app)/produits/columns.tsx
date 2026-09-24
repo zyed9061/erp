@@ -40,7 +40,7 @@ export function buildProduitColumns(
       pinned: "left",
       cellRenderer: (params: { data?: ProduitRow }) =>
         params.data ? (
-          <Link href={`/produits/${params.data.id}`} className="font-medium text-brand-800 hover:underline">
+          <Link href={`/produits/${params.data.id}`} className="font-medium text-brand-600 hover:text-brand-700 hover:underline">
             {params.data.designation}
           </Link>
         ) : null,

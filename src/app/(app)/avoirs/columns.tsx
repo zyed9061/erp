@@ -37,7 +37,7 @@ export function buildAvoirColumns(
       pinned: "left",
       cellRenderer: (params: { data?: AvoirRow }) =>
         params.data ? (
-          <Link href={`/avoirs/${params.data.id}`} className="font-medium text-brand-800 hover:underline">
+          <Link href={`/avoirs/${params.data.id}`} className="font-medium text-brand-600 hover:text-brand-700 hover:underline">
             {params.data.numero}
           </Link>
         ) : null,

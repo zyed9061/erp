@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { motion } from "framer-motion";
+import { menuMotion } from "@/components/motion/Motion";
 import { MoreHorizontal } from "lucide-react";
 
 export interface RowAction {
@@ -54,18 +56,19 @@ export function RowActionsMenu({ actions, label }: { actions: RowAction[]; label
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={label}
-        className="rounded-md p-1.5 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
+        className={`rounded-lg p-1.5 transition ${open ? "bg-brand-50 text-brand-700" : "text-slate-400 hover:bg-slate-100 hover:text-slate-900"}`}
       >
         <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
       </button>
       {open &&
         typeof document !== "undefined" &&
         createPortal(
-          <div
+          <motion.div
+            {...menuMotion}
             ref={menuRef}
             role="menu"
             style={{ position: "fixed", top: coords.top, left: coords.left }}
-            className="z-50 w-48 overflow-hidden rounded-lg border border-neutral-200 bg-white py-1 shadow-lg"
+            className="z-50 w-48 overflow-hidden rounded-xl bg-white p-1.5 shadow-2xl shadow-slate-900/15 ring-1 ring-slate-900/5"
           >
             {actions.map((action) => (
               <button
@@ -77,14 +80,14 @@ export function RowActionsMenu({ actions, label }: { actions: RowAction[]; label
                   setOpen(false);
                   action.onSelect();
                 }}
-                className={`flex w-full items-center px-3 py-2 text-left text-sm hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50 ${
-                  action.destructive ? "text-red-600" : "text-neutral-700"
+                className={`flex w-full items-center rounded-lg px-3 py-2 text-start text-sm transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                  action.destructive ? "text-red-600 hover:bg-red-50" : "text-slate-700 hover:bg-slate-50"
                 }`}
               >
                 {action.label}
               </button>
             ))}
-          </div>,
+          </motion.div>,
           document.body,
         )}
     </>

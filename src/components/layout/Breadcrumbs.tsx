@@ -41,19 +41,19 @@ export function Breadcrumbs({ lastLabel }: { lastLabel?: string }) {
   const items = computeFromPath(pathname, t, lastLabel);
 
   return (
-    <nav aria-label="breadcrumb" className="mb-2">
-      <ol className="flex flex-wrap items-center gap-1.5 text-sm text-neutral-500">
+    <nav aria-label="breadcrumb" className="mb-3">
+      <ol className="flex flex-wrap items-center gap-1 text-xs font-medium text-slate-500 sm:text-[13px]">
         {items.map((item, index) => (
-          <li key={`${item.label}-${index}`} className="flex items-center gap-1.5">
+          <li key={`${item.label}-${index}`} className="flex items-center gap-1">
             {index > 0 && (
-              <ChevronRight className="h-3.5 w-3.5 rtl:-scale-x-100 text-neutral-300" aria-hidden="true" />
+              <ChevronRight className="h-3.5 w-3.5 rtl:-scale-x-100 text-slate-300" aria-hidden="true" />
             )}
             {item.href ? (
-              <Link href={item.href} className="hover:text-neutral-900">
+              <Link href={item.href} className="rounded-md px-1.5 py-0.5 transition hover:bg-slate-100 hover:text-slate-900">
                 {item.label}
               </Link>
             ) : (
-              <span className="font-medium text-neutral-900" aria-current="page">
+              <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-brand-700" aria-current="page">
                 {item.label}
               </span>
             )}

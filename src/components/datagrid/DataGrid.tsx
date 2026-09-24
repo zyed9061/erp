@@ -40,6 +40,19 @@ export interface DataGridProps<T> {
   onRefresh?: () => void;
 }
 
+/** HTML for AG Grid's "no rows" overlay (a template string, so no React here). */
+export function emptyOverlay(title: string, description?: string) {
+  const icon =
+    '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12h-6l-2 3h-2l-2-3H3"/><path d="M5.45 5.11 3 12v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6l-2.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>';
+  return (
+    `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:2rem;text-align:center;">` +
+    `<div style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#eef2ff,#f5f3ff);margin-bottom:6px;">${icon}</div>` +
+    `<div style="font-size:0.875rem;font-weight:600;color:#0f172a;">${title}</div>` +
+    (description ? `<div style="font-size:0.8125rem;color:#64748b;">${description}</div>` : "") +
+    `</div>`
+  );
+}
+
 function describeNativeFilter(colId: string, headerName: string, model: Record<string, unknown>) {
   const entry = model[colId] as Record<string, unknown> | undefined;
   if (!entry) return null;
@@ -386,26 +399,17 @@ export function DataGrid<T>({
     [],
   );
 
+  const drawerFilterCount =
+    Object.values(setFilters).filter((values) => values && values.length > 0).length +
+    Object.values(dateRangeFilters).filter((range) => range?.from || range?.to).length;
+
   return (
     <div>
-      <ActiveFilters chips={chips} onRemoveChip={handleRemoveChip} onClearAll={clearAllFilters} />
-
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <button
-          type="button"
-          onClick={onRefresh}
-          className="flex items-center gap-1.5 rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-        >
-          <RefreshCw className="h-4 w-4" aria-hidden="true" /> {t("common.refresh")}
-        </button>
-        {headerActions && <div className="flex flex-wrap items-center gap-2">{headerActions}</div>}
-      </div>
-
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative">
+      <div className="card mb-4 flex flex-col gap-3 p-3 sm:p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="group relative sm:w-72">
             <Search
-              className="pointer-events-none absolute start-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-neutral-400"
+              className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-brand-500"
               aria-hidden="true"
             />
             <input
@@ -414,15 +418,15 @@ export function DataGrid<T>({
               onChange={(e) => setQuickSearch(e.target.value)}
               placeholder={resolvedPlaceholder}
               aria-label={t("common.quickSearchLabel")}
-              className="w-56 rounded-md border border-neutral-200 py-1.5 ps-8 pe-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="input h-10 ps-9"
             />
           </div>
-          <label className="flex items-center gap-2 text-sm text-neutral-600">
-            {t("common.display")}:
+          <label className="flex items-center gap-2 text-sm whitespace-nowrap text-slate-500">
+            {t("common.display")}
             <select
               value={pageSize}
               onChange={(e) => setPageSize(Number(e.target.value))}
-              className="rounded-md border border-neutral-200 py-1.5 ps-2 pe-6 text-sm focus:border-brand-500 focus:outline-none"
+              className="input h-10 w-auto py-0 pe-8"
             >
               {PAGE_SIZES.map((size) => (
                 <option key={size} value={size}>
@@ -431,104 +435,105 @@ export function DataGrid<T>({
               ))}
             </select>
           </label>
+          {headerActions && <div className="flex flex-wrap items-center gap-2 sm:ms-auto">{headerActions}</div>}
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleSaveFilter}
-            className="rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
-          >
+
+        <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
+          {!error && (
+            <>
+              <button type="button" onClick={() => setFilterDrawerOpen(true)} className="btn-secondary h-10">
+                <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                {t("common.filters")}
+                {drawerFilterCount > 0 && (
+                  <span className="bg-brand-gradient ms-0.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-semibold text-white">
+                    {drawerFilterCount}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  refreshColumnItems();
+                  setColumnDrawerOpen(true);
+                }}
+                className="btn-secondary h-10"
+              >
+                <Columns3 className="h-4 w-4" aria-hidden="true" />
+                {t("common.columns")}
+              </button>
+            </>
+          )}
+          <button type="button" onClick={handleSaveFilter} className="btn-ghost h-10">
             {t("common.saveFilter")}
+          </button>
+          <button type="button" onClick={handleResetFilter} className="btn-ghost h-10">
+            {t("common.resetFilter")}
           </button>
           <button
             type="button"
-            onClick={handleResetFilter}
-            className="rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+            onClick={onRefresh}
+            aria-label={t("common.refresh")}
+            title={t("common.refresh")}
+            className="btn-secondary group ms-auto h-10 w-10 px-0"
           >
-            {t("common.resetFilter")}
+            <RefreshCw className="h-4 w-4 transition-transform duration-500 group-hover:rotate-180" aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <div className="flex gap-3">
-        <div className="min-w-0 flex-1 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
-          {error ? (
-            <div className="flex flex-col items-center justify-center gap-2 px-6 py-16 text-center">
-              <AlertTriangle className="h-8 w-8 text-red-500" aria-hidden="true" />
-              <p className="text-sm font-medium text-neutral-900">{t("common.error")}</p>
-              <p className="text-sm text-neutral-500">{error}</p>
-              {onRefresh && (
-                <button
-                  type="button"
-                  onClick={onRefresh}
-                  className="mt-2 rounded-md bg-brand-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-800"
-                >
-                  {t("common.tryAgain")}
-                </button>
-              )}
-            </div>
-          ) : (
-            <div style={{ height: 560, width: "100%" }}>
-              <AgGridReact<T>
-                key={locale}
-                localeText={AG_GRID_LOCALE_TEXT[locale]}
-                enableRtl={dir === "rtl"}
-                theme={appGridTheme}
-                columnDefs={columnDefs}
-                rowData={rowData}
-                defaultColDef={defaultColDef}
-                quickFilterText={quickSearch}
-                pagination
-                paginationPageSize={pageSize}
-                paginationPageSizeSelector={false}
-                rowSelection={{ mode: "multiRow", checkboxes: true, headerCheckbox: true }}
-                isExternalFilterPresent={isExternalFilterPresent}
-                doesExternalFilterPass={doesExternalFilterPass}
-                onFilterChanged={(e) => setNativeFilterModel(e.api.getFilterModel())}
-                onGridReady={onGridReady}
-                onColumnMoved={refreshColumnItems}
-                onColumnVisible={refreshColumnItems}
-                onColumnPinned={refreshColumnItems}
-                getRowId={getRowId ? (params) => getRowId(params.data as T) : undefined}
-                onRowClicked={
-                  onRowClicked
-                    ? (e: RowClickedEvent<T>) => {
-                        const target = e.event?.target as HTMLElement | null;
-                        if (target?.closest("[data-no-row-click]")) return;
-                        if (e.data) onRowClicked(e.data);
-                      }
-                    : undefined
-                }
-                loading={loading}
-                overlayNoRowsTemplate={`<div style="padding:2.5rem;text-align:center;"><div style="font-size:0.875rem;font-weight:500;color:#404040;">${resolvedEmptyTitle}</div><div style="font-size:0.8125rem;color:#a3a3a3;margin-top:4px;">${resolvedEmptyDescription}</div></div>`}
-                suppressCellFocus
-                animateRows
-              />
-            </div>
-          )}
-        </div>
+      <ActiveFilters chips={chips} onRemoveChip={handleRemoveChip} onClearAll={clearAllFilters} />
 
-        {!error && (
-          <div className="flex w-20 shrink-0 flex-col gap-2">
-            <button
-              type="button"
-              onClick={() => setFilterDrawerOpen(true)}
-              className="flex flex-col items-center gap-1 rounded-lg border border-neutral-200 bg-white px-2 py-3 text-xs font-medium text-neutral-600 hover:bg-neutral-50"
-            >
-              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
-              {t("common.filters")}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                refreshColumnItems();
-                setColumnDrawerOpen(true);
-              }}
-              className="flex flex-col items-center gap-1 rounded-lg border border-neutral-200 bg-white px-2 py-3 text-xs font-medium text-neutral-600 hover:bg-neutral-50"
-            >
-              <Columns3 className="h-4 w-4" aria-hidden="true" />
-              {t("common.columns")}
-            </button>
+      <div className="card overflow-hidden">
+        {error ? (
+          <div className="flex flex-col items-center justify-center gap-2 px-6 py-16 text-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 text-rose-500 ring-8 ring-rose-50/50">
+              <AlertTriangle className="h-7 w-7" aria-hidden="true" />
+            </span>
+            <p className="mt-2 text-sm font-semibold text-slate-900">{t("common.error")}</p>
+            <p className="text-sm text-slate-500">{error}</p>
+            {onRefresh && (
+              <button type="button" onClick={onRefresh} className="btn-primary mt-3">
+                {t("common.tryAgain")}
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="h-[calc(100dvh-19rem)] min-h-[420px] w-full">
+            <AgGridReact<T>
+              key={locale}
+              localeText={AG_GRID_LOCALE_TEXT[locale]}
+              enableRtl={dir === "rtl"}
+              theme={appGridTheme}
+              columnDefs={columnDefs}
+              rowData={rowData}
+              defaultColDef={defaultColDef}
+              quickFilterText={quickSearch}
+              pagination
+              paginationPageSize={pageSize}
+              paginationPageSizeSelector={false}
+              rowSelection={{ mode: "multiRow", checkboxes: true, headerCheckbox: true }}
+              isExternalFilterPresent={isExternalFilterPresent}
+              doesExternalFilterPass={doesExternalFilterPass}
+              onFilterChanged={(e) => setNativeFilterModel(e.api.getFilterModel())}
+              onGridReady={onGridReady}
+              onColumnMoved={refreshColumnItems}
+              onColumnVisible={refreshColumnItems}
+              onColumnPinned={refreshColumnItems}
+              getRowId={getRowId ? (params) => getRowId(params.data as T) : undefined}
+              onRowClicked={
+                onRowClicked
+                  ? (e: RowClickedEvent<T>) => {
+                      const target = e.event?.target as HTMLElement | null;
+                      if (target?.closest("[data-no-row-click]")) return;
+                      if (e.data) onRowClicked(e.data);
+                    }
+                  : undefined
+              }
+              loading={loading}
+              overlayNoRowsTemplate={emptyOverlay(resolvedEmptyTitle, resolvedEmptyDescription)}
+              suppressCellFocus
+              animateRows
+            />
           </div>
         )}
       </div>

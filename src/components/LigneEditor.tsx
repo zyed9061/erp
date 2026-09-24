@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { calculerLigne, calculerTotaux } from "@/lib/calculs";
 import { formatMontant } from "@/lib/format";
+import { motion } from "framer-motion";
+import { Plus, Trash2 } from "lucide-react";
 import { useLocale } from "@/i18n/client";
+import { TotalsCard } from "@/components/ui/TotalsCard";
 
 export type ProduitOption = {
   id: string;
@@ -71,20 +74,20 @@ export function LigneEditor({
   const totaux = calculerTotaux(lignes, timbreFiscal);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <input type="hidden" name="lignes" value={JSON.stringify(lignes)} />
 
-      <div className="overflow-x-auto rounded-lg border border-neutral-200 bg-white">
-        <table className="w-full text-sm">
-          <thead className="text-start text-neutral-500">
+      <div className="overflow-x-auto rounded-xl ring-1 ring-slate-200">
+        <table className="w-full min-w-[760px] text-sm">
+          <thead className="bg-slate-50 text-start text-xs font-semibold tracking-wide text-slate-500 uppercase">
             <tr>
-              <th className="px-3 py-2 font-normal">{t("documents.product")}</th>
-              <th className="px-3 py-2 font-normal">{t("documents.designation")}</th>
-              <th className="px-3 py-2 font-normal">{t("documents.quantity")}</th>
-              <th className="px-3 py-2 font-normal">{t("documents.priceHT")}</th>
-              <th className="px-3 py-2 font-normal">{t("documents.discountPct")}</th>
-              <th className="px-3 py-2 font-normal">{t("documents.vatPct")}</th>
-              <th className="px-3 py-2 font-normal">{t("documents.totalHT")}</th>
+              <th className="px-3 py-2 font-semibold">{t("documents.product")}</th>
+              <th className="px-3 py-2 font-semibold">{t("documents.designation")}</th>
+              <th className="px-3 py-2 font-semibold">{t("documents.quantity")}</th>
+              <th className="px-3 py-2 font-semibold">{t("documents.priceHT")}</th>
+              <th className="px-3 py-2 font-semibold">{t("documents.discountPct")}</th>
+              <th className="px-3 py-2 font-semibold">{t("documents.vatPct")}</th>
+              <th className="px-3 py-2 font-semibold">{t("documents.totalHT")}</th>
               <th className="px-3 py-2" />
             </tr>
           </thead>
@@ -92,7 +95,12 @@ export function LigneEditor({
             {lignes.map((ligne, index) => {
               const calculee = calculerLigne(ligne);
               return (
-                <tr key={index} className="border-t border-neutral-100">
+                <motion.tr
+                  key={index}
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="border-t border-slate-100 bg-white"
+                >
                   <td className="px-3 py-2">
                     <select
                       className="input"
@@ -159,21 +167,21 @@ export function LigneEditor({
                       }
                     />
                   </td>
-                  <td className="px-3 py-2 whitespace-nowrap text-neutral-600">
+                  <td className="px-3 py-2 whitespace-nowrap text-slate-600">
                     {formatMontant(calculee.totalHT, "TND", locale)}
                   </td>
                   <td className="px-3 py-2">
                     <button
                       type="button"
                       onClick={() => supprimerLigne(index)}
-                      className="text-neutral-400 hover:text-red-600"
+                      className="rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 disabled:pointer-events-none disabled:opacity-30"
                       disabled={lignes.length === 1}
                       aria-label={t("common.removeLine")}
                     >
-                      ✕
+                      <Trash2 className="h-4 w-4" aria-hidden="true" />
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               );
             })}
           </tbody>
@@ -183,31 +191,22 @@ export function LigneEditor({
       <button
         type="button"
         onClick={ajouterLigne}
-        className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
+        className="btn-secondary"
       >
+        <Plus className="h-4 w-4" aria-hidden="true" />
         {t("documents.addLine")}
       </button>
 
-      <div className="ms-auto max-w-xs space-y-1 text-sm">
-        <div className="flex justify-between">
-          <span className="text-neutral-500">{t("documents.subtotalHT")}</span>
-          <span>{formatMontant(totaux.sousTotalHT, "TND", locale)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-neutral-500">{t("documents.vat")}</span>
-          <span>{formatMontant(totaux.totalTva, "TND", locale)}</span>
-        </div>
-        {timbreFiscal > 0 && (
-          <div className="flex justify-between">
-            <span className="text-neutral-500">{t("documents.stampDuty")}</span>
-            <span>{formatMontant(timbreFiscal, "TND", locale)}</span>
-          </div>
-        )}
-        <div className="flex justify-between border-t border-neutral-200 pt-1 font-medium text-neutral-900">
-          <span>{t("documents.totalTTC")}</span>
-          <span>{formatMontant(totaux.totalTTC, "TND", locale)}</span>
-        </div>
-      </div>
+      <TotalsCard
+        rows={[
+          { label: t("documents.subtotalHT"), value: formatMontant(totaux.sousTotalHT, "TND", locale) },
+          { label: t("documents.vat"), value: formatMontant(totaux.totalTva, "TND", locale) },
+          ...(timbreFiscal > 0
+            ? [{ label: t("documents.stampDuty"), value: formatMontant(timbreFiscal, "TND", locale) }]
+            : []),
+          { label: t("documents.totalTTC"), value: formatMontant(totaux.totalTTC, "TND", locale), variant: "total" as const },
+        ]}
+      />
     </div>
   );
 }

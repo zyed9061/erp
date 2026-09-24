@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ui/Toast";
 import { LocaleProvider } from "@/i18n/client";
+import { MotionProvider } from "@/components/motion/Motion";
 import { getLocale, getT } from "@/i18n/server";
 import { LOCALE_DIR } from "@/i18n/config";
 import "./globals.css";
@@ -31,9 +32,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       dir={dir}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col text-slate-900">
         <LocaleProvider initialLocale={locale}>
-          <ToastProvider>{children}</ToastProvider>
+          <MotionProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </MotionProvider>
         </LocaleProvider>
       </body>
     </html>

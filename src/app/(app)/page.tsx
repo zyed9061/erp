@@ -1,20 +1,11 @@
-import Link from "next/link";
-import {
-  TrendingUp,
-  Wallet,
-  AlertTriangle,
-  CheckCircle2,
-  FileText,
-  Users,
-  Plus,
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import { formatMontant } from "@/lib/format";
 import { computeFactureDisplayStatut } from "@/lib/factureStatus";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { FadeIn } from "@/components/motion/Motion";
 import { getLocale, getT } from "@/i18n/server";
 import { INTL_LOCALE } from "@/i18n/config";
 import { RevenueChart, StatusDistributionChart } from "./DashboardCharts";
+import { QuickActions, StatCards } from "./DashboardStats";
 import { DashboardInvoiceGrid, type DashboardFactureRow } from "./DashboardInvoiceGrids";
 import { PriorityCollections, type PriorityRow } from "./PriorityCollections";
 import { showsRisk } from "@/lib/ml";
@@ -141,46 +132,50 @@ export default async function DashboardPage() {
   );
 
   return (
-    <div className="space-y-6">
-      <PageHeader title={t("dashboard.title")} description={t("dashboard.description")} />
+    <div className="space-y-6 lg:space-y-8">
+      <FadeIn className="bg-brand-gradient relative overflow-hidden rounded-3xl px-6 py-7 text-white shadow-xl shadow-brand-600/20 sm:px-8 sm:py-9">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute -end-16 -top-24 h-72 w-72 rounded-full bg-white/15 blur-3xl" />
+          <div className="absolute -bottom-28 start-1/3 h-64 w-64 rounded-full bg-fuchsia-400/25 blur-3xl" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(255_255_255/0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgb(255_255_255/0.06)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
+        </div>
+        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium ring-1 ring-white/25 backdrop-blur-md">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+              {now.toLocaleDateString(INTL_LOCALE[locale], { weekday: "long", day: "numeric", month: "long" })}
+            </span>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">{t("dashboard.title")}</h1>
+            <p className="mt-2 text-sm text-white/80 sm:text-base">{t("dashboard.description")}</p>
+          </div>
+          <div>
+            <h2 className="sr-only">{t("dashboard.quickActions")}</h2>
+            <QuickActions
+              actions={[
+                { href: "/factures/new", label: t("invoices.newInvoice") },
+                { href: "/devis/new", label: t("quotes.newQuote") },
+                { href: "/clients/new", label: t("clients.newClient") },
+                { href: "/produits/new", label: t("dashboard.addProduct") },
+              ]}
+            />
+          </div>
+        </div>
+      </FadeIn>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <StatCard
-          icon={TrendingUp}
-          label={t("dashboard.revenueThisMonth")}
-          value={formatMontant(caDuMois, "TND", locale)}
-          accent="teal"
-        />
-        <StatCard
-          icon={Wallet}
-          label={t("dashboard.toCollect")}
-          value={formatMontant(montantAEncaisser, "TND", locale)}
-          accent="amber"
-        />
-        <StatCard
-          icon={AlertTriangle}
-          label={t("dashboard.overdueInvoices")}
-          value={String(facturesEnRetard.length)}
-          accent="red"
-        />
-        <StatCard
-          icon={CheckCircle2}
-          label={t("dashboard.paidInvoices")}
-          value={String(facturesPayees.length)}
-          accent="green"
-        />
-        <StatCard
-          icon={FileText}
-          label={t("dashboard.pendingQuotes")}
-          value={String(devisEnAttente)}
-          accent="blue"
-        />
-        <StatCard icon={Users} label={t("dashboard.clients")} value={String(nombreClients)} accent="teal" />
-      </div>
+      <StatCards
+        stats={[
+          { icon: "revenue", label: t("dashboard.revenueThisMonth"), value: caDuMois, format: "currency", accent: "indigo", href: "/factures" },
+          { icon: "wallet", label: t("dashboard.toCollect"), value: montantAEncaisser, format: "currency", accent: "amber", href: "/factures" },
+          { icon: "alert", label: t("dashboard.overdueInvoices"), value: facturesEnRetard.length, format: "number", accent: "rose", href: "/factures" },
+          { icon: "check", label: t("dashboard.paidInvoices"), value: facturesPayees.length, format: "number", accent: "emerald", href: "/factures" },
+          { icon: "quote", label: t("dashboard.pendingQuotes"), value: devisEnAttente, format: "number", accent: "sky", href: "/devis" },
+          { icon: "users", label: t("dashboard.clients"), value: nombreClients, format: "number", accent: "violet", href: "/clients" },
+        ]}
+      />
 
       {mlRun && (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+          <FadeIn inView className="xl:col-span-2">
             <PriorityCollections
               top={priorityRows}
               reminderTargets={highRisk.map((f) => ({ id: f.id, numero: f.numero, clientEmail: f.client.email }))}
@@ -188,95 +183,41 @@ export default async function DashboardPage() {
               highRiskCount={highRisk.length}
               unusualCount={unusualCount}
             />
-          </div>
-          <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
-            <h2 className="text-sm font-semibold text-neutral-900">{t("ml.forecastTitle")}</h2>
-            <p className="mb-4 text-xs text-neutral-500">{t("ml.forecastHint")}</p>
-            <RevenueChart data={forecast} title={t("ml.forecastTitle")} locale={locale} />
-          </div>
+          </FadeIn>
+          <FadeIn inView delay={0.08} className="card p-5 sm:p-6">
+            <h2 className="section-title">{t("ml.forecastTitle")}</h2>
+            <p className="mt-1 mb-5 text-xs text-slate-500">{t("ml.forecastHint")}</p>
+            <RevenueChart data={forecast} title={t("ml.forecastTitle")} locale={locale} tone="emerald" />
+          </FadeIn>
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5 lg:col-span-2">
-          <h2 className="mb-4 text-sm font-semibold text-neutral-900">
-            {t("dashboard.revenueChartTitle")}
-          </h2>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <FadeIn inView className="card p-5 sm:p-6 xl:col-span-2">
+          <h2 className="section-title mb-5">{t("dashboard.revenueChartTitle")}</h2>
           <RevenueChart data={revenueByMonth} title={t("dashboard.revenueChartTitle")} locale={locale} />
-        </div>
-        <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
-          <h2 className="mb-4 text-sm font-semibold text-neutral-900">{t("dashboard.invoiceBreakdown")}</h2>
+        </FadeIn>
+        <FadeIn inView delay={0.08} className="card p-5 sm:p-6">
+          <h2 className="section-title mb-5">{t("dashboard.invoiceBreakdown")}</h2>
           <StatusDistributionChart data={statusCounts} />
-        </div>
+        </FadeIn>
       </div>
 
-      <div className="rounded-xl border border-neutral-200 bg-white shadow-xs p-5">
-        <h2 className="mb-3 text-sm font-semibold text-neutral-900">{t("dashboard.quickActions")}</h2>
-        <div className="flex flex-wrap gap-2">
-          <QuickAction href="/factures/new" label={t("invoices.newInvoice")} />
-          <QuickAction href="/devis/new" label={t("quotes.newQuote")} />
-          <QuickAction href="/clients/new" label={t("clients.newClient")} />
-          <QuickAction href="/produits/new" label={t("dashboard.addProduct")} />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
-          <div className="border-b border-neutral-100 px-5 py-3">
-            <h2 className="text-sm font-semibold text-neutral-900">{t("dashboard.recentInvoices")}</h2>
+      <div className="grid grid-cols-1 gap-6 2xl:grid-cols-2">
+        <FadeIn inView className="card overflow-hidden">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6">
+            <h2 className="section-title">{t("dashboard.recentInvoices")}</h2>
           </div>
           <DashboardInvoiceGrid rows={recentFactures} emptyMessage={t("dashboard.noInvoices")} />
-        </div>
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
-          <div className="border-b border-neutral-100 px-5 py-3">
-            <h2 className="text-sm font-semibold text-neutral-900">{t("dashboard.overdueInvoices")}</h2>
+        </FadeIn>
+        <FadeIn inView delay={0.08} className="card overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 sm:px-6">
+            <span className="h-2 w-2 rounded-full bg-rose-500 shadow-[0_0_0_4px_rgb(244_63_94/0.15)]" />
+            <h2 className="section-title">{t("dashboard.overdueInvoices")}</h2>
           </div>
           <DashboardInvoiceGrid rows={overdueFactures} emptyMessage={t("dashboard.noOverdueInvoices")} />
-        </div>
+        </FadeIn>
       </div>
     </div>
-  );
-}
-
-const ACCENTS = {
-  teal: "bg-brand-50 text-brand-700",
-  amber: "bg-amber-50 text-amber-700",
-  red: "bg-red-50 text-red-700",
-  green: "bg-green-50 text-green-700",
-  blue: "bg-blue-50 text-blue-700",
-};
-
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  accent,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-  accent: keyof typeof ACCENTS;
-}) {
-  return (
-    <div className="rounded-xl border border-neutral-200 bg-white p-4">
-      <div className="flex items-center gap-2">
-        <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${ACCENTS[accent]}`}>
-          <Icon className="h-4 w-4" />
-        </span>
-        <p className="text-xs uppercase tracking-wide text-neutral-500">{label}</p>
-      </div>
-      <p className="mt-2 text-xl font-semibold text-neutral-900">{value}</p>
-    </div>
-  );
-}
-
-function QuickAction({ href, label }: { href: string; label: string }) {
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-1.5 rounded-md border border-neutral-200 px-3 py-2 text-sm font-medium text-neutral-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-800"
-    >
-      <Plus className="h-4 w-4" aria-hidden="true" /> {label}
-    </Link>
   );
 }

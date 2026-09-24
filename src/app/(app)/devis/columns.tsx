@@ -37,7 +37,7 @@ export function buildDevisColumns(
       pinned: "left",
       cellRenderer: (params: { data?: DevisRow }) =>
         params.data ? (
-          <Link href={`/devis/${params.data.id}`} className="font-medium text-brand-800 hover:underline">
+          <Link href={`/devis/${params.data.id}`} className="font-medium text-brand-600 hover:text-brand-700 hover:underline">
             {params.data.numero}
           </Link>
         ) : null,

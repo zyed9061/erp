@@ -18,14 +18,14 @@ export function ClientForm({
   return (
     <FormSection maxWidth="max-w-full" title={title}>
       <form action={action} className="space-y-5">
-        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <Field label={t("clients.fieldType")}>
             <select name="type" defaultValue={client?.type ?? "ENTREPRISE"} className="input-lg">
               <option value="ENTREPRISE">{t("clients.typeCompany")}</option>
               <option value="PARTICULIER">{t("clients.typeIndividual")}</option>
             </select>
           </Field>
-          <Field label={t("clients.fieldName")} className="sm:col-span-2">
+          <Field label={t("clients.fieldName")} className="lg:col-span-2">
             <input name="nom" defaultValue={client?.nom} required className="input-lg" />
           </Field>
           <Field label={t("clients.fieldTaxId")}>
@@ -46,10 +46,10 @@ export function ClientForm({
           <Field label={t("clients.fieldCountry")}>
             <input name="pays" defaultValue={client?.pays ?? "Tunisie"} className="input-lg" />
           </Field>
-          <Field label={t("clients.fieldAddress")} className="sm:col-span-3">
+          <Field label={t("clients.fieldAddress")} className="sm:col-span-2 lg:col-span-3">
             <input name="adresse" defaultValue={client?.adresse ?? ""} className="input-lg" />
           </Field>
-          <Field label={t("clients.fieldNotes")} className="sm:col-span-3">
+          <Field label={t("clients.fieldNotes")} className="sm:col-span-2 lg:col-span-3">
             <textarea name="notes" defaultValue={client?.notes ?? ""} rows={2} className="input-lg" />
           </Field>
         </div>
@@ -71,7 +71,7 @@ function Field({
 }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <span className="mb-1.5 block text-[13px] font-medium text-slate-700">{label}</span>
       {children}
     </label>
   );

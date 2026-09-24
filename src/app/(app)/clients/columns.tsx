@@ -42,7 +42,7 @@ export function buildClientColumns(
       pinned: "left",
       cellRenderer: (params: { data?: ClientRow }) =>
         params.data ? (
-          <Link href={`/clients/${params.data.id}`} className="font-medium text-brand-800 hover:underline">
+          <Link href={`/clients/${params.data.id}`} className="font-medium text-brand-600 hover:text-brand-700 hover:underline">
             {params.data.nom}
           </Link>
         ) : null,

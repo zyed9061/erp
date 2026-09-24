@@ -24,7 +24,7 @@ export function DevisForm({
   return (
     <FormSection maxWidth="max-w-full" title={t("quotes.newQuote")}>
       <form action={action} className="space-y-5">
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <Field label={t("documents.client")}>
             <select name="clientId" required defaultValue={defaultClientId ?? ""} className="input-lg">
               <option value="">{t("documents.selectClient")}</option>
@@ -45,7 +45,7 @@ export function DevisForm({
 
         <LigneEditor produits={produits} />
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label={t("quotes.fieldConditions")}>
             <textarea name="conditions" rows={2} className="input-lg" />
           </Field>
@@ -63,7 +63,7 @@ export function DevisForm({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <span className="mb-1.5 block text-[13px] font-medium text-slate-700">{label}</span>
       {children}
     </label>
   );

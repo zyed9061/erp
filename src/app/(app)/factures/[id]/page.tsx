@@ -2,11 +2,13 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { CalendarDays, CalendarClock, Receipt, Wallet, Send, Undo2, CircleDollarSign } from "lucide-react";
+import { DocumentHeader, InfoTile } from "@/components/layout/DocumentHeader";
+import { TotalsCard } from "@/components/ui/TotalsCard";
+import { FadeIn } from "@/components/motion/Motion";
 import { getLocale, getT } from "@/i18n/server";
 import { ToastOnParam } from "@/components/ui/ToastOnParam";
 import { formatMontant, formatDate } from "@/lib/format";
-import { StatutBadge } from "@/components/StatutBadge";
 import { PaiementForm } from "@/components/PaiementForm";
 import { InvoiceInsights } from "@/components/ml/InvoiceInsights";
 import { updateFactureStatut } from "@/lib/actions/factures";
@@ -47,25 +49,15 @@ export default async function FactureDetailPage({
       <Suspense fallback={null}>
         <ToastOnParam />
       </Suspense>
-      <Breadcrumbs lastLabel={facture.numero} />
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-neutral-900">{facture.numero}</h1>
-          <p className="text-sm text-neutral-500">{facture.client.nom}</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <StatutBadge statut={facture.statut} />
-          <a
-            href={`/factures/${facture.id}/pdf`}
-            target="_blank"
-            className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
-          >
-            {t("documents.viewPdf")}
-          </a>
-        </div>
-      </div>
 
-      <div className="flex flex-wrap gap-2">
+      <DocumentHeader
+        icon={Receipt}
+        numero={facture.numero}
+        subtitle={facture.client.nom}
+        statut={facture.statut}
+        pdfHref={`/factures/${facture.id}/pdf`}
+        pdfLabel={t("documents.viewPdf")}
+      >
         {facture.statut === "BROUILLON" && (
           <form
             action={async () => {
@@ -73,117 +65,129 @@ export default async function FactureDetailPage({
               await updateFactureStatut(facture.id, "ENVOYEE");
             }}
           >
-            <button
-              type="submit"
-              className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
-            >
+            <button type="submit" className="btn-primary">
+              <Send className="h-4 w-4" aria-hidden="true" />
               {t("invoices.actionMarkSent")}
             </button>
           </form>
         )}
-        <Link
-          href={`/avoirs/new?factureId=${facture.id}`}
-          className="rounded border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-100"
-        >
+        <Link href={`/avoirs/new?factureId=${facture.id}`} className="btn-secondary">
+          <Undo2 className="h-4 w-4" aria-hidden="true" />
           {t("invoices.actionCreateCreditNote")}
         </Link>
-      </div>
+      </DocumentHeader>
 
-      <div className="rounded-lg border border-neutral-200 bg-white p-5 text-sm text-neutral-600">
-        <div className="grid grid-cols-2 gap-2">
-          <span>{t("documents.issueDateValue", { date: formatDate(facture.dateEmission, locale) })}</span>
-          {facture.dateEcheance && (
-            <span>{t("invoices.dueDateValue", { date: formatDate(facture.dateEcheance, locale) })}</span>
-          )}
-        </div>
-      </div>
+      <FadeIn delay={0.05} className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <InfoTile icon={CalendarDays} label={t("documents.issueDate")} value={formatDate(facture.dateEmission, locale)} />
+        <InfoTile
+          icon={CalendarClock}
+          label={t("invoices.dueDate")}
+          value={facture.dateEcheance ? formatDate(facture.dateEcheance, locale) : "-"}
+        />
+        <InfoTile
+          icon={CircleDollarSign}
+          label={t("documents.totalTTC")}
+          value={formatMontant(Number(facture.totalTTC), "TND", locale)}
+        />
+        <InfoTile icon={Wallet} label={t("invoices.balance")} value={formatMontant(resteAPayer, "TND", locale)} />
+      </FadeIn>
 
       <InvoiceInsights
         score={facture.mlScore}
         run={mlRun}
         statut={facture.statut}
-        resteAPayer={Number(facture.totalTTC) - Number(facture.montantPaye)}
+        resteAPayer={resteAPayer}
         t={t}
         locale={locale}
       />
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
-        <table className="w-full text-sm">
-          <thead className="text-start text-neutral-500">
-            <tr>
-              <th className="px-4 py-2 font-normal">{t("documents.designation")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.quantity")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.priceHT")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.discount")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.vat")}</th>
-              <th className="px-4 py-2 font-normal">{t("documents.totalHT")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {facture.lignes.map((ligne) => (
-              <tr key={ligne.id} className="border-t border-neutral-100">
-                <td className="px-4 py-2">{ligne.designation}</td>
-                <td className="px-4 py-2">{Number(ligne.quantite)}</td>
-                <td className="px-4 py-2">{formatMontant(Number(ligne.prixUnitaireHT), "TND", locale)}</td>
-                <td className="px-4 py-2">{Number(ligne.remisePct)}%</td>
-                <td className="px-4 py-2">{Number(ligne.tauxTva)}%</td>
-                <td className="px-4 py-2">{formatMontant(Number(ligne.totalHT), "TND", locale)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="ms-auto max-w-xs space-y-1 text-sm">
-        <div className="flex justify-between">
-          <span className="text-neutral-500">{t("documents.subtotalHT")}</span>
-          <span>{formatMontant(Number(facture.sousTotalHT), "TND", locale)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-neutral-500">{t("documents.vat")}</span>
-          <span>{formatMontant(Number(facture.totalTva), "TND", locale)}</span>
-        </div>
-        {Number(facture.timbreFiscal) > 0 && (
-          <div className="flex justify-between">
-            <span className="text-neutral-500">{t("documents.stampDuty")}</span>
-            <span>{formatMontant(Number(facture.timbreFiscal), "TND", locale)}</span>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 xl:items-start">
+        <FadeIn inView className="card overflow-hidden xl:col-span-2">
+          <div className="overflow-x-auto">
+            <table className="data-table min-w-[640px]">
+              <thead>
+                <tr>
+                  <th>{t("documents.designation")}</th>
+                  <th className="text-end!">{t("documents.quantity")}</th>
+                  <th className="text-end!">{t("documents.priceHT")}</th>
+                  <th className="text-end!">{t("documents.discount")}</th>
+                  <th className="text-end!">{t("documents.vat")}</th>
+                  <th className="text-end!">{t("documents.totalHT")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {facture.lignes.map((ligne) => (
+                  <tr key={ligne.id}>
+                    <td className="font-medium text-slate-900">{ligne.designation}</td>
+                    <td className="text-end tabular-nums">{Number(ligne.quantite)}</td>
+                    <td className="text-end whitespace-nowrap tabular-nums">
+                      {formatMontant(Number(ligne.prixUnitaireHT), "TND", locale)}
+                    </td>
+                    <td className="text-end tabular-nums">{Number(ligne.remisePct)}%</td>
+                    <td className="text-end tabular-nums">{Number(ligne.tauxTva)}%</td>
+                    <td className="text-end font-medium whitespace-nowrap text-slate-900 tabular-nums">
+                      {formatMontant(Number(ligne.totalHT), "TND", locale)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        )}
-        <div className="flex justify-between border-t border-neutral-200 pt-1 font-medium text-neutral-900">
-          <span>{t("documents.totalTTC")}</span>
-          <span>{formatMontant(Number(facture.totalTTC), "TND", locale)}</span>
-        </div>
-        <div className="flex justify-between text-neutral-500">
-          <span>{t("invoices.alreadyPaid")}</span>
-          <span>{formatMontant(Number(facture.montantPaye), "TND", locale)}</span>
-        </div>
-        <div className="flex justify-between font-medium text-neutral-900">
-          <span>{t("invoices.balance")}</span>
-          <span>{formatMontant(resteAPayer, "TND", locale)}</span>
-        </div>
+        </FadeIn>
+
+        <FadeIn inView delay={0.08}>
+          <TotalsCard className="xl:max-w-none"
+            rows={[
+              { label: t("documents.subtotalHT"), value: formatMontant(Number(facture.sousTotalHT), "TND", locale) },
+              { label: t("documents.vat"), value: formatMontant(Number(facture.totalTva), "TND", locale) },
+              ...(Number(facture.timbreFiscal) > 0
+                ? [{ label: t("documents.stampDuty"), value: formatMontant(Number(facture.timbreFiscal), "TND", locale) }]
+                : []),
+              { label: t("documents.totalTTC"), value: formatMontant(Number(facture.totalTTC), "TND", locale), variant: "total" as const },
+              { label: t("invoices.alreadyPaid"), value: formatMontant(Number(facture.montantPaye), "TND", locale) },
+              { label: t("invoices.balance"), value: formatMontant(resteAPayer, "TND", locale), variant: "strong" as const },
+            ]}
+          />
+        </FadeIn>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-lg border border-neutral-200 bg-white p-5">
-          <h2 className="mb-3 text-sm font-medium text-neutral-900">{t("invoices.payments")}</h2>
+        <FadeIn inView className="card p-5 sm:p-6">
+          <h2 className="section-title mb-4">{t("invoices.payments")}</h2>
           {facture.paiements.length === 0 ? (
-            <p className="text-sm text-neutral-500">{t("invoices.noPayments")}</p>
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-slate-200 px-4 py-8 text-center">
+              <Wallet className="h-8 w-8 text-slate-300" aria-hidden="true" />
+              <p className="text-sm text-slate-500">{t("invoices.noPayments")}</p>
+            </div>
           ) : (
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2">
               {facture.paiements.map((p) => (
-                <li key={p.id} className="flex justify-between border-b border-neutral-100 pb-2">
-                  <span className="text-neutral-600">
-                    {formatDate(p.datePaiement, locale)} — {t(`paymentMethods.${p.modePaiement}`)}
+                <li
+                  key={p.id}
+                  className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-4 py-3 ring-1 ring-slate-100"
+                >
+                  <span className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+                      <CircleDollarSign className="h-4.5 w-4.5" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0 text-sm">
+                      <span className="block font-medium text-slate-900">{t(`paymentMethods.${p.modePaiement}`)}</span>
+                      <span className="block text-xs text-slate-500">{formatDate(p.datePaiement, locale)}</span>
+                    </span>
                   </span>
-                  <span className="font-medium text-neutral-900">{formatMontant(Number(p.montant), "TND", locale)}</span>
+                  <span className="text-sm font-semibold whitespace-nowrap text-emerald-700 tabular-nums">
+                    +{formatMontant(Number(p.montant), "TND", locale)}
+                  </span>
                 </li>
               ))}
             </ul>
           )}
-        </div>
+        </FadeIn>
 
         {resteAPayer > 0 && facture.statut !== "ANNULEE" && (
-          <PaiementForm factureId={facture.id} resteAPayer={resteAPayer} />
+          <FadeIn inView delay={0.08}>
+            <PaiementForm factureId={facture.id} resteAPayer={resteAPayer} />
+          </FadeIn>
         )}
       </div>
     </div>

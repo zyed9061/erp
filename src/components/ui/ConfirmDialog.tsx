@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { motion } from "framer-motion";
 import { AlertTriangle } from "lucide-react";
 import { useLocale } from "@/i18n/client";
 
@@ -47,36 +48,45 @@ export function ConfirmDialog({
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      <div className="absolute inset-0 bg-neutral-900/50" onClick={onCancel} aria-hidden="true" />
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"
+        onClick={onCancel}
+        aria-hidden="true"
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.94, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 420, damping: 30 }}
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
         aria-describedby={description ? "confirm-dialog-desc" : undefined}
-        className="relative w-full max-w-sm rounded-xl bg-white p-5 shadow-xl"
+        className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-slate-900/5"
       >
         <div className="flex items-start gap-3">
           {destructive && (
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-rose-50 text-rose-600 ring-8 ring-rose-50/50">
               <AlertTriangle className="h-5 w-5" aria-hidden="true" />
             </span>
           )}
           <div className="min-w-0">
-            <h2 id="confirm-dialog-title" className="text-base font-semibold text-neutral-900">
+            <h2 id="confirm-dialog-title" className="text-base font-semibold text-slate-900">
               {title}
             </h2>
             {description && (
-              <p id="confirm-dialog-desc" className="mt-1 text-sm text-neutral-600">
+              <p id="confirm-dialog-desc" className="mt-1 text-sm text-slate-600">
                 {description}
               </p>
             )}
           </div>
         </div>
-        <div className="mt-5 flex justify-end gap-2">
+        <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md border border-neutral-200 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50"
+            className="btn-secondary h-10"
           >
             {resolvedCancelLabel}
           </button>
@@ -85,14 +95,12 @@ export function ConfirmDialog({
             type="button"
             disabled={pending}
             onClick={onConfirm}
-            className={`rounded-md px-3 py-2 text-sm font-medium text-white disabled:opacity-60 ${
-              destructive ? "bg-red-600 hover:bg-red-700" : "bg-brand-700 hover:bg-brand-800"
-            }`}
+            className={`h-10 ${destructive ? "btn-danger" : "btn-primary"}`}
           >
             {pending ? t("confirmDialog.pending") : resolvedConfirmLabel}
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>,
     document.body,
   );

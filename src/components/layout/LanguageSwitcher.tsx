@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Languages, Check, ChevronDown } from "lucide-react";
 import { useLocale } from "@/i18n/client";
 import { LOCALES, LOCALE_LABELS } from "@/i18n/config";
+import { menuMotion } from "@/components/motion/Motion";
 
 export function LanguageSwitcher() {
   const { locale, setLocale, t } = useLocale();
@@ -34,17 +36,22 @@ export function LanguageSwitcher() {
         aria-expanded={open}
         aria-label={t("nav.language")}
         title={t("nav.language")}
-        className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-neutral-600 hover:bg-neutral-50"
+        className="flex h-10 items-center gap-1.5 rounded-xl px-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
       >
         <Languages className="h-4 w-4" aria-hidden="true" />
         <span className="hidden sm:inline">{LOCALE_LABELS[locale]}</span>
-        <ChevronDown className="h-3.5 w-3.5 text-neutral-400" aria-hidden="true" />
+        <ChevronDown
+          className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
       </button>
 
+      <AnimatePresence>
       {open && (
-        <div
+        <motion.div
           role="menu"
-          className="absolute end-0 z-30 mt-2 w-40 overflow-hidden rounded-lg border border-neutral-200 bg-white py-1 shadow-lg"
+          {...menuMotion}
+          className="absolute end-0 z-30 mt-2 w-44 origin-top-right overflow-hidden rounded-2xl bg-white p-1.5 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/5 rtl:origin-top-left"
         >
           {LOCALES.map((code) => (
             <button
@@ -55,14 +62,17 @@ export function LanguageSwitcher() {
                 setOpen(false);
                 setLocale(code);
               }}
-              className="flex w-full items-center justify-between px-3 py-2 text-start text-sm text-neutral-700 hover:bg-neutral-50"
+              className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-start text-sm transition ${
+                locale === code ? "bg-brand-50 font-medium text-brand-700" : "text-slate-700 hover:bg-slate-50"
+              }`}
             >
               {LOCALE_LABELS[code]}
-              {locale === code && <Check className="h-4 w-4 text-brand-700" aria-hidden="true" />}
+              {locale === code && <Check className="h-4 w-4 text-brand-600" aria-hidden="true" />}
             </button>
           ))}
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 }

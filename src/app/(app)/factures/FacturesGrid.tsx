@@ -159,7 +159,7 @@ export function FacturesGrid({ data, userId }: { data: FactureRow[]; userId?: st
         headerActions={
           <Link
             href="/factures/new"
-            className="flex items-center gap-1.5 rounded-md bg-brand-700 px-3 py-2 text-sm font-medium text-white hover:bg-brand-800"
+            className="btn-primary h-10"
           >
             <Plus className="h-4 w-4" aria-hidden="true" /> {t("invoices.newInvoice")}
           </Link>

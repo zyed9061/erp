@@ -27,7 +27,7 @@ export function FactureForm({
   return (
     <FormSection maxWidth="max-w-full" title={t("invoices.newInvoice")}>
       <form action={action} className="space-y-5">
-        <div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <Field label={t("documents.client")}>
             <select name="clientId" required defaultValue={defaultClientId ?? ""} className="input-lg">
               <option value="">{t("documents.selectClient")}</option>
@@ -44,20 +44,21 @@ export function FactureForm({
           <Field label={t("invoices.dueDate")}>
             <input type="date" name="dateEcheance" className="input-lg" />
           </Field>
-          <label className="flex items-center gap-2 self-end pb-2">
+          <label className="flex cursor-pointer items-center gap-2.5 self-end rounded-lg px-3 py-2.5 ring-1 ring-slate-200 transition hover:bg-slate-50">
             <input
+              className="h-4 w-4 accent-brand-600"
               type="checkbox"
               name="appliquerTimbreFiscal"
               checked={appliquerTimbre}
               onChange={(e) => setAppliquerTimbre(e.target.checked)}
             />
-            <span className="text-sm text-neutral-700">{t("invoices.applyStampDuty")}</span>
+            <span className="text-sm text-slate-700">{t("invoices.applyStampDuty")}</span>
           </label>
         </div>
 
         <LigneEditor produits={produits} timbreFiscal={appliquerTimbre ? tauxTimbreFiscal : 0} />
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label={t("invoices.paymentTerms")}>
             <textarea name="conditionsPaiement" rows={2} className="input-lg" />
           </Field>
@@ -75,7 +76,7 @@ export function FactureForm({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <span className="mb-1.5 block text-[13px] font-medium text-slate-700">{label}</span>
       {children}
     </label>
   );

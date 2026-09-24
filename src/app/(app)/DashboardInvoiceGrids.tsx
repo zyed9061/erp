@@ -28,7 +28,7 @@ function useColumns(): ColDef<DashboardFactureRow>[] {
         minWidth: 130,
         cellRenderer: (params: { data?: DashboardFactureRow }) =>
           params.data ? (
-            <Link href={`/factures/${params.data.id}`} className="font-medium text-brand-800 hover:underline">
+            <Link href={`/factures/${params.data.id}`} className="font-medium text-brand-600 hover:text-brand-700 hover:underline">
               {params.data.numero}
             </Link>
           ) : null,
@@ -73,7 +73,7 @@ export function DashboardInvoiceGrid({
       rowData={rows}
       getRowId={(d) => d.id}
       emptyMessage={emptyMessage}
-      height={rows.length ? Math.min(280, 56 + rows.length * 42) : 120}
+      height={rows.length ? Math.min(340, 46 + rows.length * 48) : 200}
     />
   );
 }

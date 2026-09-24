@@ -45,7 +45,7 @@ export function buildFactureColumns(
       pinned: "left",
       cellRenderer: (params: { data?: FactureRow }) =>
         params.data ? (
-          <Link href={`/factures/${params.data.id}`} className="font-medium text-brand-800 hover:underline">
+          <Link href={`/factures/${params.data.id}`} className="font-medium text-brand-600 hover:text-brand-700 hover:underline">
             {params.data.numero}
           </Link>
         ) : null,

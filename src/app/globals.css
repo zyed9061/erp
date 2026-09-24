@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: oklch(98.4% 0.003 264);
+  --foreground: #0f172a;
 }
 
 @theme inline {
@@ -11,20 +11,34 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Neutral palette matching shadcn/ui's default "slate" theme (shadcn-admin reference). */
-  --color-brand-50: oklch(96.8% 0.007 247.896);
-  --color-brand-100: oklch(92.9% 0.013 255.508);
-  --color-brand-200: oklch(92.9% 0.013 255.508);
-  --color-brand-500: oklch(70.4% 0.04 256.788);
-  --color-brand-600: oklch(55.4% 0.046 257.417);
-  --color-brand-700: oklch(20.8% 0.042 265.755);
-  --color-brand-800: oklch(12.9% 0.042 264.695);
+  /* Brand: indigo, paired with violet in gradients (see .bg-brand-gradient). */
+  --color-brand-50: oklch(96.2% 0.018 272.3);
+  --color-brand-100: oklch(93% 0.034 272.8);
+  --color-brand-200: oklch(87% 0.065 274);
+  --color-brand-300: oklch(78.5% 0.115 274.7);
+  --color-brand-400: oklch(67.3% 0.182 276.9);
+  --color-brand-500: oklch(58.5% 0.233 277.1);
+  --color-brand-600: oklch(51.1% 0.262 276.9);
+  --color-brand-700: oklch(45.7% 0.24 277);
+  --color-brand-800: oklch(39.8% 0.195 277.4);
+  --color-brand-900: oklch(35.9% 0.144 278.7);
+  --color-brand-950: oklch(25.7% 0.09 281.3);
 
-  /* Neutral secondary accent (was orange; kept for existing usages, now muted gray). */
-  --color-accent: oklch(55.4% 0.046 257.417);
-  --color-accent-600: oklch(40% 0.05 257.417);
+  --color-accent: oklch(54.1% 0.281 293);
+  --color-accent-600: oklch(49.1% 0.27 292.6);
 
-  --radius-card: 0.875rem;
+  --radius-card: 1rem;
+
+  --animate-shimmer: shimmer 2.2s linear infinite;
+
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
 }
 
 body {
@@ -34,12 +48,73 @@ body {
   color-scheme: light;
 }
 
-@layer components {
-  .input {
-    @apply w-full rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-sm shadow-xs focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
-  }
+@utility input {
+  @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-xs transition placeholder:text-slate-400 hover:border-slate-300 focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15;
+}
 
-  .input-lg {
-    @apply w-full rounded-md border border-neutral-200 bg-white px-4 py-2.5 text-sm shadow-xs focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
+@utility input-lg {
+  @apply w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 shadow-xs transition placeholder:text-slate-400 hover:border-slate-300 focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/15;
+}
+
+@utility card {
+  @apply rounded-2xl bg-white shadow-[0_1px_2px_rgb(15_23_42/0.04),0_4px_16px_-4px_rgb(15_23_42/0.06)] ring-1 ring-slate-900/5;
+}
+
+@utility card-hover {
+  @apply transition-shadow duration-300 hover:shadow-[0_2px_4px_rgb(15_23_42/0.04),0_16px_40px_-12px_rgb(79_70_229/0.22)] hover:ring-brand-500/20;
+}
+
+@utility bg-brand-gradient {
+  @apply bg-linear-to-br from-brand-600 via-brand-500 to-violet-500;
+}
+
+@utility text-brand-gradient {
+  @apply bg-linear-to-r from-brand-600 to-violet-600 bg-clip-text text-transparent;
+}
+
+@utility btn {
+  @apply inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/25 disabled:pointer-events-none disabled:opacity-60;
+}
+
+@utility btn-primary {
+  @apply inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/25 disabled:pointer-events-none disabled:opacity-60 bg-linear-to-br from-brand-600 via-brand-500 to-violet-500 text-white shadow-[0_1px_2px_rgb(15_23_42/0.1),0_4px_12px_-2px_rgb(79_70_229/0.4)] hover:-translate-y-px hover:shadow-[0_2px_4px_rgb(15_23_42/0.1),0_8px_20px_-4px_rgb(79_70_229/0.5)] hover:brightness-110 active:translate-y-0;
+}
+
+@utility btn-secondary {
+  @apply inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/25 disabled:pointer-events-none disabled:opacity-60 bg-white text-slate-700 shadow-xs ring-1 ring-slate-200 hover:bg-slate-50 hover:text-slate-900 hover:ring-slate-300;
+}
+
+@utility btn-ghost {
+  @apply inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/25 disabled:pointer-events-none disabled:opacity-60 text-slate-600 hover:bg-slate-100 hover:text-slate-900;
+}
+
+@utility btn-danger {
+  @apply inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-3.5 text-sm font-medium whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/25 disabled:pointer-events-none disabled:opacity-60 bg-linear-to-br from-red-600 to-rose-500 text-white shadow-[0_4px_12px_-2px_rgb(225_29_72/0.4)] hover:brightness-110;
+}
+
+@utility section-title {
+  @apply text-sm font-semibold tracking-tight text-slate-900;
+}
+
+@layer components {
+  .data-table {
+    @apply w-full text-sm;
+  }
+  .data-table thead th {
+    @apply bg-slate-50/80 px-4 py-2.5 text-start text-xs font-semibold tracking-wide text-slate-500 uppercase;
+  }
+  .data-table tbody td {
+    @apply border-t border-slate-100 px-4 py-3 text-slate-700;
+  }
+  .data-table tbody tr {
+    @apply transition-colors hover:bg-brand-50/40;
+  }
+}
+
+/* Thin, unobtrusive scrollbars for panels and drawers. */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(148 163 184 / 0.5) transparent;
   }
 }

@@ -16,7 +16,7 @@ export async function ProduitForm({
   return (
     <FormSection maxWidth="max-w-full" title={title}>
       <form action={action} className="space-y-5">
-        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <Field label={t("products.fieldReference")}>
             <input name="reference" defaultValue={produit?.reference ?? ""} className="input-lg" />
           </Field>
@@ -29,7 +29,7 @@ export async function ProduitForm({
           <Field label={t("products.fieldCategory")}>
             <input name="categorie" defaultValue={produit?.categorie ?? ""} className="input-lg" />
           </Field>
-          <Field label={t("products.fieldDesignation")} className="sm:col-span-2">
+          <Field label={t("products.fieldDesignation")} className="lg:col-span-2">
             <input name="designation" defaultValue={produit?.designation} required className="input-lg" />
           </Field>
           <Field label={t("products.fieldStock")}>
@@ -42,7 +42,7 @@ export async function ProduitForm({
               className="input-lg"
             />
           </Field>
-          <Field label={t("products.fieldDescription")} className="sm:col-span-3">
+          <Field label={t("products.fieldDescription")} className="sm:col-span-2 lg:col-span-3">
             <textarea
               name="description"
               defaultValue={produit?.description ?? ""}
@@ -92,7 +92,7 @@ function Field({
 }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <span className="mb-1.5 block text-[13px] font-medium text-slate-700">{label}</span>
       {children}
     </label>
   );

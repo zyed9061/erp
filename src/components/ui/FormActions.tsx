@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useFormStatus } from "react-dom";
+import { Check, Loader2 } from "lucide-react";
 import { useLocale } from "@/i18n/client";
 
 export function FormActions({
@@ -14,19 +16,36 @@ export function FormActions({
   const resolvedSubmitLabel = submitLabel ?? t("common.save");
 
   return (
-    <div className="flex items-center justify-end gap-2 border-t border-neutral-100 pt-5">
-      <Link
-        href={cancelHref}
-        className="inline-flex h-9 items-center justify-center rounded-md border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 shadow-xs hover:bg-neutral-50"
-      >
+    <div className="flex flex-col-reverse gap-2 border-t border-slate-100 pt-6 sm:flex-row sm:items-center sm:justify-end">
+      <Link href={cancelHref} className="btn-secondary h-10 px-5">
         {t("common.cancel")}
       </Link>
-      <button
-        type="submit"
-        className="inline-flex h-9 items-center justify-center rounded-md bg-brand-700 px-4 text-sm font-medium text-white shadow-xs hover:bg-brand-800"
-      >
-        {resolvedSubmitLabel}
-      </button>
+      <SubmitButton label={resolvedSubmitLabel} />
     </div>
+  );
+}
+
+/** Primary submit button that shows a spinner and disables itself while its form is submitting. */
+export function SubmitButton({
+  label,
+  pendingLabel,
+  className = "",
+  icon = true,
+}: {
+  label: string;
+  pendingLabel?: string;
+  className?: string;
+  icon?: boolean;
+}) {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending} aria-busy={pending} className={`btn-primary h-10 px-5 ${className}`}>
+      {pending ? (
+        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+      ) : (
+        icon && <Check className="h-4 w-4" aria-hidden="true" />
+      )}
+      {pending && pendingLabel ? pendingLabel : label}
+    </button>
   );
 }
