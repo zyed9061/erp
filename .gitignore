@@ -49,3 +49,6 @@ next-env.d.ts
 # local dev database and logs
 /.data/
 /.devlocal.log
+
+# ML: generated datasets, ground truth and exports (may contain client data)
+/ml/data/

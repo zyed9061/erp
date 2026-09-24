@@ -1,0 +1,5 @@
+# Offline ML tooling (training, evaluation, exports). The web app never needs Python at runtime.
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.5
+openpyxl>=3.1
