@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopHeader } from "@/components/layout/TopHeader";
+import { ChatBubble } from "@/components/chat/ChatBubble";
 
 const STORAGE_KEY = "erp:sidebar-collapsed";
 
@@ -75,6 +76,7 @@ export function AppShell({
             {children}
           </motion.div>
         </main>
+        <ChatBubble />
       </div>
     </div>
   );

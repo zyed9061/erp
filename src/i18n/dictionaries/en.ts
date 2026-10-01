@@ -448,6 +448,31 @@ const en: Messages = {
     columnProbability: "Probability",
     columnBalance: "Balance due",
   },
+  chat: {
+    open: "Open the assistant",
+    close: "Close the assistant",
+    title: "Assistant",
+    subtitle: "Answers from your data only",
+    newChat: "New conversation",
+    greeting: "Hi! Ask me anything about your invoices, quotes, clients or payments.",
+    suggestionsTitle: "Try for example",
+    suggestions: {
+      overdue: "How many invoices are overdue?",
+      toCollect: "What is the total amount to collect?",
+      topClients: "Who are my top 5 clients?",
+      thisMonth: "How much have I invoiced this month?",
+    },
+    placeholder: "Ask your question...",
+    send: "Send",
+    thinking: "Searching your data...",
+    sourceNote: "Answers are based on the database only.",
+    errors: {
+      upstream: "The assistant is not responding right now. Please try again.",
+      not_configured: "The assistant is not configured (missing OPENAI_API_KEY).",
+      unauthorized: "Your session has expired. Please sign in again.",
+      bad_request: "Invalid message.",
+    },
+  },
 };
 
 export default en;
