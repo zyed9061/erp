@@ -32,6 +32,17 @@
   --radius-card: 1rem;
 
   --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-gradient-pan: gradient-pan 8s ease-in-out infinite;
+
+  @keyframes gradient-pan {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
 
   @keyframes shimmer {
     from {

@@ -34,6 +34,7 @@ export const ROUTE_LABEL_KEYS: Record<string, string> = {
   avoirs: "nav.creditNotes",
   parametres: "nav.settings",
   new: "breadcrumb.new",
+  extract: "breadcrumb.extract",
   login: "breadcrumb.login",
 };
 
