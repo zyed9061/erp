@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  /* Height of the sticky app footer; the assistant panel and toasts sit above it. */
+  --footer-h: 3.5rem;
   --background: oklch(98.4% 0.003 264);
   --foreground: #0f172a;
 }
@@ -116,5 +118,28 @@ body {
   * {
     scrollbar-width: thin;
     scrollbar-color: rgb(148 163 184 / 0.5) transparent;
+  }
+}
+
+/* Assistant answers rendered from Markdown. */
+@layer components {
+  .assistant-prose {
+    @apply leading-relaxed break-words;
+  }
+  .assistant-prose > * + * {
+    @apply mt-2.5;
+  }
+  .assistant-prose ul,
+  .assistant-prose ol {
+    @apply space-y-1 ps-5 marker:text-brand-400;
+  }
+  .assistant-prose strong {
+    @apply font-semibold text-slate-900;
+  }
+  .assistant-prose code {
+    @apply rounded bg-slate-100 px-1 py-0.5 font-mono text-[0.85em] text-brand-700;
+  }
+  .assistant-prose blockquote {
+    @apply border-s-2 border-brand-300 ps-3 text-slate-600 italic;
   }
 }

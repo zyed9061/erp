@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Search, ChevronDown, User, Settings, LogOut } from "lucide-react";
+import { Menu, ChevronDown, User, Settings, LogOut } from "lucide-react";
 import { useLocale } from "@/i18n/client";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { GlobalSearch } from "@/components/layout/GlobalSearch";
 import { menuMotion } from "@/components/motion/Motion";
-
 
 export function TopHeader({
   userName,
@@ -55,28 +55,12 @@ export function TopHeader({
         type="button"
         onClick={onOpenMobileMenu}
         aria-label={t("nav.openMenu")}
-        className="btn-ghost -ms-1 h-10 w-10 px-0 md:hidden"
+        className="btn-ghost -ms-1 h-11 w-11 px-0 md:hidden"
       >
         <Menu className="h-5 w-5" aria-hidden="true" />
       </button>
 
-      <div className="hidden min-w-0 flex-1 items-center sm:flex">
-        <label htmlFor="global-search" className="sr-only">
-          {t("nav.globalSearchPlaceholder")}
-        </label>
-        <div className="group relative w-full max-w-md">
-          <Search
-            className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-brand-500"
-            aria-hidden="true"
-          />
-          <input
-            id="global-search"
-            type="search"
-            placeholder={t("nav.globalSearchPlaceholder")}
-            className="w-full rounded-xl border border-transparent bg-slate-100/80 py-2.5 ps-10 pe-3 text-sm text-slate-700 transition placeholder:text-slate-400 hover:bg-slate-100 focus:border-brand-300 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-500/10"
-          />
-        </div>
-      </div>
+      <GlobalSearch />
 
       <div className="ms-auto flex items-center gap-1 sm:gap-2">
         <LanguageSwitcher />

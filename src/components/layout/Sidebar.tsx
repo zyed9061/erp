@@ -75,9 +75,10 @@ export function Sidebar({
           <button
             type="button"
             onClick={onToggleCollapsed}
-            aria-label={t(collapsed ? "common.view" : "common.close")}
-            aria-pressed={collapsed}
-            className="hidden rounded-lg p-1.5 text-slate-400 transition hover:bg-white/10 hover:text-white md:inline-flex"
+            aria-label={t(collapsed ? "nav.expandSidebar" : "nav.collapseSidebar")}
+            title={t(collapsed ? "nav.expandSidebar" : "nav.collapseSidebar")}
+            aria-expanded={!collapsed}
+            className="hidden h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-brand-400 md:inline-flex"
           >
             {collapsed ? (
               <ChevronsRight className="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />
@@ -87,7 +88,7 @@ export function Sidebar({
           </button>
         </div>
 
-        <nav className={`relative flex-1 space-y-1 px-3 py-5 ${railOnly ? "" : "overflow-y-auto"}`} aria-label={t("nav.dashboard")}>
+        <nav className={`relative flex-1 space-y-1 px-3 py-5 ${railOnly ? "" : "overflow-y-auto"}`} aria-label={t("nav.mainNavigation")}>
           {NAV_ITEMS.map((item, index) => {
             const active = isNavItemActive(pathname, item.href);
             const Icon = item.icon;
@@ -103,6 +104,7 @@ export function Sidebar({
                 <Link
                   href={item.href}
                   aria-current={active ? "page" : undefined}
+                  aria-label={railOnly ? label : undefined}
                   className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400 ${
                     active ? "text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
                   } ${railOnly ? "justify-center" : ""}`}
@@ -124,8 +126,8 @@ export function Sidebar({
                 </Link>
                 {railOnly && (
                   <span
-                    role="tooltip"
-                    className="pointer-events-none absolute start-full top-1/2 z-50 ms-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-xl ring-1 ring-white/10 transition-opacity group-hover:opacity-100"
+                    aria-hidden="true"
+                    className="pointer-events-none absolute start-full top-1/2 z-50 ms-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-xl ring-1 ring-white/10 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
                   >
                     {label}
                   </span>
