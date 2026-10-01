@@ -1,0 +1,203 @@
+{
+  "model_version": "v20260924-075317",
+  "trained_at": "2026-09-24T07:53:17+00:00",
+  "demo_data": true,
+  "thresholds": {
+    "high_risk": 0.5,
+    "medium_risk": 0.25
+  },
+  "late_payment": {
+    "split": {
+      "cutoff": "2026-03-16",
+      "train_rows": 797,
+      "test_rows": 284,
+      "test_late_rate": 0.229
+    },
+    "classification": {
+      "logistic_regression": {
+        "auc": 0.774,
+        "avg_precision": 0.545,
+        "brier": 0.141,
+        "late_rate_top_10pct": 0.714,
+        "precision_high_risk": 0.707,
+        "recall_high_risk": 0.446
+      },
+      "gradient_boosting": {
+        "auc": 0.815,
+        "avg_precision": 0.612,
+        "brier": 0.13,
+        "late_rate_top_10pct": 0.786,
+        "precision_high_risk": 0.682,
+        "recall_high_risk": 0.462
+      },
+      "baseline_client_late_rate": {
+        "auc": 0.787,
+        "avg_precision": 0.537,
+        "brier": 0.143,
+        "late_rate_top_10pct": 0.714,
+        "precision_high_risk": 0.585,
+        "recall_high_risk": 0.477
+      },
+      "oracle_true_probability": {
+        "auc": 0.866,
+        "avg_precision": 0.646,
+        "brier": 0.117,
+        "late_rate_top_10pct": 0.75,
+        "precision_high_risk": 0.707,
+        "recall_high_risk": 0.631
+      }
+    },
+    "chosen_model": "gradient_boosting",
+    "regression": {
+      "mae_days": 9.1,
+      "baseline_mae_days_client_average": 9.6
+    },
+    "open_invoices_scored": 49,
+    "risk_distribution": {
+      "LOW": 29,
+      "HIGH": 14,
+      "MEDIUM": 6
+    },
+    "top_logistic_coefficients": {
+      "prior_late_rate_smoothed": 0.494,
+      "prior_avg_days_late_filled": 0.469,
+      "term_days": -0.331,
+      "log_total_ttc": 0.325,
+      "issue_in_quarter_end_month": 0.298,
+      "prior_invoice_count": -0.291,
+      "log_prior_open_amount": 0.182,
+      "has_history": -0.181
+    }
+  },
+  "segmentation": {
+    "clustered_clients": 60,
+    "new_clients_not_clustered": 0,
+    "silhouette_by_k": {
+      "4": 0.295,
+      "5": 0.269,
+      "6": 0.313
+    },
+    "chosen_k": 6,
+    "segment_counts": {
+      "RELIABLE": 19,
+      "OCCASIONAL_LATE": 18,
+      "SLOW_PAYER": 13,
+      "INACTIVE": 7,
+      "KEY_ACCOUNT": 3
+    },
+    "cluster_profiles": [
+      {
+        "cluster": 0,
+        "clients": 3,
+        "late_rate": 0.093,
+        "avg_days_late": 0.127,
+        "total_revenue": 741718.389,
+        "recency_days": 23.0,
+        "invoices_per_month": 2.548,
+        "segment": "KEY_ACCOUNT"
+      },
+      {
+        "cluster": 1,
+        "clients": 5,
+        "late_rate": 0.554,
+        "avg_days_late": 20.988,
+        "total_revenue": 130779.314,
+        "recency_days": 24.4,
+        "invoices_per_month": 1.064,
+        "segment": "SLOW_PAYER"
+      },
+      {
+        "cluster": 2,
+        "clients": 8,
+        "late_rate": 0.652,
+        "avg_days_late": 27.185,
+        "total_revenue": 182842.724,
+        "recency_days": 27.75,
+        "invoices_per_month": 0.851,
+        "segment": "SLOW_PAYER"
+      },
+      {
+        "cluster": 3,
+        "clients": 18,
+        "late_rate": 0.338,
+        "avg_days_late": 5.982,
+        "total_revenue": 177640.924,
+        "recency_days": 30.111,
+        "invoices_per_month": 0.902,
+        "segment": "OCCASIONAL_LATE"
+      },
+      {
+        "cluster": 4,
+        "clients": 7,
+        "late_rate": 0.13,
+        "avg_days_late": 0.744,
+        "total_revenue": 74969.111,
+        "recency_days": 140.714,
+        "invoices_per_month": 0.476,
+        "segment": "INACTIVE"
+      },
+      {
+        "cluster": 5,
+        "clients": 19,
+        "late_rate": 0.103,
+        "avg_days_late": -1.025,
+        "total_revenue": 144492.966,
+        "recency_days": 37.053,
+        "invoices_per_month": 0.836,
+        "segment": "RELIABLE"
+      }
+    ],
+    "adjusted_rand_vs_personas": 0.413,
+    "segment_by_persona": {
+      "CHRONIC": {
+        "INACTIVE": 0,
+        "KEY_ACCOUNT": 0,
+        "OCCASIONAL_LATE": 0,
+        "RELIABLE": 0,
+        "SLOW_PAYER": 9
+      },
+      "NEW_RISKY": {
+        "INACTIVE": 0,
+        "KEY_ACCOUNT": 0,
+        "OCCASIONAL_LATE": 0,
+        "RELIABLE": 0,
+        "SLOW_PAYER": 3
+      },
+      "OCCASIONAL": {
+        "INACTIVE": 0,
+        "KEY_ACCOUNT": 0,
+        "OCCASIONAL_LATE": 13,
+        "RELIABLE": 4,
+        "SLOW_PAYER": 1
+      },
+      "QUARTER_END": {
+        "INACTIVE": 1,
+        "KEY_ACCOUNT": 0,
+        "OCCASIONAL_LATE": 5,
+        "RELIABLE": 0,
+        "SLOW_PAYER": 0
+      },
+      "RELIABLE": {
+        "INACTIVE": 6,
+        "KEY_ACCOUNT": 3,
+        "OCCASIONAL_LATE": 0,
+        "RELIABLE": 15,
+        "SLOW_PAYER": 0
+      }
+    }
+  },
+  "anomalies": {
+    "invoices_checked": 1182,
+    "flagged": 33,
+    "flagged_by_rules": 26,
+    "flagged_by_isolation_forest_only": 7,
+    "precision": 0.697,
+    "recall": 1.0,
+    "recall_by_type": {
+      "AMOUNT_SPIKE": "5/5",
+      "DUPLICATE": "6/6",
+      "ODD_DISCOUNT": "6/6",
+      "WRONG_VAT": "6/6"
+    }
+  }
+}

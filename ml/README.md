@@ -70,7 +70,7 @@ Invoice-level effects add to the persona: unusually large amounts, individual (n
 clients, immediate payment terms, and due dates in August or December all raise the risk. A
 long relationship lowers it.
 
-### Ground truth (`ml/data/`, not committed)
+### Ground truth (`ml/data/`, committed for the demo dataset)
 
 | File | Content |
 |---|---|
@@ -82,6 +82,21 @@ long relationship lowers it.
 **Caveat:** a model trained on generated data only rediscovers the patterns built into the
 generator. Metrics on demo data validate the pipeline, not real-world accuracy. Retrain on real
 payment history before trusting the scores.
+
+### Demo database snapshot (`prisma/demo/snapshot/`)
+
+The exact demo database used during development (seed 42, reference date 2026-09-23), with the
+ML scores of model run `v20260924-075317`, as one CSV per table. Restoring it gives the same
+data and scores without regenerating or retraining:
+
+```bash
+npx prisma migrate deploy && npx prisma db seed     # on a database whose name ends with _demo
+psql -f prisma/demo/snapshot/restore.sql -d "postgresql://erp:erp@127.0.0.1:5433/erp_facturation_demo"
+```
+
+Run it from the repository root. It replaces the business and ML data of that database and refuses
+any database whose name doesn't end with `_demo`. User accounts are not in the snapshot: every
+document is attributed to the database's first admin user.
 
 ## ML dataset (phase 2)
 
@@ -166,8 +181,9 @@ real-world accuracy.
    rate" baseline before showing scores to users.
 2. **Check the thresholds** (`HIGH_RISK`, `MEDIUM_RISK`, and the anomaly thresholds): they were
    chosen on demo data.
-3. **Keep the exports private:** `ml/data/` then contains real client data. It's git-ignored;
-   don't share it.
+3. **Keep the exports private:** `ml/data/` then contains real client data. It's committed only
+   because it holds the demo dataset today: uncomment `/ml/data/` in `.gitignore` before exporting
+   real data, and don't share it.
 
 ## Python setup
 

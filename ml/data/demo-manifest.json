@@ -1,0 +1,15 @@
+{
+  "seed": 42,
+  "referenceDate": "2026-09-23T10:00:00.000Z",
+  "lateThresholdDays": 7,
+  "defaultTermDays": 30,
+  "counts": {
+    "clients": 60,
+    "products": 40,
+    "quotes": 997,
+    "invoices": 1210,
+    "payments": 1487,
+    "creditNotes": 33,
+    "anomalies": 24
+  }
+}

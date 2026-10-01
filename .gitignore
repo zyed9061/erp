@@ -50,6 +50,7 @@ next-env.d.ts
 /.data/
 /.devlocal.log
 
-# ML: generated datasets, ground truth and exports (may contain client data)
-/ml/data/
+# ML: ml/data/ is committed while it only holds the generated demo dataset.
+# Uncomment before exporting real data (it then contains client data):
+# /ml/data/
 __pycache__/
