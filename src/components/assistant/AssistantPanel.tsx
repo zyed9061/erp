@@ -9,10 +9,9 @@ import { AssistantMarkdown } from "@/components/assistant/AssistantMarkdown";
 import { AssistantIcon } from "@/components/assistant/AssistantIcon";
 
 const STORAGE_KEY = "erp:assistant";
-const MAX_QUESTION_LENGTH = 4000;
-// Sentence the workflow answers with when the documents don't cover the question
-// (older conversations may hold the English one from before replies were localized).
-const NOT_FOUND_FALLBACK = "couldn't find this information";
+// Same limits as /api/chat: message length and the number of turns sent per request.
+const MAX_QUESTION_LENGTH = 2000;
+const MAX_HISTORY = 29;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 interface ChatMessage {
@@ -25,7 +24,6 @@ interface ChatMessage {
 }
 
 interface StoredConversation {
-  sessionId: string;
   messages: ChatMessage[];
 }
 
@@ -43,12 +41,13 @@ function loadConversation(): StoredConversation | null {
 }
 
 /**
- * Document assistant chat panel backed by /api/assistant. Opened from the footer button;
- * the conversation lives in this component, so it survives page navigation.
+ * Database assistant chat panel backed by /api/chat. Opened from the footer button;
+ * the conversation lives in this component, so it survives page navigation, and the
+ * recent turns are sent with each question so follow-ups keep their context.
  */
 export function AssistantPanel({ id, open, onClose }: { id: string; open: boolean; onClose: () => void }) {
   const { t, locale } = useLocale();
-  const [sessionId, setSessionId] = useState("");
+  const [hydrated, setHydrated] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
@@ -63,18 +62,18 @@ export function AssistantPanel({ id, open, onClose }: { id: string; open: boolea
     const saved = loadConversation();
     // One-time hydration from sessionStorage on mount.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSessionId(saved?.sessionId ?? newId());
     if (saved?.messages?.length) setMessages(saved.messages);
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
-    if (!sessionId) return;
+    if (!hydrated) return;
     try {
-      window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ sessionId, messages }));
+      window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ messages } satisfies StoredConversation));
     } catch {
       // sessionStorage unavailable, ignore.
     }
-  }, [sessionId, messages]);
+  }, [hydrated, messages]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -92,7 +91,12 @@ export function AssistantPanel({ id, open, onClose }: { id: string; open: boolea
 
   async function ask(question: string, { addUserMessage = true } = {}) {
     const text = question.trim();
-    if (!text || busy || !sessionId) return;
+    if (!text || busy || !hydrated) return;
+    // Earlier turns give follow-up questions their context; failed answers are left out.
+    const history = messages
+      .filter((m) => !m.retryOf)
+      .slice(-MAX_HISTORY)
+      .map((m) => ({ role: m.role, content: m.text.slice(0, MAX_QUESTION_LENGTH) }));
     if (addUserMessage) {
       setMessages((current) => [...current, { id: newId(), role: "user", text, time: timeNow() }]);
     }
@@ -102,19 +106,24 @@ export function AssistantPanel({ id, open, onClose }: { id: string; open: boolea
     const controller = new AbortController();
     abortRef.current = controller;
     try {
-      const res = await fetch("/api/assistant", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: text, sessionId }),
+        body: JSON.stringify({ messages: [...history, { role: "user", content: text }] }),
         signal: controller.signal,
       });
-      const data = (await res.json().catch(() => ({}))) as { answer?: string; error?: string };
-      if (!res.ok || !data.answer) throw new Error(data.error ?? "upstream");
-      setMessages((current) => [...current, { id: newId(), role: "assistant", text: data.answer!, time: timeNow() }]);
+      const data = (await res.json().catch(() => ({}))) as { reply?: string; error?: string };
+      if (!res.ok || !data.reply) throw new Error(data.error ?? "upstream");
+      setMessages((current) => [...current, { id: newId(), role: "assistant", text: data.reply!, time: timeNow() }]);
     } catch (error) {
       if (controller.signal.aborted) return;
       const code = error instanceof Error ? error.message : "upstream";
-      const key = code === "timeout" ? "assistant.errorTimeout" : code === "not_configured" ? "assistant.errorNotConfigured" : "assistant.errorGeneric";
+      const key =
+        code === "not_configured"
+          ? "assistant.errorNotConfigured"
+          : code === "unauthorized"
+            ? "assistant.errorExpired"
+            : "assistant.errorGeneric";
       setMessages((current) => [
         ...current,
         { id: newId(), role: "assistant", text: t(key), time: timeNow(), retryOf: text },
@@ -138,7 +147,6 @@ export function AssistantPanel({ id, open, onClose }: { id: string; open: boolea
     setBusy(false);
     setMessages([]);
     setDraft("");
-    setSessionId(newId());
     inputRef.current?.focus();
   }
 
@@ -322,10 +330,7 @@ function MessageBubble({ message, onRetry }: { message: ChatMessage; onRetry: ()
   const isUser = message.role === "user";
   const isError = Boolean(message.retryOf);
   const text = message.text.toLowerCase();
-  const notFound =
-    !isUser &&
-    !isError &&
-    (text.includes(t("assistant.notFound").toLowerCase().replace(/\.$/, "")) || text.includes(NOT_FOUND_FALLBACK));
+  const notFound = !isUser && !isError && text.includes(t("assistant.notFound").toLowerCase().replace(/\.$/, ""));
 
   async function copy() {
     try {

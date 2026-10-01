@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { auth } from "@/auth";
 import { askAssistant, AssistantError } from "@/lib/chat/assistant";
+import { getLocale } from "@/i18n/server";
+import { createTranslator } from "@/i18n/translate";
 
 const bodySchema = z.object({
   messages: z
@@ -19,7 +21,8 @@ export async function POST(request: Request) {
 
   try {
     // Only the most recent turns are sent: enough context for follow-ups, bounded cost.
-    const reply = await askAssistant(body.data.messages.slice(-12));
+    const t = createTranslator(await getLocale());
+    const reply = await askAssistant(body.data.messages.slice(-12), t("assistant.notFound"));
     return Response.json({ reply });
   } catch (err) {
     const code = err instanceof AssistantError ? err.code : "upstream";

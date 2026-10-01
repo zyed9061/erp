@@ -16,14 +16,14 @@ export class AssistantError extends Error {
 
 const MAX_TOOL_ROUNDS = 6;
 
-function systemPrompt() {
+function systemPrompt(notFound: string) {
   const today = new Date().toISOString().slice(0, 10);
   return `You are the assistant of an invoicing ERP (Tunisia, amounts in TND with 3 decimals). Today is ${today}.
 
 Rules:
 - Answer ONLY with facts returned by the tools in this conversation. Never guess, estimate, extrapolate or use outside knowledge.
 - Always call a tool before giving any number, name or date, even if you think you know it.
-- If the tools cannot answer the question, say that this information is not available in the database. Do not invent a workaround.
+- If the tools cannot answer the question, reply with exactly this sentence (translated if the user writes in another language): "${notFound}" Do not invent a workaround.
 - Politely decline any question unrelated to this company's data (general knowledge, coding, advice...).
 - You are read-only: you cannot create, modify, send or delete anything.
 - Reply in the language of the user's last message. Be short: one or two sentences, or a short "- " list. Plain text, **bold** allowed, no tables, no headings.
@@ -70,8 +70,9 @@ async function complete(messages: ApiMessage[]) {
   return data.choices[0].message as { content: string | null; tool_calls?: ToolCall[] };
 }
 
-export async function askAssistant(history: ChatMessage[]): Promise<string> {
-  const messages: ApiMessage[] = [{ role: "system", content: systemPrompt() }, ...history];
+/** `notFound` is the sentence the panel highlights when the database has no answer. */
+export async function askAssistant(history: ChatMessage[], notFound: string): Promise<string> {
+  const messages: ApiMessage[] = [{ role: "system", content: systemPrompt(notFound) }, ...history];
 
   for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
     const reply = await complete(messages);

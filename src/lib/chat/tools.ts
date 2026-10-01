@@ -146,9 +146,16 @@ const searchInvoicesArgs = z.object({
   dueTo: isoDate.optional().describe("Due date to (inclusive)"),
   lateRisk: z.enum(["LOW", "MEDIUM", "HIGH"]).optional().describe("ML late-payment risk of open invoices"),
   unusualOnly: z.boolean().optional().describe("Only invoices flagged as unusual by the anomaly model"),
-  sort: z.enum(["recent", "oldest", "amount_due", "total", "due_date"]).default("recent"),
+  sort: z
+    .enum(["recent", "oldest", "amount_due", "total", "due_date", "late_risk"])
+    .default("recent")
+    .describe("late_risk = highest ML late-payment probability first (open invoices with a score)"),
   limit: limit(25, 10).describe("Rows to list; totals always cover every match"),
 });
+/** ML late-payment probability, or -1 when the invoice has no score that is still meaningful. */
+const lateProbability = (f: LoadedFacture) =>
+  f.mlScore?.riskLevel && showsRisk(f.statut, f.resteAPayer) ? Number(f.mlScore.lateProbability ?? 0) : -1;
+
 async function searchInvoices(args: z.infer<typeof searchInvoicesArgs>) {
   let list = await loadFactures({
     ...nameContains(args.client),
@@ -160,12 +167,14 @@ async function searchInvoices(args: z.infer<typeof searchInvoicesArgs>) {
   if (args.lateRisk) {
     list = list.filter((f) => f.mlScore?.riskLevel === args.lateRisk && showsRisk(f.statut, f.resteAPayer));
   }
+  if (args.sort === "late_risk") list = list.filter((f) => lateProbability(f) >= 0);
   const sorters: Record<typeof args.sort, (a: LoadedFacture, b: LoadedFacture) => number> = {
     recent: (a, b) => b.dateEmission.getTime() - a.dateEmission.getTime(),
     oldest: (a, b) => a.dateEmission.getTime() - b.dateEmission.getTime(),
     amount_due: (a, b) => b.resteAPayer - a.resteAPayer,
     total: (a, b) => b.totalTTC - a.totalTTC,
     due_date: (a, b) => (a.dateEcheance?.getTime() ?? Infinity) - (b.dateEcheance?.getTime() ?? Infinity),
+    late_risk: (a, b) => lateProbability(b) - lateProbability(a),
   };
   list.sort(sorters[args.sort]);
   const notCancelled = list.filter((f) => f.statut !== "ANNULEE");
@@ -535,7 +544,8 @@ async function getMlInsights() {
     highRisk: {
       count: high.length,
       amountDue: round(high.reduce((s, f) => s + f.resteAPayer, 0)),
-      top: high.slice(0, 5).map(invoiceRow),
+      // Most money at stake; use search_invoices sort=late_risk to rank by probability.
+      topByAmountDue: high.slice(0, 5).map(invoiceRow),
     },
     unusualInvoices: { count: unusual.length, examples: unusual.slice(0, 5).map((f) => f.numero) },
     clientsBySegment: Object.fromEntries(segments.map((s) => [s.segment, s._count])),

@@ -15,7 +15,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       userName={session?.user?.name ?? t("common.user")}
       userEmail={session?.user?.email ?? ""}
       onSignOut={handleSignOut}
-      assistantEnabled={Boolean(process.env.RAG_CHAT_URL)}
+      assistantEnabled={Boolean(process.env.OPENAI_API_KEY)}
     >
       {children}
     </AppShell>
