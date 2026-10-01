@@ -1,0 +1,25 @@
+factureId,numero,type,detail
+demofac00096,FAC-2024-0096,DUPLICATE,Same client and lines as another invoice issued within 3 days
+demofac00908,FAC-2026-0171,WRONG_VAT,"Line ""Ciment (tonne)"" VAT 1.9% instead of 19%"
+demofac00571,FAC-2025-0428,AMOUNT_SPIKE,"Line ""Dattes Deglet Nour (carton)"" quantity x16 vs usual"
+demofac00236,FAC-2025-0093,ODD_DISCOUNT,"Line ""Nom de domaine .tn"" discount 71%"
+demofac00979,FAC-2026-0242,DUPLICATE,Same client and lines as another invoice issued within 3 days
+demofac01201,FAC-2026-0464,WRONG_VAT,"Line ""Nom de domaine .tn"" VAT 0% instead of 19%"
+demofac00247,FAC-2025-0104,AMOUNT_SPIKE,"Line ""Formation comptabilite"" quantity x14 vs usual"
+demofac00997,FAC-2026-0260,ODD_DISCOUNT,"Line ""Developpement web (jour)"" discount 69%"
+demofac00351,FAC-2025-0208,DUPLICATE,Same client and lines as another invoice issued within 3 days
+demofac00362,FAC-2025-0219,WRONG_VAT,"Line ""Kit de premiers secours"" VAT 29% instead of 7%"
+demofac00707,FAC-2025-0564,AMOUNT_SPIKE,"Line ""Routeur professionnel"" quantity x13 vs usual"
+demofac01052,FAC-2026-0315,ODD_DISCOUNT,"Line ""Huile d'olive extra (bidon 5L)"" discount 73%"
+demofac00825,FAC-2026-0088,DUPLICATE,Same client and lines as another invoice issued within 3 days
+demofac00516,FAC-2025-0373,WRONG_VAT,"Line ""Etude de marche"" VAT 0% instead of 19%"
+demofac00381,FAC-2025-0238,AMOUNT_SPIKE,"Line ""Intervention sur site"" quantity x18 vs usual"
+demofac00983,FAC-2026-0246,ODD_DISCOUNT,"Line ""Classeur archive"" discount 84%"
+demofac00005,FAC-2024-0005,DUPLICATE,Same client and lines as another invoice issued within 3 days
+demofac01071,FAC-2026-0334,WRONG_VAT,"Line ""Logiciel de gestion commerciale"" VAT 29% instead of 19%"
+demofac00121,FAC-2024-0121,AMOUNT_SPIKE,"Line ""Developpement web (jour)"" quantity x16 vs usual"
+demofac00942,FAC-2026-0205,ODD_DISCOUNT,"Line ""Stockage entrepot (m2/mois)"" discount 60%"
+demofac01003,FAC-2026-0266,DUPLICATE,Same client and lines as another invoice issued within 3 days
+demofac00861,FAC-2026-0124,WRONG_VAT,"Line ""Serveur dedie (mois)"" VAT 1.9% instead of 19%"
+demofac00844,FAC-2026-0107,AMOUNT_SPIKE,"Line ""Maintenance mensuelle"" quantity x20 vs usual"
+demofac01063,FAC-2026-0326,ODD_DISCOUNT,"Line ""Transport de marchandises"" discount 69%"

@@ -1,0 +1,41 @@
+id,reference,designation,description,type,prixUnitaireHT,uniteMesure,tauxTva,actif,createdAt,updatedAt,categorie,stock
+demoprd00001,SRV-CONS-01,Conseil strategique (jour),,SERVICE,850.000,jour,19.00,t,2024-01-22 10:00:00,2026-09-23 23:58:30.568,Conseil,
+demoprd00002,SRV-CONS-02,Audit organisationnel,,SERVICE,3200.000,forfait,19.00,t,2024-03-19 10:00:00,2026-09-23 23:58:30.568,Conseil,
+demoprd00003,SRV-CONS-03,Accompagnement fiscal (heure),,SERVICE,120.000,heure,19.00,t,2023-10-21 10:00:00,2026-09-23 23:58:30.568,Conseil,
+demoprd00004,SRV-CONS-04,Etude de marche,,SERVICE,4500.000,forfait,19.00,t,2023-12-28 10:00:00,2026-09-23 23:58:30.568,Conseil,
+demoprd00005,SRV-DEV-01,Developpement web (jour),,SERVICE,450.000,jour,19.00,t,2024-06-29 10:00:00,2026-09-23 23:58:30.568,Developpement,
+demoprd00006,SRV-DEV-02,Application mobile (forfait),,SERVICE,12000.000,forfait,19.00,t,2024-02-19 10:00:00,2026-09-23 23:58:30.568,Developpement,
+demoprd00007,SRV-DEV-03,Integration ERP (jour),,SERVICE,600.000,jour,19.00,t,2024-05-23 10:00:00,2026-09-23 23:58:30.568,Developpement,
+demoprd00008,SRV-DEV-04,Site vitrine,,SERVICE,2400.000,forfait,19.00,t,2024-01-14 10:00:00,2026-09-23 23:58:30.568,Developpement,
+demoprd00009,SRV-MNT-01,Maintenance mensuelle,,SERVICE,380.000,mois,19.00,t,2023-10-16 10:00:00,2026-09-23 23:58:30.568,Maintenance,
+demoprd00010,SRV-MNT-02,Intervention sur site,,SERVICE,150.000,intervention,19.00,t,2024-03-10 10:00:00,2026-09-23 23:58:30.568,Maintenance,
+demoprd00011,SRV-MNT-03,Support premium (annuel),,SERVICE,3600.000,an,19.00,t,2024-06-01 10:00:00,2026-09-23 23:58:30.568,Maintenance,
+demoprd00012,SRV-MNT-04,Sauvegarde externalisee,,SERVICE,95.000,mois,19.00,t,2023-10-10 10:00:00,2026-09-23 23:58:30.568,Maintenance,
+demoprd00013,SRV-FOR-01,Formation bureautique (jour),,SERVICE,420.000,jour,19.00,t,2023-11-30 10:00:00,2026-09-23 23:58:30.568,Formation,
+demoprd00014,SRV-FOR-02,Formation cybersecurite,,SERVICE,1800.000,session,19.00,t,2024-05-11 10:00:00,2026-09-23 23:58:30.568,Formation,
+demoprd00015,SRV-FOR-03,Formation comptabilite,,SERVICE,650.000,jour,19.00,t,2024-06-20 10:00:00,2026-09-23 23:58:30.568,Formation,
+demoprd00016,SRV-HEB-01,Hebergement web (annuel),,SERVICE,540.000,an,19.00,t,2024-02-29 10:00:00,2026-09-23 23:58:30.568,Hebergement,
+demoprd00017,SRV-HEB-02,Nom de domaine .tn,,SERVICE,45.000,an,19.00,t,2023-12-22 10:00:00,2026-09-23 23:58:30.568,Hebergement,
+demoprd00018,SRV-HEB-03,Serveur dedie (mois),,SERVICE,290.000,mois,19.00,t,2024-01-19 10:00:00,2026-09-23 23:58:30.568,Hebergement,
+demoprd00019,SRV-TRA-01,Transport de marchandises,,SERVICE,210.000,voyage,7.00,t,2024-08-31 10:00:00,2026-09-23 23:58:30.568,Logistique,
+demoprd00020,SRV-TRA-02,Stockage entrepot (m2/mois),,SERVICE,12.000,m2,19.00,t,2024-03-11 10:00:00,2026-09-23 23:58:30.568,Logistique,
+demoprd00021,PRD-INF-01,Ordinateur portable pro,,PRODUIT,2350.000,unite,19.00,t,2024-08-14 10:00:00,2026-09-23 23:58:30.568,Informatique,210
+demoprd00022,PRD-INF-02,Ecran 27 pouces,,PRODUIT,690.000,unite,19.00,t,2024-08-21 10:00:00,2026-09-23 23:58:30.568,Informatique,148
+demoprd00023,PRD-INF-03,Imprimante laser,,PRODUIT,980.000,unite,19.00,t,2024-08-10 10:00:00,2026-09-23 23:58:30.568,Informatique,67
+demoprd00024,PRD-INF-04,Routeur professionnel,,PRODUIT,540.000,unite,19.00,t,2023-11-16 10:00:00,2026-09-23 23:58:30.568,Informatique,46
+demoprd00025,PRD-INF-05,Onduleur 1500VA,,PRODUIT,460.000,unite,19.00,t,2024-08-22 10:00:00,2026-09-23 23:58:30.568,Informatique,133
+demoprd00026,PRD-INF-06,Disque SSD 1To,,PRODUIT,310.000,unite,19.00,t,2023-10-25 10:00:00,2026-09-23 23:58:30.568,Informatique,43
+demoprd00027,PRD-LOG-01,Licence antivirus (poste),,PRODUIT,85.000,licence,19.00,t,2023-11-06 10:00:00,2026-09-23 23:58:30.568,Logiciels,122
+demoprd00028,PRD-LOG-02,Licence suite bureautique,,PRODUIT,320.000,licence,19.00,t,2024-03-19 10:00:00,2026-09-23 23:58:30.568,Logiciels,80
+demoprd00029,PRD-LOG-03,Logiciel de gestion commerciale,,PRODUIT,2900.000,licence,19.00,t,2024-08-13 10:00:00,2026-09-23 23:58:30.568,Logiciels,9
+demoprd00030,PRD-FOU-01,Ramette papier A4,,PRODUIT,14.500,ramette,19.00,t,2024-01-24 10:00:00,2026-09-23 23:58:30.568,Fournitures,139
+demoprd00031,PRD-FOU-02,Cartouche toner,,PRODUIT,165.000,unite,19.00,t,2024-01-06 10:00:00,2026-09-23 23:58:30.568,Fournitures,61
+demoprd00032,PRD-FOU-03,Classeur archive,,PRODUIT,6.800,unite,19.00,t,2024-05-12 10:00:00,2026-09-23 23:58:30.568,Fournitures,52
+demoprd00033,PRD-FOU-04,Mobilier de bureau (poste),,PRODUIT,1250.000,poste,19.00,t,2023-10-19 10:00:00,2026-09-23 23:58:30.568,Fournitures,185
+demoprd00034,PRD-MED-01,Kit de premiers secours,,PRODUIT,75.000,kit,7.00,t,2024-06-18 10:00:00,2026-09-23 23:58:30.568,Medical,127
+demoprd00035,PRD-MED-02,Gants nitrile (boite),,PRODUIT,18.000,boite,7.00,t,2024-05-16 10:00:00,2026-09-23 23:58:30.568,Medical,71
+demoprd00036,PRD-AGR-01,Huile d'olive extra (bidon 5L),,PRODUIT,68.000,bidon,13.00,t,2024-01-01 10:00:00,2026-09-23 23:58:30.568,Agroalimentaire,18
+demoprd00037,PRD-AGR-02,Dattes Deglet Nour (carton),,PRODUIT,42.000,carton,13.00,t,2023-12-19 10:00:00,2026-09-23 23:58:30.568,Agroalimentaire,170
+demoprd00038,PRD-BAT-01,Ciment (tonne),,PRODUIT,310.000,tonne,19.00,t,2024-07-31 10:00:00,2026-09-23 23:58:30.568,Batiment,232
+demoprd00039,PRD-BAT-02,Carrelage (m2),,PRODUIT,38.000,m2,19.00,t,2024-03-26 10:00:00,2026-09-23 23:58:30.568,Batiment,236
+demoprd00040,PRD-BAT-03,Peinture murale (pot 20L),,PRODUIT,145.000,pot,19.00,t,2024-07-13 10:00:00,2026-09-23 23:58:30.568,Batiment,236

@@ -1,0 +1,34 @@
+id,ordre,designation,description,quantite,prixUnitaireHT,tauxTva,totalHT,avoirId,produitId
+demolav00001,0,Site vitrine,,1.000,2400.000,19.00,2400.000,demoavo00001,demoprd00008
+demolav00002,0,Developpement web (jour),,6.000,450.000,19.00,2700.000,demoavo00002,demoprd00005
+demolav00003,0,Onduleur 1500VA,,1.000,460.000,19.00,460.000,demoavo00003,demoprd00025
+demolav00004,0,Sauvegarde externalisee,,1.000,95.000,19.00,95.000,demoavo00004,demoprd00012
+demolav00005,0,Intervention sur site,,1.000,150.000,19.00,150.000,demoavo00005,demoprd00010
+demolav00006,0,Ciment (tonne),,2.000,310.000,19.00,620.000,demoavo00006,demoprd00038
+demolav00007,0,Imprimante laser,,1.000,980.000,19.00,980.000,demoavo00007,demoprd00023
+demolav00008,0,Formation cybersecurite,,1.000,1800.000,19.00,1800.000,demoavo00008,demoprd00014
+demolav00009,0,Disque SSD 1To,,1.000,310.000,19.00,310.000,demoavo00009,demoprd00026
+demolav00010,0,Etude de marche,,1.000,4500.000,19.00,4500.000,demoavo00010,demoprd00004
+demolav00011,0,Sauvegarde externalisee,,2.000,95.000,19.00,190.000,demoavo00011,demoprd00012
+demolav00012,0,Audit organisationnel,,1.000,3200.000,19.00,3200.000,demoavo00012,demoprd00002
+demolav00013,0,Dattes Deglet Nour (carton),,58.000,42.000,13.00,2436.000,demoavo00013,demoprd00037
+demolav00014,0,Integration ERP (jour),,3.000,600.000,19.00,1800.000,demoavo00014,demoprd00007
+demolav00015,0,Ciment (tonne),,3.000,310.000,19.00,930.000,demoavo00015,demoprd00038
+demolav00016,0,Ecran 27 pouces,,1.000,690.000,19.00,690.000,demoavo00016,demoprd00022
+demolav00017,0,Hebergement web (annuel),,1.000,540.000,19.00,540.000,demoavo00017,demoprd00016
+demolav00018,0,Huile d'olive extra (bidon 5L),,8.000,68.000,13.00,544.000,demoavo00018,demoprd00036
+demolav00019,0,Classeur archive,,101.000,6.800,19.00,686.800,demoavo00019,demoprd00032
+demolav00020,0,Accompagnement fiscal (heure),,1.000,120.000,19.00,120.000,demoavo00020,demoprd00003
+demolav00021,0,Licence antivirus (poste),,6.000,85.000,19.00,510.000,demoavo00021,demoprd00027
+demolav00022,0,Carrelage (m2),,141.000,38.000,19.00,5358.000,demoavo00022,demoprd00039
+demolav00023,0,Peinture murale (pot 20L),,14.000,145.000,19.00,2030.000,demoavo00023,demoprd00040
+demolav00024,0,Nom de domaine .tn,,1.000,45.000,19.00,45.000,demoavo00024,demoprd00017
+demolav00025,0,Site vitrine,,1.000,2400.000,19.00,2400.000,demoavo00025,demoprd00008
+demolav00026,0,Accompagnement fiscal (heure),,1.000,120.000,19.00,120.000,demoavo00026,demoprd00003
+demolav00027,0,Dattes Deglet Nour (carton),,3.000,42.000,13.00,126.000,demoavo00027,demoprd00037
+demolav00028,0,Application mobile (forfait),,1.000,12000.000,19.00,12000.000,demoavo00028,demoprd00006
+demolav00029,0,Formation cybersecurite,,1.000,1800.000,19.00,1800.000,demoavo00029,demoprd00014
+demolav00030,0,Etude de marche,,1.000,4500.000,19.00,4500.000,demoavo00030,demoprd00004
+demolav00031,0,Peinture murale (pot 20L),,1.000,145.000,19.00,145.000,demoavo00031,demoprd00040
+demolav00032,0,Maintenance mensuelle,,1.000,380.000,19.00,380.000,demoavo00032,demoprd00009
+demolav00033,0,Onduleur 1500VA,,1.000,460.000,19.00,460.000,demoavo00033,demoprd00025

@@ -1,0 +1,1966 @@
+id,ordre,designation,description,quantite,prixUnitaireHT,remisePct,tauxTva,totalHT,devisId,produitId
+demoldv00001,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00001,demoprd00011
+demoldv00002,1,Transport de marchandises,,8.000,210.000,0.00,7.00,1680.000,demodev00001,demoprd00019
+demoldv00003,0,Ciment (tonne),,22.000,310.000,0.00,19.00,6820.000,demodev00002,demoprd00038
+demoldv00004,0,Intervention sur site,,1.000,150.000,0.00,19.00,150.000,demodev00003,demoprd00010
+demoldv00005,1,Ecran 27 pouces,,7.000,690.000,14.00,19.00,4153.800,demodev00003,demoprd00022
+demoldv00006,2,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00003,demoprd00014
+demoldv00007,3,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00003,demoprd00024
+demoldv00008,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00004,demoprd00016
+demoldv00009,1,Dattes Deglet Nour (carton),,180.000,42.000,0.00,13.00,7560.000,demodev00004,demoprd00037
+demoldv00010,2,Carrelage (m2),,212.000,38.000,0.00,19.00,8056.000,demodev00004,demoprd00039
+demoldv00011,0,Sauvegarde externalisee,,6.000,95.000,0.00,19.00,570.000,demodev00005,demoprd00012
+demoldv00012,0,Kit de premiers secours,,19.000,75.000,0.00,7.00,1425.000,demodev00006,demoprd00034
+demoldv00013,1,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00006,demoprd00035
+demoldv00014,2,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00006,demoprd00040
+demoldv00015,0,Ciment (tonne),,6.000,310.000,0.00,19.00,1860.000,demodev00007,demoprd00038
+demoldv00016,0,Kit de premiers secours,,6.000,75.000,0.00,7.00,450.000,demodev00008,demoprd00034
+demoldv00017,1,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00008,demoprd00019
+demoldv00018,2,Gants nitrile (boite),,45.000,18.000,0.00,7.00,810.000,demodev00008,demoprd00035
+demoldv00019,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00009,demoprd00008
+demoldv00020,1,Developpement web (jour),,5.000,450.000,0.00,19.00,2250.000,demodev00009,demoprd00005
+demoldv00021,2,Integration ERP (jour),,15.000,600.000,12.00,19.00,7920.000,demodev00009,demoprd00007
+demoldv00022,0,Ecran 27 pouces,,12.000,690.000,0.00,19.00,8280.000,demodev00010,demoprd00022
+demoldv00023,1,Routeur professionnel,,5.000,540.000,0.00,19.00,2700.000,demodev00010,demoprd00024
+demoldv00024,0,Ecran 27 pouces,,3.000,690.000,13.00,19.00,1800.900,demodev00011,demoprd00022
+demoldv00025,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00012,demoprd00029
+demoldv00026,1,Ordinateur portable pro,,3.000,2350.000,0.00,19.00,7050.000,demodev00012,demoprd00021
+demoldv00027,2,Onduleur 1500VA,,3.000,460.000,13.00,19.00,1200.600,demodev00012,demoprd00025
+demoldv00028,0,Gants nitrile (boite),,222.000,18.000,0.00,7.00,3996.000,demodev00013,demoprd00035
+demoldv00029,1,Dattes Deglet Nour (carton),,26.000,42.000,0.00,13.00,1092.000,demodev00013,demoprd00037
+demoldv00030,2,Serveur dedie (mois),,6.000,290.000,0.00,19.00,1740.000,demodev00013,demoprd00018
+demoldv00031,0,Classeur archive,,106.000,6.800,0.00,19.00,720.800,demodev00014,demoprd00032
+demoldv00032,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00015,demoprd00006
+demoldv00033,0,Site vitrine,,1.000,2400.000,8.00,19.00,2208.000,demodev00016,demoprd00008
+demoldv00034,1,Etude de marche,,1.000,4500.000,9.00,19.00,4095.000,demodev00016,demoprd00004
+demoldv00035,0,Disque SSD 1To,,2.000,310.000,0.00,19.00,620.000,demodev00017,demoprd00026
+demoldv00036,1,Ecran 27 pouces,,7.000,690.000,0.00,19.00,4830.000,demodev00017,demoprd00022
+demoldv00037,0,Sauvegarde externalisee,,4.000,95.000,6.00,19.00,357.200,demodev00018,demoprd00012
+demoldv00038,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00018,demoprd00009
+demoldv00039,2,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00018,demoprd00016
+demoldv00040,3,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00018,demoprd00011
+demoldv00041,0,Classeur archive,,252.000,6.800,0.00,19.00,1713.600,demodev00019,demoprd00032
+demoldv00042,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00020,demoprd00006
+demoldv00043,0,Licence antivirus (poste),,35.000,85.000,6.00,19.00,2796.500,demodev00021,demoprd00027
+demoldv00044,0,Stockage entrepot (m2/mois),,225.000,12.000,0.00,19.00,2700.000,demodev00022,demoprd00020
+demoldv00045,0,Ordinateur portable pro,,2.000,2350.000,0.00,19.00,4700.000,demodev00023,demoprd00021
+demoldv00046,1,Disque SSD 1To,,6.000,310.000,0.00,19.00,1860.000,demodev00023,demoprd00026
+demoldv00047,0,Licence antivirus (poste),,60.000,85.000,0.00,19.00,5100.000,demodev00024,demoprd00027
+demoldv00048,0,Mobilier de bureau (poste),,4.000,1250.000,6.00,19.00,4700.000,demodev00025,demoprd00033
+demoldv00049,0,Integration ERP (jour),,11.000,600.000,0.00,19.00,6600.000,demodev00026,demoprd00007
+demoldv00050,0,Classeur archive,,58.000,6.800,0.00,19.00,394.400,demodev00027,demoprd00032
+demoldv00051,1,Ramette papier A4,,117.000,14.500,0.00,19.00,1696.500,demodev00027,demoprd00030
+demoldv00052,2,Licence suite bureautique,,1.000,320.000,0.00,19.00,320.000,demodev00027,demoprd00028
+demoldv00053,0,Imprimante laser,,1.000,980.000,8.00,19.00,901.600,demodev00028,demoprd00023
+demoldv00054,1,Ramette papier A4,,200.000,14.500,0.00,19.00,2900.000,demodev00028,demoprd00030
+demoldv00055,2,Transport de marchandises,,10.000,210.000,0.00,7.00,2100.000,demodev00028,demoprd00019
+demoldv00056,0,Mobilier de bureau (poste),,4.000,1250.000,0.00,19.00,5000.000,demodev00029,demoprd00033
+demoldv00057,1,Ramette papier A4,,61.000,14.500,0.00,19.00,884.500,demodev00029,demoprd00030
+demoldv00058,2,Routeur professionnel,,4.000,540.000,0.00,19.00,2160.000,demodev00029,demoprd00024
+demoldv00059,0,Licence antivirus (poste),,19.000,85.000,0.00,19.00,1615.000,demodev00030,demoprd00027
+demoldv00060,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00030,demoprd00014
+demoldv00061,0,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00031,demoprd00025
+demoldv00062,0,Dattes Deglet Nour (carton),,68.000,42.000,0.00,13.00,2856.000,demodev00032,demoprd00037
+demoldv00063,1,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00032,demoprd00016
+demoldv00064,2,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00032,demoprd00002
+demoldv00065,3,Huile d'olive extra (bidon 5L),,110.000,68.000,0.00,13.00,7480.000,demodev00032,demoprd00036
+demoldv00066,0,Accompagnement fiscal (heure),,19.000,120.000,0.00,19.00,2280.000,demodev00033,demoprd00003
+demoldv00067,0,Licence suite bureautique,,13.000,320.000,14.00,19.00,3577.600,demodev00034,demoprd00028
+demoldv00068,1,Ecran 27 pouces,,4.000,690.000,0.00,19.00,2760.000,demodev00034,demoprd00022
+demoldv00069,0,Carrelage (m2),,800.000,38.000,0.00,19.00,30400.000,demodev00035,demoprd00039
+demoldv00070,1,Developpement web (jour),,9.000,450.000,0.00,19.00,4050.000,demodev00035,demoprd00005
+demoldv00071,2,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00035,demoprd00016
+demoldv00072,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00036,demoprd00036
+demoldv00073,0,Ciment (tonne),,60.000,310.000,0.00,19.00,18600.000,demodev00037,demoprd00038
+demoldv00074,0,Transport de marchandises,,4.000,210.000,0.00,7.00,840.000,demodev00038,demoprd00019
+demoldv00075,1,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00038,demoprd00014
+demoldv00076,0,Serveur dedie (mois),,7.000,290.000,0.00,19.00,2030.000,demodev00039,demoprd00018
+demoldv00077,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00039,demoprd00004
+demoldv00078,2,Intervention sur site,,5.000,150.000,0.00,19.00,750.000,demodev00039,demoprd00010
+demoldv00079,0,Peinture murale (pot 20L),,22.000,145.000,0.00,19.00,3190.000,demodev00040,demoprd00040
+demoldv00080,1,Carrelage (m2),,96.000,38.000,11.00,19.00,3246.720,demodev00040,demoprd00039
+demoldv00081,0,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00041,demoprd00007
+demoldv00082,0,Logiciel de gestion commerciale,,3.000,2900.000,0.00,19.00,8700.000,demodev00042,demoprd00029
+demoldv00083,1,Licence antivirus (poste),,86.000,85.000,0.00,19.00,7310.000,demodev00042,demoprd00027
+demoldv00084,0,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00043,demoprd00034
+demoldv00085,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00044,demoprd00029
+demoldv00086,1,Huile d'olive extra (bidon 5L),,94.000,68.000,0.00,13.00,6392.000,demodev00044,demoprd00036
+demoldv00087,2,Classeur archive,,54.000,6.800,0.00,19.00,367.200,demodev00044,demoprd00032
+demoldv00088,3,Formation comptabilite,,2.000,650.000,15.00,19.00,1105.000,demodev00044,demoprd00015
+demoldv00089,0,Conseil strategique (jour),,3.000,850.000,0.00,19.00,2550.000,demodev00045,demoprd00001
+demoldv00090,1,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00045,demoprd00029
+demoldv00091,2,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00045,demoprd00002
+demoldv00092,0,Licence antivirus (poste),,22.000,85.000,0.00,19.00,1870.000,demodev00046,demoprd00027
+demoldv00093,1,Ramette papier A4,,44.000,14.500,0.00,19.00,638.000,demodev00046,demoprd00030
+demoldv00094,2,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00046,demoprd00004
+demoldv00095,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00047,demoprd00004
+demoldv00096,0,Carrelage (m2),,800.000,38.000,0.00,19.00,30400.000,demodev00048,demoprd00039
+demoldv00097,1,Ciment (tonne),,45.000,310.000,0.00,19.00,13950.000,demodev00048,demoprd00038
+demoldv00098,2,Gants nitrile (boite),,400.000,18.000,7.00,7.00,6696.000,demodev00048,demoprd00035
+demoldv00099,3,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00048,demoprd00034
+demoldv00100,0,Cartouche toner,,19.000,165.000,0.00,19.00,3135.000,demodev00049,demoprd00031
+demoldv00101,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00050,demoprd00023
+demoldv00102,1,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00050,demoprd00010
+demoldv00103,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00050,demoprd00011
+demoldv00104,0,Mobilier de bureau (poste),,3.000,1250.000,0.00,19.00,3750.000,demodev00051,demoprd00033
+demoldv00105,0,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00052,demoprd00013
+demoldv00106,0,Gants nitrile (boite),,70.000,18.000,0.00,7.00,1260.000,demodev00053,demoprd00035
+demoldv00107,1,Disque SSD 1To,,5.000,310.000,0.00,19.00,1550.000,demodev00053,demoprd00026
+demoldv00108,2,Routeur professionnel,,2.000,540.000,0.00,19.00,1080.000,demodev00053,demoprd00024
+demoldv00109,3,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00053,demoprd00023
+demoldv00110,0,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00054,demoprd00009
+demoldv00111,1,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00054,demoprd00005
+demoldv00112,2,Mobilier de bureau (poste),,11.000,1250.000,6.00,19.00,12925.000,demodev00054,demoprd00033
+demoldv00113,0,Ramette papier A4,,11.000,14.500,0.00,19.00,159.500,demodev00055,demoprd00030
+demoldv00114,0,Sauvegarde externalisee,,12.000,95.000,0.00,19.00,1140.000,demodev00056,demoprd00012
+demoldv00115,0,Carrelage (m2),,83.000,38.000,0.00,19.00,3154.000,demodev00057,demoprd00039
+demoldv00116,1,Ciment (tonne),,6.000,310.000,0.00,19.00,1860.000,demodev00057,demoprd00038
+demoldv00117,2,Formation bureautique (jour),,1.000,420.000,6.00,19.00,394.800,demodev00057,demoprd00013
+demoldv00118,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00058,demoprd00011
+demoldv00119,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00058,demoprd00009
+demoldv00120,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00059,demoprd00023
+demoldv00121,1,Routeur professionnel,,2.000,540.000,0.00,19.00,1080.000,demodev00059,demoprd00024
+demoldv00122,2,Ordinateur portable pro,,3.000,2350.000,0.00,19.00,7050.000,demodev00059,demoprd00021
+demoldv00123,0,Transport de marchandises,,9.000,210.000,0.00,7.00,1890.000,demodev00060,demoprd00019
+demoldv00124,1,Cartouche toner,,24.000,165.000,0.00,19.00,3960.000,demodev00060,demoprd00031
+demoldv00125,2,Classeur archive,,217.000,6.800,0.00,19.00,1475.600,demodev00060,demoprd00032
+demoldv00126,0,Licence suite bureautique,,6.000,320.000,0.00,19.00,1920.000,demodev00061,demoprd00028
+demoldv00127,0,Routeur professionnel,,5.000,540.000,0.00,19.00,2700.000,demodev00062,demoprd00024
+demoldv00128,0,Carrelage (m2),,176.000,38.000,0.00,19.00,6688.000,demodev00063,demoprd00039
+demoldv00129,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00063,demoprd00008
+demoldv00130,0,Kit de premiers secours,,15.000,75.000,0.00,7.00,1125.000,demodev00064,demoprd00034
+demoldv00131,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00064,demoprd00014
+demoldv00132,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00065,demoprd00011
+demoldv00133,1,Mobilier de bureau (poste),,4.000,1250.000,11.00,19.00,4450.000,demodev00065,demoprd00033
+demoldv00134,0,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00066,demoprd00034
+demoldv00135,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00067,demoprd00023
+demoldv00136,1,Disque SSD 1To,,2.000,310.000,0.00,19.00,620.000,demodev00067,demoprd00026
+demoldv00137,0,Mobilier de bureau (poste),,5.000,1250.000,0.00,19.00,6250.000,demodev00068,demoprd00033
+demoldv00138,1,Transport de marchandises,,3.000,210.000,5.00,7.00,598.500,demodev00068,demoprd00019
+demoldv00139,2,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00068,demoprd00008
+demoldv00140,0,Stockage entrepot (m2/mois),,150.000,12.000,0.00,19.00,1800.000,demodev00069,demoprd00020
+demoldv00141,1,Intervention sur site,,4.000,150.000,0.00,19.00,600.000,demodev00069,demoprd00010
+demoldv00142,2,Transport de marchandises,,6.000,210.000,0.00,7.00,1260.000,demodev00069,demoprd00019
+demoldv00143,0,Sauvegarde externalisee,,4.000,95.000,0.00,19.00,380.000,demodev00070,demoprd00012
+demoldv00144,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00070,demoprd00011
+demoldv00145,2,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00070,demoprd00009
+demoldv00146,0,Site vitrine,,1.000,2400.000,8.00,19.00,2208.000,demodev00071,demoprd00008
+demoldv00147,0,Serveur dedie (mois),,3.000,290.000,0.00,19.00,870.000,demodev00072,demoprd00018
+demoldv00148,0,Logiciel de gestion commerciale,,3.000,2900.000,0.00,19.00,8700.000,demodev00073,demoprd00029
+demoldv00149,1,Licence antivirus (poste),,83.000,85.000,0.00,19.00,7055.000,demodev00073,demoprd00027
+demoldv00150,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00074,demoprd00009
+demoldv00151,0,Ordinateur portable pro,,4.000,2350.000,0.00,19.00,9400.000,demodev00075,demoprd00021
+demoldv00152,1,Ecran 27 pouces,,2.000,690.000,0.00,19.00,1380.000,demodev00075,demoprd00022
+demoldv00153,2,Dattes Deglet Nour (carton),,77.000,42.000,0.00,13.00,3234.000,demodev00075,demoprd00037
+demoldv00154,0,Kit de premiers secours,,12.000,75.000,0.00,7.00,900.000,demodev00076,demoprd00034
+demoldv00155,0,Transport de marchandises,,3.000,210.000,0.00,7.00,630.000,demodev00077,demoprd00019
+demoldv00156,0,Ramette papier A4,,20.000,14.500,0.00,19.00,290.000,demodev00078,demoprd00030
+demoldv00157,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00078,demoprd00014
+demoldv00158,0,Dattes Deglet Nour (carton),,57.000,42.000,0.00,13.00,2394.000,demodev00079,demoprd00037
+demoldv00159,0,Cartouche toner,,25.000,165.000,0.00,19.00,4125.000,demodev00080,demoprd00031
+demoldv00160,1,Transport de marchandises,,7.000,210.000,7.00,7.00,1367.100,demodev00080,demoprd00019
+demoldv00161,0,Conseil strategique (jour),,2.000,850.000,14.00,19.00,1462.000,demodev00081,demoprd00001
+demoldv00162,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00081,demoprd00006
+demoldv00163,2,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00081,demoprd00014
+demoldv00164,0,Peinture murale (pot 20L),,62.000,145.000,0.00,19.00,8990.000,demodev00082,demoprd00040
+demoldv00165,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00082,demoprd00002
+demoldv00166,2,Conseil strategique (jour),,4.000,850.000,14.00,19.00,2924.000,demodev00082,demoprd00001
+demoldv00167,0,Ciment (tonne),,10.000,310.000,0.00,19.00,3100.000,demodev00083,demoprd00038
+demoldv00168,1,Peinture murale (pot 20L),,4.000,145.000,0.00,19.00,580.000,demodev00083,demoprd00040
+demoldv00169,2,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00083,demoprd00023
+demoldv00170,3,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00083,demoprd00002
+demoldv00171,0,Mobilier de bureau (poste),,1.000,1250.000,0.00,19.00,1250.000,demodev00084,demoprd00033
+demoldv00172,1,Classeur archive,,23.000,6.800,0.00,19.00,156.400,demodev00084,demoprd00032
+demoldv00173,2,Gants nitrile (boite),,52.000,18.000,0.00,7.00,936.000,demodev00084,demoprd00035
+demoldv00174,3,Serveur dedie (mois),,2.000,290.000,0.00,19.00,580.000,demodev00084,demoprd00018
+demoldv00175,0,Developpement web (jour),,14.000,450.000,7.00,19.00,5859.000,demodev00085,demoprd00005
+demoldv00176,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00085,demoprd00006
+demoldv00177,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00085,demoprd00011
+demoldv00178,3,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00085,demoprd00009
+demoldv00179,0,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00086,demoprd00019
+demoldv00180,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00087,demoprd00010
+demoldv00181,1,Gants nitrile (boite),,155.000,18.000,0.00,7.00,2790.000,demodev00087,demoprd00035
+demoldv00182,0,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00088,demoprd00023
+demoldv00183,1,Developpement web (jour),,4.000,450.000,0.00,19.00,1800.000,demodev00088,demoprd00005
+demoldv00184,2,Ecran 27 pouces,,8.000,690.000,0.00,19.00,5520.000,demodev00088,demoprd00022
+demoldv00185,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00089,demoprd00014
+demoldv00186,1,Formation comptabilite,,3.000,650.000,0.00,19.00,1950.000,demodev00089,demoprd00015
+demoldv00187,2,Onduleur 1500VA,,2.000,460.000,0.00,19.00,920.000,demodev00089,demoprd00025
+demoldv00188,0,Licence suite bureautique,,13.000,320.000,0.00,19.00,4160.000,demodev00090,demoprd00028
+demoldv00189,1,Etude de marche,,1.000,4500.000,12.00,19.00,3960.000,demodev00090,demoprd00004
+demoldv00190,0,Carrelage (m2),,695.000,38.000,0.00,19.00,26410.000,demodev00091,demoprd00039
+demoldv00191,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00092,demoprd00006
+demoldv00192,1,Maintenance mensuelle,,1.000,380.000,7.00,19.00,353.400,demodev00092,demoprd00009
+demoldv00193,0,Licence antivirus (poste),,19.000,85.000,0.00,19.00,1615.000,demodev00093,demoprd00027
+demoldv00194,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00093,demoprd00008
+demoldv00195,0,Routeur professionnel,,1.000,540.000,0.00,19.00,540.000,demodev00094,demoprd00024
+demoldv00196,1,Ecran 27 pouces,,2.000,690.000,0.00,19.00,1380.000,demodev00094,demoprd00022
+demoldv00197,2,Disque SSD 1To,,4.000,310.000,0.00,19.00,1240.000,demodev00094,demoprd00026
+demoldv00198,0,Stockage entrepot (m2/mois),,168.000,12.000,0.00,19.00,2016.000,demodev00095,demoprd00020
+demoldv00199,0,Transport de marchandises,,9.000,210.000,0.00,7.00,1890.000,demodev00096,demoprd00019
+demoldv00200,0,Huile d'olive extra (bidon 5L),,87.000,68.000,0.00,13.00,5916.000,demodev00097,demoprd00036
+demoldv00201,0,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00098,demoprd00035
+demoldv00202,1,Kit de premiers secours,,29.000,75.000,0.00,7.00,2175.000,demodev00098,demoprd00034
+demoldv00203,0,Sauvegarde externalisee,,5.000,95.000,11.00,19.00,422.750,demodev00099,demoprd00012
+demoldv00204,1,Accompagnement fiscal (heure),,7.000,120.000,0.00,19.00,840.000,demodev00099,demoprd00003
+demoldv00205,2,Gants nitrile (boite),,278.000,18.000,0.00,7.00,5004.000,demodev00099,demoprd00035
+demoldv00206,0,Disque SSD 1To,,9.000,310.000,9.00,19.00,2538.900,demodev00100,demoprd00026
+demoldv00207,0,Mobilier de bureau (poste),,4.000,1250.000,0.00,19.00,5000.000,demodev00101,demoprd00033
+demoldv00208,1,Classeur archive,,29.000,6.800,0.00,19.00,197.200,demodev00101,demoprd00032
+demoldv00209,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00101,demoprd00006
+demoldv00210,0,Gants nitrile (boite),,67.000,18.000,0.00,7.00,1206.000,demodev00102,demoprd00035
+demoldv00211,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00103,demoprd00015
+demoldv00212,1,Huile d'olive extra (bidon 5L),,71.000,68.000,0.00,13.00,4828.000,demodev00103,demoprd00036
+demoldv00213,0,Stockage entrepot (m2/mois),,101.000,12.000,0.00,19.00,1212.000,demodev00104,demoprd00020
+demoldv00214,1,Peinture murale (pot 20L),,62.000,145.000,0.00,19.00,8990.000,demodev00104,demoprd00040
+demoldv00215,0,Developpement web (jour),,9.000,450.000,0.00,19.00,4050.000,demodev00105,demoprd00005
+demoldv00216,1,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00105,demoprd00024
+demoldv00217,0,Kit de premiers secours,,5.000,75.000,0.00,7.00,375.000,demodev00106,demoprd00034
+demoldv00218,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00106,demoprd00009
+demoldv00219,0,Licence suite bureautique,,16.000,320.000,0.00,19.00,5120.000,demodev00107,demoprd00028
+demoldv00220,1,Intervention sur site,,4.000,150.000,9.00,19.00,546.000,demodev00107,demoprd00010
+demoldv00221,0,Application mobile (forfait),,1.000,12000.000,7.00,19.00,11160.000,demodev00108,demoprd00006
+demoldv00222,1,Dattes Deglet Nour (carton),,117.000,42.000,0.00,13.00,4914.000,demodev00108,demoprd00037
+demoldv00223,2,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00108,demoprd00036
+demoldv00224,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00109,demoprd00002
+demoldv00225,0,Licence suite bureautique,,50.000,320.000,9.00,19.00,14560.000,demodev00110,demoprd00028
+demoldv00226,1,Ciment (tonne),,60.000,310.000,0.00,19.00,18600.000,demodev00110,demoprd00038
+demoldv00227,0,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00111,demoprd00001
+demoldv00228,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00111,demoprd00004
+demoldv00229,2,Stockage entrepot (m2/mois),,93.000,12.000,0.00,19.00,1116.000,demodev00111,demoprd00020
+demoldv00230,0,Site vitrine,,1.000,2400.000,5.00,19.00,2280.000,demodev00112,demoprd00008
+demoldv00231,1,Gants nitrile (boite),,388.000,18.000,0.00,7.00,6984.000,demodev00112,demoprd00035
+demoldv00232,0,Peinture murale (pot 20L),,10.000,145.000,0.00,19.00,1450.000,demodev00113,demoprd00040
+demoldv00233,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00113,demoprd00004
+demoldv00234,2,Developpement web (jour),,12.000,450.000,0.00,19.00,5400.000,demodev00113,demoprd00005
+demoldv00235,3,Huile d'olive extra (bidon 5L),,232.000,68.000,0.00,13.00,15776.000,demodev00113,demoprd00036
+demoldv00236,0,Licence antivirus (poste),,51.000,85.000,0.00,19.00,4335.000,demodev00114,demoprd00027
+demoldv00237,1,Dattes Deglet Nour (carton),,153.000,42.000,10.00,13.00,5783.400,demodev00114,demoprd00037
+demoldv00238,2,Huile d'olive extra (bidon 5L),,44.000,68.000,0.00,13.00,2992.000,demodev00114,demoprd00036
+demoldv00239,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00115,demoprd00004
+demoldv00240,0,Carrelage (m2),,79.000,38.000,0.00,19.00,3002.000,demodev00116,demoprd00039
+demoldv00241,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00117,demoprd00010
+demoldv00242,1,Ciment (tonne),,19.000,310.000,0.00,19.00,5890.000,demodev00117,demoprd00038
+demoldv00243,0,Carrelage (m2),,69.000,38.000,0.00,19.00,2622.000,demodev00118,demoprd00039
+demoldv00244,0,Ramette papier A4,,172.000,14.500,0.00,19.00,2494.000,demodev00119,demoprd00030
+demoldv00245,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00120,demoprd00006
+demoldv00246,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00120,demoprd00008
+demoldv00247,2,Kit de premiers secours,,32.000,75.000,0.00,7.00,2400.000,demodev00120,demoprd00034
+demoldv00248,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00121,demoprd00016
+demoldv00249,0,Logiciel de gestion commerciale,,3.000,2900.000,0.00,19.00,8700.000,demodev00122,demoprd00029
+demoldv00250,1,Kit de premiers secours,,40.000,75.000,11.00,7.00,2670.000,demodev00122,demoprd00034
+demoldv00251,0,Ordinateur portable pro,,3.000,2350.000,7.00,19.00,6556.500,demodev00123,demoprd00021
+demoldv00252,0,Intervention sur site,,6.000,150.000,0.00,19.00,900.000,demodev00124,demoprd00010
+demoldv00253,1,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00124,demoprd00009
+demoldv00254,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00125,demoprd00006
+demoldv00255,1,Ecran 27 pouces,,5.000,690.000,0.00,19.00,3450.000,demodev00125,demoprd00022
+demoldv00256,0,Mobilier de bureau (poste),,2.000,1250.000,0.00,19.00,2500.000,demodev00126,demoprd00033
+demoldv00257,1,Ramette papier A4,,18.000,14.500,0.00,19.00,261.000,demodev00126,demoprd00030
+demoldv00258,0,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00127,demoprd00014
+demoldv00259,1,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00127,demoprd00013
+demoldv00260,2,Formation comptabilite,,3.000,650.000,0.00,19.00,1950.000,demodev00127,demoprd00015
+demoldv00261,0,Stockage entrepot (m2/mois),,59.000,12.000,0.00,19.00,708.000,demodev00128,demoprd00020
+demoldv00262,0,Cartouche toner,,5.000,165.000,0.00,19.00,825.000,demodev00129,demoprd00031
+demoldv00263,1,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00129,demoprd00017
+demoldv00264,2,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00129,demoprd00004
+demoldv00265,3,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00129,demoprd00002
+demoldv00266,0,Integration ERP (jour),,13.000,600.000,0.00,19.00,7800.000,demodev00130,demoprd00007
+demoldv00267,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00130,demoprd00006
+demoldv00268,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00131,demoprd00002
+demoldv00269,1,Nom de domaine .tn,,3.000,45.000,0.00,19.00,135.000,demodev00131,demoprd00017
+demoldv00270,2,Stockage entrepot (m2/mois),,120.000,12.000,0.00,19.00,1440.000,demodev00131,demoprd00020
+demoldv00271,0,Conseil strategique (jour),,7.000,850.000,7.00,19.00,5533.500,demodev00132,demoprd00001
+demoldv00272,0,Hebergement web (annuel),,3.000,540.000,7.00,19.00,1506.600,demodev00133,demoprd00016
+demoldv00273,1,Huile d'olive extra (bidon 5L),,268.000,68.000,0.00,13.00,18224.000,demodev00133,demoprd00036
+demoldv00274,0,Onduleur 1500VA,,3.000,460.000,0.00,19.00,1380.000,demodev00134,demoprd00025
+demoldv00275,1,Conseil strategique (jour),,4.000,850.000,0.00,19.00,3400.000,demodev00134,demoprd00001
+demoldv00276,2,Accompagnement fiscal (heure),,19.000,120.000,0.00,19.00,2280.000,demodev00134,demoprd00003
+demoldv00277,0,Developpement web (jour),,19.000,450.000,0.00,19.00,8550.000,demodev00135,demoprd00005
+demoldv00278,1,Site vitrine,,1.000,2400.000,15.00,19.00,2040.000,demodev00135,demoprd00008
+demoldv00279,0,Serveur dedie (mois),,12.000,290.000,5.00,19.00,3306.000,demodev00136,demoprd00018
+demoldv00280,1,Application mobile (forfait),,1.000,12000.000,14.00,19.00,10320.000,demodev00136,demoprd00006
+demoldv00281,2,Dattes Deglet Nour (carton),,446.000,42.000,0.00,13.00,18732.000,demodev00136,demoprd00037
+demoldv00282,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00137,demoprd00011
+demoldv00283,1,Transport de marchandises,,9.000,210.000,9.00,7.00,1719.900,demodev00137,demoprd00019
+demoldv00284,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00138,demoprd00011
+demoldv00285,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00138,demoprd00008
+demoldv00286,0,Cartouche toner,,8.000,165.000,0.00,19.00,1320.000,demodev00139,demoprd00031
+demoldv00287,1,Ecran 27 pouces,,3.000,690.000,0.00,19.00,2070.000,demodev00139,demoprd00022
+demoldv00288,0,Ciment (tonne),,14.000,310.000,0.00,19.00,4340.000,demodev00140,demoprd00038
+demoldv00289,0,Developpement web (jour),,19.000,450.000,0.00,19.00,8550.000,demodev00141,demoprd00005
+demoldv00290,1,Kit de premiers secours,,17.000,75.000,0.00,7.00,1275.000,demodev00141,demoprd00034
+demoldv00291,0,Ciment (tonne),,4.000,310.000,0.00,19.00,1240.000,demodev00142,demoprd00038
+demoldv00292,0,Carrelage (m2),,549.000,38.000,0.00,19.00,20862.000,demodev00143,demoprd00039
+demoldv00293,1,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00143,demoprd00034
+demoldv00294,0,Developpement web (jour),,15.000,450.000,0.00,19.00,6750.000,demodev00144,demoprd00005
+demoldv00295,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00144,demoprd00009
+demoldv00296,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00145,demoprd00004
+demoldv00297,0,Cartouche toner,,15.000,165.000,0.00,19.00,2475.000,demodev00146,demoprd00031
+demoldv00298,0,Dattes Deglet Nour (carton),,328.000,42.000,0.00,13.00,13776.000,demodev00147,demoprd00037
+demoldv00299,1,Huile d'olive extra (bidon 5L),,217.000,68.000,0.00,13.00,14756.000,demodev00147,demoprd00036
+demoldv00300,0,Imprimante laser,,2.000,980.000,15.00,19.00,1666.000,demodev00148,demoprd00023
+demoldv00301,0,Conseil strategique (jour),,6.000,850.000,0.00,19.00,5100.000,demodev00149,demoprd00001
+demoldv00302,0,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00150,demoprd00035
+demoldv00303,0,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00151,demoprd00013
+demoldv00304,0,Developpement web (jour),,11.000,450.000,0.00,19.00,4950.000,demodev00152,demoprd00005
+demoldv00305,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00152,demoprd00008
+demoldv00306,2,Conseil strategique (jour),,7.000,850.000,0.00,19.00,5950.000,demodev00152,demoprd00001
+demoldv00307,0,Transport de marchandises,,4.000,210.000,0.00,7.00,840.000,demodev00153,demoprd00019
+demoldv00308,1,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00153,demoprd00017
+demoldv00309,0,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00154,demoprd00034
+demoldv00310,1,Ciment (tonne),,14.000,310.000,0.00,19.00,4340.000,demodev00154,demoprd00038
+demoldv00311,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00155,demoprd00008
+demoldv00312,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00155,demoprd00004
+demoldv00313,0,Ciment (tonne),,60.000,310.000,0.00,19.00,18600.000,demodev00156,demoprd00038
+demoldv00314,1,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00156,demoprd00033
+demoldv00315,2,Cartouche toner,,19.000,165.000,0.00,19.00,3135.000,demodev00156,demoprd00031
+demoldv00316,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00157,demoprd00023
+demoldv00317,1,Serveur dedie (mois),,1.000,290.000,0.00,19.00,290.000,demodev00157,demoprd00018
+demoldv00318,0,Carrelage (m2),,57.000,38.000,0.00,19.00,2166.000,demodev00158,demoprd00039
+demoldv00319,1,Serveur dedie (mois),,6.000,290.000,0.00,19.00,1740.000,demodev00158,demoprd00018
+demoldv00320,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00159,demoprd00008
+demoldv00321,1,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00159,demoprd00016
+demoldv00322,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00159,demoprd00006
+demoldv00323,3,Developpement web (jour),,17.000,450.000,9.00,19.00,6961.500,demodev00159,demoprd00005
+demoldv00324,0,Kit de premiers secours,,24.000,75.000,5.00,7.00,1710.000,demodev00160,demoprd00034
+demoldv00325,1,Developpement web (jour),,20.000,450.000,14.00,19.00,7740.000,demodev00160,demoprd00005
+demoldv00326,0,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00161,demoprd00040
+demoldv00327,1,Kit de premiers secours,,18.000,75.000,0.00,7.00,1350.000,demodev00161,demoprd00034
+demoldv00328,2,Disque SSD 1To,,20.000,310.000,0.00,19.00,6200.000,demodev00161,demoprd00026
+demoldv00329,3,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00161,demoprd00035
+demoldv00330,0,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00162,demoprd00007
+demoldv00331,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00162,demoprd00008
+demoldv00332,0,Disque SSD 1To,,14.000,310.000,0.00,19.00,4340.000,demodev00163,demoprd00026
+demoldv00333,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00163,demoprd00029
+demoldv00334,2,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00163,demoprd00014
+demoldv00335,3,Formation bureautique (jour),,1.000,420.000,8.00,19.00,386.400,demodev00163,demoprd00013
+demoldv00336,0,Stockage entrepot (m2/mois),,169.000,12.000,0.00,19.00,2028.000,demodev00164,demoprd00020
+demoldv00337,0,Sauvegarde externalisee,,5.000,95.000,0.00,19.00,475.000,demodev00165,demoprd00012
+demoldv00338,1,Peinture murale (pot 20L),,20.000,145.000,0.00,19.00,2900.000,demodev00165,demoprd00040
+demoldv00339,2,Cartouche toner,,9.000,165.000,0.00,19.00,1485.000,demodev00165,demoprd00031
+demoldv00340,0,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00166,demoprd00014
+demoldv00341,0,Sauvegarde externalisee,,4.000,95.000,0.00,19.00,380.000,demodev00167,demoprd00012
+demoldv00342,1,Classeur archive,,50.000,6.800,0.00,19.00,340.000,demodev00167,demoprd00032
+demoldv00343,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00168,demoprd00008
+demoldv00344,1,Developpement web (jour),,13.000,450.000,0.00,19.00,5850.000,demodev00168,demoprd00005
+demoldv00345,0,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00169,demoprd00035
+demoldv00346,0,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00170,demoprd00001
+demoldv00347,1,Accompagnement fiscal (heure),,9.000,120.000,0.00,19.00,1080.000,demodev00170,demoprd00003
+demoldv00348,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00171,demoprd00010
+demoldv00349,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00172,demoprd00012
+demoldv00350,1,Mobilier de bureau (poste),,3.000,1250.000,14.00,19.00,3225.000,demodev00172,demoprd00033
+demoldv00351,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00173,demoprd00011
+demoldv00352,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00173,demoprd00029
+demoldv00353,0,Licence suite bureautique,,13.000,320.000,12.00,19.00,3660.800,demodev00174,demoprd00028
+demoldv00354,0,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00175,demoprd00015
+demoldv00355,1,Formation bureautique (jour),,1.000,420.000,0.00,19.00,420.000,demodev00175,demoprd00013
+demoldv00356,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00176,demoprd00016
+demoldv00357,1,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00176,demoprd00017
+demoldv00358,2,Classeur archive,,38.000,6.800,0.00,19.00,258.400,demodev00176,demoprd00032
+demoldv00359,0,Cartouche toner,,27.000,165.000,0.00,19.00,4455.000,demodev00177,demoprd00031
+demoldv00360,0,Carrelage (m2),,787.000,38.000,0.00,19.00,29906.000,demodev00178,demoprd00039
+demoldv00361,1,Gants nitrile (boite),,400.000,18.000,11.00,7.00,6408.000,demodev00178,demoprd00035
+demoldv00362,2,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00178,demoprd00034
+demoldv00363,3,Ciment (tonne),,60.000,310.000,0.00,19.00,18600.000,demodev00178,demoprd00038
+demoldv00364,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00179,demoprd00011
+demoldv00365,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00180,demoprd00013
+demoldv00366,0,Routeur professionnel,,2.000,540.000,0.00,19.00,1080.000,demodev00181,demoprd00024
+demoldv00367,1,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00181,demoprd00023
+demoldv00368,2,Ecran 27 pouces,,3.000,690.000,8.00,19.00,1904.400,demodev00181,demoprd00022
+demoldv00369,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00182,demoprd00013
+demoldv00370,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00183,demoprd00002
+demoldv00371,0,Integration ERP (jour),,3.000,600.000,0.00,19.00,1800.000,demodev00184,demoprd00007
+demoldv00372,0,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00185,demoprd00016
+demoldv00373,1,Mobilier de bureau (poste),,6.000,1250.000,0.00,19.00,7500.000,demodev00185,demoprd00033
+demoldv00374,0,Peinture murale (pot 20L),,69.000,145.000,0.00,19.00,10005.000,demodev00186,demoprd00040
+demoldv00375,0,Ordinateur portable pro,,9.000,2350.000,0.00,19.00,21150.000,demodev00187,demoprd00021
+demoldv00376,1,Routeur professionnel,,5.000,540.000,6.00,19.00,2538.000,demodev00187,demoprd00024
+demoldv00377,2,Disque SSD 1To,,20.000,310.000,0.00,19.00,6200.000,demodev00187,demoprd00026
+demoldv00378,0,Cartouche toner,,13.000,165.000,0.00,19.00,2145.000,demodev00188,demoprd00031
+demoldv00379,1,Maintenance mensuelle,,2.000,380.000,14.00,19.00,653.600,demodev00188,demoprd00009
+demoldv00380,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00189,demoprd00008
+demoldv00381,1,Nom de domaine .tn,,1.000,45.000,8.00,19.00,41.400,demodev00189,demoprd00017
+demoldv00382,0,Dattes Deglet Nour (carton),,111.000,42.000,0.00,13.00,4662.000,demodev00190,demoprd00037
+demoldv00383,0,Ordinateur portable pro,,3.000,2350.000,0.00,19.00,7050.000,demodev00191,demoprd00021
+demoldv00384,0,Imprimante laser,,1.000,980.000,8.00,19.00,901.600,demodev00192,demoprd00023
+demoldv00385,1,Ecran 27 pouces,,2.000,690.000,0.00,19.00,1380.000,demodev00192,demoprd00022
+demoldv00386,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00193,demoprd00010
+demoldv00387,0,Mobilier de bureau (poste),,6.000,1250.000,0.00,19.00,7500.000,demodev00194,demoprd00033
+demoldv00388,1,Cartouche toner,,23.000,165.000,0.00,19.00,3795.000,demodev00194,demoprd00031
+demoldv00389,2,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00194,demoprd00009
+demoldv00390,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00195,demoprd00036
+demoldv00391,1,Gants nitrile (boite),,400.000,18.000,15.00,7.00,6120.000,demodev00195,demoprd00035
+demoldv00392,2,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00195,demoprd00009
+demoldv00393,0,Routeur professionnel,,4.000,540.000,14.00,19.00,1857.600,demodev00196,demoprd00024
+demoldv00394,1,Onduleur 1500VA,,6.000,460.000,0.00,19.00,2760.000,demodev00196,demoprd00025
+demoldv00395,2,Disque SSD 1To,,4.000,310.000,0.00,19.00,1240.000,demodev00196,demoprd00026
+demoldv00396,0,Integration ERP (jour),,6.000,600.000,0.00,19.00,3600.000,demodev00197,demoprd00007
+demoldv00397,1,Logiciel de gestion commerciale,,1.000,2900.000,12.00,19.00,2552.000,demodev00197,demoprd00029
+demoldv00398,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00198,demoprd00006
+demoldv00399,1,Developpement web (jour),,3.000,450.000,11.00,19.00,1201.500,demodev00198,demoprd00005
+demoldv00400,0,Routeur professionnel,,5.000,540.000,0.00,19.00,2700.000,demodev00199,demoprd00024
+demoldv00401,1,Disque SSD 1To,,6.000,310.000,0.00,19.00,1860.000,demodev00199,demoprd00026
+demoldv00402,0,Kit de premiers secours,,18.000,75.000,0.00,7.00,1350.000,demodev00200,demoprd00034
+demoldv00403,0,Cartouche toner,,21.000,165.000,0.00,19.00,3465.000,demodev00201,demoprd00031
+demoldv00404,1,Ramette papier A4,,40.000,14.500,13.00,19.00,504.600,demodev00201,demoprd00030
+demoldv00405,2,Mobilier de bureau (poste),,9.000,1250.000,0.00,19.00,11250.000,demodev00201,demoprd00033
+demoldv00406,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00202,demoprd00011
+demoldv00407,0,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00203,demoprd00005
+demoldv00408,0,Support premium (annuel),,1.000,3600.000,12.00,19.00,3168.000,demodev00204,demoprd00011
+demoldv00409,0,Ciment (tonne),,60.000,310.000,15.00,19.00,15810.000,demodev00205,demoprd00038
+demoldv00410,0,Kit de premiers secours,,15.000,75.000,0.00,7.00,1125.000,demodev00206,demoprd00034
+demoldv00411,0,Licence antivirus (poste),,48.000,85.000,0.00,19.00,4080.000,demodev00207,demoprd00027
+demoldv00412,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00207,demoprd00029
+demoldv00413,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00208,demoprd00016
+demoldv00414,0,Ciment (tonne),,60.000,310.000,0.00,19.00,18600.000,demodev00209,demoprd00038
+demoldv00415,0,Conseil strategique (jour),,7.000,850.000,10.00,19.00,5355.000,demodev00210,demoprd00001
+demoldv00416,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00210,demoprd00004
+demoldv00417,2,Peinture murale (pot 20L),,8.000,145.000,0.00,19.00,1160.000,demodev00210,demoprd00040
+demoldv00418,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00211,demoprd00012
+demoldv00419,0,Formation comptabilite,,4.000,650.000,0.00,19.00,2600.000,demodev00212,demoprd00015
+demoldv00420,1,Formation bureautique (jour),,3.000,420.000,12.00,19.00,1108.800,demodev00212,demoprd00013
+demoldv00421,2,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00212,demoprd00014
+demoldv00422,0,Carrelage (m2),,97.000,38.000,0.00,19.00,3686.000,demodev00213,demoprd00039
+demoldv00423,1,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00213,demoprd00013
+demoldv00424,2,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00213,demoprd00015
+demoldv00425,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00214,demoprd00006
+demoldv00426,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00214,demoprd00009
+demoldv00427,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00214,demoprd00011
+demoldv00428,0,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00215,demoprd00025
+demoldv00429,1,Ecran 27 pouces,,3.000,690.000,12.00,19.00,1821.600,demodev00215,demoprd00022
+demoldv00430,2,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00215,demoprd00023
+demoldv00431,0,Intervention sur site,,4.000,150.000,6.00,19.00,564.000,demodev00216,demoprd00010
+demoldv00432,1,Ecran 27 pouces,,1.000,690.000,0.00,19.00,690.000,demodev00216,demoprd00022
+demoldv00433,0,Transport de marchandises,,6.000,210.000,8.00,7.00,1159.200,demodev00217,demoprd00019
+demoldv00434,1,Developpement web (jour),,6.000,450.000,0.00,19.00,2700.000,demodev00217,demoprd00005
+demoldv00435,0,Huile d'olive extra (bidon 5L),,97.000,68.000,0.00,13.00,6596.000,demodev00218,demoprd00036
+demoldv00436,0,Ecran 27 pouces,,9.000,690.000,0.00,19.00,6210.000,demodev00219,demoprd00022
+demoldv00437,1,Intervention sur site,,6.000,150.000,0.00,19.00,900.000,demodev00219,demoprd00010
+demoldv00438,2,Dattes Deglet Nour (carton),,296.000,42.000,0.00,13.00,12432.000,demodev00219,demoprd00037
+demoldv00439,3,Serveur dedie (mois),,8.000,290.000,0.00,19.00,2320.000,demodev00219,demoprd00018
+demoldv00440,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00220,demoprd00008
+demoldv00441,1,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00220,demoprd00036
+demoldv00442,2,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00220,demoprd00004
+demoldv00443,0,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00221,demoprd00025
+demoldv00444,1,Carrelage (m2),,56.000,38.000,8.00,19.00,1957.760,demodev00221,demoprd00039
+demoldv00445,0,Stockage entrepot (m2/mois),,182.000,12.000,0.00,19.00,2184.000,demodev00222,demoprd00020
+demoldv00446,0,Ciment (tonne),,14.000,310.000,0.00,19.00,4340.000,demodev00223,demoprd00038
+demoldv00447,1,Carrelage (m2),,136.000,38.000,0.00,19.00,5168.000,demodev00223,demoprd00039
+demoldv00448,0,Classeur archive,,26.000,6.800,0.00,19.00,176.800,demodev00224,demoprd00032
+demoldv00449,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00224,demoprd00014
+demoldv00450,0,Transport de marchandises,,10.000,210.000,0.00,7.00,2100.000,demodev00225,demoprd00019
+demoldv00451,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00226,demoprd00008
+demoldv00452,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00226,demoprd00004
+demoldv00453,2,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00226,demoprd00001
+demoldv00454,0,Classeur archive,,299.000,6.800,0.00,19.00,2033.200,demodev00227,demoprd00032
+demoldv00455,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00227,demoprd00002
+demoldv00456,2,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00227,demoprd00033
+demoldv00457,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00228,demoprd00015
+demoldv00458,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00229,demoprd00016
+demoldv00459,1,Kit de premiers secours,,3.000,75.000,0.00,7.00,225.000,demodev00229,demoprd00034
+demoldv00460,2,Sauvegarde externalisee,,1.000,95.000,0.00,19.00,95.000,demodev00229,demoprd00012
+demoldv00461,0,Mobilier de bureau (poste),,10.000,1250.000,0.00,19.00,12500.000,demodev00230,demoprd00033
+demoldv00462,0,Carrelage (m2),,511.000,38.000,0.00,19.00,19418.000,demodev00231,demoprd00039
+demoldv00463,1,Accompagnement fiscal (heure),,11.000,120.000,0.00,19.00,1320.000,demodev00231,demoprd00003
+demoldv00464,2,Conseil strategique (jour),,5.000,850.000,0.00,19.00,4250.000,demodev00231,demoprd00001
+demoldv00465,3,Ciment (tonne),,39.000,310.000,10.00,19.00,10881.000,demodev00231,demoprd00038
+demoldv00466,0,Classeur archive,,114.000,6.800,0.00,19.00,775.200,demodev00232,demoprd00032
+demoldv00467,1,Mobilier de bureau (poste),,6.000,1250.000,0.00,19.00,7500.000,demodev00232,demoprd00033
+demoldv00468,2,Peinture murale (pot 20L),,10.000,145.000,0.00,19.00,1450.000,demodev00232,demoprd00040
+demoldv00469,0,Gants nitrile (boite),,166.000,18.000,0.00,7.00,2988.000,demodev00233,demoprd00035
+demoldv00470,1,Accompagnement fiscal (heure),,4.000,120.000,0.00,19.00,480.000,demodev00233,demoprd00003
+demoldv00471,0,Carrelage (m2),,87.000,38.000,0.00,19.00,3306.000,demodev00234,demoprd00039
+demoldv00472,0,Kit de premiers secours,,40.000,75.000,8.00,7.00,2760.000,demodev00235,demoprd00034
+demoldv00473,1,Ciment (tonne),,3.000,310.000,5.00,19.00,883.500,demodev00235,demoprd00038
+demoldv00474,0,Formation comptabilite,,1.000,650.000,9.00,19.00,591.500,demodev00236,demoprd00015
+demoldv00475,0,Routeur professionnel,,1.000,540.000,0.00,19.00,540.000,demodev00237,demoprd00024
+demoldv00476,0,Serveur dedie (mois),,8.000,290.000,0.00,19.00,2320.000,demodev00238,demoprd00018
+demoldv00477,1,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00238,demoprd00010
+demoldv00478,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00239,demoprd00029
+demoldv00479,1,Onduleur 1500VA,,2.000,460.000,0.00,19.00,920.000,demodev00239,demoprd00025
+demoldv00480,2,Licence antivirus (poste),,28.000,85.000,0.00,19.00,2380.000,demodev00239,demoprd00027
+demoldv00481,3,Kit de premiers secours,,18.000,75.000,0.00,7.00,1350.000,demodev00239,demoprd00034
+demoldv00482,0,Accompagnement fiscal (heure),,15.000,120.000,0.00,19.00,1800.000,demodev00240,demoprd00003
+demoldv00483,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00241,demoprd00008
+demoldv00484,1,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00241,demoprd00009
+demoldv00485,0,Sauvegarde externalisee,,5.000,95.000,13.00,19.00,413.250,demodev00242,demoprd00012
+demoldv00486,0,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00243,demoprd00024
+demoldv00487,1,Carrelage (m2),,800.000,38.000,10.00,19.00,27360.000,demodev00243,demoprd00039
+demoldv00488,0,Huile d'olive extra (bidon 5L),,259.000,68.000,0.00,13.00,17612.000,demodev00244,demoprd00036
+demoldv00489,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00244,demoprd00008
+demoldv00490,0,Kit de premiers secours,,15.000,75.000,0.00,7.00,1125.000,demodev00245,demoprd00034
+demoldv00491,1,Gants nitrile (boite),,197.000,18.000,0.00,7.00,3546.000,demodev00245,demoprd00035
+demoldv00492,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00246,demoprd00014
+demoldv00493,0,Transport de marchandises,,7.000,210.000,0.00,7.00,1470.000,demodev00247,demoprd00019
+demoldv00494,0,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00248,demoprd00010
+demoldv00495,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00249,demoprd00012
+demoldv00496,0,Classeur archive,,42.000,6.800,10.00,19.00,257.040,demodev00250,demoprd00032
+demoldv00497,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00250,demoprd00011
+demoldv00498,2,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00250,demoprd00009
+demoldv00499,0,Peinture murale (pot 20L),,37.000,145.000,0.00,19.00,5365.000,demodev00251,demoprd00040
+demoldv00500,1,Classeur archive,,229.000,6.800,0.00,19.00,1557.200,demodev00251,demoprd00032
+demoldv00501,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00252,demoprd00014
+demoldv00502,0,Imprimante laser,,3.000,980.000,0.00,19.00,2940.000,demodev00253,demoprd00023
+demoldv00503,1,Ordinateur portable pro,,3.000,2350.000,0.00,19.00,7050.000,demodev00253,demoprd00021
+demoldv00504,2,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00253,demoprd00029
+demoldv00505,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00254,demoprd00029
+demoldv00506,1,Licence antivirus (poste),,22.000,85.000,0.00,19.00,1870.000,demodev00254,demoprd00027
+demoldv00507,2,Peinture murale (pot 20L),,14.000,145.000,5.00,19.00,1928.500,demodev00254,demoprd00040
+demoldv00508,0,Disque SSD 1To,,4.000,310.000,0.00,19.00,1240.000,demodev00255,demoprd00026
+demoldv00509,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00256,demoprd00004
+demoldv00510,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00256,demoprd00002
+demoldv00511,0,Stockage entrepot (m2/mois),,120.000,12.000,0.00,19.00,1440.000,demodev00257,demoprd00020
+demoldv00512,1,Ordinateur portable pro,,10.000,2350.000,0.00,19.00,23500.000,demodev00257,demoprd00021
+demoldv00513,2,Ramette papier A4,,122.000,14.500,10.00,19.00,1592.100,demodev00257,demoprd00030
+demoldv00514,0,Licence antivirus (poste),,25.000,85.000,0.00,19.00,2125.000,demodev00258,demoprd00027
+demoldv00515,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00258,demoprd00014
+demoldv00516,0,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00259,demoprd00005
+demoldv00517,1,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00259,demoprd00007
+demoldv00518,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00259,demoprd00006
+demoldv00519,0,Peinture murale (pot 20L),,3.000,145.000,0.00,19.00,435.000,demodev00260,demoprd00040
+demoldv00520,0,Developpement web (jour),,5.000,450.000,0.00,19.00,2250.000,demodev00261,demoprd00005
+demoldv00521,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00261,demoprd00008
+demoldv00522,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00261,demoprd00006
+demoldv00523,0,Nom de domaine .tn,,4.000,45.000,0.00,19.00,180.000,demodev00262,demoprd00017
+demoldv00524,0,Serveur dedie (mois),,2.000,290.000,0.00,19.00,580.000,demodev00263,demoprd00018
+demoldv00525,1,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00263,demoprd00017
+demoldv00526,0,Classeur archive,,70.000,6.800,0.00,19.00,476.000,demodev00264,demoprd00032
+demoldv00527,1,Disque SSD 1To,,5.000,310.000,6.00,19.00,1457.000,demodev00264,demoprd00026
+demoldv00528,2,Ordinateur portable pro,,1.000,2350.000,0.00,19.00,2350.000,demodev00264,demoprd00021
+demoldv00529,0,Accompagnement fiscal (heure),,20.000,120.000,0.00,19.00,2400.000,demodev00265,demoprd00003
+demoldv00530,1,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00265,demoprd00033
+demoldv00531,0,Transport de marchandises,,3.000,210.000,0.00,7.00,630.000,demodev00266,demoprd00019
+demoldv00532,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00267,demoprd00029
+demoldv00533,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00267,demoprd00015
+demoldv00534,2,Licence suite bureautique,,28.000,320.000,0.00,19.00,8960.000,demodev00267,demoprd00028
+demoldv00535,0,Licence antivirus (poste),,34.000,85.000,0.00,19.00,2890.000,demodev00268,demoprd00027
+demoldv00536,1,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00268,demoprd00029
+demoldv00537,0,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00269,demoprd00025
+demoldv00538,0,Mobilier de bureau (poste),,12.000,1250.000,15.00,19.00,12750.000,demodev00270,demoprd00033
+demoldv00539,1,Intervention sur site,,4.000,150.000,0.00,19.00,600.000,demodev00270,demoprd00010
+demoldv00540,0,Carrelage (m2),,800.000,38.000,0.00,19.00,30400.000,demodev00271,demoprd00039
+demoldv00541,0,Classeur archive,,158.000,6.800,0.00,19.00,1074.400,demodev00272,demoprd00032
+demoldv00542,0,Huile d'olive extra (bidon 5L),,121.000,68.000,0.00,13.00,8228.000,demodev00273,demoprd00036
+demoldv00543,0,Classeur archive,,200.000,6.800,9.00,19.00,1237.600,demodev00274,demoprd00032
+demoldv00544,1,Stockage entrepot (m2/mois),,257.000,12.000,0.00,19.00,3084.000,demodev00274,demoprd00020
+demoldv00545,2,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00274,demoprd00033
+demoldv00546,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00275,demoprd00029
+demoldv00547,1,Licence antivirus (poste),,8.000,85.000,0.00,19.00,680.000,demodev00275,demoprd00027
+demoldv00548,2,Huile d'olive extra (bidon 5L),,76.000,68.000,0.00,13.00,5168.000,demodev00275,demoprd00036
+demoldv00549,0,Peinture murale (pot 20L),,75.000,145.000,0.00,19.00,10875.000,demodev00276,demoprd00040
+demoldv00550,1,Classeur archive,,93.000,6.800,0.00,19.00,632.400,demodev00276,demoprd00032
+demoldv00551,2,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00276,demoprd00002
+demoldv00552,0,Developpement web (jour),,12.000,450.000,0.00,19.00,5400.000,demodev00277,demoprd00005
+demoldv00553,0,Licence suite bureautique,,18.000,320.000,0.00,19.00,5760.000,demodev00278,demoprd00028
+demoldv00554,0,Formation bureautique (jour),,2.000,420.000,6.00,19.00,789.600,demodev00279,demoprd00013
+demoldv00555,1,Ciment (tonne),,37.000,310.000,0.00,19.00,11470.000,demodev00279,demoprd00038
+demoldv00556,0,Disque SSD 1To,,13.000,310.000,0.00,19.00,4030.000,demodev00280,demoprd00026
+demoldv00557,0,Ramette papier A4,,101.000,14.500,0.00,19.00,1464.500,demodev00281,demoprd00030
+demoldv00558,1,Classeur archive,,143.000,6.800,0.00,19.00,972.400,demodev00281,demoprd00032
+demoldv00559,2,Kit de premiers secours,,3.000,75.000,0.00,7.00,225.000,demodev00281,demoprd00034
+demoldv00560,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00282,demoprd00016
+demoldv00561,1,Stockage entrepot (m2/mois),,47.000,12.000,0.00,19.00,564.000,demodev00282,demoprd00020
+demoldv00562,2,Mobilier de bureau (poste),,2.000,1250.000,0.00,19.00,2500.000,demodev00282,demoprd00033
+demoldv00563,3,Cartouche toner,,6.000,165.000,0.00,19.00,990.000,demodev00282,demoprd00031
+demoldv00564,0,Accompagnement fiscal (heure),,5.000,120.000,0.00,19.00,600.000,demodev00283,demoprd00003
+demoldv00565,0,Peinture murale (pot 20L),,31.000,145.000,0.00,19.00,4495.000,demodev00284,demoprd00040
+demoldv00566,0,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00285,demoprd00016
+demoldv00567,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00286,demoprd00006
+demoldv00568,1,Onduleur 1500VA,,3.000,460.000,0.00,19.00,1380.000,demodev00286,demoprd00025
+demoldv00569,2,Developpement web (jour),,13.000,450.000,0.00,19.00,5850.000,demodev00286,demoprd00005
+demoldv00570,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00287,demoprd00013
+demoldv00571,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00287,demoprd00015
+demoldv00572,0,Ecran 27 pouces,,10.000,690.000,0.00,19.00,6900.000,demodev00288,demoprd00022
+demoldv00573,1,Licence suite bureautique,,5.000,320.000,0.00,19.00,1600.000,demodev00288,demoprd00028
+demoldv00574,2,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00288,demoprd00029
+demoldv00575,0,Ciment (tonne),,9.000,310.000,0.00,19.00,2790.000,demodev00289,demoprd00038
+demoldv00576,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00290,demoprd00004
+demoldv00577,1,Conseil strategique (jour),,4.000,850.000,0.00,19.00,3400.000,demodev00290,demoprd00001
+demoldv00578,2,Gants nitrile (boite),,95.000,18.000,0.00,7.00,1710.000,demodev00290,demoprd00035
+demoldv00579,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00291,demoprd00014
+demoldv00580,0,Licence suite bureautique,,20.000,320.000,0.00,19.00,6400.000,demodev00292,demoprd00028
+demoldv00581,1,Onduleur 1500VA,,4.000,460.000,0.00,19.00,1840.000,demodev00292,demoprd00025
+demoldv00582,0,Ordinateur portable pro,,2.000,2350.000,0.00,19.00,4700.000,demodev00293,demoprd00021
+demoldv00583,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00294,demoprd00002
+demoldv00584,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00294,demoprd00004
+demoldv00585,2,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00294,demoprd00015
+demoldv00586,0,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00295,demoprd00001
+demoldv00587,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00295,demoprd00004
+demoldv00588,2,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00295,demoprd00008
+demoldv00589,3,Developpement web (jour),,16.000,450.000,0.00,19.00,7200.000,demodev00295,demoprd00005
+demoldv00590,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00296,demoprd00006
+demoldv00591,1,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00296,demoprd00007
+demoldv00592,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00297,demoprd00023
+demoldv00593,1,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00297,demoprd00024
+demoldv00594,0,Accompagnement fiscal (heure),,19.000,120.000,14.00,19.00,1960.800,demodev00298,demoprd00003
+demoldv00595,0,Peinture murale (pot 20L),,26.000,145.000,0.00,19.00,3770.000,demodev00299,demoprd00040
+demoldv00596,0,Disque SSD 1To,,4.000,310.000,0.00,19.00,1240.000,demodev00300,demoprd00026
+demoldv00597,0,Accompagnement fiscal (heure),,6.000,120.000,0.00,19.00,720.000,demodev00301,demoprd00003
+demoldv00598,1,Kit de premiers secours,,27.000,75.000,0.00,7.00,2025.000,demodev00301,demoprd00034
+demoldv00599,0,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00302,demoprd00005
+demoldv00600,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00302,demoprd00011
+demoldv00601,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00303,demoprd00011
+demoldv00602,0,Licence antivirus (poste),,55.000,85.000,0.00,19.00,4675.000,demodev00304,demoprd00027
+demoldv00603,1,Audit organisationnel,,1.000,3200.000,10.00,19.00,2880.000,demodev00304,demoprd00002
+demoldv00604,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00305,demoprd00008
+demoldv00605,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00306,demoprd00029
+demoldv00606,1,Licence suite bureautique,,3.000,320.000,0.00,19.00,960.000,demodev00306,demoprd00028
+demoldv00607,2,Licence antivirus (poste),,9.000,85.000,0.00,19.00,765.000,demodev00306,demoprd00027
+demoldv00608,0,Classeur archive,,106.000,6.800,0.00,19.00,720.800,demodev00307,demoprd00032
+demoldv00609,0,Sauvegarde externalisee,,9.000,95.000,0.00,19.00,855.000,demodev00308,demoprd00012
+demoldv00610,1,Site vitrine,,1.000,2400.000,8.00,19.00,2208.000,demodev00308,demoprd00008
+demoldv00611,2,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00308,demoprd00014
+demoldv00612,3,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00308,demoprd00011
+demoldv00613,0,Disque SSD 1To,,5.000,310.000,0.00,19.00,1550.000,demodev00309,demoprd00026
+demoldv00614,1,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00309,demoprd00023
+demoldv00615,2,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00309,demoprd00014
+demoldv00616,0,Serveur dedie (mois),,2.000,290.000,0.00,19.00,580.000,demodev00310,demoprd00018
+demoldv00617,1,Transport de marchandises,,4.000,210.000,0.00,7.00,840.000,demodev00310,demoprd00019
+demoldv00618,2,Stockage entrepot (m2/mois),,149.000,12.000,0.00,19.00,1788.000,demodev00310,demoprd00020
+demoldv00619,0,Sauvegarde externalisee,,4.000,95.000,13.00,19.00,330.600,demodev00311,demoprd00012
+demoldv00620,0,Licence antivirus (poste),,37.000,85.000,0.00,19.00,3145.000,demodev00312,demoprd00027
+demoldv00621,0,Logiciel de gestion commerciale,,2.000,2900.000,9.00,19.00,5278.000,demodev00313,demoprd00029
+demoldv00622,1,Dattes Deglet Nour (carton),,84.000,42.000,0.00,13.00,3528.000,demodev00313,demoprd00037
+demoldv00623,2,Licence suite bureautique,,24.000,320.000,0.00,19.00,7680.000,demodev00313,demoprd00028
+demoldv00624,0,Dattes Deglet Nour (carton),,167.000,42.000,12.00,13.00,6172.320,demodev00314,demoprd00037
+demoldv00625,1,Intervention sur site,,2.000,150.000,5.00,19.00,285.000,demodev00314,demoprd00010
+demoldv00626,2,Huile d'olive extra (bidon 5L),,98.000,68.000,0.00,13.00,6664.000,demodev00314,demoprd00036
+demoldv00627,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00315,demoprd00004
+demoldv00628,1,Ciment (tonne),,41.000,310.000,0.00,19.00,12710.000,demodev00315,demoprd00038
+demoldv00629,0,Mobilier de bureau (poste),,7.000,1250.000,0.00,19.00,8750.000,demodev00316,demoprd00033
+demoldv00630,1,Huile d'olive extra (bidon 5L),,25.000,68.000,0.00,13.00,1700.000,demodev00316,demoprd00036
+demoldv00631,0,Mobilier de bureau (poste),,5.000,1250.000,0.00,19.00,6250.000,demodev00317,demoprd00033
+demoldv00632,1,Dattes Deglet Nour (carton),,98.000,42.000,0.00,13.00,4116.000,demodev00317,demoprd00037
+demoldv00633,0,Carrelage (m2),,22.000,38.000,0.00,19.00,836.000,demodev00318,demoprd00039
+demoldv00634,0,Ramette papier A4,,149.000,14.500,0.00,19.00,2160.500,demodev00319,demoprd00030
+demoldv00635,1,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00319,demoprd00016
+demoldv00636,2,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00319,demoprd00033
+demoldv00637,0,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00320,demoprd00015
+demoldv00638,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00321,demoprd00029
+demoldv00639,0,Licence suite bureautique,,5.000,320.000,0.00,19.00,1600.000,demodev00322,demoprd00028
+demoldv00640,1,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00322,demoprd00013
+demoldv00641,0,Logiciel de gestion commerciale,,3.000,2900.000,0.00,19.00,8700.000,demodev00323,demoprd00029
+demoldv00642,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00323,demoprd00004
+demoldv00643,0,Accompagnement fiscal (heure),,4.000,120.000,0.00,19.00,480.000,demodev00324,demoprd00003
+demoldv00644,0,Ramette papier A4,,90.000,14.500,0.00,19.00,1305.000,demodev00325,demoprd00030
+demoldv00645,0,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00326,demoprd00014
+demoldv00646,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00326,demoprd00008
+demoldv00647,2,Integration ERP (jour),,13.000,600.000,0.00,19.00,7800.000,demodev00326,demoprd00007
+demoldv00648,3,Stockage entrepot (m2/mois),,123.000,12.000,0.00,19.00,1476.000,demodev00326,demoprd00020
+demoldv00649,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00327,demoprd00015
+demoldv00650,1,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00327,demoprd00029
+demoldv00651,0,Intervention sur site,,5.000,150.000,0.00,19.00,750.000,demodev00328,demoprd00010
+demoldv00652,1,Ciment (tonne),,47.000,310.000,0.00,19.00,14570.000,demodev00328,demoprd00038
+demoldv00653,0,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00329,demoprd00024
+demoldv00654,0,Onduleur 1500VA,,3.000,460.000,0.00,19.00,1380.000,demodev00330,demoprd00025
+demoldv00655,1,Gants nitrile (boite),,133.000,18.000,0.00,7.00,2394.000,demodev00330,demoprd00035
+demoldv00656,2,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00330,demoprd00015
+demoldv00657,0,Kit de premiers secours,,10.000,75.000,0.00,7.00,750.000,demodev00331,demoprd00034
+demoldv00658,1,Gants nitrile (boite),,400.000,18.000,7.00,7.00,6696.000,demodev00331,demoprd00035
+demoldv00659,0,Classeur archive,,229.000,6.800,0.00,19.00,1557.200,demodev00332,demoprd00032
+demoldv00660,1,Site vitrine,,1.000,2400.000,13.00,19.00,2088.000,demodev00332,demoprd00008
+demoldv00661,2,Ramette papier A4,,200.000,14.500,0.00,19.00,2900.000,demodev00332,demoprd00030
+demoldv00662,0,Application mobile (forfait),,1.000,12000.000,8.00,19.00,11040.000,demodev00333,demoprd00006
+demoldv00663,1,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00333,demoprd00033
+demoldv00664,2,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00333,demoprd00005
+demoldv00665,0,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00334,demoprd00040
+demoldv00666,1,Formation comptabilite,,3.000,650.000,0.00,19.00,1950.000,demodev00334,demoprd00015
+demoldv00667,2,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00334,demoprd00014
+demoldv00668,3,Transport de marchandises,,7.000,210.000,10.00,7.00,1323.000,demodev00334,demoprd00019
+demoldv00669,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00335,demoprd00012
+demoldv00670,1,Dattes Deglet Nour (carton),,13.000,42.000,0.00,13.00,546.000,demodev00335,demoprd00037
+demoldv00671,2,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00335,demoprd00009
+demoldv00672,0,Licence antivirus (poste),,8.000,85.000,0.00,19.00,680.000,demodev00336,demoprd00027
+demoldv00673,0,Sauvegarde externalisee,,7.000,95.000,0.00,19.00,665.000,demodev00337,demoprd00012
+demoldv00674,1,Ramette papier A4,,120.000,14.500,0.00,19.00,1740.000,demodev00337,demoprd00030
+demoldv00675,2,Cartouche toner,,16.000,165.000,0.00,19.00,2640.000,demodev00337,demoprd00031
+demoldv00676,0,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00338,demoprd00001
+demoldv00677,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00339,demoprd00016
+demoldv00678,1,Dattes Deglet Nour (carton),,148.000,42.000,6.00,13.00,5843.040,demodev00339,demoprd00037
+demoldv00679,0,Developpement web (jour),,9.000,450.000,0.00,19.00,4050.000,demodev00340,demoprd00005
+demoldv00680,1,Routeur professionnel,,5.000,540.000,8.00,19.00,2484.000,demodev00340,demoprd00024
+demoldv00681,2,Site vitrine,,1.000,2400.000,11.00,19.00,2136.000,demodev00340,demoprd00008
+demoldv00682,0,Kit de premiers secours,,15.000,75.000,0.00,7.00,1125.000,demodev00341,demoprd00034
+demoldv00683,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00342,demoprd00002
+demoldv00684,0,Formation bureautique (jour),,5.000,420.000,0.00,19.00,2100.000,demodev00343,demoprd00013
+demoldv00685,1,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00343,demoprd00017
+demoldv00686,0,Carrelage (m2),,173.000,38.000,0.00,19.00,6574.000,demodev00344,demoprd00039
+demoldv00687,1,Ciment (tonne),,7.000,310.000,0.00,19.00,2170.000,demodev00344,demoprd00038
+demoldv00688,2,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00344,demoprd00014
+demoldv00689,0,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00345,demoprd00015
+demoldv00690,1,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00345,demoprd00009
+demoldv00691,0,Ciment (tonne),,22.000,310.000,0.00,19.00,6820.000,demodev00346,demoprd00038
+demoldv00692,1,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00346,demoprd00016
+demoldv00693,2,Carrelage (m2),,344.000,38.000,0.00,19.00,13072.000,demodev00346,demoprd00039
+demoldv00694,0,Onduleur 1500VA,,2.000,460.000,0.00,19.00,920.000,demodev00347,demoprd00025
+demoldv00695,1,Stockage entrepot (m2/mois),,73.000,12.000,0.00,19.00,876.000,demodev00347,demoprd00020
+demoldv00696,2,Integration ERP (jour),,6.000,600.000,0.00,19.00,3600.000,demodev00347,demoprd00007
+demoldv00697,0,Classeur archive,,157.000,6.800,9.00,19.00,971.516,demodev00348,demoprd00032
+demoldv00698,0,Stockage entrepot (m2/mois),,49.000,12.000,0.00,19.00,588.000,demodev00349,demoprd00020
+demoldv00699,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00350,demoprd00013
+demoldv00700,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00350,demoprd00015
+demoldv00701,2,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00350,demoprd00014
+demoldv00702,0,Intervention sur site,,2.000,150.000,9.00,19.00,273.000,demodev00351,demoprd00010
+demoldv00703,1,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00351,demoprd00019
+demoldv00704,0,Accompagnement fiscal (heure),,4.000,120.000,0.00,19.00,480.000,demodev00352,demoprd00003
+demoldv00705,1,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00352,demoprd00001
+demoldv00706,2,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00352,demoprd00029
+demoldv00707,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00353,demoprd00002
+demoldv00708,0,Developpement web (jour),,12.000,450.000,0.00,19.00,5400.000,demodev00354,demoprd00005
+demoldv00709,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00354,demoprd00002
+demoldv00710,0,Carrelage (m2),,378.000,38.000,0.00,19.00,14364.000,demodev00355,demoprd00039
+demoldv00711,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00355,demoprd00004
+demoldv00712,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00356,demoprd00004
+demoldv00713,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00356,demoprd00002
+demoldv00714,0,Serveur dedie (mois),,1.000,290.000,0.00,19.00,290.000,demodev00357,demoprd00018
+demoldv00715,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00358,demoprd00011
+demoldv00716,1,Transport de marchandises,,7.000,210.000,0.00,7.00,1470.000,demodev00358,demoprd00019
+demoldv00717,2,Dattes Deglet Nour (carton),,316.000,42.000,0.00,13.00,13272.000,demodev00358,demoprd00037
+demoldv00718,0,Kit de premiers secours,,27.000,75.000,9.00,7.00,1842.750,demodev00359,demoprd00034
+demoldv00719,0,Licence antivirus (poste),,30.000,85.000,0.00,19.00,2550.000,demodev00360,demoprd00027
+demoldv00720,1,Integration ERP (jour),,4.000,600.000,0.00,19.00,2400.000,demodev00360,demoprd00007
+demoldv00721,0,Ecran 27 pouces,,7.000,690.000,0.00,19.00,4830.000,demodev00361,demoprd00022
+demoldv00722,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00362,demoprd00004
+demoldv00723,1,Cartouche toner,,4.000,165.000,10.00,19.00,594.000,demodev00362,demoprd00031
+demoldv00724,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00363,demoprd00023
+demoldv00725,1,Routeur professionnel,,2.000,540.000,0.00,19.00,1080.000,demodev00363,demoprd00024
+demoldv00726,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00364,demoprd00008
+demoldv00727,1,Stockage entrepot (m2/mois),,82.000,12.000,0.00,19.00,984.000,demodev00364,demoprd00020
+demoldv00728,0,Onduleur 1500VA,,6.000,460.000,10.00,19.00,2484.000,demodev00365,demoprd00025
+demoldv00729,0,Peinture murale (pot 20L),,25.000,145.000,0.00,19.00,3625.000,demodev00366,demoprd00040
+demoldv00730,1,Licence suite bureautique,,12.000,320.000,0.00,19.00,3840.000,demodev00366,demoprd00028
+demoldv00731,0,Accompagnement fiscal (heure),,3.000,120.000,0.00,19.00,360.000,demodev00367,demoprd00003
+demoldv00732,1,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00367,demoprd00001
+demoldv00733,2,Licence suite bureautique,,3.000,320.000,0.00,19.00,960.000,demodev00367,demoprd00028
+demoldv00734,0,Mobilier de bureau (poste),,7.000,1250.000,0.00,19.00,8750.000,demodev00368,demoprd00033
+demoldv00735,1,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00368,demoprd00013
+demoldv00736,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00369,demoprd00014
+demoldv00737,1,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00369,demoprd00013
+demoldv00738,2,Peinture murale (pot 20L),,62.000,145.000,0.00,19.00,8990.000,demodev00369,demoprd00040
+demoldv00739,0,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00370,demoprd00015
+demoldv00740,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00370,demoprd00014
+demoldv00741,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00371,demoprd00002
+demoldv00742,1,Ramette papier A4,,56.000,14.500,14.00,19.00,698.320,demodev00371,demoprd00030
+demoldv00743,0,Transport de marchandises,,4.000,210.000,0.00,7.00,840.000,demodev00372,demoprd00019
+demoldv00744,1,Stockage entrepot (m2/mois),,269.000,12.000,6.00,19.00,3034.320,demodev00372,demoprd00020
+demoldv00745,2,Carrelage (m2),,432.000,38.000,0.00,19.00,16416.000,demodev00372,demoprd00039
+demoldv00746,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00373,demoprd00004
+demoldv00747,1,Accompagnement fiscal (heure),,8.000,120.000,12.00,19.00,844.800,demodev00373,demoprd00003
+demoldv00748,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00374,demoprd00015
+demoldv00749,0,Ramette papier A4,,133.000,14.500,0.00,19.00,1928.500,demodev00375,demoprd00030
+demoldv00750,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00376,demoprd00010
+demoldv00751,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00376,demoprd00002
+demoldv00752,0,Sauvegarde externalisee,,3.000,95.000,0.00,19.00,285.000,demodev00377,demoprd00012
+demoldv00753,1,Licence suite bureautique,,2.000,320.000,0.00,19.00,640.000,demodev00377,demoprd00028
+demoldv00754,2,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00377,demoprd00009
+demoldv00755,0,Licence suite bureautique,,13.000,320.000,0.00,19.00,4160.000,demodev00378,demoprd00028
+demoldv00756,0,Transport de marchandises,,1.000,210.000,0.00,7.00,210.000,demodev00379,demoprd00019
+demoldv00757,0,Ciment (tonne),,10.000,310.000,0.00,19.00,3100.000,demodev00380,demoprd00038
+demoldv00758,1,Carrelage (m2),,800.000,38.000,0.00,19.00,30400.000,demodev00380,demoprd00039
+demoldv00759,0,Licence suite bureautique,,10.000,320.000,6.00,19.00,3008.000,demodev00381,demoprd00028
+demoldv00760,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00381,demoprd00029
+demoldv00761,0,Ramette papier A4,,42.000,14.500,9.00,19.00,554.190,demodev00382,demoprd00030
+demoldv00762,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00383,demoprd00002
+demoldv00763,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00383,demoprd00004
+demoldv00764,0,Classeur archive,,223.000,6.800,12.00,19.00,1334.432,demodev00384,demoprd00032
+demoldv00765,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00385,demoprd00014
+demoldv00766,0,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00386,demoprd00009
+demoldv00767,1,Huile d'olive extra (bidon 5L),,26.000,68.000,0.00,13.00,1768.000,demodev00386,demoprd00036
+demoldv00768,2,Support premium (annuel),,1.000,3600.000,11.00,19.00,3204.000,demodev00386,demoprd00011
+demoldv00769,0,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00387,demoprd00009
+demoldv00770,1,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00387,demoprd00005
+demoldv00771,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00387,demoprd00011
+demoldv00772,0,Peinture murale (pot 20L),,5.000,145.000,11.00,19.00,645.250,demodev00388,demoprd00040
+demoldv00773,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00389,demoprd00015
+demoldv00774,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00390,demoprd00010
+demoldv00775,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00391,demoprd00009
+demoldv00776,1,Gants nitrile (boite),,156.000,18.000,15.00,7.00,2386.800,demodev00391,demoprd00035
+demoldv00777,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00392,demoprd00023
+demoldv00778,1,Disque SSD 1To,,3.000,310.000,0.00,19.00,930.000,demodev00392,demoprd00026
+demoldv00779,0,Routeur professionnel,,1.000,540.000,0.00,19.00,540.000,demodev00393,demoprd00024
+demoldv00780,0,Imprimante laser,,4.000,980.000,0.00,19.00,3920.000,demodev00394,demoprd00023
+demoldv00781,1,Cartouche toner,,22.000,165.000,0.00,19.00,3630.000,demodev00394,demoprd00031
+demoldv00782,2,Mobilier de bureau (poste),,6.000,1250.000,0.00,19.00,7500.000,demodev00394,demoprd00033
+demoldv00783,3,Classeur archive,,300.000,6.800,5.00,19.00,1938.000,demodev00394,demoprd00032
+demoldv00784,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00395,demoprd00009
+demoldv00785,0,Sauvegarde externalisee,,2.000,95.000,6.00,19.00,178.600,demodev00396,demoprd00012
+demoldv00786,0,Licence suite bureautique,,19.000,320.000,6.00,19.00,5715.200,demodev00397,demoprd00028
+demoldv00787,1,Licence antivirus (poste),,44.000,85.000,0.00,19.00,3740.000,demodev00397,demoprd00027
+demoldv00788,0,Gants nitrile (boite),,67.000,18.000,14.00,7.00,1037.160,demodev00398,demoprd00035
+demoldv00789,1,Stockage entrepot (m2/mois),,34.000,12.000,0.00,19.00,408.000,demodev00398,demoprd00020
+demoldv00790,0,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00399,demoprd00023
+demoldv00791,1,Ecran 27 pouces,,4.000,690.000,0.00,19.00,2760.000,demodev00399,demoprd00022
+demoldv00792,0,Accompagnement fiscal (heure),,3.000,120.000,0.00,19.00,360.000,demodev00400,demoprd00003
+demoldv00793,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00400,demoprd00004
+demoldv00794,0,Sauvegarde externalisee,,6.000,95.000,0.00,19.00,570.000,demodev00401,demoprd00012
+demoldv00795,1,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00401,demoprd00013
+demoldv00796,0,Cartouche toner,,26.000,165.000,0.00,19.00,4290.000,demodev00402,demoprd00031
+demoldv00797,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00402,demoprd00008
+demoldv00798,2,Ramette papier A4,,118.000,14.500,0.00,19.00,1711.000,demodev00402,demoprd00030
+demoldv00799,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00403,demoprd00029
+demoldv00800,0,Licence antivirus (poste),,29.000,85.000,15.00,19.00,2095.250,demodev00404,demoprd00027
+demoldv00801,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00405,demoprd00012
+demoldv00802,1,Licence antivirus (poste),,29.000,85.000,0.00,19.00,2465.000,demodev00405,demoprd00027
+demoldv00803,0,Huile d'olive extra (bidon 5L),,105.000,68.000,10.00,13.00,6426.000,demodev00406,demoprd00036
+demoldv00804,1,Licence antivirus (poste),,40.000,85.000,9.00,19.00,3094.000,demodev00406,demoprd00027
+demoldv00805,0,Etude de marche,,1.000,4500.000,15.00,19.00,3825.000,demodev00407,demoprd00004
+demoldv00806,0,Licence antivirus (poste),,6.000,85.000,0.00,19.00,510.000,demodev00408,demoprd00027
+demoldv00807,1,Stockage entrepot (m2/mois),,50.000,12.000,0.00,19.00,600.000,demodev00408,demoprd00020
+demoldv00808,2,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00408,demoprd00004
+demoldv00809,3,Licence suite bureautique,,13.000,320.000,0.00,19.00,4160.000,demodev00408,demoprd00028
+demoldv00810,0,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00409,demoprd00016
+demoldv00811,1,Carrelage (m2),,151.000,38.000,0.00,19.00,5738.000,demodev00409,demoprd00039
+demoldv00812,0,Cartouche toner,,9.000,165.000,11.00,19.00,1321.650,demodev00410,demoprd00031
+demoldv00813,1,Peinture murale (pot 20L),,43.000,145.000,12.00,19.00,5486.800,demodev00410,demoprd00040
+demoldv00814,2,Mobilier de bureau (poste),,12.000,1250.000,0.00,19.00,15000.000,demodev00410,demoprd00033
+demoldv00815,0,Developpement web (jour),,10.000,450.000,0.00,19.00,4500.000,demodev00411,demoprd00005
+demoldv00816,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00412,demoprd00023
+demoldv00817,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00412,demoprd00015
+demoldv00818,2,Onduleur 1500VA,,2.000,460.000,0.00,19.00,920.000,demodev00412,demoprd00025
+demoldv00819,0,Ciment (tonne),,11.000,310.000,0.00,19.00,3410.000,demodev00413,demoprd00038
+demoldv00820,0,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00414,demoprd00009
+demoldv00821,1,Transport de marchandises,,4.000,210.000,0.00,7.00,840.000,demodev00414,demoprd00019
+demoldv00822,0,Serveur dedie (mois),,3.000,290.000,0.00,19.00,870.000,demodev00415,demoprd00018
+demoldv00823,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00416,demoprd00006
+demoldv00824,0,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00417,demoprd00013
+demoldv00825,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00417,demoprd00009
+demoldv00826,0,Gants nitrile (boite),,96.000,18.000,0.00,7.00,1728.000,demodev00418,demoprd00035
+demoldv00827,0,Serveur dedie (mois),,3.000,290.000,0.00,19.00,870.000,demodev00419,demoprd00018
+demoldv00828,1,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00419,demoprd00023
+demoldv00829,0,Stockage entrepot (m2/mois),,112.000,12.000,9.00,19.00,1223.040,demodev00420,demoprd00020
+demoldv00830,0,Carrelage (m2),,800.000,38.000,0.00,19.00,30400.000,demodev00421,demoprd00039
+demoldv00831,1,Onduleur 1500VA,,4.000,460.000,0.00,19.00,1840.000,demodev00421,demoprd00025
+demoldv00832,0,Peinture murale (pot 20L),,27.000,145.000,0.00,19.00,3915.000,demodev00422,demoprd00040
+demoldv00833,1,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00422,demoprd00015
+demoldv00834,0,Licence suite bureautique,,17.000,320.000,0.00,19.00,5440.000,demodev00423,demoprd00028
+demoldv00835,1,Dattes Deglet Nour (carton),,94.000,42.000,0.00,13.00,3948.000,demodev00423,demoprd00037
+demoldv00836,2,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00423,demoprd00029
+demoldv00837,0,Licence antivirus (poste),,22.000,85.000,0.00,19.00,1870.000,demodev00424,demoprd00027
+demoldv00838,1,Serveur dedie (mois),,4.000,290.000,0.00,19.00,1160.000,demodev00424,demoprd00018
+demoldv00839,0,Disque SSD 1To,,20.000,310.000,0.00,19.00,6200.000,demodev00425,demoprd00026
+demoldv00840,1,Ordinateur portable pro,,4.000,2350.000,0.00,19.00,9400.000,demodev00425,demoprd00021
+demoldv00841,0,Disque SSD 1To,,11.000,310.000,0.00,19.00,3410.000,demodev00426,demoprd00026
+demoldv00842,1,Onduleur 1500VA,,4.000,460.000,0.00,19.00,1840.000,demodev00426,demoprd00025
+demoldv00843,0,Ecran 27 pouces,,3.000,690.000,0.00,19.00,2070.000,demodev00427,demoprd00022
+demoldv00844,0,Carrelage (m2),,21.000,38.000,0.00,19.00,798.000,demodev00428,demoprd00039
+demoldv00845,0,Ordinateur portable pro,,10.000,2350.000,0.00,19.00,23500.000,demodev00429,demoprd00021
+demoldv00846,1,Transport de marchandises,,5.000,210.000,0.00,7.00,1050.000,demodev00429,demoprd00019
+demoldv00847,2,Disque SSD 1To,,20.000,310.000,0.00,19.00,6200.000,demodev00429,demoprd00026
+demoldv00848,0,Accompagnement fiscal (heure),,20.000,120.000,0.00,19.00,2400.000,demodev00430,demoprd00003
+demoldv00849,0,Huile d'olive extra (bidon 5L),,95.000,68.000,0.00,13.00,6460.000,demodev00431,demoprd00036
+demoldv00850,0,Licence suite bureautique,,2.000,320.000,0.00,19.00,640.000,demodev00432,demoprd00028
+demoldv00851,0,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00433,demoprd00009
+demoldv00852,0,Transport de marchandises,,5.000,210.000,0.00,7.00,1050.000,demodev00434,demoprd00019
+demoldv00853,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00434,demoprd00002
+demoldv00854,0,Ciment (tonne),,12.000,310.000,8.00,19.00,3422.400,demodev00435,demoprd00038
+demoldv00855,0,Integration ERP (jour),,4.000,600.000,0.00,19.00,2400.000,demodev00436,demoprd00007
+demoldv00856,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00437,demoprd00016
+demoldv00857,1,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00437,demoprd00017
+demoldv00858,0,Classeur archive,,53.000,6.800,0.00,19.00,360.400,demodev00438,demoprd00032
+demoldv00859,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00438,demoprd00009
+demoldv00860,2,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00438,demoprd00016
+demoldv00861,0,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00439,demoprd00001
+demoldv00862,1,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00439,demoprd00029
+demoldv00863,2,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00439,demoprd00008
+demoldv00864,3,Audit organisationnel,,1.000,3200.000,5.00,19.00,3040.000,demodev00439,demoprd00002
+demoldv00865,0,Peinture murale (pot 20L),,9.000,145.000,0.00,19.00,1305.000,demodev00440,demoprd00040
+demoldv00866,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00440,demoprd00004
+demoldv00867,2,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00440,demoprd00013
+demoldv00868,0,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00441,demoprd00016
+demoldv00869,1,Ciment (tonne),,48.000,310.000,7.00,19.00,13838.400,demodev00441,demoprd00038
+demoldv00870,0,Gants nitrile (boite),,172.000,18.000,0.00,7.00,3096.000,demodev00442,demoprd00035
+demoldv00871,0,Ecran 27 pouces,,3.000,690.000,0.00,19.00,2070.000,demodev00443,demoprd00022
+demoldv00872,0,Developpement web (jour),,20.000,450.000,8.00,19.00,8280.000,demodev00444,demoprd00005
+demoldv00873,0,Peinture murale (pot 20L),,28.000,145.000,0.00,19.00,4060.000,demodev00445,demoprd00040
+demoldv00874,1,Gants nitrile (boite),,314.000,18.000,0.00,7.00,5652.000,demodev00445,demoprd00035
+demoldv00875,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00445,demoprd00011
+demoldv00876,3,Kit de premiers secours,,13.000,75.000,0.00,7.00,975.000,demodev00445,demoprd00034
+demoldv00877,0,Nom de domaine .tn,,4.000,45.000,0.00,19.00,180.000,demodev00446,demoprd00017
+demoldv00878,1,Ciment (tonne),,11.000,310.000,0.00,19.00,3410.000,demodev00446,demoprd00038
+demoldv00879,2,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00446,demoprd00016
+demoldv00880,0,Accompagnement fiscal (heure),,20.000,120.000,0.00,19.00,2400.000,demodev00447,demoprd00003
+demoldv00881,1,Developpement web (jour),,15.000,450.000,0.00,19.00,6750.000,demodev00447,demoprd00005
+demoldv00882,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00448,demoprd00006
+demoldv00883,1,Formation bureautique (jour),,2.000,420.000,13.00,19.00,730.800,demodev00448,demoprd00013
+demoldv00884,0,Disque SSD 1To,,6.000,310.000,0.00,19.00,1860.000,demodev00449,demoprd00026
+demoldv00885,1,Peinture murale (pot 20L),,21.000,145.000,0.00,19.00,3045.000,demodev00449,demoprd00040
+demoldv00886,0,Ordinateur portable pro,,3.000,2350.000,0.00,19.00,7050.000,demodev00450,demoprd00021
+demoldv00887,0,Licence suite bureautique,,32.000,320.000,0.00,19.00,10240.000,demodev00451,demoprd00028
+demoldv00888,1,Licence antivirus (poste),,36.000,85.000,0.00,19.00,3060.000,demodev00451,demoprd00027
+demoldv00889,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00452,demoprd00012
+demoldv00890,1,Cartouche toner,,3.000,165.000,0.00,19.00,495.000,demodev00452,demoprd00031
+demoldv00891,0,Cartouche toner,,30.000,165.000,0.00,19.00,4950.000,demodev00453,demoprd00031
+demoldv00892,0,Onduleur 1500VA,,6.000,460.000,0.00,19.00,2760.000,demodev00454,demoprd00025
+demoldv00893,0,Formation bureautique (jour),,3.000,420.000,10.00,19.00,1134.000,demodev00455,demoprd00013
+demoldv00894,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00455,demoprd00004
+demoldv00895,0,Developpement web (jour),,18.000,450.000,0.00,19.00,8100.000,demodev00456,demoprd00005
+demoldv00896,0,Dattes Deglet Nour (carton),,60.000,42.000,0.00,13.00,2520.000,demodev00457,demoprd00037
+demoldv00897,1,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00457,demoprd00012
+demoldv00898,0,Ciment (tonne),,60.000,310.000,0.00,19.00,18600.000,demodev00458,demoprd00038
+demoldv00899,0,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00459,demoprd00023
+demoldv00900,1,Onduleur 1500VA,,4.000,460.000,0.00,19.00,1840.000,demodev00459,demoprd00025
+demoldv00901,2,Carrelage (m2),,154.000,38.000,7.00,19.00,5442.360,demodev00459,demoprd00039
+demoldv00902,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00460,demoprd00006
+demoldv00903,1,Dattes Deglet Nour (carton),,500.000,42.000,0.00,13.00,21000.000,demodev00460,demoprd00037
+demoldv00904,2,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00460,demoprd00005
+demoldv00905,0,Developpement web (jour),,9.000,450.000,0.00,19.00,4050.000,demodev00461,demoprd00005
+demoldv00906,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00462,demoprd00008
+demoldv00907,1,Kit de premiers secours,,20.000,75.000,0.00,7.00,1500.000,demodev00462,demoprd00034
+demoldv00908,0,Ciment (tonne),,17.000,310.000,0.00,19.00,5270.000,demodev00463,demoprd00038
+demoldv00909,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00463,demoprd00014
+demoldv00910,2,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00463,demoprd00013
+demoldv00911,3,Peinture murale (pot 20L),,21.000,145.000,0.00,19.00,3045.000,demodev00463,demoprd00040
+demoldv00912,0,Peinture murale (pot 20L),,61.000,145.000,6.00,19.00,8314.300,demodev00464,demoprd00040
+demoldv00913,0,Ordinateur portable pro,,2.000,2350.000,13.00,19.00,4089.000,demodev00465,demoprd00021
+demoldv00914,1,Integration ERP (jour),,8.000,600.000,0.00,19.00,4800.000,demodev00465,demoprd00007
+demoldv00915,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00466,demoprd00006
+demoldv00916,0,Formation bureautique (jour),,1.000,420.000,0.00,19.00,420.000,demodev00467,demoprd00013
+demoldv00917,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00467,demoprd00014
+demoldv00918,0,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00468,demoprd00010
+demoldv00919,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00468,demoprd00009
+demoldv00920,0,Intervention sur site,,2.000,150.000,5.00,19.00,285.000,demodev00469,demoprd00010
+demoldv00921,0,Licence antivirus (poste),,39.000,85.000,0.00,19.00,3315.000,demodev00470,demoprd00027
+demoldv00922,1,Cartouche toner,,16.000,165.000,0.00,19.00,2640.000,demodev00470,demoprd00031
+demoldv00923,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00471,demoprd00008
+demoldv00924,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00472,demoprd00011
+demoldv00925,0,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00473,demoprd00034
+demoldv00926,0,Peinture murale (pot 20L),,79.000,145.000,0.00,19.00,11455.000,demodev00474,demoprd00040
+demoldv00927,0,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00475,demoprd00025
+demoldv00928,0,Dattes Deglet Nour (carton),,419.000,42.000,0.00,13.00,17598.000,demodev00476,demoprd00037
+demoldv00929,0,Dattes Deglet Nour (carton),,500.000,42.000,0.00,13.00,21000.000,demodev00477,demoprd00037
+demoldv00930,1,Intervention sur site,,6.000,150.000,0.00,19.00,900.000,demodev00477,demoprd00010
+demoldv00931,0,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00478,demoprd00001
+demoldv00932,1,Etude de marche,,1.000,4500.000,13.00,19.00,3915.000,demodev00478,demoprd00004
+demoldv00933,2,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00478,demoprd00008
+demoldv00934,3,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00478,demoprd00007
+demoldv00935,0,Integration ERP (jour),,8.000,600.000,0.00,19.00,4800.000,demodev00479,demoprd00007
+demoldv00936,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00479,demoprd00004
+demoldv00937,2,Nom de domaine .tn,,4.000,45.000,0.00,19.00,180.000,demodev00479,demoprd00017
+demoldv00938,3,Gants nitrile (boite),,400.000,18.000,8.00,7.00,6624.000,demodev00479,demoprd00035
+demoldv00939,0,Etude de marche,,1.000,4500.000,14.00,19.00,3870.000,demodev00480,demoprd00004
+demoldv00940,0,Kit de premiers secours,,5.000,75.000,7.00,7.00,348.750,demodev00481,demoprd00034
+demoldv00941,0,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00482,demoprd00014
+demoldv00942,0,Licence suite bureautique,,10.000,320.000,0.00,19.00,3200.000,demodev00483,demoprd00028
+demoldv00943,1,Integration ERP (jour),,6.000,600.000,9.00,19.00,3276.000,demodev00483,demoprd00007
+demoldv00944,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00484,demoprd00008
+demoldv00945,1,Ramette papier A4,,76.000,14.500,0.00,19.00,1102.000,demodev00484,demoprd00030
+demoldv00946,0,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00485,demoprd00024
+demoldv00947,1,Developpement web (jour),,14.000,450.000,0.00,19.00,6300.000,demodev00485,demoprd00005
+demoldv00948,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00486,demoprd00013
+demoldv00949,0,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00487,demoprd00016
+demoldv00950,1,Transport de marchandises,,6.000,210.000,9.00,7.00,1146.600,demodev00487,demoprd00019
+demoldv00951,2,Stockage entrepot (m2/mois),,25.000,12.000,0.00,19.00,300.000,demodev00487,demoprd00020
+demoldv00952,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00488,demoprd00036
+demoldv00953,1,Dattes Deglet Nour (carton),,75.000,42.000,0.00,13.00,3150.000,demodev00488,demoprd00037
+demoldv00954,0,Formation comptabilite,,2.000,650.000,7.00,19.00,1209.000,demodev00489,demoprd00015
+demoldv00955,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00489,demoprd00014
+demoldv00956,0,Onduleur 1500VA,,5.000,460.000,0.00,19.00,2300.000,demodev00490,demoprd00025
+demoldv00957,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00490,demoprd00015
+demoldv00958,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00491,demoprd00029
+demoldv00959,0,Gants nitrile (boite),,164.000,18.000,0.00,7.00,2952.000,demodev00492,demoprd00035
+demoldv00960,1,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00492,demoprd00015
+demoldv00961,2,Ordinateur portable pro,,2.000,2350.000,0.00,19.00,4700.000,demodev00492,demoprd00021
+demoldv00962,3,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00492,demoprd00014
+demoldv00963,0,Licence suite bureautique,,12.000,320.000,0.00,19.00,3840.000,demodev00493,demoprd00028
+demoldv00964,0,Classeur archive,,218.000,6.800,0.00,19.00,1482.400,demodev00494,demoprd00032
+demoldv00965,1,Serveur dedie (mois),,8.000,290.000,0.00,19.00,2320.000,demodev00494,demoprd00018
+demoldv00966,0,Kit de premiers secours,,24.000,75.000,0.00,7.00,1800.000,demodev00495,demoprd00034
+demoldv00967,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00495,demoprd00008
+demoldv00968,2,Ramette papier A4,,200.000,14.500,0.00,19.00,2900.000,demodev00495,demoprd00030
+demoldv00969,3,Licence suite bureautique,,50.000,320.000,0.00,19.00,16000.000,demodev00495,demoprd00028
+demoldv00970,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00496,demoprd00016
+demoldv00971,1,Nom de domaine .tn,,1.000,45.000,11.00,19.00,40.050,demodev00496,demoprd00017
+demoldv00972,0,Conseil strategique (jour),,8.000,850.000,0.00,19.00,6800.000,demodev00497,demoprd00001
+demoldv00973,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00497,demoprd00004
+demoldv00974,2,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00497,demoprd00002
+demoldv00975,0,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00498,demoprd00035
+demoldv00976,1,Disque SSD 1To,,10.000,310.000,0.00,19.00,3100.000,demodev00498,demoprd00026
+demoldv00977,2,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00498,demoprd00016
+demoldv00978,3,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00498,demoprd00013
+demoldv00979,0,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00499,demoprd00013
+demoldv00980,1,Kit de premiers secours,,16.000,75.000,0.00,7.00,1200.000,demodev00499,demoprd00034
+demoldv00981,2,Formation comptabilite,,2.000,650.000,14.00,19.00,1118.000,demodev00499,demoprd00015
+demoldv00982,0,Kit de premiers secours,,31.000,75.000,0.00,7.00,2325.000,demodev00500,demoprd00034
+demoldv00983,1,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00500,demoprd00035
+demoldv00984,0,Integration ERP (jour),,7.000,600.000,0.00,19.00,4200.000,demodev00501,demoprd00007
+demoldv00985,1,Imprimante laser,,3.000,980.000,13.00,19.00,2557.800,demodev00501,demoprd00023
+demoldv00986,2,Accompagnement fiscal (heure),,20.000,120.000,5.00,19.00,2280.000,demodev00501,demoprd00003
+demoldv00987,3,Audit organisationnel,,1.000,3200.000,14.00,19.00,2752.000,demodev00501,demoprd00002
+demoldv00988,0,Mobilier de bureau (poste),,11.000,1250.000,0.00,19.00,13750.000,demodev00502,demoprd00033
+demoldv00989,1,Licence suite bureautique,,50.000,320.000,0.00,19.00,16000.000,demodev00502,demoprd00028
+demoldv00990,2,Ramette papier A4,,25.000,14.500,0.00,19.00,362.500,demodev00502,demoprd00030
+demoldv00991,0,Dattes Deglet Nour (carton),,119.000,42.000,0.00,13.00,4998.000,demodev00503,demoprd00037
+demoldv00992,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00503,demoprd00009
+demoldv00993,2,Intervention sur site,,1.000,150.000,0.00,19.00,150.000,demodev00503,demoprd00010
+demoldv00994,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00504,demoprd00011
+demoldv00995,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00504,demoprd00009
+demoldv00996,2,Developpement web (jour),,12.000,450.000,0.00,19.00,5400.000,demodev00504,demoprd00005
+demoldv00997,0,Sauvegarde externalisee,,7.000,95.000,0.00,19.00,665.000,demodev00505,demoprd00012
+demoldv00998,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00506,demoprd00006
+demoldv00999,1,Sauvegarde externalisee,,11.000,95.000,0.00,19.00,1045.000,demodev00506,demoprd00012
+demoldv01000,0,Classeur archive,,300.000,6.800,0.00,19.00,2040.000,demodev00507,demoprd00032
+demoldv01001,1,Cartouche toner,,7.000,165.000,0.00,19.00,1155.000,demodev00507,demoprd00031
+demoldv01002,0,Sauvegarde externalisee,,5.000,95.000,0.00,19.00,475.000,demodev00508,demoprd00012
+demoldv01003,1,Cartouche toner,,5.000,165.000,0.00,19.00,825.000,demodev00508,demoprd00031
+demoldv01004,2,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00508,demoprd00010
+demoldv01005,0,Ordinateur portable pro,,2.000,2350.000,0.00,19.00,4700.000,demodev00509,demoprd00021
+demoldv01006,1,Accompagnement fiscal (heure),,13.000,120.000,10.00,19.00,1404.000,demodev00509,demoprd00003
+demoldv01007,0,Serveur dedie (mois),,5.000,290.000,0.00,19.00,1450.000,demodev00510,demoprd00018
+demoldv01008,1,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00510,demoprd00013
+demoldv01009,2,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00510,demoprd00015
+demoldv01010,0,Routeur professionnel,,1.000,540.000,0.00,19.00,540.000,demodev00511,demoprd00024
+demoldv01011,1,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00511,demoprd00023
+demoldv01012,0,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00512,demoprd00009
+demoldv01013,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00512,demoprd00011
+demoldv01014,0,Ramette papier A4,,88.000,14.500,0.00,19.00,1276.000,demodev00513,demoprd00030
+demoldv01015,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00514,demoprd00014
+demoldv01016,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00514,demoprd00029
+demoldv01017,0,Serveur dedie (mois),,8.000,290.000,0.00,19.00,2320.000,demodev00515,demoprd00018
+demoldv01018,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00516,demoprd00036
+demoldv01019,0,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00517,demoprd00017
+demoldv01020,1,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00517,demoprd00016
+demoldv01021,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00518,demoprd00016
+demoldv01022,1,Accompagnement fiscal (heure),,10.000,120.000,0.00,19.00,1200.000,demodev00518,demoprd00003
+demoldv01023,2,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00518,demoprd00017
+demoldv01024,0,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00519,demoprd00033
+demoldv01025,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00520,demoprd00011
+demoldv01026,0,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00521,demoprd00005
+demoldv01027,1,Site vitrine,,1.000,2400.000,11.00,19.00,2136.000,demodev00521,demoprd00008
+demoldv01028,0,Ramette papier A4,,73.000,14.500,0.00,19.00,1058.500,demodev00522,demoprd00030
+demoldv01029,0,Kit de premiers secours,,24.000,75.000,0.00,7.00,1800.000,demodev00523,demoprd00034
+demoldv01030,1,Ecran 27 pouces,,4.000,690.000,0.00,19.00,2760.000,demodev00523,demoprd00022
+demoldv01031,2,Accompagnement fiscal (heure),,12.000,120.000,0.00,19.00,1440.000,demodev00523,demoprd00003
+demoldv01032,3,Formation bureautique (jour),,1.000,420.000,0.00,19.00,420.000,demodev00523,demoprd00013
+demoldv01033,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00524,demoprd00014
+demoldv01034,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00524,demoprd00015
+demoldv01035,0,Kit de premiers secours,,33.000,75.000,0.00,7.00,2475.000,demodev00525,demoprd00034
+demoldv01036,0,Etude de marche,,1.000,4500.000,14.00,19.00,3870.000,demodev00526,demoprd00004
+demoldv01037,1,Intervention sur site,,6.000,150.000,0.00,19.00,900.000,demodev00526,demoprd00010
+demoldv01038,0,Routeur professionnel,,4.000,540.000,0.00,19.00,2160.000,demodev00527,demoprd00024
+demoldv01039,1,Ecran 27 pouces,,8.000,690.000,0.00,19.00,5520.000,demodev00527,demoprd00022
+demoldv01040,0,Cartouche toner,,9.000,165.000,10.00,19.00,1336.500,demodev00528,demoprd00031
+demoldv01041,1,Classeur archive,,116.000,6.800,13.00,19.00,686.256,demodev00528,demoprd00032
+demoldv01042,0,Licence antivirus (poste),,71.000,85.000,0.00,19.00,6035.000,demodev00529,demoprd00027
+demoldv01043,0,Routeur professionnel,,3.000,540.000,12.00,19.00,1425.600,demodev00530,demoprd00024
+demoldv01044,1,Ecran 27 pouces,,7.000,690.000,12.00,19.00,4250.400,demodev00530,demoprd00022
+demoldv01045,0,Peinture murale (pot 20L),,30.000,145.000,0.00,19.00,4350.000,demodev00531,demoprd00040
+demoldv01046,1,Carrelage (m2),,283.000,38.000,0.00,19.00,10754.000,demodev00531,demoprd00039
+demoldv01047,0,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00532,demoprd00010
+demoldv01048,1,Onduleur 1500VA,,3.000,460.000,0.00,19.00,1380.000,demodev00532,demoprd00025
+demoldv01049,0,Peinture murale (pot 20L),,53.000,145.000,0.00,19.00,7685.000,demodev00533,demoprd00040
+demoldv01050,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00533,demoprd00002
+demoldv01051,2,Accompagnement fiscal (heure),,6.000,120.000,0.00,19.00,720.000,demodev00533,demoprd00003
+demoldv01052,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00534,demoprd00015
+demoldv01053,1,Transport de marchandises,,3.000,210.000,0.00,7.00,630.000,demodev00534,demoprd00019
+demoldv01054,0,Maintenance mensuelle,,1.000,380.000,6.00,19.00,357.200,demodev00535,demoprd00009
+demoldv01055,0,Stockage entrepot (m2/mois),,91.000,12.000,0.00,19.00,1092.000,demodev00536,demoprd00020
+demoldv01056,1,Cartouche toner,,30.000,165.000,0.00,19.00,4950.000,demodev00536,demoprd00031
+demoldv01057,2,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00536,demoprd00016
+demoldv01058,3,Transport de marchandises,,10.000,210.000,0.00,7.00,2100.000,demodev00536,demoprd00019
+demoldv01059,0,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00537,demoprd00007
+demoldv01060,1,Sauvegarde externalisee,,10.000,95.000,0.00,19.00,950.000,demodev00537,demoprd00012
+demoldv01061,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00538,demoprd00006
+demoldv01062,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00538,demoprd00011
+demoldv01063,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00539,demoprd00004
+demoldv01064,1,Gants nitrile (boite),,107.000,18.000,0.00,7.00,1926.000,demodev00539,demoprd00035
+demoldv01065,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00540,demoprd00008
+demoldv01066,1,Integration ERP (jour),,3.000,600.000,0.00,19.00,1800.000,demodev00540,demoprd00007
+demoldv01067,2,Nom de domaine .tn,,3.000,45.000,0.00,19.00,135.000,demodev00540,demoprd00017
+demoldv01068,0,Mobilier de bureau (poste),,2.000,1250.000,0.00,19.00,2500.000,demodev00541,demoprd00033
+demoldv01069,1,Ramette papier A4,,200.000,14.500,14.00,19.00,2494.000,demodev00541,demoprd00030
+demoldv01070,0,Cartouche toner,,6.000,165.000,0.00,19.00,990.000,demodev00542,demoprd00031
+demoldv01071,0,Carrelage (m2),,504.000,38.000,0.00,19.00,19152.000,demodev00543,demoprd00039
+demoldv01072,0,Sauvegarde externalisee,,6.000,95.000,0.00,19.00,570.000,demodev00544,demoprd00012
+demoldv01073,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00544,demoprd00009
+demoldv01074,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00544,demoprd00011
+demoldv01075,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00545,demoprd00002
+demoldv01076,1,Conseil strategique (jour),,6.000,850.000,0.00,19.00,5100.000,demodev00545,demoprd00001
+demoldv01077,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00545,demoprd00006
+demoldv01078,0,Audit organisationnel,,1.000,3200.000,5.00,19.00,3040.000,demodev00546,demoprd00002
+demoldv01079,0,Application mobile (forfait),,1.000,12000.000,14.00,19.00,10320.000,demodev00547,demoprd00006
+demoldv01080,1,Ciment (tonne),,21.000,310.000,0.00,19.00,6510.000,demodev00547,demoprd00038
+demoldv01081,0,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00548,demoprd00024
+demoldv01082,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00549,demoprd00029
+demoldv01083,0,Kit de premiers secours,,24.000,75.000,0.00,7.00,1800.000,demodev00550,demoprd00034
+demoldv01084,0,Licence suite bureautique,,12.000,320.000,0.00,19.00,3840.000,demodev00551,demoprd00028
+demoldv01085,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00551,demoprd00029
+demoldv01086,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00552,demoprd00014
+demoldv01087,1,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00552,demoprd00023
+demoldv01088,2,Classeur archive,,25.000,6.800,0.00,19.00,170.000,demodev00552,demoprd00032
+demoldv01089,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00553,demoprd00036
+demoldv01090,0,Integration ERP (jour),,15.000,600.000,5.00,19.00,8550.000,demodev00554,demoprd00007
+demoldv01091,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00554,demoprd00006
+demoldv01092,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00555,demoprd00023
+demoldv01093,1,Ecran 27 pouces,,2.000,690.000,0.00,19.00,1380.000,demodev00555,demoprd00022
+demoldv01094,2,Accompagnement fiscal (heure),,6.000,120.000,0.00,19.00,720.000,demodev00555,demoprd00003
+demoldv01095,0,Dattes Deglet Nour (carton),,21.000,42.000,0.00,13.00,882.000,demodev00556,demoprd00037
+demoldv01096,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00556,demoprd00002
+demoldv01097,2,Licence suite bureautique,,2.000,320.000,0.00,19.00,640.000,demodev00556,demoprd00028
+demoldv01098,0,Support premium (annuel),,1.000,3600.000,7.00,19.00,3348.000,demodev00557,demoprd00011
+demoldv01099,1,Sauvegarde externalisee,,7.000,95.000,9.00,19.00,605.150,demodev00557,demoprd00012
+demoldv01100,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00557,demoprd00006
+demoldv01101,0,Licence suite bureautique,,14.000,320.000,0.00,19.00,4480.000,demodev00558,demoprd00028
+demoldv01102,1,Licence antivirus (poste),,5.000,85.000,0.00,19.00,425.000,demodev00558,demoprd00027
+demoldv01103,2,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00558,demoprd00029
+demoldv01104,3,Stockage entrepot (m2/mois),,116.000,12.000,10.00,19.00,1252.800,demodev00558,demoprd00020
+demoldv01105,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00559,demoprd00012
+demoldv01106,1,Intervention sur site,,4.000,150.000,0.00,19.00,600.000,demodev00559,demoprd00010
+demoldv01107,0,Ciment (tonne),,8.000,310.000,0.00,19.00,2480.000,demodev00560,demoprd00038
+demoldv01108,1,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00560,demoprd00016
+demoldv01109,0,Licence suite bureautique,,7.000,320.000,14.00,19.00,1926.400,demodev00561,demoprd00028
+demoldv01110,1,Stockage entrepot (m2/mois),,170.000,12.000,0.00,19.00,2040.000,demodev00561,demoprd00020
+demoldv01111,2,Transport de marchandises,,6.000,210.000,0.00,7.00,1260.000,demodev00561,demoprd00019
+demoldv01112,0,Ramette papier A4,,200.000,14.500,0.00,19.00,2900.000,demodev00562,demoprd00030
+demoldv01113,1,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00562,demoprd00016
+demoldv01114,0,Developpement web (jour),,8.000,450.000,0.00,19.00,3600.000,demodev00563,demoprd00005
+demoldv01115,0,Gants nitrile (boite),,73.000,18.000,0.00,7.00,1314.000,demodev00564,demoprd00035
+demoldv01116,1,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00564,demoprd00001
+demoldv01117,0,Licence antivirus (poste),,100.000,85.000,0.00,19.00,8500.000,demodev00565,demoprd00027
+demoldv01118,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00565,demoprd00015
+demoldv01119,0,Sauvegarde externalisee,,9.000,95.000,0.00,19.00,855.000,demodev00566,demoprd00012
+demoldv01120,1,Intervention sur site,,1.000,150.000,9.00,19.00,136.500,demodev00566,demoprd00010
+demoldv01121,0,Gants nitrile (boite),,45.000,18.000,7.00,7.00,753.300,demodev00567,demoprd00035
+demoldv01122,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00568,demoprd00010
+demoldv01123,1,Nom de domaine .tn,,3.000,45.000,0.00,19.00,135.000,demodev00568,demoprd00017
+demoldv01124,2,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00568,demoprd00009
+demoldv01125,0,Ordinateur portable pro,,10.000,2350.000,0.00,19.00,23500.000,demodev00569,demoprd00021
+demoldv01126,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00569,demoprd00008
+demoldv01127,2,Mobilier de bureau (poste),,15.000,1250.000,13.00,19.00,16312.500,demodev00569,demoprd00033
+demoldv01128,0,Cartouche toner,,19.000,165.000,5.00,19.00,2978.250,demodev00570,demoprd00031
+demoldv01129,1,Mobilier de bureau (poste),,10.000,1250.000,0.00,19.00,12500.000,demodev00570,demoprd00033
+demoldv01130,2,Ramette papier A4,,22.000,14.500,0.00,19.00,319.000,demodev00570,demoprd00030
+demoldv01131,0,Carrelage (m2),,596.000,38.000,0.00,19.00,22648.000,demodev00571,demoprd00039
+demoldv01132,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00571,demoprd00008
+demoldv01133,0,Ordinateur portable pro,,8.000,2350.000,0.00,19.00,18800.000,demodev00572,demoprd00021
+demoldv01134,1,Ramette papier A4,,137.000,14.500,11.00,19.00,1767.985,demodev00572,demoprd00030
+demoldv01135,2,Sauvegarde externalisee,,9.000,95.000,0.00,19.00,855.000,demodev00572,demoprd00012
+demoldv01136,0,Developpement web (jour),,17.000,450.000,0.00,19.00,7650.000,demodev00573,demoprd00005
+demoldv01137,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00573,demoprd00006
+demoldv01138,2,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00573,demoprd00034
+demoldv01139,0,Routeur professionnel,,5.000,540.000,0.00,19.00,2700.000,demodev00574,demoprd00024
+demoldv01140,1,Disque SSD 1To,,8.000,310.000,0.00,19.00,2480.000,demodev00574,demoprd00026
+demoldv01141,2,Imprimante laser,,4.000,980.000,0.00,19.00,3920.000,demodev00574,demoprd00023
+demoldv01142,3,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00574,demoprd00025
+demoldv01143,0,Gants nitrile (boite),,56.000,18.000,0.00,7.00,1008.000,demodev00575,demoprd00035
+demoldv01144,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00575,demoprd00009
+demoldv01145,2,Mobilier de bureau (poste),,3.000,1250.000,0.00,19.00,3750.000,demodev00575,demoprd00033
+demoldv01146,0,Transport de marchandises,,3.000,210.000,0.00,7.00,630.000,demodev00576,demoprd00019
+demoldv01147,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00576,demoprd00009
+demoldv01148,0,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00577,demoprd00023
+demoldv01149,1,Routeur professionnel,,4.000,540.000,0.00,19.00,2160.000,demodev00577,demoprd00024
+demoldv01150,2,Licence suite bureautique,,9.000,320.000,0.00,19.00,2880.000,demodev00577,demoprd00028
+demoldv01151,0,Licence suite bureautique,,3.000,320.000,0.00,19.00,960.000,demodev00578,demoprd00028
+demoldv01152,0,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00579,demoprd00014
+demoldv01153,1,Cartouche toner,,30.000,165.000,0.00,19.00,4950.000,demodev00579,demoprd00031
+demoldv01154,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00580,demoprd00029
+demoldv01155,1,Ciment (tonne),,6.000,310.000,5.00,19.00,1767.000,demodev00580,demoprd00038
+demoldv01156,0,Onduleur 1500VA,,2.000,460.000,0.00,19.00,920.000,demodev00581,demoprd00025
+demoldv01157,1,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00581,demoprd00023
+demoldv01158,2,Ordinateur portable pro,,3.000,2350.000,0.00,19.00,7050.000,demodev00581,demoprd00021
+demoldv01159,0,Mobilier de bureau (poste),,10.000,1250.000,5.00,19.00,11875.000,demodev00582,demoprd00033
+demoldv01160,1,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00582,demoprd00012
+demoldv01161,0,Site vitrine,,1.000,2400.000,11.00,19.00,2136.000,demodev00583,demoprd00008
+demoldv01162,0,Formation bureautique (jour),,1.000,420.000,0.00,19.00,420.000,demodev00584,demoprd00013
+demoldv01163,1,Carrelage (m2),,190.000,38.000,0.00,19.00,7220.000,demodev00584,demoprd00039
+demoldv01164,0,Gants nitrile (boite),,83.000,18.000,0.00,7.00,1494.000,demodev00585,demoprd00035
+demoldv01165,1,Kit de premiers secours,,22.000,75.000,0.00,7.00,1650.000,demodev00585,demoprd00034
+demoldv01166,0,Kit de premiers secours,,6.000,75.000,5.00,7.00,427.500,demodev00586,demoprd00034
+demoldv01167,1,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00586,demoprd00013
+demoldv01168,0,Disque SSD 1To,,6.000,310.000,0.00,19.00,1860.000,demodev00587,demoprd00026
+demoldv01169,1,Licence suite bureautique,,24.000,320.000,0.00,19.00,7680.000,demodev00587,demoprd00028
+demoldv01170,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00588,demoprd00014
+demoldv01171,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00588,demoprd00015
+demoldv01172,2,Disque SSD 1To,,4.000,310.000,0.00,19.00,1240.000,demodev00588,demoprd00026
+demoldv01173,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00589,demoprd00002
+demoldv01174,0,Ramette papier A4,,27.000,14.500,14.00,19.00,336.690,demodev00590,demoprd00030
+demoldv01175,1,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00590,demoprd00010
+demoldv01176,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00591,demoprd00011
+demoldv01177,1,Integration ERP (jour),,9.000,600.000,0.00,19.00,5400.000,demodev00591,demoprd00007
+demoldv01178,2,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00591,demoprd00009
+demoldv01179,0,Transport de marchandises,,5.000,210.000,0.00,7.00,1050.000,demodev00592,demoprd00019
+demoldv01180,0,Classeur archive,,120.000,6.800,0.00,19.00,816.000,demodev00593,demoprd00032
+demoldv01181,1,Etude de marche,,1.000,4500.000,15.00,19.00,3825.000,demodev00593,demoprd00004
+demoldv01182,2,Accompagnement fiscal (heure),,3.000,120.000,14.00,19.00,309.600,demodev00593,demoprd00003
+demoldv01183,0,Transport de marchandises,,8.000,210.000,0.00,7.00,1680.000,demodev00594,demoprd00019
+demoldv01184,1,Integration ERP (jour),,12.000,600.000,0.00,19.00,7200.000,demodev00594,demoprd00007
+demoldv01185,2,Carrelage (m2),,354.000,38.000,0.00,19.00,13452.000,demodev00594,demoprd00039
+demoldv01186,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00595,demoprd00011
+demoldv01187,0,Integration ERP (jour),,8.000,600.000,0.00,19.00,4800.000,demodev00596,demoprd00007
+demoldv01188,0,Stockage entrepot (m2/mois),,80.000,12.000,0.00,19.00,960.000,demodev00597,demoprd00020
+demoldv01189,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00597,demoprd00009
+demoldv01190,0,Dattes Deglet Nour (carton),,500.000,42.000,0.00,13.00,21000.000,demodev00598,demoprd00037
+demoldv01191,0,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00599,demoprd00012
+demoldv01192,1,Dattes Deglet Nour (carton),,150.000,42.000,0.00,13.00,6300.000,demodev00599,demoprd00037
+demoldv01193,2,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00599,demoprd00010
+demoldv01194,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00600,demoprd00029
+demoldv01195,1,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00600,demoprd00013
+demoldv01196,2,Accompagnement fiscal (heure),,3.000,120.000,0.00,19.00,360.000,demodev00600,demoprd00003
+demoldv01197,0,Kit de premiers secours,,6.000,75.000,0.00,7.00,450.000,demodev00601,demoprd00034
+demoldv01198,0,Licence suite bureautique,,5.000,320.000,0.00,19.00,1600.000,demodev00602,demoprd00028
+demoldv01199,0,Dattes Deglet Nour (carton),,113.000,42.000,0.00,13.00,4746.000,demodev00603,demoprd00037
+demoldv01200,0,Sauvegarde externalisee,,3.000,95.000,0.00,19.00,285.000,demodev00604,demoprd00012
+demoldv01201,0,Formation comptabilite,,2.000,650.000,13.00,19.00,1131.000,demodev00605,demoprd00015
+demoldv01202,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00606,demoprd00006
+demoldv01203,0,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00607,demoprd00013
+demoldv01204,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00608,demoprd00016
+demoldv01205,0,Huile d'olive extra (bidon 5L),,80.000,68.000,0.00,13.00,5440.000,demodev00609,demoprd00036
+demoldv01206,1,Dattes Deglet Nour (carton),,224.000,42.000,0.00,13.00,9408.000,demodev00609,demoprd00037
+demoldv01207,0,Mobilier de bureau (poste),,6.000,1250.000,0.00,19.00,7500.000,demodev00610,demoprd00033
+demoldv01208,1,Transport de marchandises,,7.000,210.000,14.00,7.00,1264.200,demodev00610,demoprd00019
+demoldv01209,0,Stockage entrepot (m2/mois),,184.000,12.000,0.00,19.00,2208.000,demodev00611,demoprd00020
+demoldv01210,1,Classeur archive,,43.000,6.800,0.00,19.00,292.400,demodev00611,demoprd00032
+demoldv01211,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00611,demoprd00011
+demoldv01212,0,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00612,demoprd00034
+demoldv01213,1,Peinture murale (pot 20L),,36.000,145.000,0.00,19.00,5220.000,demodev00612,demoprd00040
+demoldv01214,0,Peinture murale (pot 20L),,68.000,145.000,0.00,19.00,9860.000,demodev00613,demoprd00040
+demoldv01215,1,Ciment (tonne),,17.000,310.000,13.00,19.00,4584.900,demodev00613,demoprd00038
+demoldv01216,0,Huile d'olive extra (bidon 5L),,20.000,68.000,0.00,13.00,1360.000,demodev00614,demoprd00036
+demoldv01217,0,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00615,demoprd00007
+demoldv01218,1,Ciment (tonne),,60.000,310.000,0.00,19.00,18600.000,demodev00615,demoprd00038
+demoldv01219,2,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00615,demoprd00009
+demoldv01220,3,Application mobile (forfait),,1.000,12000.000,8.00,19.00,11040.000,demodev00615,demoprd00006
+demoldv01221,0,Formation bureautique (jour),,5.000,420.000,0.00,19.00,2100.000,demodev00616,demoprd00013
+demoldv01222,1,Licence antivirus (poste),,91.000,85.000,0.00,19.00,7735.000,demodev00616,demoprd00027
+demoldv01223,2,Dattes Deglet Nour (carton),,500.000,42.000,0.00,13.00,21000.000,demodev00616,demoprd00037
+demoldv01224,3,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00616,demoprd00029
+demoldv01225,0,Kit de premiers secours,,27.000,75.000,0.00,7.00,2025.000,demodev00617,demoprd00034
+demoldv01226,1,Gants nitrile (boite),,107.000,18.000,0.00,7.00,1926.000,demodev00617,demoprd00035
+demoldv01227,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00618,demoprd00029
+demoldv01228,1,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00618,demoprd00017
+demoldv01229,2,Ecran 27 pouces,,3.000,690.000,0.00,19.00,2070.000,demodev00618,demoprd00022
+demoldv01230,0,Logiciel de gestion commerciale,,3.000,2900.000,0.00,19.00,8700.000,demodev00619,demoprd00029
+demoldv01231,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00620,demoprd00002
+demoldv01232,0,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00621,demoprd00010
+demoldv01233,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00621,demoprd00006
+demoldv01234,2,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00621,demoprd00011
+demoldv01235,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00622,demoprd00006
+demoldv01236,1,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00622,demoprd00010
+demoldv01237,2,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00622,demoprd00008
+demoldv01238,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00623,demoprd00015
+demoldv01239,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00624,demoprd00023
+demoldv01240,1,Ecran 27 pouces,,4.000,690.000,0.00,19.00,2760.000,demodev00624,demoprd00022
+demoldv01241,0,Routeur professionnel,,3.000,540.000,0.00,19.00,1620.000,demodev00625,demoprd00024
+demoldv01242,1,Licence suite bureautique,,12.000,320.000,0.00,19.00,3840.000,demodev00625,demoprd00028
+demoldv01243,0,Kit de premiers secours,,9.000,75.000,5.00,7.00,641.250,demodev00626,demoprd00034
+demoldv01244,1,Transport de marchandises,,3.000,210.000,0.00,7.00,630.000,demodev00626,demoprd00019
+demoldv01245,2,Gants nitrile (boite),,39.000,18.000,0.00,7.00,702.000,demodev00626,demoprd00035
+demoldv01246,0,Serveur dedie (mois),,2.000,290.000,0.00,19.00,580.000,demodev00627,demoprd00018
+demoldv01247,1,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00627,demoprd00017
+demoldv01248,2,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00627,demoprd00016
+demoldv01249,0,Huile d'olive extra (bidon 5L),,35.000,68.000,0.00,13.00,2380.000,demodev00628,demoprd00036
+demoldv01250,1,Dattes Deglet Nour (carton),,500.000,42.000,0.00,13.00,21000.000,demodev00628,demoprd00037
+demoldv01251,0,Ordinateur portable pro,,10.000,2350.000,0.00,19.00,23500.000,demodev00629,demoprd00021
+demoldv01252,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00629,demoprd00002
+demoldv01253,2,Disque SSD 1To,,7.000,310.000,0.00,19.00,2170.000,demodev00629,demoprd00026
+demoldv01254,3,Routeur professionnel,,4.000,540.000,0.00,19.00,2160.000,demodev00629,demoprd00024
+demoldv01255,0,Ciment (tonne),,6.000,310.000,0.00,19.00,1860.000,demodev00630,demoprd00038
+demoldv01256,1,Carrelage (m2),,57.000,38.000,0.00,19.00,2166.000,demodev00630,demoprd00039
+demoldv01257,2,Peinture murale (pot 20L),,7.000,145.000,0.00,19.00,1015.000,demodev00630,demoprd00040
+demoldv01258,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00631,demoprd00006
+demoldv01259,0,Cartouche toner,,29.000,165.000,0.00,19.00,4785.000,demodev00632,demoprd00031
+demoldv01260,1,Mobilier de bureau (poste),,9.000,1250.000,0.00,19.00,11250.000,demodev00632,demoprd00033
+demoldv01261,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00633,demoprd00006
+demoldv01262,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00633,demoprd00009
+demoldv01263,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00634,demoprd00006
+demoldv01264,1,Accompagnement fiscal (heure),,8.000,120.000,0.00,19.00,960.000,demodev00634,demoprd00003
+demoldv01265,0,Mobilier de bureau (poste),,2.000,1250.000,0.00,19.00,2500.000,demodev00635,demoprd00033
+demoldv01266,1,Ramette papier A4,,60.000,14.500,0.00,19.00,870.000,demodev00635,demoprd00030
+demoldv01267,2,Classeur archive,,211.000,6.800,0.00,19.00,1434.800,demodev00635,demoprd00032
+demoldv01268,0,Stockage entrepot (m2/mois),,174.000,12.000,0.00,19.00,2088.000,demodev00636,demoprd00020
+demoldv01269,1,Classeur archive,,162.000,6.800,0.00,19.00,1101.600,demodev00636,demoprd00032
+demoldv01270,2,Ramette papier A4,,200.000,14.500,0.00,19.00,2900.000,demodev00636,demoprd00030
+demoldv01271,0,Gants nitrile (boite),,285.000,18.000,0.00,7.00,5130.000,demodev00637,demoprd00035
+demoldv01272,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00637,demoprd00011
+demoldv01273,2,Intervention sur site,,5.000,150.000,0.00,19.00,750.000,demodev00637,demoprd00010
+demoldv01274,0,Serveur dedie (mois),,3.000,290.000,0.00,19.00,870.000,demodev00638,demoprd00018
+demoldv01275,1,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00638,demoprd00016
+demoldv01276,2,Cartouche toner,,3.000,165.000,0.00,19.00,495.000,demodev00638,demoprd00031
+demoldv01277,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00639,demoprd00006
+demoldv01278,0,Stockage entrepot (m2/mois),,300.000,12.000,0.00,19.00,3600.000,demodev00640,demoprd00020
+demoldv01279,0,Classeur archive,,126.000,6.800,0.00,19.00,856.800,demodev00641,demoprd00032
+demoldv01280,1,Ramette papier A4,,27.000,14.500,0.00,19.00,391.500,demodev00641,demoprd00030
+demoldv01281,0,Disque SSD 1To,,11.000,310.000,0.00,19.00,3410.000,demodev00642,demoprd00026
+demoldv01282,0,Ramette papier A4,,200.000,14.500,9.00,19.00,2639.000,demodev00643,demoprd00030
+demoldv01283,1,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00643,demoprd00005
+demoldv01284,2,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00643,demoprd00008
+demoldv01285,3,Mobilier de bureau (poste),,11.000,1250.000,8.00,19.00,12650.000,demodev00643,demoprd00033
+demoldv01286,0,Integration ERP (jour),,2.000,600.000,0.00,19.00,1200.000,demodev00644,demoprd00007
+demoldv01287,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00645,demoprd00036
+demoldv01288,0,Ramette papier A4,,39.000,14.500,0.00,19.00,565.500,demodev00646,demoprd00030
+demoldv01289,1,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00646,demoprd00017
+demoldv01290,0,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00647,demoprd00001
+demoldv01291,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00647,demoprd00004
+demoldv01292,2,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00647,demoprd00029
+demoldv01293,0,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00648,demoprd00009
+demoldv01294,1,Huile d'olive extra (bidon 5L),,32.000,68.000,0.00,13.00,2176.000,demodev00648,demoprd00036
+demoldv01295,0,Huile d'olive extra (bidon 5L),,15.000,68.000,0.00,13.00,1020.000,demodev00649,demoprd00036
+demoldv01296,0,Developpement web (jour),,16.000,450.000,0.00,19.00,7200.000,demodev00650,demoprd00005
+demoldv01297,0,Sauvegarde externalisee,,4.000,95.000,0.00,19.00,380.000,demodev00651,demoprd00012
+demoldv01298,1,Classeur archive,,110.000,6.800,0.00,19.00,748.000,demodev00651,demoprd00032
+demoldv01299,2,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00651,demoprd00010
+demoldv01300,3,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00651,demoprd00011
+demoldv01301,0,Mobilier de bureau (poste),,15.000,1250.000,7.00,19.00,17437.500,demodev00652,demoprd00033
+demoldv01302,1,Classeur archive,,300.000,6.800,0.00,19.00,2040.000,demodev00652,demoprd00032
+demoldv01303,2,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00652,demoprd00016
+demoldv01304,0,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00653,demoprd00001
+demoldv01305,0,Sauvegarde externalisee,,3.000,95.000,0.00,19.00,285.000,demodev00654,demoprd00012
+demoldv01306,0,Serveur dedie (mois),,8.000,290.000,0.00,19.00,2320.000,demodev00655,demoprd00018
+demoldv01307,1,Gants nitrile (boite),,175.000,18.000,0.00,7.00,3150.000,demodev00655,demoprd00035
+demoldv01308,2,Hebergement web (annuel),,2.000,540.000,10.00,19.00,972.000,demodev00655,demoprd00016
+demoldv01309,0,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00656,demoprd00040
+demoldv01310,1,Ciment (tonne),,15.000,310.000,0.00,19.00,4650.000,demodev00656,demoprd00038
+demoldv01311,2,Huile d'olive extra (bidon 5L),,249.000,68.000,0.00,13.00,16932.000,demodev00656,demoprd00036
+demoldv01312,0,Carrelage (m2),,180.000,38.000,0.00,19.00,6840.000,demodev00657,demoprd00039
+demoldv01313,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00658,demoprd00013
+demoldv01314,0,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00659,demoprd00017
+demoldv01315,1,Licence antivirus (poste),,9.000,85.000,0.00,19.00,765.000,demodev00659,demoprd00027
+demoldv01316,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00660,demoprd00004
+demoldv01317,1,Cartouche toner,,24.000,165.000,0.00,19.00,3960.000,demodev00660,demoprd00031
+demoldv01318,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00661,demoprd00014
+demoldv01319,1,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00661,demoprd00029
+demoldv01320,0,Developpement web (jour),,6.000,450.000,0.00,19.00,2700.000,demodev00662,demoprd00005
+demoldv01321,1,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00662,demoprd00023
+demoldv01322,0,Mobilier de bureau (poste),,4.000,1250.000,0.00,19.00,5000.000,demodev00663,demoprd00033
+demoldv01323,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00664,demoprd00011
+demoldv01324,0,Stockage entrepot (m2/mois),,45.000,12.000,0.00,19.00,540.000,demodev00665,demoprd00020
+demoldv01325,0,Sauvegarde externalisee,,4.000,95.000,0.00,19.00,380.000,demodev00666,demoprd00012
+demoldv01326,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00666,demoprd00011
+demoldv01327,2,Ordinateur portable pro,,1.000,2350.000,0.00,19.00,2350.000,demodev00666,demoprd00021
+demoldv01328,3,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00666,demoprd00006
+demoldv01329,0,Ciment (tonne),,8.000,310.000,0.00,19.00,2480.000,demodev00667,demoprd00038
+demoldv01330,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00667,demoprd00015
+demoldv01331,2,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00667,demoprd00017
+demoldv01332,0,Stockage entrepot (m2/mois),,50.000,12.000,13.00,19.00,522.000,demodev00668,demoprd00020
+demoldv01333,1,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00668,demoprd00016
+demoldv01334,0,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00669,demoprd00013
+demoldv01335,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00669,demoprd00014
+demoldv01336,2,Carrelage (m2),,185.000,38.000,14.00,19.00,6045.800,demodev00669,demoprd00039
+demoldv01337,0,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00670,demoprd00016
+demoldv01338,1,Mobilier de bureau (poste),,12.000,1250.000,0.00,19.00,15000.000,demodev00670,demoprd00033
+demoldv01339,0,Developpement web (jour),,10.000,450.000,12.00,19.00,3960.000,demodev00671,demoprd00005
+demoldv01340,0,Peinture murale (pot 20L),,28.000,145.000,0.00,19.00,4060.000,demodev00672,demoprd00040
+demoldv01341,1,Carrelage (m2),,329.000,38.000,0.00,19.00,12502.000,demodev00672,demoprd00039
+demoldv01342,0,Cartouche toner,,30.000,165.000,0.00,19.00,4950.000,demodev00673,demoprd00031
+demoldv01343,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00673,demoprd00006
+demoldv01344,0,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00674,demoprd00013
+demoldv01345,0,Sauvegarde externalisee,,6.000,95.000,0.00,19.00,570.000,demodev00675,demoprd00012
+demoldv01346,1,Transport de marchandises,,4.000,210.000,0.00,7.00,840.000,demodev00675,demoprd00019
+demoldv01347,0,Support premium (annuel),,1.000,3600.000,7.00,19.00,3348.000,demodev00676,demoprd00011
+demoldv01348,0,Carrelage (m2),,226.000,38.000,0.00,19.00,8588.000,demodev00677,demoprd00039
+demoldv01349,1,Ciment (tonne),,19.000,310.000,0.00,19.00,5890.000,demodev00677,demoprd00038
+demoldv01350,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00678,demoprd00002
+demoldv01351,1,Conseil strategique (jour),,3.000,850.000,0.00,19.00,2550.000,demodev00678,demoprd00001
+demoldv01352,0,Ordinateur portable pro,,1.000,2350.000,0.00,19.00,2350.000,demodev00679,demoprd00021
+demoldv01353,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00680,demoprd00014
+demoldv01354,0,Kit de premiers secours,,25.000,75.000,0.00,7.00,1875.000,demodev00681,demoprd00034
+demoldv01355,1,Gants nitrile (boite),,112.000,18.000,0.00,7.00,2016.000,demodev00681,demoprd00035
+demoldv01356,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00682,demoprd00002
+demoldv01357,1,Sauvegarde externalisee,,5.000,95.000,0.00,19.00,475.000,demodev00682,demoprd00012
+demoldv01358,0,Peinture murale (pot 20L),,19.000,145.000,0.00,19.00,2755.000,demodev00683,demoprd00040
+demoldv01359,1,Ordinateur portable pro,,1.000,2350.000,0.00,19.00,2350.000,demodev00683,demoprd00021
+demoldv01360,2,Carrelage (m2),,267.000,38.000,0.00,19.00,10146.000,demodev00683,demoprd00039
+demoldv01361,3,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00683,demoprd00013
+demoldv01362,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00684,demoprd00006
+demoldv01363,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00685,demoprd00011
+demoldv01364,1,Sauvegarde externalisee,,3.000,95.000,0.00,19.00,285.000,demodev00685,demoprd00012
+demoldv01365,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00685,demoprd00006
+demoldv01366,0,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00686,demoprd00009
+demoldv01367,1,Intervention sur site,,1.000,150.000,0.00,19.00,150.000,demodev00686,demoprd00010
+demoldv01368,2,Cartouche toner,,2.000,165.000,0.00,19.00,330.000,demodev00686,demoprd00031
+demoldv01369,0,Conseil strategique (jour),,3.000,850.000,0.00,19.00,2550.000,demodev00687,demoprd00001
+demoldv01370,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00687,demoprd00002
+demoldv01371,2,Accompagnement fiscal (heure),,8.000,120.000,0.00,19.00,960.000,demodev00687,demoprd00003
+demoldv01372,0,Huile d'olive extra (bidon 5L),,186.000,68.000,0.00,13.00,12648.000,demodev00688,demoprd00036
+demoldv01373,0,Ramette papier A4,,197.000,14.500,0.00,19.00,2856.500,demodev00689,demoprd00030
+demoldv01374,0,Stockage entrepot (m2/mois),,90.000,12.000,0.00,19.00,1080.000,demodev00690,demoprd00020
+demoldv01375,1,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00690,demoprd00010
+demoldv01376,2,Support premium (annuel),,1.000,3600.000,6.00,19.00,3384.000,demodev00690,demoprd00011
+demoldv01377,0,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00691,demoprd00034
+demoldv01378,1,Developpement web (jour),,11.000,450.000,0.00,19.00,4950.000,demodev00691,demoprd00005
+demoldv01379,0,Licence antivirus (poste),,38.000,85.000,0.00,19.00,3230.000,demodev00692,demoprd00027
+demoldv01380,1,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00692,demoprd00019
+demoldv01381,2,Gants nitrile (boite),,218.000,18.000,10.00,7.00,3531.600,demodev00692,demoprd00035
+demoldv01382,0,Transport de marchandises,,6.000,210.000,0.00,7.00,1260.000,demodev00693,demoprd00019
+demoldv01383,1,Kit de premiers secours,,32.000,75.000,0.00,7.00,2400.000,demodev00693,demoprd00034
+demoldv01384,2,Gants nitrile (boite),,184.000,18.000,0.00,7.00,3312.000,demodev00693,demoprd00035
+demoldv01385,0,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00694,demoprd00010
+demoldv01386,0,Classeur archive,,122.000,6.800,0.00,19.00,829.600,demodev00695,demoprd00032
+demoldv01387,1,Ramette papier A4,,77.000,14.500,0.00,19.00,1116.500,demodev00695,demoprd00030
+demoldv01388,0,Kit de premiers secours,,27.000,75.000,9.00,7.00,1842.750,demodev00696,demoprd00034
+demoldv01389,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00696,demoprd00006
+demoldv01390,0,Ramette papier A4,,113.000,14.500,0.00,19.00,1638.500,demodev00697,demoprd00030
+demoldv01391,1,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00697,demoprd00013
+demoldv01392,2,Gants nitrile (boite),,285.000,18.000,0.00,7.00,5130.000,demodev00697,demoprd00035
+demoldv01393,0,Kit de premiers secours,,5.000,75.000,0.00,7.00,375.000,demodev00698,demoprd00034
+demoldv01394,0,Licence suite bureautique,,29.000,320.000,7.00,19.00,8630.400,demodev00699,demoprd00028
+demoldv01395,1,Accompagnement fiscal (heure),,2.000,120.000,11.00,19.00,213.600,demodev00699,demoprd00003
+demoldv01396,0,Licence suite bureautique,,10.000,320.000,0.00,19.00,3200.000,demodev00700,demoprd00028
+demoldv01397,1,Stockage entrepot (m2/mois),,106.000,12.000,0.00,19.00,1272.000,demodev00700,demoprd00020
+demoldv01398,0,Accompagnement fiscal (heure),,5.000,120.000,0.00,19.00,600.000,demodev00701,demoprd00003
+demoldv01399,0,Classeur archive,,253.000,6.800,0.00,19.00,1720.400,demodev00702,demoprd00032
+demoldv01400,0,Serveur dedie (mois),,4.000,290.000,0.00,19.00,1160.000,demodev00703,demoprd00018
+demoldv01401,0,Mobilier de bureau (poste),,6.000,1250.000,0.00,19.00,7500.000,demodev00704,demoprd00033
+demoldv01402,0,Mobilier de bureau (poste),,13.000,1250.000,0.00,19.00,16250.000,demodev00705,demoprd00033
+demoldv01403,1,Nom de domaine .tn,,3.000,45.000,0.00,19.00,135.000,demodev00705,demoprd00017
+demoldv01404,2,Cartouche toner,,20.000,165.000,0.00,19.00,3300.000,demodev00705,demoprd00031
+demoldv01405,3,Ramette papier A4,,68.000,14.500,0.00,19.00,986.000,demodev00705,demoprd00030
+demoldv01406,0,Developpement web (jour),,15.000,450.000,0.00,19.00,6750.000,demodev00706,demoprd00005
+demoldv01407,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00706,demoprd00006
+demoldv01408,0,Kit de premiers secours,,8.000,75.000,0.00,7.00,600.000,demodev00707,demoprd00034
+demoldv01409,1,Classeur archive,,56.000,6.800,0.00,19.00,380.800,demodev00707,demoprd00032
+demoldv01410,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00708,demoprd00009
+demoldv01411,0,Ecran 27 pouces,,5.000,690.000,0.00,19.00,3450.000,demodev00709,demoprd00022
+demoldv01412,0,Gants nitrile (boite),,347.000,18.000,0.00,7.00,6246.000,demodev00710,demoprd00035
+demoldv01413,0,Licence suite bureautique,,3.000,320.000,10.00,19.00,864.000,demodev00711,demoprd00028
+demoldv01414,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00712,demoprd00029
+demoldv01415,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00712,demoprd00004
+demoldv01416,0,Ramette papier A4,,39.000,14.500,0.00,19.00,565.500,demodev00713,demoprd00030
+demoldv01417,0,Sauvegarde externalisee,,4.000,95.000,0.00,19.00,380.000,demodev00714,demoprd00012
+demoldv01418,1,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00714,demoprd00010
+demoldv01419,0,Huile d'olive extra (bidon 5L),,204.000,68.000,0.00,13.00,13872.000,demodev00715,demoprd00036
+demoldv01420,0,Serveur dedie (mois),,5.000,290.000,0.00,19.00,1450.000,demodev00716,demoprd00018
+demoldv01421,0,Serveur dedie (mois),,3.000,290.000,6.00,19.00,817.800,demodev00717,demoprd00018
+demoldv01422,0,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00718,demoprd00013
+demoldv01423,0,Kit de premiers secours,,6.000,75.000,0.00,7.00,450.000,demodev00719,demoprd00034
+demoldv01424,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00719,demoprd00015
+demoldv01425,0,Transport de marchandises,,3.000,210.000,0.00,7.00,630.000,demodev00720,demoprd00019
+demoldv01426,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00720,demoprd00011
+demoldv01427,0,Disque SSD 1To,,15.000,310.000,0.00,19.00,4650.000,demodev00721,demoprd00026
+demoldv01428,1,Ordinateur portable pro,,4.000,2350.000,0.00,19.00,9400.000,demodev00721,demoprd00021
+demoldv01429,0,Developpement web (jour),,13.000,450.000,0.00,19.00,5850.000,demodev00722,demoprd00005
+demoldv01430,1,Sauvegarde externalisee,,5.000,95.000,0.00,19.00,475.000,demodev00722,demoprd00012
+demoldv01431,0,Developpement web (jour),,7.000,450.000,0.00,19.00,3150.000,demodev00723,demoprd00005
+demoldv01432,1,Mobilier de bureau (poste),,9.000,1250.000,0.00,19.00,11250.000,demodev00723,demoprd00033
+demoldv01433,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00724,demoprd00014
+demoldv01434,1,Disque SSD 1To,,8.000,310.000,0.00,19.00,2480.000,demodev00724,demoprd00026
+demoldv01435,0,Developpement web (jour),,5.000,450.000,0.00,19.00,2250.000,demodev00725,demoprd00005
+demoldv01436,1,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00725,demoprd00013
+demoldv01437,2,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00725,demoprd00004
+demoldv01438,0,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00726,demoprd00016
+demoldv01439,1,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00726,demoprd00017
+demoldv01440,0,Logiciel de gestion commerciale,,2.000,2900.000,13.00,19.00,5046.000,demodev00727,demoprd00029
+demoldv01441,1,Audit organisationnel,,1.000,3200.000,9.00,19.00,2912.000,demodev00727,demoprd00002
+demoldv01442,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00728,demoprd00006
+demoldv01443,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00728,demoprd00002
+demoldv01444,0,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00729,demoprd00014
+demoldv01445,1,Stockage entrepot (m2/mois),,300.000,12.000,0.00,19.00,3600.000,demodev00729,demoprd00020
+demoldv01446,2,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00729,demoprd00005
+demoldv01447,0,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00730,demoprd00017
+demoldv01448,1,Mobilier de bureau (poste),,4.000,1250.000,13.00,19.00,4350.000,demodev00730,demoprd00033
+demoldv01449,2,Carrelage (m2),,176.000,38.000,9.00,19.00,6086.080,demodev00730,demoprd00039
+demoldv01450,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00731,demoprd00029
+demoldv01451,1,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00731,demoprd00015
+demoldv01452,2,Licence antivirus (poste),,25.000,85.000,0.00,19.00,2125.000,demodev00731,demoprd00027
+demoldv01453,0,Huile d'olive extra (bidon 5L),,73.000,68.000,14.00,13.00,4269.040,demodev00732,demoprd00036
+demoldv01454,1,Transport de marchandises,,1.000,210.000,0.00,7.00,210.000,demodev00732,demoprd00019
+demoldv01455,2,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00732,demoprd00016
+demoldv01456,0,Ciment (tonne),,41.000,310.000,0.00,19.00,12710.000,demodev00733,demoprd00038
+demoldv01457,1,Peinture murale (pot 20L),,3.000,145.000,0.00,19.00,435.000,demodev00733,demoprd00040
+demoldv01458,0,Serveur dedie (mois),,9.000,290.000,0.00,19.00,2610.000,demodev00734,demoprd00018
+demoldv01459,1,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00734,demoprd00019
+demoldv01460,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00735,demoprd00006
+demoldv01461,1,Classeur archive,,300.000,6.800,0.00,19.00,2040.000,demodev00735,demoprd00032
+demoldv01462,2,Ramette papier A4,,200.000,14.500,0.00,19.00,2900.000,demodev00735,demoprd00030
+demoldv01463,0,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00736,demoprd00017
+demoldv01464,0,Licence antivirus (poste),,14.000,85.000,0.00,19.00,1190.000,demodev00737,demoprd00027
+demoldv01465,0,Developpement web (jour),,10.000,450.000,5.00,19.00,4275.000,demodev00738,demoprd00005
+demoldv01466,1,Integration ERP (jour),,3.000,600.000,0.00,19.00,1800.000,demodev00738,demoprd00007
+demoldv01467,0,Licence antivirus (poste),,32.000,85.000,0.00,19.00,2720.000,demodev00739,demoprd00027
+demoldv01468,1,Formation bureautique (jour),,3.000,420.000,12.00,19.00,1108.800,demodev00739,demoprd00013
+demoldv01469,2,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00739,demoprd00029
+demoldv01470,0,Carrelage (m2),,327.000,38.000,0.00,19.00,12426.000,demodev00740,demoprd00039
+demoldv01471,0,Ciment (tonne),,50.000,310.000,0.00,19.00,15500.000,demodev00741,demoprd00038
+demoldv01472,0,Kit de premiers secours,,18.000,75.000,0.00,7.00,1350.000,demodev00742,demoprd00034
+demoldv01473,1,Etude de marche,,1.000,4500.000,8.00,19.00,4140.000,demodev00742,demoprd00004
+demoldv01474,2,Audit organisationnel,,1.000,3200.000,7.00,19.00,2976.000,demodev00742,demoprd00002
+demoldv01475,3,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00742,demoprd00017
+demoldv01476,0,Ramette papier A4,,15.000,14.500,0.00,19.00,217.500,demodev00743,demoprd00030
+demoldv01477,1,Cartouche toner,,4.000,165.000,0.00,19.00,660.000,demodev00743,demoprd00031
+demoldv01478,2,Classeur archive,,26.000,6.800,0.00,19.00,176.800,demodev00743,demoprd00032
+demoldv01479,3,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00743,demoprd00017
+demoldv01480,0,Ramette papier A4,,66.000,14.500,0.00,19.00,957.000,demodev00744,demoprd00030
+demoldv01481,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00744,demoprd00008
+demoldv01482,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00745,demoprd00006
+demoldv01483,0,Licence antivirus (poste),,44.000,85.000,0.00,19.00,3740.000,demodev00746,demoprd00027
+demoldv01484,1,Licence suite bureautique,,13.000,320.000,0.00,19.00,4160.000,demodev00746,demoprd00028
+demoldv01485,2,Huile d'olive extra (bidon 5L),,57.000,68.000,6.00,13.00,3643.440,demodev00746,demoprd00036
+demoldv01486,3,Ecran 27 pouces,,2.000,690.000,7.00,19.00,1283.400,demodev00746,demoprd00022
+demoldv01487,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00747,demoprd00008
+demoldv01488,0,Disque SSD 1To,,8.000,310.000,14.00,19.00,2132.800,demodev00748,demoprd00026
+demoldv01489,1,Ordinateur portable pro,,1.000,2350.000,0.00,19.00,2350.000,demodev00748,demoprd00021
+demoldv01490,2,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00748,demoprd00023
+demoldv01491,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00749,demoprd00015
+demoldv01492,1,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00749,demoprd00029
+demoldv01493,2,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00749,demoprd00009
+demoldv01494,0,Mobilier de bureau (poste),,7.000,1250.000,8.00,19.00,8050.000,demodev00750,demoprd00033
+demoldv01495,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00751,demoprd00008
+demoldv01496,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00751,demoprd00011
+demoldv01497,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00752,demoprd00011
+demoldv01498,1,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00752,demoprd00010
+demoldv01499,2,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00752,demoprd00002
+demoldv01500,0,Ordinateur portable pro,,10.000,2350.000,0.00,19.00,23500.000,demodev00753,demoprd00021
+demoldv01501,1,Disque SSD 1To,,18.000,310.000,0.00,19.00,5580.000,demodev00753,demoprd00026
+demoldv01502,2,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00753,demoprd00029
+demoldv01503,0,Imprimante laser,,4.000,980.000,0.00,19.00,3920.000,demodev00754,demoprd00023
+demoldv01504,1,Ecran 27 pouces,,12.000,690.000,0.00,19.00,8280.000,demodev00754,demoprd00022
+demoldv01505,2,Onduleur 1500VA,,5.000,460.000,0.00,19.00,2300.000,demodev00754,demoprd00025
+demoldv01506,0,Dattes Deglet Nour (carton),,224.000,42.000,0.00,13.00,9408.000,demodev00755,demoprd00037
+demoldv01507,1,Carrelage (m2),,267.000,38.000,0.00,19.00,10146.000,demodev00755,demoprd00039
+demoldv01508,0,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00756,demoprd00025
+demoldv01509,1,Carrelage (m2),,112.000,38.000,0.00,19.00,4256.000,demodev00756,demoprd00039
+demoldv01510,2,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00756,demoprd00015
+demoldv01511,0,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00757,demoprd00010
+demoldv01512,0,Classeur archive,,76.000,6.800,0.00,19.00,516.800,demodev00758,demoprd00032
+demoldv01513,1,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00758,demoprd00009
+demoldv01514,0,Conseil strategique (jour),,8.000,850.000,0.00,19.00,6800.000,demodev00759,demoprd00001
+demoldv01515,1,Mobilier de bureau (poste),,13.000,1250.000,0.00,19.00,16250.000,demodev00759,demoprd00033
+demoldv01516,0,Intervention sur site,,1.000,150.000,0.00,19.00,150.000,demodev00760,demoprd00010
+demoldv01517,1,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00760,demoprd00019
+demoldv01518,2,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00760,demoprd00013
+demoldv01519,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00761,demoprd00006
+demoldv01520,0,Huile d'olive extra (bidon 5L),,30.000,68.000,0.00,13.00,2040.000,demodev00762,demoprd00036
+demoldv01521,1,Dattes Deglet Nour (carton),,99.000,42.000,0.00,13.00,4158.000,demodev00762,demoprd00037
+demoldv01522,2,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00762,demoprd00009
+demoldv01523,0,Stockage entrepot (m2/mois),,129.000,12.000,0.00,19.00,1548.000,demodev00763,demoprd00020
+demoldv01524,1,Sauvegarde externalisee,,6.000,95.000,0.00,19.00,570.000,demodev00763,demoprd00012
+demoldv01525,0,Licence antivirus (poste),,87.000,85.000,0.00,19.00,7395.000,demodev00764,demoprd00027
+demoldv01526,1,Ramette papier A4,,68.000,14.500,15.00,19.00,838.100,demodev00764,demoprd00030
+demoldv01527,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00765,demoprd00009
+demoldv01528,1,Sauvegarde externalisee,,3.000,95.000,0.00,19.00,285.000,demodev00765,demoprd00012
+demoldv01529,0,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00766,demoprd00040
+demoldv01530,1,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00766,demoprd00034
+demoldv01531,0,Sauvegarde externalisee,,1.000,95.000,0.00,19.00,95.000,demodev00767,demoprd00012
+demoldv01532,1,Transport de marchandises,,1.000,210.000,0.00,7.00,210.000,demodev00767,demoprd00019
+demoldv01533,0,Dattes Deglet Nour (carton),,115.000,42.000,5.00,13.00,4588.500,demodev00768,demoprd00037
+demoldv01534,1,Huile d'olive extra (bidon 5L),,228.000,68.000,0.00,13.00,15504.000,demodev00768,demoprd00036
+demoldv01535,0,Disque SSD 1To,,7.000,310.000,0.00,19.00,2170.000,demodev00769,demoprd00026
+demoldv01536,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00769,demoprd00011
+demoldv01537,0,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00770,demoprd00017
+demoldv01538,1,Cartouche toner,,30.000,165.000,8.00,19.00,4554.000,demodev00770,demoprd00031
+demoldv01539,2,Hebergement web (annuel),,3.000,540.000,8.00,19.00,1490.400,demodev00770,demoprd00016
+demoldv01540,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00771,demoprd00013
+demoldv01541,0,Formation bureautique (jour),,3.000,420.000,0.00,19.00,1260.000,demodev00772,demoprd00013
+demoldv01542,0,Audit organisationnel,,1.000,3200.000,8.00,19.00,2944.000,demodev00773,demoprd00002
+demoldv01543,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00774,demoprd00014
+demoldv01544,1,Developpement web (jour),,16.000,450.000,0.00,19.00,7200.000,demodev00774,demoprd00005
+demoldv01545,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00774,demoprd00006
+demoldv01546,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00775,demoprd00029
+demoldv01547,1,Licence antivirus (poste),,12.000,85.000,0.00,19.00,1020.000,demodev00775,demoprd00027
+demoldv01548,0,Ciment (tonne),,30.000,310.000,0.00,19.00,9300.000,demodev00776,demoprd00038
+demoldv01549,1,Accompagnement fiscal (heure),,16.000,120.000,0.00,19.00,1920.000,demodev00776,demoprd00003
+demoldv01550,2,Conseil strategique (jour),,4.000,850.000,0.00,19.00,3400.000,demodev00776,demoprd00001
+demoldv01551,0,Licence suite bureautique,,1.000,320.000,0.00,19.00,320.000,demodev00777,demoprd00028
+demoldv01552,0,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00778,demoprd00023
+demoldv01553,1,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00778,demoprd00012
+demoldv01554,0,Cartouche toner,,14.000,165.000,0.00,19.00,2310.000,demodev00779,demoprd00031
+demoldv01555,0,Stockage entrepot (m2/mois),,85.000,12.000,0.00,19.00,1020.000,demodev00780,demoprd00020
+demoldv01556,0,Licence suite bureautique,,9.000,320.000,0.00,19.00,2880.000,demodev00781,demoprd00028
+demoldv01557,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00782,demoprd00011
+demoldv01558,0,Carrelage (m2),,382.000,38.000,0.00,19.00,14516.000,demodev00783,demoprd00039
+demoldv01559,1,Sauvegarde externalisee,,9.000,95.000,0.00,19.00,855.000,demodev00783,demoprd00012
+demoldv01560,0,Classeur archive,,108.000,6.800,0.00,19.00,734.400,demodev00784,demoprd00032
+demoldv01561,1,Ramette papier A4,,131.000,14.500,0.00,19.00,1899.500,demodev00784,demoprd00030
+demoldv01562,2,Cartouche toner,,10.000,165.000,0.00,19.00,1650.000,demodev00784,demoprd00031
+demoldv01563,3,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00784,demoprd00016
+demoldv01564,0,Ramette papier A4,,106.000,14.500,0.00,19.00,1537.000,demodev00785,demoprd00030
+demoldv01565,1,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00785,demoprd00004
+demoldv01566,0,Ciment (tonne),,3.000,310.000,0.00,19.00,930.000,demodev00786,demoprd00038
+demoldv01567,0,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00787,demoprd00019
+demoldv01568,1,Kit de premiers secours,,8.000,75.000,0.00,7.00,600.000,demodev00787,demoprd00034
+demoldv01569,2,Ordinateur portable pro,,1.000,2350.000,12.00,19.00,2068.000,demodev00787,demoprd00021
+demoldv01570,0,Gants nitrile (boite),,160.000,18.000,0.00,7.00,2880.000,demodev00788,demoprd00035
+demoldv01571,1,Conseil strategique (jour),,3.000,850.000,0.00,19.00,2550.000,demodev00788,demoprd00001
+demoldv01572,0,Developpement web (jour),,20.000,450.000,7.00,19.00,8370.000,demodev00789,demoprd00005
+demoldv01573,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00789,demoprd00008
+demoldv01574,0,Stockage entrepot (m2/mois),,184.000,12.000,11.00,19.00,1965.120,demodev00790,demoprd00020
+demoldv01575,0,Ramette papier A4,,72.000,14.500,0.00,19.00,1044.000,demodev00791,demoprd00030
+demoldv01576,1,Peinture murale (pot 20L),,63.000,145.000,0.00,19.00,9135.000,demodev00791,demoprd00040
+demoldv01577,2,Accompagnement fiscal (heure),,15.000,120.000,0.00,19.00,1800.000,demodev00791,demoprd00003
+demoldv01578,0,Licence antivirus (poste),,17.000,85.000,0.00,19.00,1445.000,demodev00792,demoprd00027
+demoldv01579,1,Formation bureautique (jour),,1.000,420.000,0.00,19.00,420.000,demodev00792,demoprd00013
+demoldv01580,0,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00793,demoprd00010
+demoldv01581,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00793,demoprd00011
+demoldv01582,2,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00793,demoprd00008
+demoldv01583,3,Sauvegarde externalisee,,2.000,95.000,0.00,19.00,190.000,demodev00793,demoprd00012
+demoldv01584,0,Gants nitrile (boite),,178.000,18.000,0.00,7.00,3204.000,demodev00794,demoprd00035
+demoldv01585,0,Licence suite bureautique,,26.000,320.000,0.00,19.00,8320.000,demodev00795,demoprd00028
+demoldv01586,1,Disque SSD 1To,,1.000,310.000,0.00,19.00,310.000,demodev00795,demoprd00026
+demoldv01587,0,Formation comptabilite,,3.000,650.000,0.00,19.00,1950.000,demodev00796,demoprd00015
+demoldv01588,1,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00796,demoprd00013
+demoldv01589,0,Dattes Deglet Nour (carton),,23.000,42.000,9.00,13.00,879.060,demodev00797,demoprd00037
+demoldv01590,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00798,demoprd00029
+demoldv01591,1,Huile d'olive extra (bidon 5L),,115.000,68.000,9.00,13.00,7116.200,demodev00798,demoprd00036
+demoldv01592,0,Ordinateur portable pro,,2.000,2350.000,0.00,19.00,4700.000,demodev00799,demoprd00021
+demoldv01593,1,Ecran 27 pouces,,4.000,690.000,0.00,19.00,2760.000,demodev00799,demoprd00022
+demoldv01594,2,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00799,demoprd00023
+demoldv01595,0,Peinture murale (pot 20L),,45.000,145.000,0.00,19.00,6525.000,demodev00800,demoprd00040
+demoldv01596,0,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00801,demoprd00013
+demoldv01597,0,Transport de marchandises,,1.000,210.000,0.00,7.00,210.000,demodev00802,demoprd00019
+demoldv01598,0,Routeur professionnel,,4.000,540.000,0.00,19.00,2160.000,demodev00803,demoprd00024
+demoldv01599,1,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00803,demoprd00025
+demoldv01600,0,Accompagnement fiscal (heure),,13.000,120.000,0.00,19.00,1560.000,demodev00804,demoprd00003
+demoldv01601,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00805,demoprd00008
+demoldv01602,0,Serveur dedie (mois),,5.000,290.000,0.00,19.00,1450.000,demodev00806,demoprd00018
+demoldv01603,0,Peinture murale (pot 20L),,6.000,145.000,0.00,19.00,870.000,demodev00807,demoprd00040
+demoldv01604,1,Accompagnement fiscal (heure),,14.000,120.000,0.00,19.00,1680.000,demodev00807,demoprd00003
+demoldv01605,0,Classeur archive,,210.000,6.800,0.00,19.00,1428.000,demodev00808,demoprd00032
+demoldv01606,1,Mobilier de bureau (poste),,11.000,1250.000,0.00,19.00,13750.000,demodev00808,demoprd00033
+demoldv01607,2,Licence suite bureautique,,50.000,320.000,0.00,19.00,16000.000,demodev00808,demoprd00028
+demoldv01608,0,Conseil strategique (jour),,3.000,850.000,0.00,19.00,2550.000,demodev00809,demoprd00001
+demoldv01609,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00809,demoprd00002
+demoldv01610,2,Logiciel de gestion commerciale,,1.000,2900.000,6.00,19.00,2726.000,demodev00809,demoprd00029
+demoldv01611,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00810,demoprd00002
+demoldv01612,0,Licence suite bureautique,,8.000,320.000,0.00,19.00,2560.000,demodev00811,demoprd00028
+demoldv01613,1,Ciment (tonne),,14.000,310.000,0.00,19.00,4340.000,demodev00811,demoprd00038
+demoldv01614,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00812,demoprd00002
+demoldv01615,1,Ciment (tonne),,10.000,310.000,0.00,19.00,3100.000,demodev00812,demoprd00038
+demoldv01616,0,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00813,demoprd00010
+demoldv01617,1,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00813,demoprd00005
+demoldv01618,0,Ecran 27 pouces,,8.000,690.000,0.00,19.00,5520.000,demodev00814,demoprd00022
+demoldv01619,1,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00814,demoprd00014
+demoldv01620,2,Onduleur 1500VA,,3.000,460.000,5.00,19.00,1311.000,demodev00814,demoprd00025
+demoldv01621,0,Licence suite bureautique,,32.000,320.000,0.00,19.00,10240.000,demodev00815,demoprd00028
+demoldv01622,0,Mobilier de bureau (poste),,4.000,1250.000,0.00,19.00,5000.000,demodev00816,demoprd00033
+demoldv01623,1,Cartouche toner,,17.000,165.000,0.00,19.00,2805.000,demodev00816,demoprd00031
+demoldv01624,2,Accompagnement fiscal (heure),,8.000,120.000,0.00,19.00,960.000,demodev00816,demoprd00003
+demoldv01625,3,Support premium (annuel),,1.000,3600.000,12.00,19.00,3168.000,demodev00816,demoprd00011
+demoldv01626,0,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00817,demoprd00017
+demoldv01627,1,Ramette papier A4,,21.000,14.500,0.00,19.00,304.500,demodev00817,demoprd00030
+demoldv01628,2,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00817,demoprd00016
+demoldv01629,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00818,demoprd00011
+demoldv01630,1,Huile d'olive extra (bidon 5L),,18.000,68.000,0.00,13.00,1224.000,demodev00818,demoprd00036
+demoldv01631,2,Serveur dedie (mois),,5.000,290.000,0.00,19.00,1450.000,demodev00818,demoprd00018
+demoldv01632,3,Intervention sur site,,2.000,150.000,0.00,19.00,300.000,demodev00818,demoprd00010
+demoldv01633,0,Accompagnement fiscal (heure),,9.000,120.000,10.00,19.00,972.000,demodev00819,demoprd00003
+demoldv01634,1,Gants nitrile (boite),,134.000,18.000,0.00,7.00,2412.000,demodev00819,demoprd00035
+demoldv01635,0,Carrelage (m2),,147.000,38.000,0.00,19.00,5586.000,demodev00820,demoprd00039
+demoldv01636,0,Conseil strategique (jour),,6.000,850.000,0.00,19.00,5100.000,demodev00821,demoprd00001
+demoldv01637,0,Transport de marchandises,,1.000,210.000,0.00,7.00,210.000,demodev00822,demoprd00019
+demoldv01638,1,Formation comptabilite,,3.000,650.000,0.00,19.00,1950.000,demodev00822,demoprd00015
+demoldv01639,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00823,demoprd00006
+demoldv01640,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00824,demoprd00029
+demoldv01641,1,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00824,demoprd00001
+demoldv01642,0,Transport de marchandises,,10.000,210.000,0.00,7.00,2100.000,demodev00825,demoprd00019
+demoldv01643,1,Stockage entrepot (m2/mois),,122.000,12.000,0.00,19.00,1464.000,demodev00825,demoprd00020
+demoldv01644,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00826,demoprd00036
+demoldv01645,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00827,demoprd00015
+demoldv01646,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00828,demoprd00008
+demoldv01647,1,Stockage entrepot (m2/mois),,289.000,12.000,0.00,19.00,3468.000,demodev00828,demoprd00020
+demoldv01648,0,Support premium (annuel),,1.000,3600.000,10.00,19.00,3240.000,demodev00829,demoprd00011
+demoldv01649,0,Developpement web (jour),,8.000,450.000,0.00,19.00,3600.000,demodev00830,demoprd00005
+demoldv01650,1,Integration ERP (jour),,14.000,600.000,0.00,19.00,8400.000,demodev00830,demoprd00007
+demoldv01651,0,Sauvegarde externalisee,,5.000,95.000,13.00,19.00,413.250,demodev00831,demoprd00012
+demoldv01652,1,Cartouche toner,,11.000,165.000,0.00,19.00,1815.000,demodev00831,demoprd00031
+demoldv01653,0,Imprimante laser,,1.000,980.000,0.00,19.00,980.000,demodev00832,demoprd00023
+demoldv01654,0,Logiciel de gestion commerciale,,3.000,2900.000,0.00,19.00,8700.000,demodev00833,demoprd00029
+demoldv01655,0,Kit de premiers secours,,5.000,75.000,12.00,7.00,330.000,demodev00834,demoprd00034
+demoldv01656,1,Gants nitrile (boite),,61.000,18.000,0.00,7.00,1098.000,demodev00834,demoprd00035
+demoldv01657,0,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00835,demoprd00033
+demoldv01658,0,Sauvegarde externalisee,,4.000,95.000,0.00,19.00,380.000,demodev00836,demoprd00012
+demoldv01659,1,Transport de marchandises,,6.000,210.000,0.00,7.00,1260.000,demodev00836,demoprd00019
+demoldv01660,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00837,demoprd00006
+demoldv01661,0,Serveur dedie (mois),,4.000,290.000,0.00,19.00,1160.000,demodev00838,demoprd00018
+demoldv01662,0,Hebergement web (annuel),,3.000,540.000,0.00,19.00,1620.000,demodev00839,demoprd00016
+demoldv01663,1,Serveur dedie (mois),,12.000,290.000,13.00,19.00,3027.600,demodev00839,demoprd00018
+demoldv01664,2,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00839,demoprd00040
+demoldv01665,0,Peinture murale (pot 20L),,19.000,145.000,0.00,19.00,2755.000,demodev00840,demoprd00040
+demoldv01666,1,Carrelage (m2),,133.000,38.000,0.00,19.00,5054.000,demodev00840,demoprd00039
+demoldv01667,0,Ciment (tonne),,25.000,310.000,0.00,19.00,7750.000,demodev00841,demoprd00038
+demoldv01668,1,Stockage entrepot (m2/mois),,175.000,12.000,0.00,19.00,2100.000,demodev00841,demoprd00020
+demoldv01669,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00842,demoprd00014
+demoldv01670,0,Licence antivirus (poste),,50.000,85.000,5.00,19.00,4037.500,demodev00843,demoprd00027
+demoldv01671,1,Etude de marche,,1.000,4500.000,10.00,19.00,4050.000,demodev00843,demoprd00004
+demoldv01672,0,Transport de marchandises,,3.000,210.000,0.00,7.00,630.000,demodev00844,demoprd00019
+demoldv01673,1,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00844,demoprd00025
+demoldv01674,2,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00844,demoprd00016
+demoldv01675,0,Intervention sur site,,1.000,150.000,0.00,19.00,150.000,demodev00845,demoprd00010
+demoldv01676,1,Maintenance mensuelle,,1.000,380.000,5.00,19.00,361.000,demodev00845,demoprd00009
+demoldv01677,0,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00846,demoprd00029
+demoldv01678,1,Licence antivirus (poste),,44.000,85.000,0.00,19.00,3740.000,demodev00846,demoprd00027
+demoldv01679,2,Dattes Deglet Nour (carton),,191.000,42.000,0.00,13.00,8022.000,demodev00846,demoprd00037
+demoldv01680,3,Huile d'olive extra (bidon 5L),,23.000,68.000,0.00,13.00,1564.000,demodev00846,demoprd00036
+demoldv01681,0,Carrelage (m2),,193.000,38.000,0.00,19.00,7334.000,demodev00847,demoprd00039
+demoldv01682,1,Peinture murale (pot 20L),,23.000,145.000,0.00,19.00,3335.000,demodev00847,demoprd00040
+demoldv01683,0,Transport de marchandises,,3.000,210.000,7.00,7.00,585.900,demodev00848,demoprd00019
+demoldv01684,0,Dattes Deglet Nour (carton),,84.000,42.000,0.00,13.00,3528.000,demodev00849,demoprd00037
+demoldv01685,1,Huile d'olive extra (bidon 5L),,69.000,68.000,0.00,13.00,4692.000,demodev00849,demoprd00036
+demoldv01686,0,Ciment (tonne),,7.000,310.000,0.00,19.00,2170.000,demodev00850,demoprd00038
+demoldv01687,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00851,demoprd00029
+demoldv01688,0,Carrelage (m2),,294.000,38.000,5.00,19.00,10613.400,demodev00852,demoprd00039
+demoldv01689,1,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00852,demoprd00035
+demoldv01690,0,Integration ERP (jour),,11.000,600.000,0.00,19.00,6600.000,demodev00853,demoprd00007
+demoldv01691,0,Ciment (tonne),,12.000,310.000,0.00,19.00,3720.000,demodev00854,demoprd00038
+demoldv01692,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00854,demoprd00014
+demoldv01693,2,Licence antivirus (poste),,8.000,85.000,0.00,19.00,680.000,demodev00854,demoprd00027
+demoldv01694,0,Peinture murale (pot 20L),,61.000,145.000,0.00,19.00,8845.000,demodev00855,demoprd00040
+demoldv01695,1,Conseil strategique (jour),,4.000,850.000,0.00,19.00,3400.000,demodev00855,demoprd00001
+demoldv01696,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00855,demoprd00006
+demoldv01697,0,Ecran 27 pouces,,8.000,690.000,0.00,19.00,5520.000,demodev00856,demoprd00022
+demoldv01698,0,Ecran 27 pouces,,3.000,690.000,0.00,19.00,2070.000,demodev00857,demoprd00022
+demoldv01699,1,Ordinateur portable pro,,3.000,2350.000,0.00,19.00,7050.000,demodev00857,demoprd00021
+demoldv01700,0,Integration ERP (jour),,8.000,600.000,0.00,19.00,4800.000,demodev00858,demoprd00007
+demoldv01701,0,Accompagnement fiscal (heure),,8.000,120.000,0.00,19.00,960.000,demodev00859,demoprd00003
+demoldv01702,1,Routeur professionnel,,5.000,540.000,0.00,19.00,2700.000,demodev00859,demoprd00024
+demoldv01703,0,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00860,demoprd00008
+demoldv01704,1,Integration ERP (jour),,14.000,600.000,0.00,19.00,8400.000,demodev00860,demoprd00007
+demoldv01705,2,Accompagnement fiscal (heure),,7.000,120.000,0.00,19.00,840.000,demodev00860,demoprd00003
+demoldv01706,0,Licence antivirus (poste),,46.000,85.000,0.00,19.00,3910.000,demodev00861,demoprd00027
+demoldv01707,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00861,demoprd00029
+demoldv01708,2,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00861,demoprd00013
+demoldv01709,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00862,demoprd00011
+demoldv01710,1,Integration ERP (jour),,10.000,600.000,0.00,19.00,6000.000,demodev00862,demoprd00007
+demoldv01711,2,Developpement web (jour),,16.000,450.000,0.00,19.00,7200.000,demodev00862,demoprd00005
+demoldv01712,0,Licence suite bureautique,,17.000,320.000,0.00,19.00,5440.000,demodev00863,demoprd00028
+demoldv01713,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00864,demoprd00009
+demoldv01714,0,Peinture murale (pot 20L),,42.000,145.000,0.00,19.00,6090.000,demodev00865,demoprd00040
+demoldv01715,1,Gants nitrile (boite),,95.000,18.000,0.00,7.00,1710.000,demodev00865,demoprd00035
+demoldv01716,0,Onduleur 1500VA,,3.000,460.000,0.00,19.00,1380.000,demodev00866,demoprd00025
+demoldv01717,1,Integration ERP (jour),,7.000,600.000,0.00,19.00,4200.000,demodev00866,demoprd00007
+demoldv01718,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00867,demoprd00023
+demoldv01719,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00868,demoprd00011
+demoldv01720,0,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00869,demoprd00017
+demoldv01721,1,Peinture murale (pot 20L),,7.000,145.000,9.00,19.00,923.650,demodev00869,demoprd00040
+demoldv01722,2,Gants nitrile (boite),,24.000,18.000,0.00,7.00,432.000,demodev00869,demoprd00035
+demoldv01723,3,Stockage entrepot (m2/mois),,42.000,12.000,0.00,19.00,504.000,demodev00869,demoprd00020
+demoldv01724,0,Ordinateur portable pro,,10.000,2350.000,0.00,19.00,23500.000,demodev00870,demoprd00021
+demoldv01725,1,Cartouche toner,,30.000,165.000,0.00,19.00,4950.000,demodev00870,demoprd00031
+demoldv01726,0,Dattes Deglet Nour (carton),,414.000,42.000,0.00,13.00,17388.000,demodev00871,demoprd00037
+demoldv01727,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00872,demoprd00009
+demoldv01728,1,Stockage entrepot (m2/mois),,75.000,12.000,0.00,19.00,900.000,demodev00872,demoprd00020
+demoldv01729,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00873,demoprd00009
+demoldv01730,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00873,demoprd00002
+demoldv01731,0,Peinture murale (pot 20L),,67.000,145.000,8.00,19.00,8937.800,demodev00874,demoprd00040
+demoldv01732,1,Ciment (tonne),,3.000,310.000,0.00,19.00,930.000,demodev00874,demoprd00038
+demoldv01733,0,Formation bureautique (jour),,2.000,420.000,0.00,19.00,840.000,demodev00875,demoprd00013
+demoldv01734,1,Classeur archive,,110.000,6.800,0.00,19.00,748.000,demodev00875,demoprd00032
+demoldv01735,2,Mobilier de bureau (poste),,1.000,1250.000,0.00,19.00,1250.000,demodev00875,demoprd00033
+demoldv01736,0,Mobilier de bureau (poste),,8.000,1250.000,6.00,19.00,9400.000,demodev00876,demoprd00033
+demoldv01737,0,Accompagnement fiscal (heure),,20.000,120.000,0.00,19.00,2400.000,demodev00877,demoprd00003
+demoldv01738,1,Ramette papier A4,,200.000,14.500,0.00,19.00,2900.000,demodev00877,demoprd00030
+demoldv01739,0,Serveur dedie (mois),,12.000,290.000,0.00,19.00,3480.000,demodev00878,demoprd00018
+demoldv01740,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00878,demoprd00011
+demoldv01741,0,Dattes Deglet Nour (carton),,137.000,42.000,0.00,13.00,5754.000,demodev00879,demoprd00037
+demoldv01742,0,Intervention sur site,,6.000,150.000,0.00,19.00,900.000,demodev00880,demoprd00010
+demoldv01743,1,Ordinateur portable pro,,10.000,2350.000,15.00,19.00,19975.000,demodev00880,demoprd00021
+demoldv01744,0,Kit de premiers secours,,30.000,75.000,0.00,7.00,2250.000,demodev00881,demoprd00034
+demoldv01745,1,Site vitrine,,1.000,2400.000,14.00,19.00,2064.000,demodev00881,demoprd00008
+demoldv01746,2,Gants nitrile (boite),,400.000,18.000,7.00,7.00,6696.000,demodev00881,demoprd00035
+demoldv01747,0,Conseil strategique (jour),,1.000,850.000,5.00,19.00,807.500,demodev00882,demoprd00001
+demoldv01748,1,Ramette papier A4,,108.000,14.500,0.00,19.00,1566.000,demodev00882,demoprd00030
+demoldv01749,2,Mobilier de bureau (poste),,7.000,1250.000,0.00,19.00,8750.000,demodev00882,demoprd00033
+demoldv01750,0,Transport de marchandises,,10.000,210.000,0.00,7.00,2100.000,demodev00883,demoprd00019
+demoldv01751,0,Carrelage (m2),,410.000,38.000,0.00,19.00,15580.000,demodev00884,demoprd00039
+demoldv01752,1,Ordinateur portable pro,,6.000,2350.000,0.00,19.00,14100.000,demodev00884,demoprd00021
+demoldv01753,0,Routeur professionnel,,5.000,540.000,0.00,19.00,2700.000,demodev00885,demoprd00024
+demoldv01754,0,Cartouche toner,,30.000,165.000,0.00,19.00,4950.000,demodev00886,demoprd00031
+demoldv01755,1,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00886,demoprd00033
+demoldv01756,0,Ecran 27 pouces,,2.000,690.000,7.00,19.00,1283.400,demodev00887,demoprd00022
+demoldv01757,0,Sauvegarde externalisee,,7.000,95.000,13.00,19.00,578.550,demodev00888,demoprd00012
+demoldv01758,1,Gants nitrile (boite),,88.000,18.000,0.00,7.00,1584.000,demodev00888,demoprd00035
+demoldv01759,2,Intervention sur site,,3.000,150.000,0.00,19.00,450.000,demodev00888,demoprd00010
+demoldv01760,0,Formation cybersecurite,,2.000,1800.000,0.00,19.00,3600.000,demodev00889,demoprd00014
+demoldv01761,1,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00889,demoprd00013
+demoldv01762,0,Kit de premiers secours,,8.000,75.000,0.00,7.00,600.000,demodev00890,demoprd00034
+demoldv01763,0,Sauvegarde externalisee,,4.000,95.000,0.00,19.00,380.000,demodev00891,demoprd00012
+demoldv01764,1,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00891,demoprd00011
+demoldv01765,0,Conseil strategique (jour),,2.000,850.000,8.00,19.00,1564.000,demodev00892,demoprd00001
+demoldv01766,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00893,demoprd00002
+demoldv01767,1,Kit de premiers secours,,17.000,75.000,0.00,7.00,1275.000,demodev00893,demoprd00034
+demoldv01768,0,Onduleur 1500VA,,1.000,460.000,7.00,19.00,427.800,demodev00894,demoprd00025
+demoldv01769,1,Carrelage (m2),,64.000,38.000,0.00,19.00,2432.000,demodev00894,demoprd00039
+demoldv01770,2,Peinture murale (pot 20L),,8.000,145.000,0.00,19.00,1160.000,demodev00894,demoprd00040
+demoldv01771,0,Developpement web (jour),,6.000,450.000,0.00,19.00,2700.000,demodev00895,demoprd00005
+demoldv01772,1,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00895,demoprd00035
+demoldv01773,0,Huile d'olive extra (bidon 5L),,300.000,68.000,0.00,13.00,20400.000,demodev00896,demoprd00036
+demoldv01774,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00897,demoprd00004
+demoldv01775,1,Cartouche toner,,11.000,165.000,0.00,19.00,1815.000,demodev00897,demoprd00031
+demoldv01776,0,Gants nitrile (boite),,59.000,18.000,0.00,7.00,1062.000,demodev00898,demoprd00035
+demoldv01777,0,Imprimante laser,,3.000,980.000,0.00,19.00,2940.000,demodev00899,demoprd00023
+demoldv01778,0,Huile d'olive extra (bidon 5L),,91.000,68.000,12.00,13.00,5445.440,demodev00900,demoprd00036
+demoldv01779,0,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00901,demoprd00015
+demoldv01780,1,Licence antivirus (poste),,31.000,85.000,0.00,19.00,2635.000,demodev00901,demoprd00027
+demoldv01781,2,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00901,demoprd00029
+demoldv01782,0,Cartouche toner,,8.000,165.000,0.00,19.00,1320.000,demodev00902,demoprd00031
+demoldv01783,1,Ramette papier A4,,58.000,14.500,0.00,19.00,841.000,demodev00902,demoprd00030
+demoldv01784,0,Peinture murale (pot 20L),,12.000,145.000,0.00,19.00,1740.000,demodev00903,demoprd00040
+demoldv01785,1,Ciment (tonne),,3.000,310.000,0.00,19.00,930.000,demodev00903,demoprd00038
+demoldv01786,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00904,demoprd00015
+demoldv01787,1,Carrelage (m2),,325.000,38.000,0.00,19.00,12350.000,demodev00904,demoprd00039
+demoldv01788,2,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00904,demoprd00009
+demoldv01789,0,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00905,demoprd00029
+demoldv01790,1,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00905,demoprd00015
+demoldv01791,0,Developpement web (jour),,20.000,450.000,12.00,19.00,7920.000,demodev00906,demoprd00005
+demoldv01792,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00907,demoprd00011
+demoldv01793,1,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00907,demoprd00029
+demoldv01794,2,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00907,demoprd00009
+demoldv01795,0,Developpement web (jour),,3.000,450.000,0.00,19.00,1350.000,demodev00908,demoprd00005
+demoldv01796,1,Carrelage (m2),,531.000,38.000,0.00,19.00,20178.000,demodev00908,demoprd00039
+demoldv01797,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00909,demoprd00011
+demoldv01798,0,Hebergement web (annuel),,2.000,540.000,0.00,19.00,1080.000,demodev00910,demoprd00016
+demoldv01799,0,Cartouche toner,,15.000,165.000,0.00,19.00,2475.000,demodev00911,demoprd00031
+demoldv01800,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00912,demoprd00006
+demoldv01801,1,Conseil strategique (jour),,1.000,850.000,0.00,19.00,850.000,demodev00912,demoprd00001
+demoldv01802,0,Conseil strategique (jour),,5.000,850.000,0.00,19.00,4250.000,demodev00913,demoprd00001
+demoldv01803,0,Carrelage (m2),,169.000,38.000,0.00,19.00,6422.000,demodev00914,demoprd00039
+demoldv01804,0,Ecran 27 pouces,,8.000,690.000,14.00,19.00,4747.200,demodev00915,demoprd00022
+demoldv01805,0,Ecran 27 pouces,,3.000,690.000,13.00,19.00,1800.900,demodev00916,demoprd00022
+demoldv01806,0,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00917,demoprd00040
+demoldv01807,1,Gants nitrile (boite),,363.000,18.000,0.00,7.00,6534.000,demodev00917,demoprd00035
+demoldv01808,0,Formation comptabilite,,2.000,650.000,0.00,19.00,1300.000,demodev00918,demoprd00015
+demoldv01809,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00919,demoprd00004
+demoldv01810,0,Serveur dedie (mois),,1.000,290.000,0.00,19.00,290.000,demodev00920,demoprd00018
+demoldv01811,0,Formation comptabilite,,3.000,650.000,0.00,19.00,1950.000,demodev00921,demoprd00015
+demoldv01812,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00922,demoprd00004
+demoldv01813,0,Carrelage (m2),,92.000,38.000,0.00,19.00,3496.000,demodev00923,demoprd00039
+demoldv01814,1,Serveur dedie (mois),,3.000,290.000,0.00,19.00,870.000,demodev00923,demoprd00018
+demoldv01815,2,Peinture murale (pot 20L),,62.000,145.000,0.00,19.00,8990.000,demodev00923,demoprd00040
+demoldv01816,3,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00923,demoprd00008
+demoldv01817,0,Dattes Deglet Nour (carton),,39.000,42.000,0.00,13.00,1638.000,demodev00924,demoprd00037
+demoldv01818,1,Formation cybersecurite,,1.000,1800.000,9.00,19.00,1638.000,demodev00924,demoprd00014
+demoldv01819,0,Ecran 27 pouces,,3.000,690.000,0.00,19.00,2070.000,demodev00925,demoprd00022
+demoldv01820,1,Peinture murale (pot 20L),,10.000,145.000,15.00,19.00,1232.500,demodev00925,demoprd00040
+demoldv01821,2,Ciment (tonne),,8.000,310.000,0.00,19.00,2480.000,demodev00925,demoprd00038
+demoldv01822,3,Carrelage (m2),,37.000,38.000,7.00,19.00,1307.580,demodev00925,demoprd00039
+demoldv01823,0,Kit de premiers secours,,5.000,75.000,0.00,7.00,375.000,demodev00926,demoprd00034
+demoldv01824,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00927,demoprd00006
+demoldv01825,0,Stockage entrepot (m2/mois),,183.000,12.000,0.00,19.00,2196.000,demodev00928,demoprd00020
+demoldv01826,1,Transport de marchandises,,6.000,210.000,0.00,7.00,1260.000,demodev00928,demoprd00019
+demoldv01827,2,Nom de domaine .tn,,3.000,45.000,0.00,19.00,135.000,demodev00928,demoprd00017
+demoldv01828,0,Peinture murale (pot 20L),,80.000,145.000,0.00,19.00,11600.000,demodev00929,demoprd00040
+demoldv01829,0,Peinture murale (pot 20L),,33.000,145.000,0.00,19.00,4785.000,demodev00930,demoprd00040
+demoldv01830,1,Ciment (tonne),,29.000,310.000,0.00,19.00,8990.000,demodev00930,demoprd00038
+demoldv01831,0,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00931,demoprd00014
+demoldv01832,0,Gants nitrile (boite),,400.000,18.000,0.00,7.00,7200.000,demodev00932,demoprd00035
+demoldv01833,1,Disque SSD 1To,,6.000,310.000,9.00,19.00,1692.600,demodev00932,demoprd00026
+demoldv01834,2,Integration ERP (jour),,4.000,600.000,0.00,19.00,2400.000,demodev00932,demoprd00007
+demoldv01835,0,Classeur archive,,217.000,6.800,0.00,19.00,1475.600,demodev00933,demoprd00032
+demoldv01836,0,Licence suite bureautique,,21.000,320.000,0.00,19.00,6720.000,demodev00934,demoprd00028
+demoldv01837,1,Licence antivirus (poste),,23.000,85.000,0.00,19.00,1955.000,demodev00934,demoprd00027
+demoldv01838,0,Formation bureautique (jour),,1.000,420.000,0.00,19.00,420.000,demodev00935,demoprd00013
+demoldv01839,1,Licence suite bureautique,,11.000,320.000,0.00,19.00,3520.000,demodev00935,demoprd00028
+demoldv01840,2,Licence antivirus (poste),,32.000,85.000,7.00,19.00,2529.600,demodev00935,demoprd00027
+demoldv01841,0,Cartouche toner,,3.000,165.000,0.00,19.00,495.000,demodev00936,demoprd00031
+demoldv01842,1,Ramette papier A4,,121.000,14.500,0.00,19.00,1754.500,demodev00936,demoprd00030
+demoldv01843,0,Carrelage (m2),,117.000,38.000,0.00,19.00,4446.000,demodev00937,demoprd00039
+demoldv01844,1,Transport de marchandises,,5.000,210.000,0.00,7.00,1050.000,demodev00937,demoprd00019
+demoldv01845,2,Stockage entrepot (m2/mois),,162.000,12.000,15.00,19.00,1652.400,demodev00937,demoprd00020
+demoldv01846,0,Formation comptabilite,,3.000,650.000,0.00,19.00,1950.000,demodev00938,demoprd00015
+demoldv01847,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00938,demoprd00014
+demoldv01848,2,Formation bureautique (jour),,1.000,420.000,0.00,19.00,420.000,demodev00938,demoprd00013
+demoldv01849,0,Etude de marche,,1.000,4500.000,0.00,19.00,4500.000,demodev00939,demoprd00004
+demoldv01850,1,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00939,demoprd00001
+demoldv01851,0,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00940,demoprd00006
+demoldv01852,0,Mobilier de bureau (poste),,3.000,1250.000,6.00,19.00,3525.000,demodev00941,demoprd00033
+demoldv01853,0,Formation bureautique (jour),,4.000,420.000,0.00,19.00,1680.000,demodev00942,demoprd00013
+demoldv01854,1,Stockage entrepot (m2/mois),,206.000,12.000,0.00,19.00,2472.000,demodev00942,demoprd00020
+demoldv01855,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00943,demoprd00002
+demoldv01856,1,Integration ERP (jour),,15.000,600.000,0.00,19.00,9000.000,demodev00943,demoprd00007
+demoldv01857,2,Conseil strategique (jour),,8.000,850.000,0.00,19.00,6800.000,demodev00943,demoprd00001
+demoldv01858,0,Site vitrine,,1.000,2400.000,13.00,19.00,2088.000,demodev00944,demoprd00008
+demoldv01859,1,Integration ERP (jour),,14.000,600.000,13.00,19.00,7308.000,demodev00944,demoprd00007
+demoldv01860,0,Ordinateur portable pro,,8.000,2350.000,0.00,19.00,18800.000,demodev00945,demoprd00021
+demoldv01861,1,Ecran 27 pouces,,6.000,690.000,8.00,19.00,3808.800,demodev00945,demoprd00022
+demoldv01862,0,Stockage entrepot (m2/mois),,143.000,12.000,0.00,19.00,1716.000,demodev00946,demoprd00020
+demoldv01863,1,Ciment (tonne),,12.000,310.000,0.00,19.00,3720.000,demodev00946,demoprd00038
+demoldv01864,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00947,demoprd00011
+demoldv01865,0,Peinture murale (pot 20L),,4.000,145.000,0.00,19.00,580.000,demodev00948,demoprd00040
+demoldv01866,1,Hebergement web (annuel),,2.000,540.000,10.00,19.00,972.000,demodev00948,demoprd00016
+demoldv01867,0,Mobilier de bureau (poste),,7.000,1250.000,0.00,19.00,8750.000,demodev00949,demoprd00033
+demoldv01868,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00949,demoprd00006
+demoldv01869,0,Dattes Deglet Nour (carton),,61.000,42.000,0.00,13.00,2562.000,demodev00950,demoprd00037
+demoldv01870,1,Huile d'olive extra (bidon 5L),,62.000,68.000,0.00,13.00,4216.000,demodev00950,demoprd00036
+demoldv01871,2,Hebergement web (annuel),,1.000,540.000,0.00,19.00,540.000,demodev00950,demoprd00016
+demoldv01872,0,Disque SSD 1To,,20.000,310.000,0.00,19.00,6200.000,demodev00951,demoprd00026
+demoldv01873,0,Gants nitrile (boite),,57.000,18.000,0.00,7.00,1026.000,demodev00952,demoprd00035
+demoldv01874,1,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00952,demoprd00025
+demoldv01875,2,Transport de marchandises,,2.000,210.000,0.00,7.00,420.000,demodev00952,demoprd00019
+demoldv01876,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00953,demoprd00002
+demoldv01877,1,Gants nitrile (boite),,98.000,18.000,0.00,7.00,1764.000,demodev00953,demoprd00035
+demoldv01878,2,Licence antivirus (poste),,48.000,85.000,0.00,19.00,4080.000,demodev00953,demoprd00027
+demoldv01879,0,Imprimante laser,,2.000,980.000,15.00,19.00,1666.000,demodev00954,demoprd00023
+demoldv01880,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00954,demoprd00009
+demoldv01881,0,Serveur dedie (mois),,2.000,290.000,6.00,19.00,545.200,demodev00955,demoprd00018
+demoldv01882,0,Intervention sur site,,5.000,150.000,0.00,19.00,750.000,demodev00956,demoprd00010
+demoldv01883,1,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00956,demoprd00002
+demoldv01884,0,Conseil strategique (jour),,5.000,850.000,0.00,19.00,4250.000,demodev00957,demoprd00001
+demoldv01885,1,Gants nitrile (boite),,313.000,18.000,0.00,7.00,5634.000,demodev00957,demoprd00035
+demoldv01886,0,Stockage entrepot (m2/mois),,72.000,12.000,10.00,19.00,777.600,demodev00958,demoprd00020
+demoldv01887,1,Ecran 27 pouces,,12.000,690.000,0.00,19.00,8280.000,demodev00958,demoprd00022
+demoldv01888,0,Ciment (tonne),,5.000,310.000,0.00,19.00,1550.000,demodev00959,demoprd00038
+demoldv01889,1,Huile d'olive extra (bidon 5L),,28.000,68.000,0.00,13.00,1904.000,demodev00959,demoprd00036
+demoldv01890,0,Serveur dedie (mois),,1.000,290.000,0.00,19.00,290.000,demodev00960,demoprd00018
+demoldv01891,0,Application mobile (forfait),,1.000,12000.000,12.00,19.00,10560.000,demodev00961,demoprd00006
+demoldv01892,1,Licence antivirus (poste),,100.000,85.000,0.00,19.00,8500.000,demodev00961,demoprd00027
+demoldv01893,2,Carrelage (m2),,81.000,38.000,0.00,19.00,3078.000,demodev00961,demoprd00039
+demoldv01894,3,Transport de marchandises,,7.000,210.000,0.00,7.00,1470.000,demodev00961,demoprd00019
+demoldv01895,0,Stockage entrepot (m2/mois),,56.000,12.000,0.00,19.00,672.000,demodev00962,demoprd00020
+demoldv01896,0,Peinture murale (pot 20L),,62.000,145.000,0.00,19.00,8990.000,demodev00963,demoprd00040
+demoldv01897,1,Ordinateur portable pro,,6.000,2350.000,0.00,19.00,14100.000,demodev00963,demoprd00021
+demoldv01898,2,Disque SSD 1To,,7.000,310.000,0.00,19.00,2170.000,demodev00963,demoprd00026
+demoldv01899,3,Routeur professionnel,,2.000,540.000,0.00,19.00,1080.000,demodev00963,demoprd00024
+demoldv01900,0,Formation comptabilite,,1.000,650.000,0.00,19.00,650.000,demodev00964,demoprd00015
+demoldv01901,1,Logiciel de gestion commerciale,,1.000,2900.000,0.00,19.00,2900.000,demodev00964,demoprd00029
+demoldv01902,0,Nom de domaine .tn,,2.000,45.000,0.00,19.00,90.000,demodev00965,demoprd00017
+demoldv01903,1,Formation cybersecurite,,1.000,1800.000,11.00,19.00,1602.000,demodev00965,demoprd00014
+demoldv01904,0,Serveur dedie (mois),,1.000,290.000,10.00,19.00,261.000,demodev00966,demoprd00018
+demoldv01905,1,Licence suite bureautique,,5.000,320.000,0.00,19.00,1600.000,demodev00966,demoprd00028
+demoldv01906,2,Mobilier de bureau (poste),,3.000,1250.000,0.00,19.00,3750.000,demodev00966,demoprd00033
+demoldv01907,3,Nom de domaine .tn,,1.000,45.000,0.00,19.00,45.000,demodev00966,demoprd00017
+demoldv01908,0,Onduleur 1500VA,,1.000,460.000,0.00,19.00,460.000,demodev00967,demoprd00025
+demoldv01909,0,Licence antivirus (poste),,14.000,85.000,0.00,19.00,1190.000,demodev00968,demoprd00027
+demoldv01910,1,Licence suite bureautique,,3.000,320.000,0.00,19.00,960.000,demodev00968,demoprd00028
+demoldv01911,0,Licence antivirus (poste),,26.000,85.000,0.00,19.00,2210.000,demodev00969,demoprd00027
+demoldv01912,1,Conseil strategique (jour),,2.000,850.000,0.00,19.00,1700.000,demodev00969,demoprd00001
+demoldv01913,0,Cartouche toner,,21.000,165.000,0.00,19.00,3465.000,demodev00970,demoprd00031
+demoldv01914,1,Classeur archive,,256.000,6.800,0.00,19.00,1740.800,demodev00970,demoprd00032
+demoldv01915,2,Ramette papier A4,,34.000,14.500,0.00,19.00,493.000,demodev00970,demoprd00030
+demoldv01916,0,Dattes Deglet Nour (carton),,146.000,42.000,0.00,13.00,6132.000,demodev00971,demoprd00037
+demoldv01917,1,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00971,demoprd00009
+demoldv01918,2,Disque SSD 1To,,1.000,310.000,0.00,19.00,310.000,demodev00971,demoprd00026
+demoldv01919,0,Kit de premiers secours,,40.000,75.000,0.00,7.00,3000.000,demodev00972,demoprd00034
+demoldv01920,1,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00972,demoprd00006
+demoldv01921,0,Imprimante laser,,4.000,980.000,0.00,19.00,3920.000,demodev00973,demoprd00023
+demoldv01922,1,Licence suite bureautique,,12.000,320.000,0.00,19.00,3840.000,demodev00973,demoprd00028
+demoldv01923,2,Logiciel de gestion commerciale,,2.000,2900.000,0.00,19.00,5800.000,demodev00973,demoprd00029
+demoldv01924,0,Imprimante laser,,2.000,980.000,0.00,19.00,1960.000,demodev00974,demoprd00023
+demoldv01925,0,Ordinateur portable pro,,7.000,2350.000,0.00,19.00,16450.000,demodev00975,demoprd00021
+demoldv01926,1,Imprimante laser,,4.000,980.000,0.00,19.00,3920.000,demodev00975,demoprd00023
+demoldv01927,2,Licence antivirus (poste),,23.000,85.000,0.00,19.00,1955.000,demodev00975,demoprd00027
+demoldv01928,0,Kit de premiers secours,,18.000,75.000,0.00,7.00,1350.000,demodev00976,demoprd00034
+demoldv01929,0,Integration ERP (jour),,4.000,600.000,0.00,19.00,2400.000,demodev00977,demoprd00007
+demoldv01930,0,Support premium (annuel),,1.000,3600.000,0.00,19.00,3600.000,demodev00978,demoprd00011
+demoldv01931,0,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00979,demoprd00009
+demoldv01932,0,Ciment (tonne),,2.000,310.000,0.00,19.00,620.000,demodev00980,demoprd00038
+demoldv01933,1,Carrelage (m2),,30.000,38.000,0.00,19.00,1140.000,demodev00980,demoprd00039
+demoldv01934,0,Maintenance mensuelle,,2.000,380.000,15.00,19.00,646.000,demodev00981,demoprd00009
+demoldv01935,1,Support premium (annuel),,1.000,3600.000,5.00,19.00,3420.000,demodev00981,demoprd00011
+demoldv01936,0,Cartouche toner,,30.000,165.000,0.00,19.00,4950.000,demodev00982,demoprd00031
+demoldv01937,0,Etude de marche,,1.000,4500.000,12.00,19.00,3960.000,demodev00983,demoprd00004
+demoldv01938,0,Gants nitrile (boite),,79.000,18.000,0.00,7.00,1422.000,demodev00984,demoprd00035
+demoldv01939,0,Transport de marchandises,,7.000,210.000,0.00,7.00,1470.000,demodev00985,demoprd00019
+demoldv01940,0,Mobilier de bureau (poste),,15.000,1250.000,0.00,19.00,18750.000,demodev00986,demoprd00033
+demoldv01941,1,Serveur dedie (mois),,12.000,290.000,0.00,19.00,3480.000,demodev00986,demoprd00018
+demoldv01942,0,Developpement web (jour),,20.000,450.000,0.00,19.00,9000.000,demodev00987,demoprd00005
+demoldv01943,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00987,demoprd00008
+demoldv01944,0,Peinture murale (pot 20L),,6.000,145.000,0.00,19.00,870.000,demodev00988,demoprd00040
+demoldv01945,1,Formation cybersecurite,,1.000,1800.000,0.00,19.00,1800.000,demodev00988,demoprd00014
+demoldv01946,0,Integration ERP (jour),,5.000,600.000,0.00,19.00,3000.000,demodev00989,demoprd00007
+demoldv01947,0,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00990,demoprd00009
+demoldv01948,1,Routeur professionnel,,2.000,540.000,0.00,19.00,1080.000,demodev00990,demoprd00024
+demoldv01949,2,Onduleur 1500VA,,2.000,460.000,0.00,19.00,920.000,demodev00990,demoprd00025
+demoldv01950,0,Gants nitrile (boite),,67.000,18.000,8.00,7.00,1109.520,demodev00991,demoprd00035
+demoldv01951,1,Intervention sur site,,4.000,150.000,0.00,19.00,600.000,demodev00991,demoprd00010
+demoldv01952,2,Classeur archive,,58.000,6.800,0.00,19.00,394.400,demodev00991,demoprd00032
+demoldv01953,3,Maintenance mensuelle,,3.000,380.000,0.00,19.00,1140.000,demodev00991,demoprd00009
+demoldv01954,0,Carrelage (m2),,44.000,38.000,0.00,19.00,1672.000,demodev00992,demoprd00039
+demoldv01955,1,Ciment (tonne),,7.000,310.000,0.00,19.00,2170.000,demodev00992,demoprd00038
+demoldv01956,2,Peinture murale (pot 20L),,18.000,145.000,0.00,19.00,2610.000,demodev00992,demoprd00040
+demoldv01957,0,Nom de domaine .tn,,4.000,45.000,6.00,19.00,169.200,demodev00993,demoprd00017
+demoldv01958,1,Carrelage (m2),,103.000,38.000,0.00,19.00,3914.000,demodev00993,demoprd00039
+demoldv01959,0,Maintenance mensuelle,,1.000,380.000,0.00,19.00,380.000,demodev00994,demoprd00009
+demoldv01960,0,Licence antivirus (poste),,14.000,85.000,0.00,19.00,1190.000,demodev00995,demoprd00027
+demoldv01961,0,Developpement web (jour),,18.000,450.000,13.00,19.00,7047.000,demodev00996,demoprd00005
+demoldv01962,1,Site vitrine,,1.000,2400.000,0.00,19.00,2400.000,demodev00996,demoprd00008
+demoldv01963,2,Application mobile (forfait),,1.000,12000.000,0.00,19.00,12000.000,demodev00996,demoprd00006
+demoldv01964,3,Maintenance mensuelle,,2.000,380.000,0.00,19.00,760.000,demodev00996,demoprd00009
+demoldv01965,0,Audit organisationnel,,1.000,3200.000,0.00,19.00,3200.000,demodev00997,demoprd00002

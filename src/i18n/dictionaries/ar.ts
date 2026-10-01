@@ -479,6 +479,31 @@ const ar: Messages = {
     columnProbability: "الاحتمال",
     columnBalance: "المتبقي للدفع",
   },
+  chat: {
+    open: "فتح المساعد",
+    close: "إغلاق المساعد",
+    title: "المساعد",
+    subtitle: "يجيب من بياناتك فقط",
+    newChat: "محادثة جديدة",
+    greeting: "مرحبًا! اسألني عن فواتيرك أو عروض الأسعار أو العملاء أو المدفوعات.",
+    suggestionsTitle: "جرّب مثلًا",
+    suggestions: {
+      overdue: "كم عدد الفواتير المتأخرة؟",
+      toCollect: "ما هو المبلغ الإجمالي المتبقي للتحصيل؟",
+      topClients: "من هم أفضل 5 عملاء لدي؟",
+      thisMonth: "كم فوترت هذا الشهر؟",
+    },
+    placeholder: "اكتب سؤالك...",
+    send: "إرسال",
+    thinking: "جارٍ البحث في بياناتك...",
+    sourceNote: "الإجابات مبنية على قاعدة البيانات فقط.",
+    errors: {
+      upstream: "المساعد لا يستجيب حاليًا. حاول مرة أخرى.",
+      not_configured: "المساعد غير مُعدّ (المفتاح OPENAI_API_KEY مفقود).",
+      unauthorized: "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.",
+      bad_request: "رسالة غير صالحة.",
+    },
+  },
 };
 
 export default ar;

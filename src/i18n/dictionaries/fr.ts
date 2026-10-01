@@ -481,6 +481,31 @@ const fr = {
     columnProbability: "Probabilité",
     columnBalance: "Reste à payer",
   },
+  chat: {
+    open: "Ouvrir l'assistant",
+    close: "Fermer l'assistant",
+    title: "Assistant",
+    subtitle: "Repond uniquement a partir de vos donnees",
+    newChat: "Nouvelle conversation",
+    greeting: "Bonjour ! Posez-moi une question sur vos factures, devis, clients ou paiements.",
+    suggestionsTitle: "Essayez par exemple",
+    suggestions: {
+      overdue: "Combien de factures sont en retard ?",
+      toCollect: "Quel est le montant total a encaisser ?",
+      topClients: "Quels sont mes 5 meilleurs clients ?",
+      thisMonth: "Combien ai-je facture ce mois-ci ?",
+    },
+    placeholder: "Posez votre question...",
+    send: "Envoyer",
+    thinking: "Recherche dans vos donnees...",
+    sourceNote: "Reponses basees uniquement sur la base de donnees.",
+    errors: {
+      upstream: "L'assistant ne repond pas pour le moment. Reessayez.",
+      not_configured: "L'assistant n'est pas configure (cle OPENAI_API_KEY manquante).",
+      unauthorized: "Votre session a expire. Reconnectez-vous.",
+      bad_request: "Message invalide.",
+    },
+  },
 };
 
 export default fr;

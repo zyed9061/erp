@@ -480,6 +480,31 @@ const de: Messages = {
     columnProbability: "Wahrscheinlichkeit",
     columnBalance: "Offener Betrag",
   },
+  chat: {
+    open: "Assistent öffnen",
+    close: "Assistent schließen",
+    title: "Assistent",
+    subtitle: "Antwortet nur anhand Ihrer Daten",
+    newChat: "Neue Unterhaltung",
+    greeting: "Hallo! Fragen Sie mich zu Ihren Rechnungen, Angeboten, Kunden oder Zahlungen.",
+    suggestionsTitle: "Zum Beispiel",
+    suggestions: {
+      overdue: "Wie viele Rechnungen sind überfällig?",
+      toCollect: "Wie hoch ist der offene Gesamtbetrag?",
+      topClients: "Wer sind meine 5 besten Kunden?",
+      thisMonth: "Wie viel habe ich diesen Monat fakturiert?",
+    },
+    placeholder: "Ihre Frage...",
+    send: "Senden",
+    thinking: "Durchsuche Ihre Daten...",
+    sourceNote: "Antworten basieren ausschließlich auf der Datenbank.",
+    errors: {
+      upstream: "Der Assistent antwortet gerade nicht. Bitte erneut versuchen.",
+      not_configured: "Der Assistent ist nicht eingerichtet (OPENAI_API_KEY fehlt).",
+      unauthorized: "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+      bad_request: "Ungültige Nachricht.",
+    },
+  },
 };
 
 export default de;

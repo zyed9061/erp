@@ -1,0 +1,61 @@
+id,type,nom,matriculeFiscal,email,telephone,adresse,ville,codePostal,pays,notes,actif,createdAt,updatedAt
+democli00001,ENTREPRISE,Atlas Immobilier SUARL,1603932M/A/M/000,contact@atlas-immobilier-suarl.tn,+216 23 734 737,53 Avenue de la Liberte,Gabes,6000,Tunisie,,t,2022-11-13 10:00:00,2026-09-23 23:58:30.668
+democli00002,ENTREPRISE,Tabarka Consulting SUARL,1686136K/A/M/000,contact@tabarka-consulting-suarl.tn,+216 91 394 545,110 Rue de l'Industrie,Sousse,4000,Tunisie,,t,2023-09-15 10:00:00,2026-09-23 23:58:30.668
+democli00003,ENTREPRISE,Elyssa Consulting SARL,1577535F/A/M/000,contact@elyssa-consulting-sarl.tn,+216 50 740 921,147 Avenue Hedi Chaker,Sfax,3000,Tunisie,,t,2026-04-14 10:00:00,2026-09-23 23:58:30.668
+democli00004,ENTREPRISE,Thapsus Industries SUARL,1491999W/A/M/000,contact@thapsus-industries-suarl.tn,+216 79 148 162,31 Rue de l'Industrie,Monastir,5000,Tunisie,,t,2022-04-28 10:00:00,2026-09-23 23:58:30.668
+democli00005,ENTREPRISE,Djerba Batiment SA,1937531Q/A/M/000,contact@djerba-batiment-sa.tn,+216 87 236 429,4 Avenue Habib Bourguiba,Nabeul,8000,Tunisie,,t,2023-11-15 10:00:00,2026-09-23 23:58:30.668
+democli00006,ENTREPRISE,Carthago Services SARL,1716371U/A/M/000,contact@carthago-services-sarl.tn,+216 35 699 566,80 Avenue Hedi Chaker,Sousse,4000,Tunisie,,t,2023-05-04 10:00:00,2026-09-23 23:58:30.668
+democli00007,ENTREPRISE,Hannibal Textile SUARL,1148177Y/A/M/000,contact@hannibal-textile-suarl.tn,+216 89 487 552,18 Rue Mongi Slim,Ariana,2080,Tunisie,,t,2026-04-25 10:00:00,2026-09-23 23:58:30.668
+democli00008,ENTREPRISE,Elyssa Immobilier SUARL,1078086C/A/M/000,contact@elyssa-immobilier-suarl.tn,+216 41 704 701,101 Route de l'Aeroport,Gabes,6000,Tunisie,,t,2023-10-08 10:00:00,2026-09-23 23:58:30.668
+democli00009,PARTICULIER,Olfa Mansouri,,,+216 74 611 828,57 Avenue Hedi Chaker,Monastir,5000,Tunisie,,t,2022-08-17 10:00:00,2026-09-23 23:58:30.668
+democli00010,ENTREPRISE,Cap Bon Textile SA,1877929I/A/M/000,contact@cap-bon-textile-sa.tn,+216 53 405 579,151 Zone Industrielle,Gabes,6000,Tunisie,,t,2023-10-13 10:00:00,2026-09-23 23:58:30.668
+democli00011,ENTREPRISE,Salammbo Immobilier SA,1902558O/A/M/000,contact@salammbo-immobilier-sa.tn,+216 25 549 903,122 Avenue Hedi Chaker,Ariana,2080,Tunisie,,t,2022-08-29 10:00:00,2026-09-23 23:58:30.668
+democli00012,ENTREPRISE,Djerba Transport SA,1032810H/A/M/000,contact@djerba-transport-sa.tn,+216 41 870 663,164 Rue Mongi Slim,Nabeul,8000,Tunisie,,t,2024-07-08 10:00:00,2026-09-23 23:58:30.668
+democli00013,ENTREPRISE,Hannibal Agro SUARL,1689091X/A/M/000,contact@hannibal-agro-suarl.tn,+216 24 129 406,44 Avenue de la Liberte,Ariana,2080,Tunisie,,t,2022-10-26 10:00:00,2026-09-23 23:58:30.668
+democli00014,ENTREPRISE,Djerba Industries SA,1082491U/A/M/000,contact@djerba-industries-sa.tn,+216 89 812 544,172 Rue de Marseille,Monastir,5000,Tunisie,,t,2024-05-21 10:00:00,2026-09-23 23:58:30.668
+democli00015,ENTREPRISE,Numidia Pharma SARL,1049849Y/A/M/000,contact@numidia-pharma-sarl.tn,+216 42 142 393,129 Avenue de Carthage,Kairouan,3100,Tunisie,,t,2024-04-24 10:00:00,2026-09-23 23:58:30.668
+democli00016,PARTICULIER,Ahmed Gharbi,"",ahmed.gharbi@mail.tn,+216 60 657 537,122 Rue de Marseille,Kairouan,3100,Tunisie,"",t,2024-03-17 10:00:00,2026-09-24 00:31:12.464
+democli00017,ENTREPRISE,Oasis Agro SARL,1426031G/A/M/000,contact@oasis-agro-sarl.tn,+216 23 699 158,163 Avenue de Carthage,Gabes,6000,Tunisie,,t,2023-11-03 10:00:00,2026-09-23 23:58:30.668
+democli00018,ENTREPRISE,Kerkenna Pharma SARL,1691100E/A/M/000,contact@kerkenna-pharma-sarl.tn,+216 78 938 351,112 Route de l'Aeroport,Bizerte,7000,Tunisie,,t,2024-09-18 10:00:00,2026-09-23 23:58:30.668
+democli00019,ENTREPRISE,Byrsa Pharma SA,1008258X/A/M/000,contact@byrsa-pharma-sa.tn,+216 61 538 713,100 Zone Industrielle,Gabes,6000,Tunisie,,t,2023-07-22 10:00:00,2026-09-23 23:58:30.668
+democli00020,PARTICULIER,Youssef Trabelsi,,youssef.trabelsi@mail.tn,+216 89 711 798,59 Rue Mongi Slim,Kairouan,3100,Tunisie,,t,2024-08-22 10:00:00,2026-09-23 23:58:30.668
+democli00021,ENTREPRISE,Carthago Industries SUARL,1974459K/A/M/000,contact@carthago-industries-suarl.tn,+216 79 114 715,158 Avenue de la Liberte,Sfax,3000,Tunisie,,t,2023-03-05 10:00:00,2026-09-23 23:58:30.668
+democli00022,ENTREPRISE,Hannibal Digital SARL,1795462L/A/M/000,contact@hannibal-digital-sarl.tn,+216 86 452 629,31 Route de l'Aeroport,Monastir,5000,Tunisie,,t,2025-04-22 10:00:00,2026-09-23 23:58:30.668
+democli00023,ENTREPRISE,Atlas Services SARL,1034666N/A/M/000,contact@atlas-services-sarl.tn,+216 79 670 101,74 Rue Mongi Slim,Kairouan,3100,Tunisie,,t,2026-04-26 10:00:00,2026-09-23 23:58:30.668
+democli00024,PARTICULIER,Salma Bouazizi,,salma.bouazizi@mail.tn,+216 35 221 736,132 Avenue de la Liberte,Monastir,5000,Tunisie,,t,2023-09-21 10:00:00,2026-09-23 23:58:30.668
+democli00025,PARTICULIER,Rim Hamdi,,,+216 38 235 387,177 Rue de l'Industrie,Kairouan,3100,Tunisie,,t,2023-06-26 10:00:00,2026-09-23 23:58:30.668
+democli00026,ENTREPRISE,Utique Consulting SUARL,1287752Y/A/M/000,contact@utique-consulting-suarl.tn,+216 45 559 428,81 Rue de Marseille,Sfax,3000,Tunisie,,t,2024-03-12 10:00:00,2026-09-23 23:58:30.668
+democli00027,ENTREPRISE,Numidia Batiment SUARL,1408757E/A/M/000,contact@numidia-batiment-suarl.tn,+216 76 443 393,4 Rue de Marseille,Nabeul,8000,Tunisie,,t,2023-03-14 10:00:00,2026-09-23 23:58:30.668
+democli00028,ENTREPRISE,Oasis Textile SUARL,1467810V/A/M/000,contact@oasis-textile-suarl.tn,+216 35 411 896,155 Route de l'Aeroport,Sfax,3000,Tunisie,,t,2023-03-23 10:00:00,2026-09-23 23:58:30.668
+democli00029,ENTREPRISE,Jasmin Medical SUARL,1094997N/A/M/000,contact@jasmin-medical-suarl.tn,+216 67 978 573,122 Rue de l'Industrie,Ariana,2080,Tunisie,,t,2025-08-09 10:00:00,2026-09-23 23:58:30.668
+democli00030,ENTREPRISE,Zitouna Consulting SUARL,1871584W/A/M/000,contact@zitouna-consulting-suarl.tn,+216 67 543 565,132 Rue de l'Industrie,Sfax,3000,Tunisie,,t,2023-02-25 10:00:00,2026-09-23 23:58:30.668
+democli00031,ENTREPRISE,Cap Bon Immobilier SUARL,1997040S/A/M/000,contact@cap-bon-immobilier-suarl.tn,+216 47 774 362,106 Avenue de la Liberte,Sousse,4000,Tunisie,,t,2023-10-20 10:00:00,2026-09-23 23:58:30.668
+democli00032,ENTREPRISE,Medina Textile SA,1219556Z/A/M/000,contact@medina-textile-sa.tn,+216 53 118 455,10 Rue Ibn Khaldoun,Ariana,2080,Tunisie,,t,2022-09-02 10:00:00,2026-09-23 23:58:30.668
+democli00033,ENTREPRISE,Elyssa Immobilier SA,1245910S/A/M/000,contact@elyssa-immobilier-sa.tn,+216 85 290 101,152 Route de l'Aeroport,Gabes,6000,Tunisie,,t,2022-07-24 10:00:00,2026-09-23 23:58:30.668
+democli00034,ENTREPRISE,Numidia Energie SA,1226345N/A/M/000,contact@numidia-energie-sa.tn,+216 26 346 910,179 Rue de l'Industrie,Tunis,1000,Tunisie,,t,2022-08-28 10:00:00,2026-09-23 23:58:30.668
+democli00035,PARTICULIER,Mariem Gharbi,,mariem.gharbi@mail.tn,+216 71 589 640,119 Rue de l'Industrie,Sfax,3000,Tunisie,,t,2024-01-14 10:00:00,2026-09-23 23:58:30.668
+democli00036,ENTREPRISE,Carthago Digital SARL,1558531L/A/M/000,contact@carthago-digital-sarl.tn,+216 48 486 751,15 Zone Industrielle,Ben Arous,2013,Tunisie,,t,2023-12-23 10:00:00,2026-09-23 23:58:30.668
+democli00037,ENTREPRISE,Elyssa Batiment SARL,1432554Y/A/M/000,,+216 27 546 878,49 Avenue Hedi Chaker,Kairouan,3100,Tunisie,,t,2022-06-23 10:00:00,2026-09-23 23:58:30.668
+democli00038,ENTREPRISE,Kerkenna Consulting SARL,1207145A/A/M/000,contact@kerkenna-consulting-sarl.tn,+216 32 331 134,144 Avenue Habib Bourguiba,Sfax,3000,Tunisie,,t,2024-01-25 10:00:00,2026-09-23 23:58:30.668
+democli00039,ENTREPRISE,Hadrumete Immobilier SUARL,1598364Z/A/M/000,contact@hadrumete-immobilier-suarl.tn,+216 52 470 362,123 Rue Ibn Khaldoun,Sousse,4000,Tunisie,,t,2023-10-30 10:00:00,2026-09-23 23:58:30.668
+democli00040,ENTREPRISE,Hannibal Logistique SA,1606013A/A/M/000,contact@hannibal-logistique-sa.tn,+216 78 251 314,32 Rue Ibn Khaldoun,Ben Arous,2013,Tunisie,,t,2024-07-30 10:00:00,2026-09-23 23:58:30.668
+democli00041,ENTREPRISE,Oasis Services SA,1489351G/A/M/000,contact@oasis-services-sa.tn,+216 70 347 903,144 Zone Industrielle,Bizerte,7000,Tunisie,,t,2022-07-21 10:00:00,2026-09-23 23:58:30.668
+democli00042,PARTICULIER,Nour Mejri,,nour.mejri@mail.tn,+216 51 609 879,74 Rue Ibn Khaldoun,Ben Arous,2013,Tunisie,,t,2024-06-08 10:00:00,2026-09-23 23:58:30.668
+democli00043,ENTREPRISE,Medina Medical SARL,1246998H/A/M/000,contact@medina-medical-sarl.tn,+216 38 905 989,116 Rue Ibn Khaldoun,Ben Arous,2013,Tunisie,,t,2023-01-28 10:00:00,2026-09-23 23:58:30.668
+democli00044,ENTREPRISE,Kerkenna Textile SARL,1618053D/A/M/000,contact@kerkenna-textile-sarl.tn,+216 33 886 189,96 Avenue de Carthage,Nabeul,8000,Tunisie,,t,2022-09-30 10:00:00,2026-09-23 23:58:30.668
+democli00045,ENTREPRISE,Tabarka Agro SA,1002218V/A/M/000,contact@tabarka-agro-sa.tn,+216 61 172 344,43 Rue Mongi Slim,Kairouan,3100,Tunisie,,t,2024-04-22 10:00:00,2026-09-23 23:58:30.668
+democli00046,ENTREPRISE,Hadrumete Medical SA,1195199B/A/M/000,contact@hadrumete-medical-sa.tn,+216 69 349 971,175 Avenue de Carthage,Gabes,6000,Tunisie,,t,2023-11-03 10:00:00,2026-09-23 23:58:30.668
+democli00047,PARTICULIER,Mariem Dridi,,mariem.dridi@mail.tn,+216 88 640 914,68 Rue de l'Industrie,Gabes,6000,Tunisie,,t,2022-04-20 10:00:00,2026-09-23 23:58:30.668
+democli00048,ENTREPRISE,Oasis Services SARL,1969568I/A/M/000,contact@oasis-services-sarl.tn,+216 91 769 303,60 Rue de Marseille,Ariana,2080,Tunisie,,t,2022-06-04 10:00:00,2026-09-23 23:58:30.668
+democli00049,ENTREPRISE,Oasis Batiment SARL,1562406V/A/M/000,contact@oasis-batiment-sarl.tn,+216 92 952 743,34 Rue de Marseille,Kairouan,3100,Tunisie,,t,2024-05-04 10:00:00,2026-09-23 23:58:30.668
+democli00050,ENTREPRISE,Carthago Textile SA,1194077G/A/M/000,,+216 91 456 547,60 Rue de l'Industrie,Ben Arous,2013,Tunisie,,t,2024-09-24 10:00:00,2026-09-23 23:58:30.668
+democli00051,ENTREPRISE,Hadrumete Agro SUARL,1549803Z/A/M/000,contact@hadrumete-agro-suarl.tn,+216 38 297 532,73 Rue Ibn Khaldoun,Ariana,2080,Tunisie,,t,2024-05-15 10:00:00,2026-09-23 23:58:30.668
+democli00052,ENTREPRISE,Sahel Batiment SA,1416564Q/A/M/000,contact@sahel-batiment-sa.tn,+216 93 278 727,149 Rue de l'Industrie,Gabes,6000,Tunisie,,t,2023-03-10 10:00:00,2026-09-23 23:58:30.668
+democli00053,ENTREPRISE,Kerkenna Distribution SUARL,1364883I/A/M/000,contact@kerkenna-distribution-suarl.tn,+216 82 138 488,149 Zone Industrielle,Sfax,3000,Tunisie,,t,2024-02-22 10:00:00,2026-09-23 23:58:30.668
+democli00054,ENTREPRISE,Zitouna Immobilier SUARL,1621936K/A/M/000,contact@zitouna-immobilier-suarl.tn,+216 75 935 940,139 Rue Mongi Slim,Sousse,4000,Tunisie,,t,2022-09-18 10:00:00,2026-09-23 23:58:30.668
+democli00055,ENTREPRISE,Oasis Textile SA,1994711W/A/M/000,contact@oasis-textile-sa.tn,+216 20 574 927,43 Rue de Marseille,Sfax,3000,Tunisie,,t,2023-09-17 10:00:00,2026-09-23 23:58:30.668
+democli00056,PARTICULIER,Hichem Khelifi,,hichem.khelifi@mail.tn,+216 78 864 384,33 Rue de Marseille,Sfax,3000,Tunisie,,t,2023-07-20 10:00:00,2026-09-23 23:58:30.668
+democli00057,ENTREPRISE,Oasis Distribution SARL,1044241C/A/M/000,contact@oasis-distribution-sarl.tn,+216 59 506 187,134 Route de l'Aeroport,Tunis,1000,Tunisie,,t,2023-01-23 10:00:00,2026-09-23 23:58:30.668
+democli00058,ENTREPRISE,Medina Services SARL,1383048F/A/M/000,contact@medina-services-sarl.tn,+216 80 204 248,80 Route de l'Aeroport,Bizerte,7000,Tunisie,,t,2022-12-23 10:00:00,2026-09-23 23:58:30.668
+democli00059,ENTREPRISE,Zitouna Tech SA,1914707Y/A/M/000,contact@zitouna-tech-sa.tn,+216 54 349 729,39 Rue de Marseille,Nabeul,8000,Tunisie,,t,2024-04-14 10:00:00,2026-09-23 23:58:30.668
+democli00060,ENTREPRISE,Djerba Logistique SUARL,1452925B/A/M/000,contact@djerba-logistique-suarl.tn,+216 27 820 562,6 Avenue de Carthage,Kairouan,3100,Tunisie,,t,2022-11-11 10:00:00,2026-09-23 23:58:30.668
