@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopHeader } from "@/components/layout/TopHeader";
-import { ChatBubble } from "@/components/chat/ChatBubble";
+import { AppFooter } from "@/components/layout/AppFooter";
+import { AssistantPanel } from "@/components/assistant/AssistantPanel";
+import { AssistantLauncher } from "@/components/assistant/AssistantLauncher";
 
 const STORAGE_KEY = "erp:sidebar-collapsed";
 
@@ -13,16 +15,28 @@ export function AppShell({
   userName,
   userEmail,
   onSignOut,
+  assistantEnabled,
   children,
 }: {
   userName: string;
   userEmail: string;
   onSignOut: () => void;
+  assistantEnabled: boolean;
   children: React.ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
+  const assistantLauncherRef = useRef<HTMLButtonElement>(null);
+  const assistantPanelId = useId();
   const pathname = usePathname();
+
+  const toggleAssistant = useCallback(() => setAssistantOpen((open) => !open), []);
+
+  const closeAssistant = useCallback(() => {
+    setAssistantOpen(false);
+    assistantLauncherRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     try {
@@ -76,8 +90,16 @@ export function AppShell({
             {children}
           </motion.div>
         </main>
-        <ChatBubble />
+        <AppFooter />
       </div>
+      {assistantEnabled && (
+        <>
+          <AssistantLauncher
+            ref={assistantLauncherRef}
+            panelId={assistantPanelId} expanded={assistantOpen} onToggle={toggleAssistant} />
+          <AssistantPanel id={assistantPanelId} open={assistantOpen} onClose={closeAssistant} />
+        </>
+      )}
     </div>
   );
 }

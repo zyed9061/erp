@@ -13,7 +13,7 @@ export const LOCALE_DIR: Record<Locale, "ltr" | "rtl"> = {
 };
 
 export const LOCALE_LABELS: Record<Locale, string> = {
-  fr: "Francais",
+  fr: "Français",
   en: "English",
   ar: "العربية",
   de: "Deutsch",

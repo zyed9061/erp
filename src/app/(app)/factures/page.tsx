@@ -5,6 +5,7 @@ import { getT } from "@/i18n/server";
 import { computeFactureDisplayStatut } from "@/lib/factureStatus";
 import { showsRisk } from "@/lib/ml";
 import { FacturesGrid } from "./FacturesGrid";
+import { InvoiceTabs } from "./InvoiceTabs";
 import type { FactureRow } from "./columns";
 
 export default async function FacturesListPage() {
@@ -48,6 +49,7 @@ export default async function FacturesListPage() {
   return (
     <div>
       <PageHeader title={t("invoices.title")} description={t("invoices.description")} />
+      <InvoiceTabs />
       <FacturesGrid data={rows} userId={session?.user?.id} />
     </div>
   );

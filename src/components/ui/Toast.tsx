@@ -53,14 +53,14 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         createPortal(
           <div
             aria-live="polite"
-            className="fixed inset-x-4 bottom-4 z-[100] flex flex-col gap-2 sm:inset-x-auto sm:end-6 sm:bottom-6 sm:w-96"
+            className="fixed inset-x-4 bottom-[calc(var(--footer-h,0px)+1rem)] z-[100] flex flex-col gap-2 sm:inset-x-auto sm:end-6 sm:w-96"
           >
             <AnimatePresence initial={false}>
               {toasts.map((toast) => (
                 <motion.div
                   key={toast.id}
                   layout
-                  role="status"
+                  role={toast.type === "error" ? "alert" : "status"}
                   initial={{ opacity: 0, y: 24, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 12, scale: 0.95 }}
